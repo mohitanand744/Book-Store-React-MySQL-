@@ -3,7 +3,7 @@ const db = require("../DB/db.connection");
 // ! Query
 const QUERY = `
 SELECT 
-  B.ID AS BOOK_ID, 
+  B.ID, 
   B.TITLE, 
   B.DESCRIPTION, 
   B.AUTHOR, 
@@ -27,7 +27,7 @@ exports.getBooks = (req, res) => {
     }
 
     const books = data.map((item) => ({
-      book_id: item.BOOK_ID,
+      book_id: item.ID,
       title: item.TITLE,
       description: item.DESCRIPTION,
       author: item.AUTHOR,
@@ -118,20 +118,60 @@ exports.updateBook = (req, res) => {
   );
 };
 
-exports.postBooks = (res, req) => {
-  const { title, author, description, price, category } = req.body;
-  const query =
-    "INSERT INTO BOOKS (TITLE, DESCRIPTION, AUTHOR, BOOK_PRICE, CATEGORY) VALUE (?, ?, ?, ?)";
+exports.postBooks = (req, res) => {
+  if (!req.body)
+    return res
+      .status(400)
+      .json({ success: false, message: "Please provide a book" });
+
+  const { title, author, description, price, category, images } = req.body;
+
+  // Check if 'images' is a valid array of non-empty strings
+  if (
+    !Array.isArray(images) ||
+    images.length === 0 ||
+    images.some((image) => typeof image !== "string" || image.trim() === "")
+  ) {
+    return res.status(400).json({
+      success: false,
+      message: "Invalid or empty image URLs provided.",
+    });
+  }
+
+  const queryBook =
+    "INSERT INTO BOOKS (TITLE, DESCRIPTION, AUTHOR, BOOK_PRICE, CATEGORY) VALUE (?, ?, ?, ?, ?)";
 
   db.query(
-    query,
-    [title, author, description, price, category],
+    queryBook,
+    [title, description, author, price, category],
     (err, result) => {
       if (err)
         return res.status(500).json({ success: false, error: err.message });
-      return res
-        .status(201)
-        .json({ message: "Book added successfully", bookId: result.insertId });
+
+      if (result.affectedRows === 0)
+        return res
+          .status(404)
+          .json({ success: false, message: "Book not found" });
+
+      const queryImage =
+        "INSERT INTO BOOK_IMAGES (BOOK_ID, IMAGE_URL) VALUES (?, ?)";
+
+      const jsonImages = JSON.stringify(images);
+      db.query(queryImage, [result.insertId, jsonImages], (err, result) => {
+        if (err)
+          return res.status(500).json({ success: false, error: err.message });
+
+        if (result.affectedRows === 0)
+          return res
+            .status(404)
+            .json({ success: false, message: "Images not added" });
+
+        return res.status(201).json({
+          success: true,
+          message: "Book and images added successfully",
+          bookId: result.insertId,
+        });
+      });
     }
   );
 };
