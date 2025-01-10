@@ -20,8 +20,6 @@ exports.getBooks = (req, res) => {
   const query = QUERY;
 
   db.query(query, (err, data) => {
-    console.log(data);
-
     if (err) {
       return res.status(500).json({ success: false, error: err.message });
     }
