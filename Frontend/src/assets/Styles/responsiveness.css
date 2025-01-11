@@ -1,3 +1,10 @@
+@media screen and (width < 1024px) {
+  /* .authorSlider .swiper-slide {
+    width: 30rem;
+    position: relative;
+  } */
+}
+
 @media screen and (width < 748px) {
   @tailwind base;
   @tailwind components;
@@ -19,7 +26,10 @@
   .swiper-button-next {
     padding-left: 0.1rem;
   }
-
+  /* .authorSlider .swiper-slide {
+    width: 20rem;
+    position: relative;
+  } */
   .swiper-button-prev {
     padding-right: 0.1rem;
   }

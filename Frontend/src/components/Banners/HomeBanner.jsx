@@ -32,7 +32,7 @@ const HomeBanner = () => {
             alt="Welcome Banner"
           />
           {/* Gradient effect */}
-          <div className="absolute bottom-0 left-0 w-full h-2/5 bg-gradient-to-t from-white to-transparent"></div>
+          <div className="absolute bottom-0 left-0 w-full h-1/5 bg-gradient-to-t from-white to-transparent"></div>
         </SwiperSlide>
         <SwiperSlide className="relative">
           <img

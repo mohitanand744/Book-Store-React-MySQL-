@@ -94,16 +94,16 @@ const Navbar = () => {
             <SearchBooks />
 
             <div className="bg-[#5C4C49] w-10 h-10 flex items-center justify-center rounded-full relative cursor-pointer active:scale-75 transition">
-              <div className="absolute flex items-center justify-center w-6 h-6 text-white bg-red-500 rounded-full -top-2 -right-2">
+              <div className="absolute flex items-center justify-center w-6 h-6 text-white bg-orange-600 rounded-full -top-2 -right-2">
                 3
               </div>
               <HiOutlineShoppingCart className="text-2xl text-[#ffeccd]" />
             </div>
             <div className="">
-              <div className="w-12 h-12 p-1 border-2 bg-[#5C4C49] border-white rounded-full">
+              <div className="w-12 h-12 cursor-pointer active:scale-75 transition border-2 bg-[#5C4C49] border-orange-500 rounded-full">
                 <img
                   className="object-cover w-full h-full rounded-full"
-                  src="https://plus.unsplash.com/premium_photo-1689539137236-b68e436248de?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8cGVyc29ufGVufDB8fDB8fHww"
+                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSHyzy1C_qA0SZxKf_Fq9xc1ZViTXyUhvDFc2QRbb7vdjRB1KDUEMniw4GdDaJqdYoacTs&usqp=CAU"
                   alt=""
                 />
               </div>
