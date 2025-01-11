@@ -1,0 +1,36 @@
+@media screen and (width < 748px) {
+  @tailwind base;
+  @tailwind components;
+  @tailwind utilities;
+
+  .swiper-button-prev:after,
+  .swiper-button-next:after {
+    color: #000 !important;
+    font-size: 0.8rem !important;
+    font-weight: bold !important;
+  }
+
+  .swiper-button-prev,
+  .swiper-button-next {
+    height: 2rem !important;
+    width: 2rem !important;
+  }
+
+  .swiper-button-next {
+    padding-left: 0.1rem;
+  }
+
+  .swiper-button-prev {
+    padding-right: 0.1rem;
+  }
+
+  .swiper-pagination-bullet-active {
+    background: #5c4c49 !important;
+    width: 1.3rem !important;
+    border-radius: 1rem !important;
+    -webkit-border-radius: 1rem !important;
+    -moz-border-radius: 1rem !important;
+    -ms-border-radius: 1rem !important;
+    -o-border-radius: 1rem !important;
+  }
+}
