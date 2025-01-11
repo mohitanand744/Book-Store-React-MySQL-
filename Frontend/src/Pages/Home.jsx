@@ -4,7 +4,7 @@ import SearchBooks from "../components/SearchBars/SearchBooks";
 
 const Home = () => {
   return (
-    <div>
+    <div className="h-[200vh]">
       <div className="search">
         <SearchBooks
           styling="w-full  block md:hidden"
