@@ -12,7 +12,7 @@ import { EffectCoverflow, Pagination, Navigation } from "swiper/modules";
 
 function AuthorSlider() {
   return (
-    <div className="mx-auto mb-24 authorSlider">
+    <div className="mx-auto xl-custom:w-[100rem]  authorSlider">
       <Swiper
         effect={"coverflow"}
         grabCursor={true}

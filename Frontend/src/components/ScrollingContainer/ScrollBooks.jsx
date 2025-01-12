@@ -26,7 +26,6 @@ const ScrollBooks = ({ autoScroll = true }) => {
           }
         }
         loop={autoScroll}
-        slidesPerView={6}
         spaceBetween={30}
         navigation
         pagination={{ clickable: true }}
@@ -34,7 +33,7 @@ const ScrollBooks = ({ autoScroll = true }) => {
         breakpoints={{
           // Adjust Swiper settings based on screen size
           320: {
-            slidesPerView: 1,
+            slidesPerView: 1.2,
             spaceBetween: 10,
           },
           640: {
@@ -49,12 +48,8 @@ const ScrollBooks = ({ autoScroll = true }) => {
             slidesPerView: 4,
             spaceBetween: 25,
           },
-          1200: {
+          1440: {
             slidesPerView: 5,
-            spaceBetween: 30,
-          },
-          1430: {
-            slidesPerView: 6,
             spaceBetween: 30,
           },
         }}
@@ -90,6 +85,7 @@ const ScrollBooks = ({ autoScroll = true }) => {
               </button>
 
               <div className="flex items-center text-orange-500">
+                <span className="mr-2">4.5</span>
                 <FaStar />
                 <FaStar />
                 <FaStar />
@@ -130,6 +126,7 @@ const ScrollBooks = ({ autoScroll = true }) => {
               </button>
 
               <div className="flex items-center text-orange-500">
+                <span className="mr-2">4.5</span>
                 <FaStar />
                 <FaStar />
                 <FaStar />
@@ -170,6 +167,7 @@ const ScrollBooks = ({ autoScroll = true }) => {
               </button>
 
               <div className="flex items-center text-orange-500">
+                <span className="mr-2">4.5</span>
                 <FaStar />
                 <FaStar />
                 <FaStar />
@@ -210,6 +208,7 @@ const ScrollBooks = ({ autoScroll = true }) => {
               </button>
 
               <div className="flex items-center text-orange-500">
+                <span className="mr-2">4.5</span>
                 <FaStar />
                 <FaStar />
                 <FaStar />
@@ -250,6 +249,7 @@ const ScrollBooks = ({ autoScroll = true }) => {
               </button>
 
               <div className="flex items-center text-orange-500">
+                <span className="mr-2">4.5</span>
                 <FaStar />
                 <FaStar />
                 <FaStar />
@@ -290,6 +290,7 @@ const ScrollBooks = ({ autoScroll = true }) => {
               </button>
 
               <div className="flex items-center text-orange-500">
+                <span className="mr-2">4.5</span>
                 <FaStar />
                 <FaStar />
                 <FaStar />
@@ -330,6 +331,7 @@ const ScrollBooks = ({ autoScroll = true }) => {
               </button>
 
               <div className="flex items-center text-orange-500">
+                <span className="mr-2">4.5</span>
                 <FaStar />
                 <FaStar />
                 <FaStar />
@@ -370,6 +372,7 @@ const ScrollBooks = ({ autoScroll = true }) => {
               </button>
 
               <div className="flex items-center text-orange-500">
+                <span className="mr-2">4.5</span>
                 <FaStar />
                 <FaStar />
                 <FaStar />
@@ -410,6 +413,7 @@ const ScrollBooks = ({ autoScroll = true }) => {
               </button>
 
               <div className="flex items-center text-orange-500">
+                <span className="mr-2">4.5</span>
                 <FaStar />
                 <FaStar />
                 <FaStar />

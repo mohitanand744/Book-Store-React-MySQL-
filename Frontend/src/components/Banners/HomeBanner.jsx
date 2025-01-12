@@ -11,7 +11,7 @@ import "swiper/css/pagination";
 
 const HomeBanner = () => {
   return (
-    <div className="z-10">
+    <div className="z-10 homeBanner">
       <Swiper
         modules={[Navigation, Pagination, Autoplay]}
         autoplay={{

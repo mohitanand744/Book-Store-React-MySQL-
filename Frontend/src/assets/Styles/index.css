@@ -31,21 +31,26 @@
   width: 20rem;
   position: relative;
 }
-.authorSlider .swiper-wrapper {
+.swiper-wrapper {
+  padding: 1rem 0;
+}
+
+.homeBanner .swiper-wrapper {
+  padding: 0rem 0;
 }
 
 .swiper-3d .swiper-slide-shadow-left {
-  background: #00000015;
-  border-radius: 1rem;
-  -webkit-border-radius: 1rem;
-  -moz-border-radius: 1rem;
-  -ms-border-radius: 1rem;
-  -o-border-radius: 1rem;
+  background: #643c001a;
+  border-radius: 1.6rem;
+  -webkit-border-radius: 1.6rem;
+  -moz-border-radius: 1.6rem;
+  -ms-border-radius: 1.6rem;
+  -o-border-radius: 1.6rem;
 }
 
 .swiper-3d .swiper-slide-shadow-right {
-  background: #00000013;
-  border-radius: 1rem;
+  background: #643c0015;
+  border-radius: 1.6rem;
   -webkit-border-radius: 1rem;
   -moz-border-radius: 1rem;
   -ms-border-radius: 1rem;
