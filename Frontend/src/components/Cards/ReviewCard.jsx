@@ -24,7 +24,7 @@ const TestimonialCard = () => {
               <div className="flex text-orange-500">
                 {/* Stars */}
                 {[...Array(4)].map((_, i) => (
-                  <FaStar kay={i} />
+                  <FaStar key={i} />
                 ))}
                 {/* Half Star */}
                 <FaRegStarHalfStroke />

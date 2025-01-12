@@ -40,7 +40,6 @@
 }
 
 .swiper-3d .swiper-slide-shadow-left {
-  background: #643c001a;
   border-radius: 1.6rem;
   -webkit-border-radius: 1.6rem;
   -moz-border-radius: 1.6rem;
@@ -49,7 +48,6 @@
 }
 
 .swiper-3d .swiper-slide-shadow-right {
-  background: #643c0015;
   border-radius: 1.6rem;
   -webkit-border-radius: 1rem;
   -moz-border-radius: 1rem;

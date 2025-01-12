@@ -29,7 +29,7 @@ function AuthorSlider() {
         modules={[EffectCoverflow, Navigation]}
       >
         <SwiperSlide>
-          <div className="border-l-2 border-r-2 border-orange-500 p-4 flex  gap-5 border-2  author justify-between  w-full md:w-80 rounded-3xl bg-[#F6F2EB]">
+          <div className="border-l-2 border-r-2 border-orange-500 p-4 overflow-hidden flex  gap-5 border-2  author justify-between  w-full md:w-80 rounded-3xl bg-[#F6F2EB]">
             <div className="p-1 bg-orange-600 rounded-full w-28 md:w-32 h-28 md:h-32">
               <img
                 className="object-cover w-full h-full rounded-full"
@@ -55,7 +55,7 @@ function AuthorSlider() {
           </div>
         </SwiperSlide>
         <SwiperSlide>
-          <div className="border-l-2 border-r-2 border-orange-500 p-4 flex  gap-5 border-2  author justify-between  w-full md:w-80 rounded-3xl bg-[#F6F2EB]">
+          <div className="border-l-2 border-r-2 border-orange-500 p-4 overflow-hidden flex  gap-5 border-2  author justify-between  w-full md:w-80 rounded-3xl bg-[#F6F2EB]">
             <div className="p-1 bg-orange-600 rounded-full w-28 md:w-32 h-28 md:h-32">
               <img
                 className="object-cover w-full h-full rounded-full"
@@ -81,7 +81,7 @@ function AuthorSlider() {
           </div>
         </SwiperSlide>
         <SwiperSlide>
-          <div className="border-l-2 border-r-2 border-orange-500 p-4 flex  gap-5 border-2  author justify-between  w-72 md:w-80 rounded-3xl bg-[#F6F2EB]">
+          <div className="border-l-2 border-r-2 border-orange-500 p-4 overflow-hidden flex  gap-5 border-2  author justify-between  w-72 md:w-80 rounded-3xl bg-[#F6F2EB]">
             <div className="p-1 bg-orange-600 rounded-full w-28 md:w-32 h-28 md:h-32">
               <img
                 className="object-cover w-full h-full rounded-full"
@@ -107,7 +107,7 @@ function AuthorSlider() {
           </div>
         </SwiperSlide>
         <SwiperSlide>
-          <div className="border-l-2 border-r-2 border-orange-500 p-4 flex  gap-5 border-2  author justify-between  w-72 md:w-80 rounded-3xl bg-[#F6F2EB]">
+          <div className="border-l-2 border-r-2 border-orange-500 p-4 overflow-hidden flex  gap-5 border-2  author justify-between  w-72 md:w-80 rounded-3xl bg-[#F6F2EB]">
             <div className="p-1 bg-orange-600 rounded-full w-28 md:w-32 h-28 md:h-32">
               <img
                 className="object-cover w-full h-full rounded-full"
@@ -133,7 +133,7 @@ function AuthorSlider() {
           </div>
         </SwiperSlide>
         <SwiperSlide>
-          <div className="border-l-2 border-r-2 border-orange-500 p-4 flex  gap-5 border-2  author justify-between  w-72 md:w-80 rounded-3xl bg-[#F6F2EB]">
+          <div className="border-l-2 border-r-2 border-orange-500 p-4 overflow-hidden flex  gap-5 border-2  author justify-between  w-72 md:w-80 rounded-3xl bg-[#F6F2EB]">
             <div className="p-1 bg-orange-600 rounded-full w-28 md:w-32 h-28 md:h-32">
               <img
                 className="object-cover w-full h-full rounded-full"
@@ -159,7 +159,7 @@ function AuthorSlider() {
           </div>
         </SwiperSlide>
         <SwiperSlide>
-          <div className="border-l-2 border-r-2 border-orange-500 p-4 flex  gap-5 border-2  author justify-between  w-72 md:w-80 rounded-3xl bg-[#F6F2EB]">
+          <div className="border-l-2 border-r-2 border-orange-500 p-4 overflow-hidden flex  gap-5 border-2  author justify-between  w-72 md:w-80 rounded-3xl bg-[#F6F2EB]">
             <div className="p-1 bg-orange-600 rounded-full w-28 md:w-32 h-28 md:h-32">
               <img
                 className="object-cover w-full h-full rounded-full"
@@ -185,7 +185,7 @@ function AuthorSlider() {
           </div>
         </SwiperSlide>
         <SwiperSlide>
-          <div className="border-l-2 border-r-2 border-orange-500 p-4 flex  gap-5 border-2  author justify-between  w-72 md:w-80 rounded-3xl bg-[#F6F2EB]">
+          <div className="border-l-2 border-r-2 border-orange-500 p-4 overflow-hidden flex  gap-5 border-2  author justify-between  w-72 md:w-80 rounded-3xl bg-[#F6F2EB]">
             <div className="p-1 bg-orange-600 rounded-full w-28 md:w-32 h-28 md:h-32">
               <img
                 className="object-cover w-full h-full rounded-full"
@@ -211,7 +211,7 @@ function AuthorSlider() {
           </div>
         </SwiperSlide>
         <SwiperSlide>
-          <div className="border-l-2 border-r-2 border-orange-500 p-4 flex  gap-5 border-2  author justify-between  w-72 md:w-80 rounded-3xl bg-[#F6F2EB]">
+          <div className="border-l-2 border-r-2 border-orange-500 p-4 overflow-hidden flex  gap-5 border-2  author justify-between  w-72 md:w-80 rounded-3xl bg-[#F6F2EB]">
             <div className="p-1 bg-orange-600 rounded-full w-28 md:w-32 h-28 md:h-32">
               <img
                 className="object-cover w-full h-full rounded-full"
@@ -237,7 +237,7 @@ function AuthorSlider() {
           </div>
         </SwiperSlide>
         <SwiperSlide>
-          <div className="border-l-2 border-r-2 border-orange-500 p-4 flex  gap-5 border-2  author justify-between  w-72 md:w-80 rounded-3xl bg-[#F6F2EB]">
+          <div className="border-l-2 border-r-2 border-orange-500 p-4 overflow-hidden flex  gap-5 border-2  author justify-between  w-72 md:w-80 rounded-3xl bg-[#F6F2EB]">
             <div className="p-1 bg-orange-600 rounded-full w-28 md:w-32 h-28 md:h-32">
               <img
                 className="object-cover w-full h-full rounded-full"
@@ -263,7 +263,7 @@ function AuthorSlider() {
           </div>
         </SwiperSlide>
         <SwiperSlide>
-          <div className="border-l-2 border-r-2 border-orange-500 p-4 flex  gap-5 border-2  author justify-between  w-72 md:w-80 rounded-3xl bg-[#F6F2EB]">
+          <div className="border-l-2 border-r-2 border-orange-500 p-4 overflow-hidden flex  gap-5 border-2  author justify-between  w-72 md:w-80 rounded-3xl bg-[#F6F2EB]">
             <div className="p-1 bg-orange-600 rounded-full w-28 md:w-32 h-28 md:h-32">
               <img
                 className="object-cover w-full h-full rounded-full"
@@ -289,7 +289,7 @@ function AuthorSlider() {
           </div>
         </SwiperSlide>
         <SwiperSlide>
-          <div className="border-l-2 border-r-2 border-orange-500 p-4 flex  gap-5 border-2  author justify-between  w-72 md:w-80 rounded-3xl bg-[#F6F2EB]">
+          <div className="border-l-2 border-r-2 border-orange-500 p-4 overflow-hidden flex  gap-5 border-2  author justify-between  w-72 md:w-80 rounded-3xl bg-[#F6F2EB]">
             <div className="p-1 bg-orange-600 rounded-full w-28 md:w-32 h-28 md:h-32">
               <img
                 className="object-cover w-full h-full rounded-full"
@@ -315,7 +315,7 @@ function AuthorSlider() {
           </div>
         </SwiperSlide>
         <SwiperSlide>
-          <div className="border-l-2 border-r-2 border-orange-500 p-4 flex  gap-5 border-2  author justify-between  w-72 md:w-80 rounded-3xl bg-[#F6F2EB]">
+          <div className="border-l-2 border-r-2 border-orange-500 p-4 overflow-hidden flex  gap-5 border-2  author justify-between  w-72 md:w-80 rounded-3xl bg-[#F6F2EB]">
             <div className="p-1 bg-orange-600 rounded-full w-28 md:w-32 h-28 md:h-32">
               <img
                 className="object-cover w-full h-full rounded-full"

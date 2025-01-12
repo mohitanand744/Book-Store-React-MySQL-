@@ -8,9 +8,13 @@ import Router from "./Router/Router.jsx";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
+import { Provider } from "react-redux";
+import store from "./store/Redux/ConfigureReduxStore.js";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <Router />
+    <Provider store={store}>
+      <Router />
+    </Provider>
   </StrictMode>
 );

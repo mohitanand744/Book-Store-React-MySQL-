@@ -5,10 +5,12 @@ const Footer = () => {
     <footer className="py-8 text-gray-200 bg-[#D3BD9D]">
       <div className="container px-4 mx-auto">
         {/* Top Section */}
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
+        <div className="grid grid-cols-12 gap-2">
           {/* About Section */}
-          <div>
-            <h3 className="mb-4 text-lg font-bold text-[#5c4c49]">About Us</h3>
+          <div className="col-span-12 md:col-span-6 lg:col-span-3">
+            <h3 className="mb-4 text-lg font-bold   text-[#5c4c49]">
+              About Us
+            </h3>
             <p className="font-medium text-white text-md">
               Welcome to our bookstore! We provide a wide range of books across
               all genres, from fiction to self-help. Explore, read, and grow
@@ -16,7 +18,7 @@ const Footer = () => {
             </p>
           </div>
           {/* Quick Links */}
-          <div>
+          <div className="col-span-6 lg:mx-auto md:col-span-6 lg:col-span-3">
             <h3 className="mb-4 text-lg font-bold text-[#5c4c49]">
               Quick Links
             </h3>
@@ -24,7 +26,7 @@ const Footer = () => {
               <li>
                 <a
                   href="/about"
-                  className="text-white transition text-md hover:text-[#5C4C49] hover:font-bold"
+                  className="text-white transition text-md hover:text-[#5C4C49] "
                 >
                   About Us
                 </a>
@@ -32,7 +34,7 @@ const Footer = () => {
               <li>
                 <a
                   href="/books"
-                  className="text-white transition text-md hover:text-[#5C4C49] hover:font-bold"
+                  className="text-white transition text-md hover:text-[#5C4C49] "
                 >
                   Browse Books
                 </a>
@@ -40,7 +42,7 @@ const Footer = () => {
               <li>
                 <a
                   href="/contact"
-                  className="text-white transition text-md hover:text-[#5C4C49] hover:font-bold"
+                  className="text-white transition text-md hover:text-[#5C4C49] "
                 >
                   Contact Us
                 </a>
@@ -48,15 +50,53 @@ const Footer = () => {
               <li>
                 <a
                   href="/faq"
-                  className="text-white transition text-md hover:text-[#5C4C49] hover:font-bold"
+                  className="text-white transition text-md hover:text-[#5C4C49] "
                 >
                   FAQs
                 </a>
               </li>
             </ul>
           </div>
+          {/* Quick Links */}
+          <div className="col-span-6 md:col-span-6 lg:col-span-3">
+            <h3 className="mb-4 text-lg font-bold text-[#5c4c49]">Buy Books</h3>
+            <ul className="space-y-2">
+              <li>
+                <a
+                  href="/about"
+                  className="text-white transition text-md hover:text-[#5C4C49] "
+                >
+                  Hindi Books
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/books"
+                  className="text-white transition text-md hover:text-[#5C4C49] "
+                >
+                  English Books
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/contact"
+                  className="text-white transition text-md hover:text-[#5C4C49] "
+                >
+                  Fantasy
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/faq"
+                  className="text-white transition text-md hover:text-[#5C4C49] "
+                >
+                  Other
+                </a>
+              </li>
+            </ul>
+          </div>
           {/* Newsletter Section */}
-          <div>
+          <div className="col-span-12 md:col-span-6 lg:col-span-3">
             <h3 className="mb-4 text-lg font-bold text-[#5c4c49]">
               Stay Updated
             </h3>
@@ -89,7 +129,7 @@ const Footer = () => {
             {/* Facebook */}
             <a
               href="#"
-              className="transition hover:text-[#5C4C49] hover:font-bold"
+              className="transition hover:text-[#5C4C49] "
               aria-label="Facebook"
             >
               <svg
@@ -104,7 +144,7 @@ const Footer = () => {
             {/* Twitter */}
             <a
               href="#"
-              className="transition hover:text-[#5C4C49] hover:font-bold"
+              className="transition hover:text-[#5C4C49] "
               aria-label="Twitter"
             >
               <svg
@@ -119,7 +159,7 @@ const Footer = () => {
             {/* Instagram */}
             <a
               href="#"
-              className="transition hover:text-[#5C4C49] hover:font-bold"
+              className="transition hover:text-[#5C4C49] "
               aria-label="Instagram"
             >
               <svg
@@ -135,7 +175,7 @@ const Footer = () => {
             {/* YouTube */}
             <a
               href="#"
-              className="transition hover:text-[#5C4C49] hover:font-bold"
+              className="transition hover:text-[#5C4C49] "
               aria-label="YouTube"
             >
               <svg
