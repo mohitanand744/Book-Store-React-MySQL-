@@ -8,6 +8,8 @@ import AuthorSlider from "../components/ScrollingContainer/AuthorSlider";
 import ReviewsContainer from "../components/ScrollingContainer/ReviewsContainer";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAllBooks } from "../store/Redux/Slices/BooksSlice";
+import ShowErrors from "../components/Errors/ShowErrors";
+import { Link } from "react-router-dom";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -43,7 +45,7 @@ const Home = () => {
               />
             </center>
           ) : error ? (
-            <center>{error}</center>
+            <ShowErrors text={error || "Sorry we are Unable Fetch Books"} />
           ) : (
             <ScrollBooks books={books?.books?.slice(0, books?.books.length)} />
           )}
@@ -63,7 +65,7 @@ const Home = () => {
               />
             </center>
           ) : error ? (
-            <center>{error}</center>
+            <ShowErrors text={error || "Sorry we are Unable Fetch Books"} />
           ) : (
             <ScrollBooks
               autoScroll={false}
@@ -72,9 +74,11 @@ const Home = () => {
           )}
 
           <div className="flex justify-center my-5">
-            <button className="px-10 py-2 text-white bg-[#5c4c49] hover:bg-[#D3BD9D] hover:scale-105 transition duration-200 active:scale-95 font-semibold rounded-2xl">
-              View All
-            </button>
+            <Link to={"/bookstore/books"}>
+              <button className="px-10 py-2 text-white bg-[#5c4c49] hover:bg-[#D3BD9D] hover:scale-105 transition duration-200 active:scale-95 font-semibold rounded-2xl">
+                View All
+              </button>
+            </Link>
           </div>
         </div>
         <div className="">

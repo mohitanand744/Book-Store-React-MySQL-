@@ -3,11 +3,15 @@ import MegaMenu from "./MegaMenu";
 import { HiOutlineShoppingCart } from "react-icons/hi2";
 import { IoIosArrowDown } from "react-icons/io";
 import SearchBooks from "../../SearchBars/SearchBooks";
+import { Link, useLocation } from "react-router-dom";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isMagaMenuOpen, setIsMagaMenuOpen] = useState(false);
   const [isFixed, setIsFixed] = useState(false);
+  const pathName = useLocation().pathname.replaceAll("/", "");
+
+  console.log(pathName);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -43,23 +47,28 @@ const Navbar = () => {
           </div>
 
           {/* Desktop Menu */}
-          <div className="hidden space-x-4 lg:flex">
-            <a
-              href="#"
-              className="px-3 py-1 border-[#5C4C49] text-lg font-bold text-white transition-all  hover:scale-105  hover:text-[#5C4C49] duration-200 rounded-xl"
-            >
-              Home
-            </a>
-            <a
-              href="#"
-              className="px-3 py-1 border-[#5C4C49] text-lg font-bold text-white transition-all  hover:scale-105  hover:text-[#5C4C49] duration-200 rounded-xl"
-            >
-              About
-            </a>
+          <ul className="hidden space-x-4 lg:flex">
+            <li>
+              <Link
+                to={"/bookstore"}
+                className={`px-3 py-1 border-[#5C4C49] text-lg font-bold  transition-all ${
+                  pathName === "bookstore" ? "text-[#5C4C49]" : "text-white"
+                }  hover:scale-105  hover:text-[#5C4C49] duration-200 rounded-xl`}
+              >
+                Home
+              </Link>
+            </li>
+            <li>
+              <a
+                href="#"
+                className="px-3 py-1 border-[#5C4C49] text-lg font-bold text-white transition-all  hover:scale-105  hover:text-[#5C4C49] duration-200 rounded-xl"
+              >
+                About
+              </a>
+            </li>
             <ul className="group">
               <li
-                href="#"
-                className="px-3 flex gap-1 items-center py-1 text-lg font-bold text-white transition-all  group-hover:scale-105  group-hover:text-[#5C4C49] duration-200 rounded-xl"
+                className={`px-3 flex gap-1 items-center py-1 text-lg font-bold text-white transition-all  group-hover:scale-105  group-hover:text-[#5C4C49] duration-200 rounded-xl `}
               >
                 Books Types{" "}
                 <span>
@@ -75,20 +84,29 @@ const Navbar = () => {
               <span className="absolute -top-3 -right-1 bg-[#5C4C49] w-[5rem]">
                 <img src="/images/tag.avif" alt="" />
               </span>
-              <li
+
+              <li className="px-3 py-1">
+                <Link
+                  to={"/bookstore/books"}
+                  className={` border-[#5C4C49] text-lg font-bold  transition-all ${
+                    pathName === "bookstorebooks"
+                      ? "text-[#5C4C49]"
+                      : "text-white"
+                  }  hover:scale-105  hover:text-[#5C4C49] duration-200 rounded-xl`}
+                >
+                  Books
+                </Link>
+              </li>
+            </ul>
+            <li>
+              <a
                 href="#"
                 className="px-3 py-1 border-[#5C4C49] text-lg font-bold text-white transition-all  hover:scale-105  hover:text-[#5C4C49] duration-200 rounded-xl"
               >
-                Books
-              </li>
-            </ul>
-            <a
-              href="#"
-              className="px-3 py-1 border-[#5C4C49] text-lg font-bold text-white transition-all  hover:scale-105  hover:text-[#5C4C49] duration-200 rounded-xl"
-            >
-              Contact
-            </a>
-          </div>
+                Contact
+              </a>
+            </li>
+          </ul>
 
           <div className="flex items-center gap-4">
             <SearchBooks />
