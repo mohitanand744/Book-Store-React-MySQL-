@@ -5,7 +5,7 @@ export const fetchAllBooks = createAsyncThunk(
   "fetchAllBooks",
   async (_, thunkAPI) => {
     try {
-      const responce = await axiosInstance.get("/api/books");
+      const responce = await axiosInstance.get("/api/books/");
       return responce.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(

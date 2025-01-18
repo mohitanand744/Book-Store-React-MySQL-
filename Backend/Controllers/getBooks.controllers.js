@@ -8,11 +8,15 @@ SELECT
   B.DESCRIPTION, 
   B.AUTHOR, 
   B.BOOK_PRICE, 
-  B.CATEGORY, 
+  B.CATEGORY,
+  A.AUTHOR_DESCRIPTION,
+  A.AUTHOR_ID,
+  A.AUTHOR_IMAGE_URL,
   BI.IMAGE_URL 
 FROM BOOKS B 
 LEFT JOIN BOOK_IMAGES BI 
-ON B.ID = BI.BOOK_ID
+ON B.ID = BI.BOOK_ID LEFT JOIN AUTHOR_DETAILS A 
+  ON B.AUTHOR = A.AUTHOR_NAME;
 `;
 
 // Get all books
@@ -28,7 +32,12 @@ exports.getBooks = (req, res) => {
       book_id: item.ID,
       title: item.TITLE,
       description: item.DESCRIPTION,
-      author: item.AUTHOR,
+      author: {
+        author_id: item.AUTHOR_ID,
+        author_name: item.AUTHOR,
+        author_description: item.AUTHOR_DESCRIPTION,
+        author_image: item.AUTHOR_IMAGE_URL,
+      },
       book_price: item.BOOK_PRICE,
       category: item.CATEGORY,
       images: item.IMAGE_URL,

@@ -19,6 +19,24 @@ const Home = () => {
     dispatch(fetchAllBooks());
   }, [dispatch]);
 
+  // Remove duplicates based on a unique property (e.g., book id or title)
+  const removeDuplicates = (booksArray) => {
+    const uniqueBooks = [];
+    const seen = new Set();
+
+    for (const book of booksArray) {
+      const uniqueKey = book.book_id || book.title; // Replace with the property that uniquely identifies a book
+      if (!seen.has(uniqueKey)) {
+        seen.add(uniqueKey);
+        uniqueBooks.push(book);
+      }
+    }
+
+    return uniqueBooks;
+  };
+
+  const uniqueBooks = books?.books ? removeDuplicates(books.books) : [];
+
   return (
     <div className="">
       <div className="search">
@@ -47,7 +65,7 @@ const Home = () => {
           ) : error ? (
             <ShowErrors text={error || "Sorry we are Unable Fetch Books"} />
           ) : (
-            <ScrollBooks books={books?.books?.slice(0, books?.books.length)} />
+            <ScrollBooks books={uniqueBooks} />
           )}
         </div>
 
@@ -67,10 +85,7 @@ const Home = () => {
           ) : error ? (
             <ShowErrors text={error || "Sorry we are Unable Fetch Books"} />
           ) : (
-            <ScrollBooks
-              autoScroll={false}
-              books={books?.books?.slice(20, books?.books.length)}
-            />
+            <ScrollBooks autoScroll={false} books={uniqueBooks.slice(25)} />
           )}
 
           <div className="flex justify-center my-5">
@@ -85,8 +100,19 @@ const Home = () => {
           <h1 className="my-5 text-2xl font-semibold text-center md:text-4xl ">
             Find Your Favorite Author
           </h1>
-
-          <AuthorSlider />
+          {loading ? (
+            <center>
+              <img
+                className="w-28"
+                src="https://icon-library.com/images/progress-icon-gif/progress-icon-gif-1.jpg"
+                alt=""
+              />
+            </center>
+          ) : error ? (
+            <ShowErrors text={error || "Sorry we are Unable Fetch Books"} />
+          ) : (
+            <AuthorSlider books={uniqueBooks} />
+          )}
         </div>
 
         <div className="">

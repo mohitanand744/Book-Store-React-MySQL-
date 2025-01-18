@@ -1,7 +1,6 @@
 import React from "react";
 import Box from "@mui/material/Box";
 import Slider from "@mui/material/Slider";
-import Typography from "@mui/material/Typography";
 
 function DualRangeSlider() {
   const [value, setValue] = React.useState([1500, 4000]); // Initial range values
@@ -50,7 +49,7 @@ function DualRangeSlider() {
 
       {/* Display Selected Range */}
       <h1 className="mt-2">
-        Selected Range: ₹{value[0]} - ₹{value[1]}
+        <b>Selected Range</b>: ₹{value[0]} - ₹{value[1]}
       </h1>
     </Box>
   );

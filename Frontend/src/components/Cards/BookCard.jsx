@@ -11,18 +11,21 @@ const BookCard = ({ book }) => {
       </div>
       <div className="absolute w-12 group border-2 border-orange-600 p-[0.1rem] h-12 top-1 left-1 bg-[#d3bd9d86] rounded-full">
         <img
-          src="https://mczellbookwriting.com/blog/wp-content/uploads/2022/07/J.K.-Rowling.jpg"
+          src={
+            book.author?.author_image ||
+            "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+          }
           className="object-cover w-full h-full rounded-full"
           alt=""
         />
         <span className="absolute text-sm text-center text-gray-600 transition scale-0 group-hover:scale-100 font-medium bg-[#ffcd82] p-2 rounded-xl w-44">
-          <b> Author Name:</b> {book.author}
+          <b> Author Name:</b> {book.author.author_name}
         </span>
       </div>
       <div className="image w-[90%] mx-auto pt-2 h-[15rem]">
         <img
           className="object-contain w-full h-full"
-          src={book.images[0]}
+          src={book?.images[0]}
           alt=""
         />
       </div>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 import "swiper/css";
@@ -10,7 +10,24 @@ import { FaRegStarHalfStroke } from "react-icons/fa6";
 
 import { EffectCoverflow, Pagination, Navigation } from "swiper/modules";
 
-function AuthorSlider() {
+function AuthorSlider({ books }) {
+  const findUniqueAuthors = (booksArray) => {
+    const uniqueAuthors = [];
+    const seen = new Set();
+
+    for (const book of booksArray) {
+      const uniqueKey = book.author.author_id;
+      if (!seen.has(uniqueKey)) {
+        seen.add(uniqueKey);
+        uniqueAuthors.push(book);
+      }
+    }
+
+    return uniqueAuthors;
+  };
+
+  const uniqueAuthors = books ? findUniqueAuthors(books) : [];
+
   return (
     <div className="mx-auto xl-custom:w-[100rem]  authorSlider">
       <Swiper
@@ -28,318 +45,40 @@ function AuthorSlider() {
         navigation={{ clickable: true }}
         modules={[EffectCoverflow, Navigation]}
       >
-        <SwiperSlide>
-          <div className="border-l-2 border-r-2 border-orange-500 p-4 overflow-hidden flex  gap-5 border-2  author justify-between  w-full md:w-80 rounded-3xl bg-[#F6F2EB]">
-            <div className="p-1 bg-orange-600 rounded-full w-28 md:w-32 h-28 md:h-32">
-              <img
-                className="object-cover w-full h-full rounded-full"
-                src="https://imgv3.fotor.com/images/ai-headshot-generator/AI-generated-LinkedIn-profile-picture-of-a-female-with-long-hair-in-brown-and-white-suit-using-Fotor-AI-LinkedIn-photo-generator.jpg"
-                alt=""
-              />
-            </div>
-
-            <div className="">
-              <p className="font-semibold text-gray-500">Plato (Aristocles)</p>
-              <div className="flex items-center text-orange-500">
-                <FaStar />
-                <FaStar />
-                <FaStar />
-                <FaStar />
-                <FaRegStarHalfStroke />
-                <span className="ps-2">4.5</span>
+        {uniqueAuthors?.map((author, i) => (
+          <SwiperSlide key={i}>
+            <div className="border-l-2 border-r-2 border-orange-500 p-4 overflow-hidden flex  gap-5 border-2 h-36 author justify-between  w-full md:w-80 rounded-3xl bg-[#F6F2EB]">
+              <div className="w-16 h-full p-1 overflow-hidden bg-orange-600 rounded-full">
+                <img
+                  className="object-cover w-full h-full rounded-full"
+                  src={
+                    author.author.author_image
+                      ? author.author.author_image
+                      : "https://cdn.vectorstock.com/i/500p/40/53/accurate-silhouette-of-a-man-for-profile-picture-vector-14714053.jpg"
+                  }
+                  alt=""
+                />
               </div>
-              <p className="text-gray-500">
-                Philosopher, Teacher, Idealism, Dialogues
-              </p>
-            </div>
-          </div>
-        </SwiperSlide>
-        <SwiperSlide>
-          <div className="border-l-2 border-r-2 border-orange-500 p-4 overflow-hidden flex  gap-5 border-2  author justify-between  w-full md:w-80 rounded-3xl bg-[#F6F2EB]">
-            <div className="p-1 bg-orange-600 rounded-full w-28 md:w-32 h-28 md:h-32">
-              <img
-                className="object-cover w-full h-full rounded-full"
-                src="https://imgv3.fotor.com/images/ai-headshot-generator/AI-generated-LinkedIn-profile-picture-of-a-female-with-long-hair-in-brown-and-white-suit-using-Fotor-AI-LinkedIn-photo-generator.jpg"
-                alt=""
-              />
-            </div>
 
-            <div className="">
-              <p className="font-semibold text-gray-500">Plato (Aristocles)</p>
-              <div className="flex items-center text-orange-500">
-                <FaStar />
-                <FaStar />
-                <FaStar />
-                <FaStar />
-                <FaRegStarHalfStroke />
-                <span className="ps-2">4.5</span>
+              <div className="flex-1">
+                <p className="font-semibold text-gray-500">
+                  {author.author.author_name}
+                </p>
+                <div className="flex items-center text-orange-500">
+                  <FaStar />
+                  <FaStar />
+                  <FaStar />
+                  <FaStar />
+                  <FaRegStarHalfStroke />
+                  <span className="ps-2">4.5</span>
+                </div>
+                <p className="text-gray-500">
+                  {author.author.author_description?.slice(0, 50)}...
+                </p>
               </div>
-              <p className="text-gray-500">
-                Philosopher, Teacher, Idealism, Dialogues
-              </p>
             </div>
-          </div>
-        </SwiperSlide>
-        <SwiperSlide>
-          <div className="border-l-2 border-r-2 border-orange-500 p-4 overflow-hidden flex  gap-5 border-2  author justify-between  w-72 md:w-80 rounded-3xl bg-[#F6F2EB]">
-            <div className="p-1 bg-orange-600 rounded-full w-28 md:w-32 h-28 md:h-32">
-              <img
-                className="object-cover w-full h-full rounded-full"
-                src="https://imgv3.fotor.com/images/ai-headshot-generator/AI-generated-LinkedIn-profile-picture-of-a-female-with-long-hair-in-brown-and-white-suit-using-Fotor-AI-LinkedIn-photo-generator.jpg"
-                alt=""
-              />
-            </div>
-
-            <div className="">
-              <p className="font-semibold text-gray-500">Plato (Aristocles)</p>
-              <div className="flex items-center text-orange-500">
-                <FaStar />
-                <FaStar />
-                <FaStar />
-                <FaStar />
-                <FaRegStarHalfStroke />
-                <span className="ps-2">4.5</span>
-              </div>
-              <p className="text-gray-500">
-                Philosopher, Teacher, Idealism, Dialogues
-              </p>
-            </div>
-          </div>
-        </SwiperSlide>
-        <SwiperSlide>
-          <div className="border-l-2 border-r-2 border-orange-500 p-4 overflow-hidden flex  gap-5 border-2  author justify-between  w-72 md:w-80 rounded-3xl bg-[#F6F2EB]">
-            <div className="p-1 bg-orange-600 rounded-full w-28 md:w-32 h-28 md:h-32">
-              <img
-                className="object-cover w-full h-full rounded-full"
-                src="https://imgv3.fotor.com/images/ai-headshot-generator/AI-generated-LinkedIn-profile-picture-of-a-female-with-long-hair-in-brown-and-white-suit-using-Fotor-AI-LinkedIn-photo-generator.jpg"
-                alt=""
-              />
-            </div>
-
-            <div className="">
-              <p className="font-semibold text-gray-500">Plato (Aristocles)</p>
-              <div className="flex items-center text-orange-500">
-                <FaStar />
-                <FaStar />
-                <FaStar />
-                <FaStar />
-                <FaRegStarHalfStroke />
-                <span className="ps-2">4.5</span>
-              </div>
-              <p className="text-gray-500">
-                Philosopher, Teacher, Idealism, Dialogues
-              </p>
-            </div>
-          </div>
-        </SwiperSlide>
-        <SwiperSlide>
-          <div className="border-l-2 border-r-2 border-orange-500 p-4 overflow-hidden flex  gap-5 border-2  author justify-between  w-72 md:w-80 rounded-3xl bg-[#F6F2EB]">
-            <div className="p-1 bg-orange-600 rounded-full w-28 md:w-32 h-28 md:h-32">
-              <img
-                className="object-cover w-full h-full rounded-full"
-                src="https://imgv3.fotor.com/images/ai-headshot-generator/AI-generated-LinkedIn-profile-picture-of-a-female-with-long-hair-in-brown-and-white-suit-using-Fotor-AI-LinkedIn-photo-generator.jpg"
-                alt=""
-              />
-            </div>
-
-            <div className="">
-              <p className="font-semibold text-gray-500">Plato (Aristocles)</p>
-              <div className="flex items-center text-orange-500">
-                <FaStar />
-                <FaStar />
-                <FaStar />
-                <FaStar />
-                <FaRegStarHalfStroke />
-                <span className="ps-2">4.5</span>
-              </div>
-              <p className="text-gray-500">
-                Philosopher, Teacher, Idealism, Dialogues
-              </p>
-            </div>
-          </div>
-        </SwiperSlide>
-        <SwiperSlide>
-          <div className="border-l-2 border-r-2 border-orange-500 p-4 overflow-hidden flex  gap-5 border-2  author justify-between  w-72 md:w-80 rounded-3xl bg-[#F6F2EB]">
-            <div className="p-1 bg-orange-600 rounded-full w-28 md:w-32 h-28 md:h-32">
-              <img
-                className="object-cover w-full h-full rounded-full"
-                src="https://imgv3.fotor.com/images/ai-headshot-generator/AI-generated-LinkedIn-profile-picture-of-a-female-with-long-hair-in-brown-and-white-suit-using-Fotor-AI-LinkedIn-photo-generator.jpg"
-                alt=""
-              />
-            </div>
-
-            <div className="">
-              <p className="font-semibold text-gray-500">Plato (Aristocles)</p>
-              <div className="flex items-center text-orange-500">
-                <FaStar />
-                <FaStar />
-                <FaStar />
-                <FaStar />
-                <FaRegStarHalfStroke />
-                <span className="ps-2">4.5</span>
-              </div>
-              <p className="text-gray-500">
-                Philosopher, Teacher, Idealism, Dialogues
-              </p>
-            </div>
-          </div>
-        </SwiperSlide>
-        <SwiperSlide>
-          <div className="border-l-2 border-r-2 border-orange-500 p-4 overflow-hidden flex  gap-5 border-2  author justify-between  w-72 md:w-80 rounded-3xl bg-[#F6F2EB]">
-            <div className="p-1 bg-orange-600 rounded-full w-28 md:w-32 h-28 md:h-32">
-              <img
-                className="object-cover w-full h-full rounded-full"
-                src="https://imgv3.fotor.com/images/ai-headshot-generator/AI-generated-LinkedIn-profile-picture-of-a-female-with-long-hair-in-brown-and-white-suit-using-Fotor-AI-LinkedIn-photo-generator.jpg"
-                alt=""
-              />
-            </div>
-
-            <div className="">
-              <p className="font-semibold text-gray-500">Plato (Aristocles)</p>
-              <div className="flex items-center text-orange-500">
-                <FaStar />
-                <FaStar />
-                <FaStar />
-                <FaStar />
-                <FaRegStarHalfStroke />
-                <span className="ps-2">4.5</span>
-              </div>
-              <p className="text-gray-500">
-                Philosopher, Teacher, Idealism, Dialogues
-              </p>
-            </div>
-          </div>
-        </SwiperSlide>
-        <SwiperSlide>
-          <div className="border-l-2 border-r-2 border-orange-500 p-4 overflow-hidden flex  gap-5 border-2  author justify-between  w-72 md:w-80 rounded-3xl bg-[#F6F2EB]">
-            <div className="p-1 bg-orange-600 rounded-full w-28 md:w-32 h-28 md:h-32">
-              <img
-                className="object-cover w-full h-full rounded-full"
-                src="https://imgv3.fotor.com/images/ai-headshot-generator/AI-generated-LinkedIn-profile-picture-of-a-female-with-long-hair-in-brown-and-white-suit-using-Fotor-AI-LinkedIn-photo-generator.jpg"
-                alt=""
-              />
-            </div>
-
-            <div className="">
-              <p className="font-semibold text-gray-500">Plato (Aristocles)</p>
-              <div className="flex items-center text-orange-500">
-                <FaStar />
-                <FaStar />
-                <FaStar />
-                <FaStar />
-                <FaRegStarHalfStroke />
-                <span className="ps-2">4.5</span>
-              </div>
-              <p className="text-gray-500">
-                Philosopher, Teacher, Idealism, Dialogues
-              </p>
-            </div>
-          </div>
-        </SwiperSlide>
-        <SwiperSlide>
-          <div className="border-l-2 border-r-2 border-orange-500 p-4 overflow-hidden flex  gap-5 border-2  author justify-between  w-72 md:w-80 rounded-3xl bg-[#F6F2EB]">
-            <div className="p-1 bg-orange-600 rounded-full w-28 md:w-32 h-28 md:h-32">
-              <img
-                className="object-cover w-full h-full rounded-full"
-                src="https://imgv3.fotor.com/images/ai-headshot-generator/AI-generated-LinkedIn-profile-picture-of-a-female-with-long-hair-in-brown-and-white-suit-using-Fotor-AI-LinkedIn-photo-generator.jpg"
-                alt=""
-              />
-            </div>
-
-            <div className="">
-              <p className="font-semibold text-gray-500">Plato (Aristocles)</p>
-              <div className="flex items-center text-orange-500">
-                <FaStar />
-                <FaStar />
-                <FaStar />
-                <FaStar />
-                <FaRegStarHalfStroke />
-                <span className="ps-2">4.5</span>
-              </div>
-              <p className="text-gray-500">
-                Philosopher, Teacher, Idealism, Dialogues
-              </p>
-            </div>
-          </div>
-        </SwiperSlide>
-        <SwiperSlide>
-          <div className="border-l-2 border-r-2 border-orange-500 p-4 overflow-hidden flex  gap-5 border-2  author justify-between  w-72 md:w-80 rounded-3xl bg-[#F6F2EB]">
-            <div className="p-1 bg-orange-600 rounded-full w-28 md:w-32 h-28 md:h-32">
-              <img
-                className="object-cover w-full h-full rounded-full"
-                src="https://imgv3.fotor.com/images/ai-headshot-generator/AI-generated-LinkedIn-profile-picture-of-a-female-with-long-hair-in-brown-and-white-suit-using-Fotor-AI-LinkedIn-photo-generator.jpg"
-                alt=""
-              />
-            </div>
-
-            <div className="">
-              <p className="font-semibold text-gray-500">Plato (Aristocles)</p>
-              <div className="flex items-center text-orange-500">
-                <FaStar />
-                <FaStar />
-                <FaStar />
-                <FaStar />
-                <FaRegStarHalfStroke />
-                <span className="ps-2">4.5</span>
-              </div>
-              <p className="text-gray-500">
-                Philosopher, Teacher, Idealism, Dialogues
-              </p>
-            </div>
-          </div>
-        </SwiperSlide>
-        <SwiperSlide>
-          <div className="border-l-2 border-r-2 border-orange-500 p-4 overflow-hidden flex  gap-5 border-2  author justify-between  w-72 md:w-80 rounded-3xl bg-[#F6F2EB]">
-            <div className="p-1 bg-orange-600 rounded-full w-28 md:w-32 h-28 md:h-32">
-              <img
-                className="object-cover w-full h-full rounded-full"
-                src="https://imgv3.fotor.com/images/ai-headshot-generator/AI-generated-LinkedIn-profile-picture-of-a-female-with-long-hair-in-brown-and-white-suit-using-Fotor-AI-LinkedIn-photo-generator.jpg"
-                alt=""
-              />
-            </div>
-
-            <div className="">
-              <p className="font-semibold text-gray-500">Plato (Aristocles)</p>
-              <div className="flex items-center text-orange-500">
-                <FaStar />
-                <FaStar />
-                <FaStar />
-                <FaStar />
-                <FaRegStarHalfStroke />
-                <span className="ps-2">4.5</span>
-              </div>
-              <p className="text-gray-500">
-                Philosopher, Teacher, Idealism, Dialogues
-              </p>
-            </div>
-          </div>
-        </SwiperSlide>
-        <SwiperSlide>
-          <div className="border-l-2 border-r-2 border-orange-500 p-4 overflow-hidden flex  gap-5 border-2  author justify-between  w-72 md:w-80 rounded-3xl bg-[#F6F2EB]">
-            <div className="p-1 bg-orange-600 rounded-full w-28 md:w-32 h-28 md:h-32">
-              <img
-                className="object-cover w-full h-full rounded-full"
-                src="https://imgv3.fotor.com/images/ai-headshot-generator/AI-generated-LinkedIn-profile-picture-of-a-female-with-long-hair-in-brown-and-white-suit-using-Fotor-AI-LinkedIn-photo-generator.jpg"
-                alt=""
-              />
-            </div>
-
-            <div className="">
-              <p className="font-semibold text-gray-500">Plato (Aristocles)</p>
-              <div className="flex items-center text-orange-500">
-                <FaStar />
-                <FaStar />
-                <FaStar />
-                <FaStar />
-                <FaRegStarHalfStroke />
-                <span className="ps-2">4.5</span>
-              </div>
-              <p className="text-gray-500">
-                Philosopher, Teacher, Idealism, Dialogues
-              </p>
-            </div>
-          </div>
-        </SwiperSlide>
+          </SwiperSlide>
+        ))}
       </Swiper>
     </div>
   );
