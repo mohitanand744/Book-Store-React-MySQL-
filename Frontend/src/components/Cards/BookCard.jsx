@@ -19,7 +19,7 @@ const BookCard = ({ book }) => {
           className="object-cover w-full h-full rounded-full"
           alt=""
         />
-        <div className="absolute left-0  md:-left-6 text-sm  transition scale-0 group-hover:translate-y-0 group-hover:scale-100 group-hover:translate-x-0 translate-x-[-6rem] translate-y-[-14rem] z-50 font-medium bg-[#D3BD9D] p-4 rounded-3xl w-[20rem]">
+        <div className="absolute left-0  md:-left-6 text-sm  transition-all duration-300 scale-0 group-hover:translate-y-0 group-hover:scale-100 group-hover:translate-x-0 rotate-45 group-hover:rotate-0 translate-x-[-7rem] translate-y-[-10rem] z-50 font-medium bg-[#D3BD9D] p-4 rounded-3xl w-[20rem]">
           <div className="mb-2 border border-white h-44 w-44 rounded-3xl">
             <img
               src={
