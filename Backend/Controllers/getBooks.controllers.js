@@ -12,6 +12,7 @@ SELECT
   A.AUTHOR_DESCRIPTION,
   A.AUTHOR_ID,
   A.AUTHOR_IMAGE_URL,
+  A.AUTHOR_RATING,
   BI.IMAGE_URL 
 FROM BOOKS B 
 LEFT JOIN BOOK_IMAGES BI 
@@ -37,6 +38,7 @@ exports.getBooks = (req, res) => {
         author_name: item.AUTHOR,
         author_description: item.AUTHOR_DESCRIPTION,
         author_image: item.AUTHOR_IMAGE_URL,
+        author_rating: item.AUTHOR_RATING,
       },
       book_price: item.BOOK_PRICE,
       category: item.CATEGORY,

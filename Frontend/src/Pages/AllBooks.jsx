@@ -20,7 +20,7 @@ const AllBooks = () => {
         </h1>
       </div>
       <div className="grid grid-cols-12 gap-2 my-10">
-        <div className="col-span-3">
+        <div className="col-span-3 border-2 border-gray-200 shadow-xl rounded-r-3xl">
           <DualRangeSlider />
         </div>
         <div className="col-span-9">

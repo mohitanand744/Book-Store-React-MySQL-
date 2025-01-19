@@ -25,7 +25,7 @@ const Home = () => {
     const seen = new Set();
 
     for (const book of booksArray) {
-      const uniqueKey = book.book_id || book.title; // Replace with the property that uniquely identifies a book
+      const uniqueKey = book.title; // Replace with the property that uniquely identifies a book
       if (!seen.has(uniqueKey)) {
         seen.add(uniqueKey);
         uniqueBooks.push(book);
@@ -49,9 +49,8 @@ const Home = () => {
       <HomeBanner />
       <div className="mx-auto w-[97%]">
         <div className="">
-          <h1 className="my-5 text-2xl font-semibold text-center md:text-4xl ">
-            Deal of the day
-            <CountdownTimer />
+          <h1 className="relative mx-auto my-5 text-2xl font-semibold text-center w-fit md:text-4xl ">
+            Deal of the day <CountdownTimer />
           </h1>
 
           {loading ? (
@@ -85,7 +84,10 @@ const Home = () => {
           ) : error ? (
             <ShowErrors text={error || "Sorry we are Unable Fetch Books"} />
           ) : (
-            <ScrollBooks autoScroll={false} books={uniqueBooks.slice(25)} />
+            <ScrollBooks
+              autoScroll={false}
+              books={uniqueBooks.slice(25, uniqueBooks.length)}
+            />
           )}
 
           <div className="flex justify-center my-5">

@@ -5,10 +5,8 @@ import "swiper/css";
 import "swiper/css/effect-coverflow";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
-import { FaStar } from "react-icons/fa";
-import { FaRegStarHalfStroke } from "react-icons/fa6";
-
 import { EffectCoverflow, Pagination, Navigation } from "swiper/modules";
+import Ratings from "../RatingsReviews/Ratings";
 
 function AuthorSlider({ books }) {
   const findUniqueAuthors = (booksArray) => {
@@ -65,12 +63,8 @@ function AuthorSlider({ books }) {
                   {author.author.author_name}
                 </p>
                 <div className="flex items-center text-orange-500">
-                  <FaStar />
-                  <FaStar />
-                  <FaStar />
-                  <FaStar />
-                  <FaRegStarHalfStroke />
-                  <span className="ps-2">4.5</span>
+                  <Ratings ratings={author.author.author_rating} />
+                  <span className="ps-2">{author.author.author_rating}</span>
                 </div>
                 <p className="text-gray-500">
                   {author.author.author_description?.slice(0, 50)}...

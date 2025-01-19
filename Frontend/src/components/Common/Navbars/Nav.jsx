@@ -7,32 +7,35 @@ import { Link, useLocation } from "react-router-dom";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [isMagaMenuOpen, setIsMagaMenuOpen] = useState(false);
   const [isFixed, setIsFixed] = useState(false);
   const pathName = useLocation().pathname.replaceAll("/", "");
+  const [animation, setAnimation] = useState(false);
 
   console.log(pathName);
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 20) {
+      if (window.scrollY > 40 && !isFixed) {
         setIsFixed(true);
-      } else {
+        setAnimation(true);
+        setTimeout(() => setAnimation(false), 300);
+      } else if (window.scrollY <= 40 && isFixed) {
         setIsFixed(false);
       }
     };
 
     window.addEventListener("scroll", handleScroll);
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [isFixed]);
 
   return (
     <nav
-      className={`shadow-lg bg-[#D3BD9D]  transition-all duration-300 ${
-        isFixed ? "sticky top-0 left-0 w-full z-50 shadow-xl" : "relative"
+      className={`bg-[#D3BD9D] transition-all duration-300 ${
+        isFixed
+          ? animation
+            ? "sticky top-[-5rem] left-0 w-full z-50 shadow-xl animate-slideDown"
+            : "sticky top-0 left-0 w-full z-50 shadow-xl"
+          : "relative shadow-lg"
       }`}
     >
       <div className="px-6 py-3 mx-auto">
@@ -47,7 +50,7 @@ const Navbar = () => {
           </div>
 
           {/* Desktop Menu */}
-          <ul className="hidden space-x-4 lg:flex">
+          <ul className="items-center hidden space-x-4 lg:flex">
             <li>
               <Link
                 to={"/bookstore"}
@@ -94,7 +97,7 @@ const Navbar = () => {
                       : "text-white"
                   }  hover:scale-105  hover:text-[#5C4C49] duration-200 rounded-xl`}
                 >
-                  Books
+                  Books{" "}
                 </Link>
               </li>
             </ul>

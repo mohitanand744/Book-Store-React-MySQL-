@@ -13,10 +13,8 @@ import "swiper/css/navigation";
 import BookCard from "../Cards/BookCard";
 
 const ScrollBooks = ({ autoScroll = true, books }) => {
-  console.log(books);
-
   return (
-    <div className="mb-10 ">
+    <div className="mb-15">
       <Swiper
         modules={[Navigation, Autoplay]}
         autoplay={
@@ -55,7 +53,7 @@ const ScrollBooks = ({ autoScroll = true, books }) => {
         }}
       >
         {books?.map((book, i) => (
-          <SwiperSlide key={i} className="relative">
+          <SwiperSlide key={i} className="relative pb-8">
             <BookCard book={book} />
           </SwiperSlide>
         ))}
