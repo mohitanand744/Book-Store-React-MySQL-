@@ -37,7 +37,9 @@ const BookCard = ({ book }) => {
             </h1>
             <div className="flex items-center gap-1 border border-white bg-[#1a19190a] p-1 px-3 rounded-lg">
               <Ratings ratings={book.author.author_rating} />
-              <span className="text-white">{book.author.author_rating}</span>
+              <span className="text-orange-600">
+                {book.author.author_rating}
+              </span>
             </div>
           </div>
           <p className="text-white">
@@ -46,7 +48,7 @@ const BookCard = ({ book }) => {
           </p>
         </div>
       </div>
-      <div className="image w-[90%] mx-auto pt-2 h-[15rem]">
+      <div className="image w-[60%] md:w-[90%] mx-auto pt-2 h-[15rem]">
         <img
           className="object-contain w-full h-full"
           src={book?.images[0]}
@@ -54,12 +56,14 @@ const BookCard = ({ book }) => {
         />
       </div>
       <div className="px-4 text-xl">
-        <h2 className="text-xl font-semibold">{book.title.slice(0, 20)}...</h2>
-        <p className="text-lg text-gray-500">
+        <h2 className="text-lg font-semibold md:text-xl">
+          {book.title.slice(0, 20)}...
+        </h2>
+        <p className="text-sm text-gray-500 md:text-lg">
           {book.description.slice(0, 50)}...
         </p>
 
-        <div className="flex gap-4 mt-3">
+        <div className="flex gap-4 mt-3 text-sm md:text-lg">
           <p className="font-medium text-gray-500 line-through">
             ₹ {Number(book.book_price) * 2}
           </p>

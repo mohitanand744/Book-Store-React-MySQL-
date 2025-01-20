@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Slider from "@mui/material/Slider";
 
-function DualRangeSlider() {
+function DualRangeSlider({ setOpenCategory, PriceFilter }) {
   const [value, setValue] = React.useState([1500, 4000]); // Initial range values
   const min = 0; // Minimum value for price filter
   const max = 10000; // Maximum value for price filter
@@ -11,46 +11,69 @@ function DualRangeSlider() {
     setValue(newValue);
   };
 
-  return (
-    <Box sx={{ width: 300, mx: "auto", mt: 5 }}>
-      <h1 className="mb-2 text-xl font-semibold">Price Filter</h1>
+  const [open, setOpen] = useState(false);
 
-      {/* Display Min and Max Prices */}
-      <div className="flex justify-between">
-        <h1>₹{min}</h1>
-        <h1>₹{max}</h1>
+  return (
+    <Box sx={{ mx: "auto" }}>
+      <div
+        onClick={() =>
+          setOpenCategory((prev) => ({ ...prev, PriceFilter: !PriceFilter }))
+        }
+        className="flex items-center justify-between mb-2 p-3  bg-[#FFF5E4] rounded-lg"
+      >
+        <h1 className="mb-2 text-xl font-semibold">Price Filter</h1>
+
+        <img
+          className={`${
+            PriceFilter ? "rotate-90" : ""
+          } transition-all duration-300 `}
+          src="/images/right.png"
+          alt=""
+        />
       </div>
 
-      {/* Slider Component */}
-      <Slider
-        getAriaLabel={() => "Price range"}
-        value={value}
-        onChange={handleChange}
-        valueLabelDisplay="auto"
-        min={min} // Minimum price
-        max={max} // Maximum price
-        step={500} // Step size for the slider
-        sx={{
-          "& .MuiSlider-thumb": {
-            color: "#D3BD9D", // Tailwind blue-500
-            "&:hover": {
-              boxShadow: "0 0 0 10px #FFF5E4", // Focus effect
-            },
-          },
-          "& .MuiSlider-track": {
-            color: "#D3BD9D",
-            // Tailwind blue-500
-          },
-          "& .MuiSlider-rail": {
-            color: "#D3BD9D", // Tailwind gray-300
-          },
-        }}
-      />
+      <div
+        className={` ${
+          PriceFilter ? "h-[6rem]" : "h-[0rem]"
+        } overflow-hidden transition-all duration-300 ease-in-out`}
+      >
+        {/* Display Min and Max Prices */}
+        <div className="flex justify-between">
+          <h1>₹{min}</h1>
+          <h1>₹{max}</h1>
+        </div>
 
-      {/* Display Selected Range */}
-      <h1 className="mt-2">
-        <b>Selected Range</b>: ₹{value[0]} - ₹{value[1]}
-      </h1>
+        {/* Slider Component */}
+        <Slider
+          getAriaLabel={() => "Price range"}
+          value={value}
+          onChange={handleChange}
+          valueLabelDisplay="auto"
+          min={min} // Minimum price
+          max={max} // Maximum price
+          step={500} // Step size for the slider
+          sx={{
+            "& .MuiSlider-thumb": {
+              color: "#D3BD9D", // Tailwind blue-500
+              "&:hover": {
+                boxShadow: "0 0 0 10px #FFF5E4", // Focus effect
+              },
+            },
+            "& .MuiSlider-track": {
+              color: "#D3BD9D",
+              // Tailwind blue-500
+            },
+            "& .MuiSlider-rail": {
+              color: "#D3BD9D", // Tailwind gray-300
+            },
+          }}
+        />
+
+        {/* Display Selected Range */}
+        <h1 className="mt-2">
+          <b>Selected Range</b>: ₹{value[0]} - ₹{value[1]}
+        </h1>
+      </div>
     </Box>
   );
 }

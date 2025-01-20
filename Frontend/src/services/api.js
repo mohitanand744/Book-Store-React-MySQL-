@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:5000";
+const BASE_URL = "https://book-store-react-mysql.onrender.com";
 import axios from "axios";
 
 const axiosInstance = axios.create({

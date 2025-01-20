@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchAllBooks } from "../store/Redux/Slices/BooksSlice";
 import ShowErrors from "../components/Errors/ShowErrors";
 import { Link } from "react-router-dom";
+import BooksLoader from "../components/Loaders/BooksLoader";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -54,13 +55,7 @@ const Home = () => {
           </h1>
 
           {loading ? (
-            <center>
-              <img
-                className="w-28"
-                src="https://icon-library.com/images/progress-icon-gif/progress-icon-gif-1.jpg"
-                alt=""
-              />
-            </center>
+            <BooksLoader />
           ) : error ? (
             <ShowErrors text={error || "Sorry we are Unable Fetch Books"} />
           ) : (
@@ -74,13 +69,7 @@ const Home = () => {
           </h1>
 
           {loading ? (
-            <center>
-              <img
-                className="w-28"
-                src="https://icon-library.com/images/progress-icon-gif/progress-icon-gif-1.jpg"
-                alt=""
-              />
-            </center>
+            <BooksLoader />
           ) : error ? (
             <ShowErrors text={error || "Sorry we are Unable Fetch Books"} />
           ) : (
@@ -103,13 +92,7 @@ const Home = () => {
             Find Your Favorite Author
           </h1>
           {loading ? (
-            <center>
-              <img
-                className="w-28"
-                src="https://icon-library.com/images/progress-icon-gif/progress-icon-gif-1.jpg"
-                alt=""
-              />
-            </center>
+            <BooksLoader />
           ) : error ? (
             <ShowErrors text={error || "Sorry we are Unable Fetch Books"} />
           ) : (
