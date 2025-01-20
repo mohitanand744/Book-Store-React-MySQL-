@@ -30,11 +30,11 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`bg-[#D3BD9D] transition-all duration-300 ${
+      className={`bg-[#D3BD9D] transition-all duration-300  ${
         isFixed
           ? animation
-            ? "sticky top-[-5rem] left-0 w-full z-50 shadow-xl animate-slideDown"
-            : "sticky top-0 left-0 w-full z-50 shadow-xl"
+            ? "sticky top-[-8rem] left-0 w-full z-50 opacity-80 shadow-xl animate-slideDown"
+            : "sticky opacity-100 top-0 left-0 w-full z-50 shadow-xl"
           : "relative shadow-lg"
       }`}
     >
@@ -71,7 +71,7 @@ const Navbar = () => {
             </li>
             <ul className="group">
               <li
-                className={`px-3 flex gap-1 items-center py-1 text-lg font-bold text-white transition-all  group-hover:scale-105  group-hover:text-[#5C4C49] duration-200 rounded-xl `}
+                className={`px-3 flex gap-1 items-center py-1 text-lg font-bold text-white transition-all    group-hover:text-[#5C4C49] duration-200 rounded-xl `}
               >
                 Books Types{" "}
                 <span>
@@ -79,7 +79,7 @@ const Navbar = () => {
                 </span>
               </li>
               {/* Mega Menu */}
-              <div className="absolute z-[999999] hidden lg:block transform  opacity-0 scale-0 transition-all duration-500 group-hover:opacity-100 group-hover:scale-100 top-[3.8rem] inset-x-0 w-[80%] mx-auto">
+              <div className="absolute z-[999999] hidden lg:block  opacity-0 scale-0 transition-all duration-500 group-hover:opacity-100 translate-y-[-7rem] group-hover:translate-y-0 group-hover:scale-100 top-[3.8rem] inset-x-0 w-[80%] mx-auto">
                 <MegaMenu />
               </div>
             </ul>
