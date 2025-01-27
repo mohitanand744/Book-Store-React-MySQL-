@@ -3,14 +3,21 @@ import { FaStar } from "react-icons/fa";
 import { FaRegStarHalfStroke } from "react-icons/fa6";
 import { FaPlus } from "react-icons/fa6";
 import Ratings from "../RatingsReviews/Ratings";
+import { useNavigate } from "react-router-dom";
 
 const BookCard = ({ book }) => {
+  const navigate = useNavigate();
+
   return (
-    <div className="relative flex flex-col border-t justify-between z-40  shadow-xl h-[29rem] card rounded-3xl">
-      <div className="absolute top-1 right-1 px-2 py-1 bg-[#ffcd8186] rounded-3xl">
+    <div
+      onClick={() => navigate(`/bookstore/book/${book.book_id}`)}
+      className="relative cursor-pointer flex flex-col border-t justify-between   shadow-xl
+     md:h-[29rem] h-[26rem] card rounded-3xl"
+    >
+      <div className="absolute top-1 right-1 px-2 py-1 bg-[#ffcd81ab] rounded-3xl">
         <p>{book.category}</p>
       </div>
-      <div className="absolute w-12 group border-2 border-orange-600 p-[0.1rem] h-12 top-1 left-1 rounded-full ">
+      <div className="absolute z-50 w-12 group border-2 border-orange-600 p-[0.1rem] h-12 top-1 left-1 rounded-full ">
         <img
           src={
             book.author?.author_image ||
@@ -19,7 +26,7 @@ const BookCard = ({ book }) => {
           className="object-cover w-full h-full rounded-full"
           alt=""
         />
-        <div className="absolute left-0  md:-left-6 text-sm  transition-all duration-300 scale-0 group-hover:translate-y-0 group-hover:scale-100 group-hover:translate-x-0 rotate-45 group-hover:rotate-0 translate-x-[-7rem] translate-y-[-10rem] z-50 font-medium bg-[#D3BD9D] p-4 rounded-3xl w-[20rem]">
+        <div className="absolute left-0  md:-left-6 text-sm  transition-all duration-300 scale-0 group-hover:translate-y-0 group-hover:scale-100 group-hover:translate-x-0 rotate-45 group-hover:rotate-0 translate-x-[-7rem] translate-y-[-10rem]  font-medium bg-[#5C4C49] p-4 rounded-3xl w-[17rem] sm:w-[18rem] md:w-[20rem]">
           <div className="mb-2 border border-white h-44 w-44 rounded-3xl">
             <img
               src={
@@ -37,7 +44,7 @@ const BookCard = ({ book }) => {
             </h1>
             <div className="flex items-center gap-1 border border-white bg-[#1a19190a] p-1 px-3 rounded-lg">
               <Ratings ratings={book.author.author_rating} />
-              <span className="text-orange-600">
+              <span className="text-orange-400">
                 {book.author.author_rating}
               </span>
             </div>
@@ -81,11 +88,7 @@ const BookCard = ({ book }) => {
 
         <div className="flex items-center text-orange-500">
           <span className="mr-2">4.5</span>
-          <FaStar />
-          <FaStar />
-          <FaStar />
-          <FaStar />
-          <FaRegStarHalfStroke />
+          <Ratings ratings={3.5} />
         </div>
       </div>
     </div>

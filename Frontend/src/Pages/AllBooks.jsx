@@ -32,17 +32,17 @@ const AllBooks = () => {
   }, [dispatch]);
 
   return (
-    <div className="">
-      <div className="bg-[#fff5e4] py-4 px-6 flex justify-between items-center">
-        <h1 className=" text-xl font-semibold text-center text-[#5c4c49] md:text-2xl uppercase">
+    <div className="relative">
+      <div className="bg-[#fff5e4] py-4 px-6  flex gap-5 justify-between items-center">
+        <h1 className=" text-xl font-semibold text-start sm:text-center text-[#5c4c49] md:text-2xl uppercase">
           We have various types of books
         </h1>
 
         <div className="">
           <img
             onClick={() => setShowFilters(!showFilters)}
-            className="w-8 transition-all duration-200 cursor-pointer hover:rotate-90"
-            src="/images/filter.png"
+            className="w-10 transition-all duration-200 cursor-pointer active:scale-125 hover:rotate-90"
+            src={`/images/${showFilters ? "close" : "filter"}.png`}
             alt=""
           />
         </div>
@@ -57,14 +57,14 @@ const AllBooks = () => {
         </>
       ) : (
         <>
-          <div className="flex justify-between gap-2 my-10">
+          <div className="my-10">
             <div
               className={`${
                 openCategory.CategoryFilter ? "h-[68vh]" : "h-fit"
-              } hideScroll overflow-y-scroll border top-[11rem] right-[1.6rem] fixed bg-white z-50 w-[20rem] ${
+              } hideScroll overflow-y-scroll  border top-[3.6rem] sm:top-[3rem] right-[1.6rem] absolute bg-white z-50 sm:w-[20rem] ${
                 showFilters
                   ? "translate-x-0 translate-y-0 scale-100"
-                  : "translate-x-[8rem] translate-y-[-10rem] scale-0 "
+                  : "translate-x-[6rem] sm:translate-x-[8rem] translate-y-[-10rem] scale-0 "
               }  overflow-hidden 
           duration-300 ease-in-out shadow-xl border-gray-200 rounded-3xl`}
             >
@@ -85,7 +85,7 @@ const AllBooks = () => {
                   }}
                   className="flex items-center justify-between mb-2 p-3  bg-[#FFF5E4] rounded-lg"
                 >
-                  <h1 className="mb-2 text-xl font-semibold">
+                  <h1 className="text-lg font-semibold ">
                     {" "}
                     Filter By Category
                   </h1>
@@ -93,7 +93,7 @@ const AllBooks = () => {
                   <img
                     className={`${
                       openCategory.CategoryFilter ? "rotate-90" : ""
-                    } transition-all duration-300 `}
+                    } transition-all w-[1.5rem] duration-300 `}
                     src="/images/right.png"
                     alt=""
                   />
@@ -134,7 +134,7 @@ const AllBooks = () => {
                   }}
                   className="flex items-center justify-between mb-2 p-3  bg-[#FFF5E4] rounded-lg"
                 >
-                  <h1 className="mb-2 text-xl font-semibold">
+                  <h1 className="text-lg font-semibold ">
                     {" "}
                     Filter By Language
                   </h1>
@@ -142,7 +142,7 @@ const AllBooks = () => {
                   <img
                     className={`${
                       openCategory.LanguageFilter ? "rotate-90" : ""
-                    } transition-all duration-300 `}
+                    } transition-all w-[1.5rem] duration-300 `}
                     src="/images/right.png"
                     alt=""
                   />

@@ -5,6 +5,7 @@ import Home from "../Pages/Home";
 import AllBooks from "../Pages/AllBooks";
 import Loading from "../components/Loaders/Loading";
 import BookstoreLoader from "../components/Loaders/bookstoreLoader";
+import SingleBooks from "../Pages/SingleBooks";
 
 const Layout = lazy(() => import("../Layout"));
 
@@ -31,6 +32,7 @@ const Router = () => {
         >
           <Route index element={<Home />} />
           <Route path="books" element={<AllBooks />} />
+          <Route path="book/:id" element={<SingleBooks />} />
         </Route>
       </Routes>
     </BrowserRouter>

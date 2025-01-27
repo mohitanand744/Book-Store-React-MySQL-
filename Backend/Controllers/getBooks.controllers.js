@@ -52,7 +52,22 @@ exports.getBooks = (req, res) => {
 // Get a book by ID
 exports.getBookById = (req, res) => {
   const { id } = req.params;
-  const query = QUERY + " WHERE B.ID = ?";
+  const query = `SELECT 
+  B.ID, 
+  B.TITLE, 
+  B.DESCRIPTION, 
+  B.AUTHOR, 
+  B.BOOK_PRICE, 
+  B.CATEGORY,
+  A.AUTHOR_DESCRIPTION,
+  A.AUTHOR_ID,
+  A.AUTHOR_IMAGE_URL,
+  A.AUTHOR_RATING,
+  BI.IMAGE_URL 
+FROM books B 
+LEFT JOIN book_images BI 
+ON B.ID = BI.BOOK_ID LEFT JOIN author_details A 
+  ON B.AUTHOR = A.AUTHOR_NAME WHERE B.ID = ?;`;
 
   db.query(query, [id], (err, data) => {
     if (err)

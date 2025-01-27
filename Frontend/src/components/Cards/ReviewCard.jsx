@@ -2,6 +2,7 @@ import React from "react";
 
 import { FaStar } from "react-icons/fa";
 import { FaRegStarHalfStroke } from "react-icons/fa6";
+import Ratings from "../RatingsReviews/Ratings";
 
 const TestimonialCard = () => {
   return (
@@ -23,11 +24,7 @@ const TestimonialCard = () => {
               </span>
               <div className="flex text-orange-500">
                 {/* Stars */}
-                {[...Array(4)].map((_, i) => (
-                  <FaStar key={i} />
-                ))}
-                {/* Half Star */}
-                <FaRegStarHalfStroke />
+                <Ratings ratings={4.5} />
               </div>
             </div>
           </div>

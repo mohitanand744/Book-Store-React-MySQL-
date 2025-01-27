@@ -31,7 +31,7 @@ const ScrollBooks = ({ autoScroll = true, books }) => {
         breakpoints={{
           // Adjust Swiper settings based on screen size
           320: {
-            slidesPerView: 1.2,
+            slidesPerView: 1.3,
             spaceBetween: 10,
           },
           640: {

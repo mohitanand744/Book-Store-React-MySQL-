@@ -19,14 +19,14 @@ function DualRangeSlider({ setOpenCategory, PriceFilter }) {
         onClick={() =>
           setOpenCategory((prev) => ({ ...prev, PriceFilter: !PriceFilter }))
         }
-        className="flex items-center justify-between mb-2 p-3  bg-[#FFF5E4] rounded-lg"
+        className="flex items-center justify-between mb-2 p-3   bg-[#FFF5E4] rounded-lg"
       >
-        <h1 className="mb-2 text-xl font-semibold">Price Filter</h1>
+        <h1 className="text-lg font-semibold ">Price Filter</h1>
 
         <img
           className={`${
             PriceFilter ? "rotate-90" : ""
-          } transition-all duration-300 `}
+          } transition-all w-[1.5rem] duration-300 `}
           src="/images/right.png"
           alt=""
         />
@@ -34,11 +34,11 @@ function DualRangeSlider({ setOpenCategory, PriceFilter }) {
 
       <div
         className={` ${
-          PriceFilter ? "h-[6rem]" : "h-[0rem]"
-        } overflow-hidden transition-all duration-300 ease-in-out`}
+          PriceFilter ? "h-[7rem]" : "h-[0rem]"
+        } overflow-hidden flex justify-center items-center flex-col transition-all duration-300 ease-in-out`}
       >
         {/* Display Min and Max Prices */}
-        <div className="flex justify-between">
+        <div className="flex justify-between w-full">
           <h1>₹{min}</h1>
           <h1>₹{max}</h1>
         </div>
