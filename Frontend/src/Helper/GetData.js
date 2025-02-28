@@ -1,4 +1,3 @@
-const axios = require("axios");
 import axiosInstance from "../services/api";
 
 const getSingleBook = async (id) => {
