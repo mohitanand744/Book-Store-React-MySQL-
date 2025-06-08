@@ -8,6 +8,7 @@ function DualRangeSlider({ setOpenCategory, PriceFilter }) {
   const max = 10000; // Maximum value for price filter
 
   const handleChange = (event, newValue) => {
+    event.stopPropagation();
     setValue(newValue);
   };
 
@@ -16,10 +17,11 @@ function DualRangeSlider({ setOpenCategory, PriceFilter }) {
   return (
     <Box sx={{ mx: "auto" }}>
       <div
-        onClick={() =>
-          setOpenCategory((prev) => ({ ...prev, PriceFilter: !PriceFilter }))
-        }
-        className="flex items-center justify-between mb-2 p-3   bg-[#FFF5E4] rounded-lg"
+        onClick={(e) => {
+          e.stopPropagation();
+          setOpenCategory((prev) => ({ ...prev, PriceFilter: !PriceFilter }));
+        }}
+        className="flex items-center cursor-pointer justify-between mb-2 p-3   bg-[#FFF5E4] rounded-lg"
       >
         <h1 className="text-lg font-semibold ">Price Filter</h1>
 
@@ -33,44 +35,46 @@ function DualRangeSlider({ setOpenCategory, PriceFilter }) {
       </div>
 
       <div
+        onClick={(e) => e.stopPropagation()}
         className={` ${
           PriceFilter ? "h-[7rem]" : "h-[0rem]"
-        } overflow-hidden flex justify-center items-center flex-col transition-all duration-300 ease-in-out`}
+        } overflow-hidden flex justify-center items-center flex-col transition-all duration-300 ease-in-out w-full bg-[#FFF5E4] rounded-lg `}
       >
-        {/* Display Min and Max Prices */}
-        <div className="flex justify-between w-full">
-          <h1>₹{min}</h1>
-          <h1>₹{max}</h1>
-        </div>
+        <div className="p-8 w-full">
+          {/* Display Min and Max Prices */}
+          <div className="flex justify-between w-full">
+            <h1>₹{min}</h1>
+            <h1>₹{max}</h1>
+          </div>
 
-        {/* Slider Component */}
-        <Slider
-          getAriaLabel={() => "Price range"}
-          value={value}
-          onChange={handleChange}
-          valueLabelDisplay="auto"
-          min={min} // Minimum price
-          max={max} // Maximum price
-          step={500} // Step size for the slider
-          sx={{
-            "& .MuiSlider-thumb": {
-              color: "#D3BD9D", // Tailwind blue-500
-              "&:hover": {
-                boxShadow: "0 0 0 10px #FFF5E4", // Focus effect
+          {/* Slider Component */}
+          <Slider
+            getAriaLabel={() => "Price range"}
+            value={value}
+            onChange={handleChange}
+            valueLabelDisplay="auto"
+            min={min} // Minimum price
+            max={max} // Maximum price
+            step={500} // Step size for the slider
+            sx={{
+              "& .MuiSlider-thumb": {
+                color: "#D3BD9D", // Tailwind blue-500
+                "&:hover": {
+                  boxShadow: "0 0 0 10px #FFF5E4", // Focus effect
+                },
               },
-            },
-            "& .MuiSlider-track": {
-              color: "#D3BD9D",
-              // Tailwind blue-500
-            },
-            "& .MuiSlider-rail": {
-              color: "#D3BD9D", // Tailwind gray-300
-            },
-          }}
-        />
-
+              "& .MuiSlider-track": {
+                color: "#D3BD9D",
+                // Tailwind blue-500
+              },
+              "& .MuiSlider-rail": {
+                color: "#D3BD9D", // Tailwind gray-300
+              },
+            }}
+          />
+        </div>
         {/* Display Selected Range */}
-        <h1 className="mt-2">
+        <h1 className="-mt-10">
           <b>Selected Range</b>: ₹{value[0]} - ₹{value[1]}
         </h1>
       </div>
