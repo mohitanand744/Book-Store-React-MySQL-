@@ -46,24 +46,25 @@ const Input = React.forwardRef(
           />
 
           {/* Custom right icon: show/hide or external icon */}
-          <div className="absolute inset-y-0 flex items-center right-4">
-            {type === "password" ? (
-              <button
-                type="button"
-                onClick={() => setShowPassword((prev) => !prev)}
-                className="focus:outline-none text-[#5e4c37a2]"
-              >
-                {showPassword ? (
-                  <EyeSlashIcon className="w-5 h-5" />
-                ) : (
-                  <EyeIcon className="w-5 h-5" />
-                )}
-              </button>
-            ) : icon ? (
-              <div className="pl-3 pointer-events-none">{icon}</div>
-            ) : null}
-          </div>
-
+          {!error && (
+            <div className="absolute inset-y-0 flex items-center right-4">
+              {type === "password" ? (
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((prev) => !prev)}
+                  className="focus:outline-none text-[#5e4c37a2]"
+                >
+                  {showPassword ? (
+                    <EyeSlashIcon className="w-5 h-5" />
+                  ) : (
+                    <EyeIcon className="w-5 h-5" />
+                  )}
+                </button>
+              ) : icon ? (
+                <div className="pl-3 pointer-events-none">{icon}</div>
+              ) : null}
+            </div>
+          )}
           {error && (
             <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
               <ExclamationCircleIcon
