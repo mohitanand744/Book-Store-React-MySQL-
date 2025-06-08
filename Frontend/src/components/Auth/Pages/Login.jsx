@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import Button from "./../../Buttons/Button";
 import { EnvelopeIcon, LockClosedIcon } from "@heroicons/react/24/outline";
 import Input from "./../../Inputs/Input";
+import Checkbox from "../../Inputs/Checkbox";
 
 const Login = () => {
   const {
@@ -22,7 +23,7 @@ const Login = () => {
 
   return (
     <div className="flex items-center justify-center min-h-screen gap-3 p-4 bg-[url('https://wallpapercave.com/wp/wp4064613.jpg')] bg-center bg-no-repeat bg-cover">
-      <div className="flex gap-4 ">
+      <div className="flex gap-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -31,10 +32,19 @@ const Login = () => {
         >
           <motion.div
             whileHover={{ scale: 1.01 }}
-            className="overflow-hidden bg-[#a2a2a27f] shadow-xl rounded-2xl"
+            transition={{ duration: 0.2 }}
+            className="overflow-hidden bg-[#ffffff7f] backdrop-blur-sm shadow-xl rounded-2xl"
           >
             <div className="p-8">
               <div className="mb-8 text-center">
+                <motion.img
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.1 }}
+                  className="object-cover w-auto h-20 mx-auto mb-4"
+                  src="/images/logo.png"
+                  alt="Logo"
+                />
                 <motion.h1
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
@@ -47,9 +57,9 @@ const Login = () => {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.3 }}
-                  className="text-gray-600"
+                  className="font-semibold text-[#5e4c37]"
                 >
-                  Sign in to your BookHaven account
+                  Sign in to your <b>NextChapter</b> account
                 </motion.p>
               </div>
 
@@ -63,7 +73,7 @@ const Login = () => {
                     label="Email Address"
                     type="email"
                     placeholder="your@email.com"
-                    icon={<EnvelopeIcon className="w-5 h-5 text-gray-400" />}
+                    icon={<EnvelopeIcon className="w-5 h-5 text-[#5e4c379f]" />}
                     error={errors.email?.message}
                     {...register("email", {
                       required: "Email is required",
@@ -84,7 +94,9 @@ const Login = () => {
                     label="Password"
                     type="password"
                     placeholder="••••••••"
-                    icon={<LockClosedIcon className="w-5 h-5 text-gray-400" />}
+                    icon={
+                      <LockClosedIcon className="w-5 h-5 text-[#5e4c378f]" />
+                    }
                     error={errors.password?.message}
                     {...register("password", {
                       required: "Password is required",
@@ -103,18 +115,12 @@ const Login = () => {
                     transition={{ delay: 0.6 }}
                     className="flex items-center"
                   >
-                    <input
+                    <Checkbox
                       id="remember-me"
-                      name="remember-me"
-                      type="checkbox"
-                      className="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
+                      label="Remember me"
+                      //checked={isChecked}
+                      //onChange={(e) => setIsChecked(e.target.checked)}
                     />
-                    <label
-                      htmlFor="remember-me"
-                      className="block ml-2 text-sm text-gray-700"
-                    >
-                      Remember me
-                    </label>
                   </motion.div>
 
                   <motion.div
@@ -125,7 +131,7 @@ const Login = () => {
                   >
                     <a
                       href="#"
-                      className="font-medium text-indigo-600 hover:text-indigo-500"
+                      className="font-medium text-[#5e4c37] hover:text-indigo-500"
                     >
                       Forgot password?
                     </a>
@@ -156,10 +162,10 @@ const Login = () => {
               >
                 <div className="relative">
                   <div className="absolute inset-0 flex items-center">
-                    <div className="w-full border-t border-gray-300"></div>
+                    <div className="w-full border-t border-gray-600"></div>
                   </div>
                   <div className="relative flex justify-center text-sm">
-                    <span className="px-2 text-gray-500 bg-white">
+                    <span className="px-3 py-1 bg-white rounded-full text-slate-600">
                       Or continue with
                     </span>
                   </div>
@@ -170,45 +176,33 @@ const Login = () => {
                     whileHover={{ scale: 1.03 }}
                     whileTap={{ scale: 0.98 }}
                   >
-                    <a
-                      href="#"
-                      className="inline-flex justify-center w-full px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50"
-                    >
-                      <svg
+                    <Button variant="outline" className="flex items-center">
+                      <motion.img
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 0.9 }}
+                        src="https://img.icons8.com/color/512/google-logo.png"
+                        alt="Google"
                         className="w-5 h-5"
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
-                        aria-hidden="true"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M10 0C4.477 0 0 4.477 0 10c0 4.42 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.342-3.369-1.342-.454-1.155-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.564 9.564 0 0110 4.844c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.933.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C17.14 18.163 20 14.418 20 10c0-5.523-4.477-10-10-10z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                    </a>
+                      />{" "}
+                      <span className="ms-1">Google</span>
+                    </Button>
                   </motion.div>
                   <motion.div
                     whileHover={{ scale: 1.03 }}
                     whileTap={{ scale: 0.98 }}
                   >
-                    <a
-                      href="#"
-                      className="inline-flex justify-center w-full px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50"
-                    >
-                      <svg
-                        className="w-5 h-5"
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
-                        aria-hidden="true"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M10 0C4.477 0 0 4.477 0 10c0 5.523 4.477 10 10 10 5.523 0 10-4.477 10-10 0-5.523-4.477-10-10-10zm3 8v-2h-2v2h-2v2h2v2h2v-2h2v-2h-2z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                    </a>
+                    <Button variant="outline" className="flex items-center">
+                      <motion.img
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 0.9 }}
+                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTtfbcYeYgf0wQJ-LSPm3CPbyB7T1p0f5bnaA&s"
+                        alt="Facebook"
+                        className="w-5 h-5 rounded-full"
+                      />{" "}
+                      <span className="ms-1">Facebook</span>
+                    </Button>
                   </motion.div>
                 </div>
               </motion.div>
@@ -219,11 +213,11 @@ const Login = () => {
                 transition={{ delay: 1 }}
                 className="mt-6 text-center"
               >
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-[#5e4c37]">
                   Don't have an account?{" "}
                   <a
                     href="#"
-                    className="font-medium text-indigo-600 hover:text-indigo-500"
+                    className="font-medium text-[#5e4c37] hover:text-indigo-500"
                   >
                     Sign up
                   </a>
@@ -235,20 +229,20 @@ const Login = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 1.1 }}
-              className="px-8 py-6 text-center bg-gray-50 rounded-b-2xl"
+              className="px-8 py-6 text-center bg-[rgba(252,237,219,0.37)] backdrop-blur-sm  rounded-b-2xl"
             >
-              <p className="text-xs text-gray-500">
+              <p className="text-xs text-gray-700">
                 By signing in, you agree to our{" "}
                 <a
                   href="#"
-                  className="font-medium text-gray-600 hover:text-gray-500"
+                  className="font-medium transition-all duration-200 text-slate-700 hover:text-gray-600 hover:scale-105"
                 >
                   Terms of Service
                 </a>{" "}
                 and{" "}
                 <a
                   href="#"
-                  className="font-medium text-gray-600 hover:text-gray-500"
+                  className="font-medium transition-all duration-200 text-slate-700 hover:text-gray-600 hover:scale-105"
                 >
                   Privacy Policy
                 </a>
@@ -261,9 +255,9 @@ const Login = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1.2 }}
-            className="mt-8 text-center"
+            className="mt-4 text-center"
           >
-            <p className="text-xs bg-[#a2a2a27f] text-gray-500">
+            <p className="text-xs bg-[#a2a2a27f] px-3 py-1 rounded-full text-gray-50">
               &copy; 2023 BookHaven. All rights reserved.
             </p>
           </motion.div>

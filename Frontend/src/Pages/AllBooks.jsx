@@ -5,6 +5,7 @@ import BookCard from "../components/Cards/BookCard";
 import { fetchAllBooks } from "../store/Redux/Slices/BooksSlice";
 import BooksLoader from "../components/Loaders/BooksLoader";
 import ShowErrors from "../components/Errors/ShowErrors";
+import Checkbox from "../components/Inputs/Checkbox";
 
 const AllBooks = () => {
   const dispatch = useDispatch();
@@ -128,7 +129,7 @@ const AllBooks = () => {
           >
             {categories.map((category) => (
               <li key={category} className="flex items-center">
-                <input
+                {/* <input
                   type="checkbox"
                   id={category}
                   className="w-4 h-4 md:w-5 md:h-5  text-blue-600 bg-gray-300 rounded-md appearance-none checked:after:content-['✓'] checked:after:text-white flex justify-center items-center checked:bg-[#D3BD9D]"
@@ -138,7 +139,13 @@ const AllBooks = () => {
                   className="ml-2 text-gray-700 cursor-pointer"
                 >
                   {category}
-                </label>
+                </label> */}
+                <Checkbox
+                  id={category}
+                  label={category}
+                  //checked={isChecked}
+                  //onChange={(e) => setIsChecked(e.target.checked)}
+                />
               </li>
             ))}
           </ul>

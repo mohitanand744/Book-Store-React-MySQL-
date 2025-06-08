@@ -11,6 +11,7 @@ import { fetchAllBooks } from "../store/Redux/Slices/BooksSlice";
 import ShowErrors from "../components/Errors/ShowErrors";
 import { Link } from "react-router-dom";
 import BooksLoader from "../components/Loaders/BooksLoader";
+import Button from "../components/Buttons/Button";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -81,9 +82,7 @@ const Home = () => {
 
           <div className="flex justify-center my-5">
             <Link to={"/bookstore/books"}>
-              <button className="px-10 py-2 text-white bg-[#5c4c49] hover:bg-[#D3BD9D] hover:scale-105 transition duration-200 active:scale-95 font-semibold rounded-2xl">
-                View All
-              </button>
+              <Button variant="primary">View All</Button>
             </Link>
           </div>
         </div>
