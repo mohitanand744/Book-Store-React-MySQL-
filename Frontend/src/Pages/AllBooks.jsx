@@ -6,10 +6,11 @@ import { fetchAllBooks } from "../store/Redux/Slices/BooksSlice";
 import BooksLoader from "../components/Loaders/BooksLoader";
 import ShowErrors from "../components/Errors/ShowErrors";
 import Checkbox from "../components/Inputs/Checkbox";
+import { mockBooks } from "../../Data/mockData";
 
 const AllBooks = () => {
   const dispatch = useDispatch();
-  const { books, error, loading } = useSelector((state) => state.books);
+  //const { books, error, loading } = useSelector((state) => state.books);
   const [showFilters, setShowFilters] = useState(false);
   const [openCategory, setOpenCategory] = useState({
     PriceFilter: false,
@@ -28,9 +29,13 @@ const AllBooks = () => {
     "Action",
   ];
 
-  useEffect(() => {
+  /*   useEffect(() => {
     dispatch(fetchAllBooks());
-  }, [dispatch]);
+  }, [dispatch]); */
+
+  const books = mockBooks;
+  const loading = false;
+  const error = null;
 
   return (
     <div

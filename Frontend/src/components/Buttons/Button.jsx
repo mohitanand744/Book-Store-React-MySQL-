@@ -14,11 +14,11 @@ const Button = ({
     "px-10 py-2 font-semibold rounded-xl transition duration-200 active:scale-95 focus:outline-none";
 
   const variantClasses = {
-    primary: "bg-[#5c4c49] text-white hover:bg-[#5c4c30] hover:scale-105",
+    primary: "bg-[#5c4c49] text-white hover:bg-[#7C664D] hover:scale-105",
     outline:
-      "border border-[#5c4c49] text-[#5c4c49] bg-transparent hover:bg-[#5c4c30] hover:text-white hover:scale-105",
+      "border border-[#5c4c49] text-[#5c4c49] bg-transparent hover:bg-[#7C664D] hover:text-white hover:scale-105",
     ghost:
-      "bg-transparent text-[#5c4c49] hover:bg-[#5c4c30] hover:text-white hover:scale-105",
+      "bg-transparent text-[#5c4c49] hover:bg-[#7C664D] hover:text-white hover:scale-105",
   };
 
   return (
@@ -31,7 +31,7 @@ const Button = ({
       {...props}
     >
       {isLoading ? (
-        <>
+        <div className="flex items-center justify-center">
           <svg
             className="w-4 h-4 mr-2 -ml-1 text-white animate-spin"
             xmlns="http://www.w3.org/2000/svg"
@@ -52,8 +52,8 @@ const Button = ({
               d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
             ></path>
           </svg>
-          Processing...
-        </>
+          Almost there...
+        </div>
       ) : (
         children
       )}

@@ -20,7 +20,7 @@ const BookCard = ({ book }) => {
       <div className="absolute z-50 w-12 group border-2 border-orange-600 p-[0.1rem] h-12 top-1 left-1 rounded-full ">
         <img
           src={
-            book.author?.author_image ||
+            book.author?.author_image_url ||
             "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
           }
           className="object-cover w-full h-full rounded-full"
@@ -30,7 +30,7 @@ const BookCard = ({ book }) => {
           <div className="mb-2 border border-white h-44 w-44 rounded-3xl">
             <img
               src={
-                book.author?.author_image ||
+                book.author?.author_image_url ||
                 "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
               }
               className="object-cover object-top w-full h-full rounded-3xl"

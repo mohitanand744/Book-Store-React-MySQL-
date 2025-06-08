@@ -4,6 +4,7 @@ import TestimonialCard from "../Cards/ReviewCard";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
 
 import { Swiper, SwiperSlide } from "swiper/react";
+import { testimonialData } from "../../../Data/mockData";
 
 const ReviewsContainer = () => {
   return (
@@ -43,27 +44,11 @@ const ReviewsContainer = () => {
         },
       }}
     >
-      <SwiperSlide className="relative">
-        <TestimonialCard />
-      </SwiperSlide>
-      <SwiperSlide className="relative">
-        <TestimonialCard />
-      </SwiperSlide>
-      <SwiperSlide className="relative">
-        <TestimonialCard />
-      </SwiperSlide>
-      <SwiperSlide className="relative">
-        <TestimonialCard />
-      </SwiperSlide>
-      <SwiperSlide className="relative">
-        <TestimonialCard />
-      </SwiperSlide>
-      <SwiperSlide className="relative">
-        <TestimonialCard />
-      </SwiperSlide>
-      <SwiperSlide className="relative">
-        <TestimonialCard />
-      </SwiperSlide>
+      {testimonialData.map((item, index) => (
+        <SwiperSlide key={index} className="relative">
+          <TestimonialCard data={item} />
+        </SwiperSlide>
+      ))}
     </Swiper>
   );
 };

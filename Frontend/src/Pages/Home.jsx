@@ -12,22 +12,22 @@ import ShowErrors from "../components/Errors/ShowErrors";
 import { Link } from "react-router-dom";
 import BooksLoader from "../components/Loaders/BooksLoader";
 import Button from "../components/Buttons/Button";
+import { mockBooks } from "../../Data/mockData";
 
 const Home = () => {
-  const dispatch = useDispatch();
+  /*   const dispatch = useDispatch();
   const { books, error, loading } = useSelector((state) => state.books);
 
   useEffect(() => {
     dispatch(fetchAllBooks());
   }, [dispatch]);
 
-  // Remove duplicates based on a unique property (e.g., book id or title)
   const removeDuplicates = (booksArray) => {
     const uniqueBooks = [];
     const seen = new Set();
 
     for (const book of booksArray) {
-      const uniqueKey = book.title; // Replace with the property that uniquely identifies a book
+      const uniqueKey = book.title; 
       if (!seen.has(uniqueKey)) {
         seen.add(uniqueKey);
         uniqueBooks.push(book);
@@ -37,7 +37,12 @@ const Home = () => {
     return uniqueBooks;
   };
 
-  const uniqueBooks = books?.books ? removeDuplicates(books.books) : [];
+  const uniqueBooks = books?.books ? removeDuplicates(books.books) : []; */
+
+  const books = mockBooks;
+  const uniqueBooks = books;
+  const loading = false;
+  const error = null;
 
   return (
     <div className="">
@@ -76,7 +81,7 @@ const Home = () => {
           ) : (
             <ScrollBooks
               autoScroll={false}
-              books={uniqueBooks.slice(25, uniqueBooks.length)}
+              books={uniqueBooks.slice(5, uniqueBooks.length)}
             />
           )}
 

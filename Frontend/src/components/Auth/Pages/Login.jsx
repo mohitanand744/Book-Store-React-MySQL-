@@ -6,6 +6,7 @@ import Button from "./../../Buttons/Button";
 import { EnvelopeIcon, LockClosedIcon } from "@heroicons/react/24/outline";
 import Input from "./../../Inputs/Input";
 import Checkbox from "../../Inputs/Checkbox";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const {
@@ -13,12 +14,17 @@ const Login = () => {
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm();
+  const navigate = useNavigate();
 
   const onSubmit = async (data) => {
     // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+    await new Promise((resolve) => {
+      setTimeout(resolve, 2000);
+    });
     console.log(data);
     // Handle login logic here
+
+    navigate("/bookstore");
   };
 
   return (

@@ -50,8 +50,8 @@ function AuthorSlider({ books }) {
                 <img
                   className="object-cover w-full h-full rounded-full"
                   src={
-                    author.author.author_image
-                      ? author.author.author_image
+                    author.author.author_image_url
+                      ? author.author.author_image_url
                       : "https://cdn.vectorstock.com/i/500p/40/53/accurate-silhouette-of-a-man-for-profile-picture-vector-14714053.jpg"
                   }
                   alt=""
