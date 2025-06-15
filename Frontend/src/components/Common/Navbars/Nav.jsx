@@ -177,13 +177,10 @@ const Navbar = () => {
             href="#"
             className="px-3 py-1 border-[#5C4C49] text-lg font-bold text-white transition-all    hover:text-[#5C4C49] duration-200 rounded-xl"
           >
-            Home
+            <Link to="/bookstore">Home</Link>
           </li>
-          <li
-            href="#"
-            className="px-3 py-1 border-[#5C4C49] text-lg font-bold text-white transition-all    hover:text-[#5C4C49] duration-200 rounded-xl"
-          >
-            About
+          <li className="px-3 py-1 border-[#5C4C49] text-lg font-bold text-white transition-all    hover:text-[#5C4C49] duration-200 rounded-xl">
+            <Link to="/bookstore/aboutUs">About</Link>
           </li>
           <ul className="group">
             <li
@@ -208,7 +205,7 @@ const Navbar = () => {
               href="#"
               className="px-3 py-1 border-[#5C4C49] text-lg font-bold text-white transition-all    hover:text-[#5C4C49] duration-200 rounded-xl"
             >
-              Books
+              <Link to="/bookstore/books"> Books</Link>
             </li>
           </ul>
           <a

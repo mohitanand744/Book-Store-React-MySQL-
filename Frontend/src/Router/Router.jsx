@@ -1,28 +1,43 @@
 import React, { lazy, Suspense, useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Login from "../components/Auth/Pages/Login";
-import Home from "../Pages/Home";
-import AllBooks from "../Pages/AllBooks";
 import Loading from "../components/Loaders/Loading";
 import BookstoreLoader from "../components/Loaders/bookstoreLoader";
-import SingleBooks from "../Pages/SingleBooks";
-import AboutUs from "../Pages/AboutUs";
 
+// Lazy-loaded components
+const Login = lazy(() => import("../components/Auth/Pages/Login"));
 const Layout = lazy(() => import("../Layout"));
+const Home = lazy(() => import("../Pages/Home"));
+const AllBooks = lazy(() => import("../Pages/AllBooks"));
+const SingleBooks = lazy(() => import("../Pages/SingleBooks"));
+const AboutUs = lazy(() => import("../Pages/AboutUs"));
 
 const Router = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       setIsLoading(false);
     }, 4000);
+
+    return () => clearTimeout(timer);
   }, []);
 
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={isLoading ? <Loading /> : <Login />} />
+        <Route
+          path="/"
+          element={
+            isLoading ? (
+              <Loading />
+            ) : (
+              <Suspense fallback={<Loading />}>
+                <Login />
+              </Suspense>
+            )
+          }
+        />
+
         <Route
           path="/bookstore"
           element={
@@ -31,10 +46,38 @@ const Router = () => {
             </Suspense>
           }
         >
-          <Route index element={<Home />} />
-          <Route path="aboutUs" element={<AboutUs />} />
-          <Route path="books" element={<AllBooks />} />
-          <Route path="book/:id" element={<SingleBooks />} />
+          <Route
+            index
+            element={
+              <Suspense fallback={<BookstoreLoader />}>
+                <Home />
+              </Suspense>
+            }
+          />
+          <Route
+            path="aboutUs"
+            element={
+              <Suspense fallback={<BookstoreLoader />}>
+                <AboutUs />
+              </Suspense>
+            }
+          />
+          <Route
+            path="books"
+            element={
+              <Suspense fallback={<BookstoreLoader />}>
+                <AllBooks />
+              </Suspense>
+            }
+          />
+          <Route
+            path="book/:id"
+            element={
+              <Suspense fallback={<BookstoreLoader />}>
+                <SingleBooks />
+              </Suspense>
+            }
+          />
         </Route>
       </Routes>
     </BrowserRouter>
