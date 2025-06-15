@@ -62,12 +62,12 @@ const Navbar = () => {
               </Link>
             </li>
             <li>
-              <a
-                href="#"
+              <Link
+                to="/bookstore/aboutUs"
                 className="px-3 py-1 border-[#5C4C49] text-lg font-bold text-white transition-all  hover:scale-105  hover:text-[#5C4C49] duration-200 rounded-xl"
               >
                 About
-              </a>
+              </Link>
             </li>
             <ul className="group">
               <li

@@ -11,7 +11,7 @@ const Button = ({
   ...props
 }) => {
   const baseClasses =
-    "px-10 py-2 font-semibold rounded-xl transition duration-200 active:scale-95 focus:outline-none";
+    "px-4 py-2 font-semibold rounded-xl transition duration-200 active:scale-95 focus:outline-none";
 
   const variantClasses = {
     primary: "bg-[#5c4c49] text-white hover:bg-[#7C664D] hover:scale-105",
@@ -31,7 +31,7 @@ const Button = ({
       {...props}
     >
       {isLoading ? (
-        <div className="flex items-center justify-center">
+        <div className="flex items-center justify-center text-nowrap">
           <svg
             className="w-4 h-4 mr-2 -ml-1 text-white animate-spin"
             xmlns="http://www.w3.org/2000/svg"

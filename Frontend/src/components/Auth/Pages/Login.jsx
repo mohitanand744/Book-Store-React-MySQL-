@@ -1,5 +1,5 @@
 // src/pages/Login.jsx
-import React from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
 import Button from "./../../Buttons/Button";
@@ -7,6 +7,7 @@ import { EnvelopeIcon, LockClosedIcon } from "@heroicons/react/24/outline";
 import Input from "./../../Inputs/Input";
 import Checkbox from "../../Inputs/Checkbox";
 import { useNavigate } from "react-router-dom";
+import ForgotPasswordModal from "../Modal/ForgotPassword";
 
 const Login = () => {
   const {
@@ -15,6 +16,7 @@ const Login = () => {
     formState: { errors, isSubmitting },
   } = useForm();
   const navigate = useNavigate();
+  const [showForgot, setShowForgot] = useState(false);
 
   const onSubmit = async (data) => {
     // Simulate API call
@@ -28,7 +30,7 @@ const Login = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen gap-3 p-4 bg-[url('https://wallpapercave.com/wp/wp4064613.jpg')] bg-center bg-no-repeat bg-cover">
+    <div className="flex items-center justify-center min-h-screen gap-3 p-4 bg-[url('/images/authBG.webp')] bg-center bg-no-repeat bg-cover">
       <div className="flex gap-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -55,7 +57,7 @@ const Login = () => {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.2 }}
-                  className="mb-2 text-3xl font-bold text-gray-900"
+                  className="mb-2 text-3xl font-bold text-[#5E4C37]"
                 >
                   Welcome Back
                 </motion.h1>
@@ -137,6 +139,7 @@ const Login = () => {
                   >
                     <a
                       href="#"
+                      onClick={() => setShowForgot(true)}
                       className="font-medium text-[#5e4c37] hover:text-indigo-500"
                     >
                       Forgot password?
@@ -182,12 +185,15 @@ const Login = () => {
                     whileHover={{ scale: 1.03 }}
                     whileTap={{ scale: 0.98 }}
                   >
-                    <Button variant="outline" className="flex items-center">
+                    <Button
+                      variant="outline"
+                      className="flex items-center justify-center w-full"
+                    >
                       <motion.img
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.9 }}
-                        src="https://img.icons8.com/color/512/google-logo.png"
+                        src="/images/google.png"
                         alt="Google"
                         className="w-5 h-5"
                       />{" "}
@@ -198,12 +204,15 @@ const Login = () => {
                     whileHover={{ scale: 1.03 }}
                     whileTap={{ scale: 0.98 }}
                   >
-                    <Button variant="outline" className="flex items-center">
+                    <Button
+                      variant="outline"
+                      className="flex items-center justify-center w-full"
+                    >
                       <motion.img
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.9 }}
-                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTtfbcYeYgf0wQJ-LSPm3CPbyB7T1p0f5bnaA&s"
+                        src="/images/fb.jpg"
                         alt="Facebook"
                         className="w-5 h-5 rounded-full"
                       />{" "}
@@ -264,18 +273,17 @@ const Login = () => {
             className="mt-4 text-center"
           >
             <p className="text-xs bg-[#a2a2a27f] px-3 py-1 rounded-full text-gray-50">
-              &copy; 2023 BookHaven. All rights reserved.
+              &copy; 2023 NextChapter. All rights reserved.
             </p>
           </motion.div>
         </motion.div>
-        {/*  <div className="w-full max-w-md h-[628px] ">
-          <img
-            className="object-cover w-full h-full rounded-xl"
-            src=""
-            alt=""
-          />
-        </div> */}
       </div>
+
+      {/* Modals */}
+      <ForgotPasswordModal
+        showForgot={showForgot}
+        setShowForgot={setShowForgot}
+      />
     </div>
   );
 };

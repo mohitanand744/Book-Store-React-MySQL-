@@ -15,6 +15,8 @@ const Input = React.forwardRef(
       className = "",
       containerClassName = "",
       icon,
+      value,
+      onChange,
       ...props
     },
     ref
@@ -42,6 +44,8 @@ const Input = React.forwardRef(
                 ? "border-red-500 focus:ring-red-500 focus:border-red-500"
                 : "border-gray-300 focus:ring-[#8a7053] focus:border-[#8a7053]"
             } shadow-sm focus:outline-none focus:ring-2 ${className}`}
+            value={value}
+            onChange={onChange}
             {...props}
           />
 
