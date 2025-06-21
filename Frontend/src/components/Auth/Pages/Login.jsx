@@ -6,7 +6,7 @@ import Button from "./../../Buttons/Button";
 import { EnvelopeIcon, LockClosedIcon } from "@heroicons/react/24/outline";
 import Input from "./../../Inputs/Input";
 import Checkbox from "../../Inputs/Checkbox";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import ForgotPasswordModal from "../Modal/ForgotPassword";
 
 const Login = () => {
@@ -230,12 +230,12 @@ const Login = () => {
               >
                 <p className="text-sm text-[#5e4c37]">
                   Don't have an account?{" "}
-                  <a
-                    href="#"
+                  <Link
+                    to="/signup"
                     className="font-medium text-[#5e4c37] hover:text-indigo-500"
                   >
                     Sign up
-                  </a>
+                  </Link>
                 </p>
               </motion.div>
             </div>

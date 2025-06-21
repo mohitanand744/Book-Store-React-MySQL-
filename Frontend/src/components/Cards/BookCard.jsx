@@ -10,8 +10,7 @@ const BookCard = ({ book }) => {
 
   return (
     <div
-      onClick={() => navigate(`/bookstore/book/${book.book_id}`)}
-      className="relative cursor-pointer flex flex-col border-t justify-between   shadow-xl
+      className="relative flex flex-col border-t justify-between   shadow-xl
      md:h-[29rem] h-[26rem] card rounded-3xl"
     >
       <div className="absolute top-1 right-1 px-2 py-1 bg-[#ffcd81ab] rounded-3xl">
@@ -23,11 +22,11 @@ const BookCard = ({ book }) => {
             book.author?.author_image_url ||
             "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
           }
-          className="object-cover w-full h-full rounded-full"
+          className="object-cover w-full h-full rounded-full cursor-pointer"
           alt=""
         />
-        <div className="absolute left-0  md:-left-6 text-sm  transition-all duration-300 scale-0 group-hover:translate-y-0 group-hover:scale-100 group-hover:translate-x-0 rotate-45 group-hover:rotate-0 translate-x-[-7rem] translate-y-[-10rem]  font-medium bg-[#5C4C49] p-4 rounded-3xl w-[17rem] sm:w-[18rem] md:w-[20rem]">
-          <div className="mb-2 border border-white h-44 w-44 rounded-3xl">
+        <div className="absolute left-0  text-sm  transition-all duration-300 scale-0 group-hover:translate-y-0 group-hover:scale-100 group-hover:translate-x-0 rotate-45 group-hover:rotate-0 translate-x-[-6rem] translate-y-[-10rem]  font-medium bg-[#5C4C49] p-4 rounded-3xl  profilePOPup">
+          <div className="relative mx-auto mb-2 border border-white h-44 w-44 rounded-3xl">
             <img
               src={
                 book.author?.author_image_url ||
@@ -37,7 +36,7 @@ const BookCard = ({ book }) => {
               alt=""
             />
           </div>
-          <div className="flex items-center justify-between gap-3">
+          <div className="flex flex-col items-center gap-3 mb-2">
             <h1 className="text-white">
               {" "}
               <b className="text-[0.9rem]"> Name:</b> {book.author.author_name}
@@ -49,7 +48,7 @@ const BookCard = ({ book }) => {
               </span>
             </div>
           </div>
-          <p className="text-white">
+          <p className="text-center text-white">
             <b className="text-[0.9rem]">Short Intro:</b>{" "}
             {book.author.author_description}
           </p>
@@ -57,7 +56,8 @@ const BookCard = ({ book }) => {
       </div>
       <div className="image w-[60%] md:w-[90%] mx-auto pt-2 h-[15rem]">
         <img
-          className="object-contain w-full h-full"
+          onClick={() => navigate(`/bookstore/book/${book.book_id}`)}
+          className="object-contain w-full h-full cursor-pointer"
           src={book?.images[0]}
           alt=""
         />
@@ -81,7 +81,10 @@ const BookCard = ({ book }) => {
         </div>
       </div>
       <div className="bottom flex rounded-b-2xl justify-between items-center backdrop-blur-sm mt-2 bg-[#D3BD9D]/20 p-3">
-        <button className="px-4 flex gap-1 active:scale-75 transition items-center py-1 font-semibold text-orange-600 border-[#5C4C49] border-b rounded-2xl text-sm">
+        <button
+          onClick={(e) => e.stopPropagation()}
+          className="px-4 flex gap-1 active:scale-75 transition items-center py-1 font-semibold text-orange-600 border-[#5C4C49] border-b rounded-2xl text-sm"
+        >
           <FaPlus />
           Add to Cart
         </button>

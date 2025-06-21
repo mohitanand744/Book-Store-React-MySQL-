@@ -4,6 +4,7 @@ import { HiOutlineShoppingCart } from "react-icons/hi2";
 import { IoIosArrowDown } from "react-icons/io";
 import SearchBooks from "../../SearchBars/SearchBooks";
 import { Link, useLocation } from "react-router-dom";
+import Button from "../../Buttons/Button";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -38,7 +39,7 @@ const Navbar = () => {
           : "relative shadow-lg"
       }`}
     >
-      <div className="px-6 py-3 mx-auto">
+      <div className="container px-4 py-3 mx-auto">
         <div className="flex items-center justify-between">
           {/* Logo */}
           <div className="flex-shrink-0 w-20">
@@ -120,7 +121,7 @@ const Navbar = () => {
               </div>
               <HiOutlineShoppingCart className="text-2xl text-[#ffeccd]" />
             </div>
-            <div className="">
+            {/* <div className="">
               <div className="w-12 h-12 cursor-pointer active:scale-75 transition border-2 bg-[#5C4C49] border-orange-500 rounded-full">
                 <img
                   className="object-cover w-full h-full rounded-full"
@@ -128,7 +129,24 @@ const Navbar = () => {
                   alt=""
                 />
               </div>
-            </div>
+            </div> */}
+
+            <Link to="/">
+              <Button
+                variant="outline"
+                className="items-center justify-center hidden h-8 lg:flex"
+              >
+                Login
+              </Button>
+            </Link>
+            <Link to="/signup">
+              <Button
+                variant="outline"
+                className="items-center justify-center hidden h-8 lg:flex"
+              >
+                Signup
+              </Button>
+            </Link>
 
             {/* Mobile Hamburger */}
             <div className="lg:hidden">

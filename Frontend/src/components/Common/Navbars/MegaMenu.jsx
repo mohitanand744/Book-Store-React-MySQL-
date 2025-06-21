@@ -21,7 +21,7 @@ const MegaMenu = () => {
 
   return (
     <div
-      className="p-6 bg-[#FFE6C1] rounded-lg h-full
+      className="p-6 bg-[#FFE6C1] container rounded-lg h-full
     "
     >
       {/*  <h1 className="mb-6 text-3xl font-bold text-center text-gray-800">

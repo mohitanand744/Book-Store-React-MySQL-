@@ -2,6 +2,30 @@
 @tailwind components;
 @tailwind utilities;
 
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+}
+
+.container {
+  max-width: 1600px !important;
+  margin: 0 auto;
+}
+.profilePOPup {
+  z-index: 9999 !important;
+}
+
+.swiper {
+  padding: 0 20px !important;
+  border-radius: 3rem !important;
+  -webkit-border-radius: 3rem !important;
+  -moz-border-radius: 3rem !important;
+  -ms-border-radius: 3rem !important;
+  -o-border-radius: 3rem !important;
+}
+
 .swiper-button-prev:after,
 .swiper-button-next:after {
   color: #000 !important;
@@ -22,10 +46,12 @@
 
 .swiper-button-next {
   padding-left: 0.3rem;
+  z-index: 1 !important;
 }
 
 .swiper-button-prev {
   padding-right: 0.1rem;
+  z-index: 1 !important;
 }
 .authorSlider .swiper-slide {
   width: 20rem;

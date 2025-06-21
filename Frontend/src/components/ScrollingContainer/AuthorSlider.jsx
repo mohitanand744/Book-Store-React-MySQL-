@@ -27,7 +27,7 @@ function AuthorSlider({ books }) {
   const uniqueAuthors = books ? findUniqueAuthors(books) : [];
 
   return (
-    <div className="mx-auto xl-custom:w-[100rem]  authorSlider">
+    <div className="mx-auto container xl-custom:w-[100rem]  authorSlider">
       <Swiper
         effect={"coverflow"}
         grabCursor={true}
@@ -45,7 +45,7 @@ function AuthorSlider({ books }) {
       >
         {uniqueAuthors?.map((author, i) => (
           <SwiperSlide key={i}>
-            <div className="border-l-2 border-r-2 border-orange-500 p-4 overflow-hidden flex  gap-5 border-2 h-36 author justify-between  w-full md:w-80 rounded-3xl bg-[#F6F2EB]">
+            <div className="border-l-2 border-r-2 border-orange-500 p-4 overflow-hidden flex  gap-5 border-2 h-36 author justify-between  w-full md:w-80 rounded-3xl bg-[#fcfaf7]">
               <div className="w-16 h-full p-1 overflow-hidden bg-orange-600 rounded-full">
                 <img
                   className="object-cover w-full h-full rounded-full"

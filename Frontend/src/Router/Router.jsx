@@ -2,6 +2,7 @@ import React, { lazy, Suspense, useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Loading from "../components/Loaders/Loading";
 import BookstoreLoader from "../components/Loaders/bookstoreLoader";
+import SignUp from "../components/Auth/Pages/SignUp";
 
 // Lazy-loaded components
 const Login = lazy(() => import("../components/Auth/Pages/Login"));
@@ -33,6 +34,18 @@ const Router = () => {
             ) : (
               <Suspense fallback={<Loading />}>
                 <Login />
+              </Suspense>
+            )
+          }
+        />
+        <Route
+          path="/signup"
+          element={
+            isLoading ? (
+              <Loading />
+            ) : (
+              <Suspense fallback={<Loading />}>
+                <SignUp />
               </Suspense>
             )
           }
