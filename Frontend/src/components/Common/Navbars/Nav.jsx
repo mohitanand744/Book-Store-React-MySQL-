@@ -134,7 +134,7 @@ const Navbar = () => {
             <Link to="/">
               <Button
                 variant="outline"
-                className="items-center justify-center hidden h-8 lg:flex"
+                className="flex items-center justify-center h-8"
               >
                 Login
               </Button>
