@@ -19,7 +19,11 @@ const Ratings = ({ ratings }) => {
     );
   });
 
-  return <div className="flex items-center text-orange-400">{rating}</div>;
+  return (
+    <div className="flex items-center text-[12px] sm:text-sm text-orange-400">
+      {rating}
+    </div>
+  );
 };
 
 export default Ratings;

@@ -5,12 +5,14 @@ import { IoIosArrowDown } from "react-icons/io";
 import SearchBooks from "../../SearchBars/SearchBooks";
 import { Link, useLocation } from "react-router-dom";
 import Button from "../../Buttons/Button";
+import ShoppingCart from "./ShoppingCarts";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isFixed, setIsFixed] = useState(false);
   const pathName = useLocation().pathname.replaceAll("/", "");
   const [animation, setAnimation] = useState(false);
+  const [isCartOpen, setIsCartOpen] = useState(false);
 
   console.log(pathName);
 
@@ -43,11 +45,13 @@ const Navbar = () => {
         <div className="flex items-center justify-between">
           {/* Logo */}
           <div className="flex-shrink-0 w-20">
-            <img
-              className="object-cover w-full h-full"
-              src="/images/logoBS.png"
-              alt=""
-            />
+            <Link to="/bookstore">
+              <img
+                className="object-cover w-full h-full"
+                src="/images/logoBS.png"
+                alt=""
+              />
+            </Link>
           </div>
 
           {/* Desktop Menu */}
@@ -115,7 +119,10 @@ const Navbar = () => {
           <div className="flex items-center gap-4">
             <SearchBooks />
 
-            <div className="bg-[#5C4C49] w-10 h-10 flex items-center justify-center rounded-full relative cursor-pointer active:scale-75 transition">
+            <div
+              onClick={() => setIsCartOpen(!isCartOpen)}
+              className="bg-[#5C4C49] w-10 h-10 flex items-center justify-center rounded-full relative cursor-pointer active:scale-75 transition"
+            >
               <div className="absolute flex items-center justify-center w-6 h-6 text-white bg-orange-600 rounded-full -top-2 -right-2">
                 3
               </div>
@@ -234,6 +241,8 @@ const Navbar = () => {
           </a>
         </ul>
       </div>
+
+      <ShoppingCart isCartOpen={isCartOpen} setIsCartOpen={setIsCartOpen} />
     </nav>
   );
 };

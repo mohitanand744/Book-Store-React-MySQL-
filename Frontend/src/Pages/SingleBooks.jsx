@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { mockBooks } from "../../Data/mockData";
 import BookCard from "../components/Cards/BookCard";
 import ScrollBooks from "./../components/ScrollingContainer/ScrollBooks";
+import QuantitySelector from "../components/QuantitySelector";
 
 // Mock reviews data
 const mockReviews = [
@@ -78,7 +79,6 @@ const SingleBooks = () => {
     title: "",
     comment: "",
   });
-  const prevQuantityRef = useRef(quantity);
 
   useEffect(() => {
     const foundBook = mockBooks.find((book) => book.book_id === parseInt(id));
@@ -98,63 +98,8 @@ const SingleBooks = () => {
     );
   }
 
-  // Animation for button press
-  const buttonTap = {
-    scale: 0.95,
-    transition: { duration: 0.1 },
-  };
-
   const handleImageChange = (img) => {
     setMainImage(img);
-  };
-
-  const handleQuantityChange = (e) => {
-    const value = parseInt(e.target.value);
-    if (value > 0 && value <= 10) {
-      setQuantity(value);
-    }
-  };
-
-  const incrementQuantity = () => {
-    if (quantity < 10) {
-      prevQuantityRef.current = quantity;
-      setQuantity(quantity + 1);
-    }
-  };
-
-  const decrementQuantity = () => {
-    if (quantity > 1) {
-      prevQuantityRef.current = quantity;
-      setQuantity(quantity - 1);
-    }
-  };
-
-  // Directional animation variants
-  const quantityVariants = {
-    increase: {
-      y: -20,
-      opacity: 0,
-      transition: { duration: 0.1 },
-    },
-    decrease: {
-      y: 20,
-      opacity: 0,
-      transition: { duration: 0.1 },
-    },
-    enter: {
-      y: 0,
-      opacity: 1,
-      transition: {
-        type: "spring",
-        stiffness: 500,
-        damping: 25,
-      },
-    },
-  };
-
-  // Determine animation direction
-  const getAnimationDirection = () => {
-    return quantity > prevQuantityRef.current ? "increase" : "decrease";
   };
 
   // Calculate average rating
@@ -617,49 +562,12 @@ const SingleBooks = () => {
               )}
             </motion.div>
 
-            {/* Quantity Selector */}
-            <motion.div
-              initial={{ y: 10, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.7 }}
-              className="mb-8"
-            >
-              <h3 className="text-lg font-semibold text-[#5C4C49] mb-3">
-                Quantity
-              </h3>
-              <div className="flex items-center w-40">
-                <button
-                  onClick={decrementQuantity}
-                  className="px-4 h-10 w-10 pb-2 flex justify-center items-center text-4xl bg-[#D3BD9D] text-[#fff] hover:bg-[#c5ae8d] transition rounded-l-full"
-                >
-                  -
-                </button>
-                <div className="w-[3rem] relative border-y-2 border-[#D3BD9D] p h-10 text-center">
-                  <AnimatePresence
-                    mode="popLayout"
-                    custom={getAnimationDirection()}
-                  >
-                    <motion.span
-                      key={quantity}
-                      custom={getAnimationDirection()}
-                      variants={quantityVariants}
-                      initial={getAnimationDirection()}
-                      animate="enter"
-                      exit={getAnimationDirection()}
-                      className="absolute inset-0 flex items-center justify-center"
-                    >
-                      {quantity}
-                    </motion.span>
-                  </AnimatePresence>
-                </div>
-                <button
-                  onClick={incrementQuantity}
-                  className="px-4 h-10 pb-1 w-10 flex justify-center items-center text-2xl text-white bg-[#D3BD9D] hover:bg-[#c5ae8d] transition rounded-r-full"
-                >
-                  +
-                </button>
-              </div>
-            </motion.div>
+            <div className="my-3">
+              <QuantitySelector
+                initialQuantity={quantity}
+                onChange={setQuantity}
+              />
+            </div>
 
             {/* Action Buttons */}
             <motion.div
@@ -763,24 +671,24 @@ const SingleBooks = () => {
             </h3>
             <ul className="space-y-2">
               <li className="flex">
-                <span className="w-32 text-gray-600">Publisher</span>
-                <span className="text-[#5C4C49]">Penguin Random House</span>
+                <p className="text-gray-600 w-44 ">Publisher</p>
+                <p className="w-44 text-[#5C4C49]">Penguin Random House</p>
               </li>
               <li className="flex">
-                <span className="w-32 text-gray-600">Language</span>
-                <span className="text-[#5C4C49]">English</span>
+                <p className="text-gray-600 w-44 ">Language</p>
+                <p className="w-44 text-[#5C4C49]">English</p>
               </li>
               <li className="flex">
-                <span className="w-32 text-gray-600">Paperback</span>
-                <span className="text-[#5C4C49]">320 pages</span>
+                <p className="text-gray-600 w-44 ">Paperback</p>
+                <p className="w-44 text-[#5C4C49]">320 pages</p>
               </li>
               <li className="flex">
-                <span className="w-32 text-gray-600">ISBN-10</span>
-                <span className="text-[#5C4C49]">1234567890</span>
+                <p className="text-gray-600 w-44 ">ISBN-10</p>
+                <p className="w-44 text-[#5C4C49]">1234567890</p>
               </li>
               <li className="flex">
-                <span className="w-32 text-gray-600">Dimensions</span>
-                <span className="text-[#5C4C49]">13.97 x 1.85 x 21.59 cm</span>
+                <p className="text-gray-600 w-44 ">Dimensions</p>
+                <p className="w-44 text-[#5C4C49]">13.97 x 1.85 x 21.59 cm</p>
               </li>
             </ul>
           </div>

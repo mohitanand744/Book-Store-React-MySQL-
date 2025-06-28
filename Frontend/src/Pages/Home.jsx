@@ -48,7 +48,7 @@ const Home = () => {
     <div className="">
       <div className="search">
         <SearchBooks
-          styling="w-full  block md:hidden"
+          styling="w-full block md:hidden"
           inputStylrs="rounded-[0px] py-4"
           iconStyles="top-3 right-3"
         />

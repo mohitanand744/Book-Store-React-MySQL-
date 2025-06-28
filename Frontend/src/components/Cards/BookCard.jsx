@@ -83,14 +83,14 @@ const BookCard = ({ book }) => {
       <div className="bottom flex rounded-b-2xl justify-between items-center backdrop-blur-sm mt-2 bg-[#D3BD9D]/20 p-3">
         <button
           onClick={(e) => e.stopPropagation()}
-          className="px-4 flex gap-1 active:scale-75 transition items-center py-1 font-semibold text-orange-600 border-[#5C4C49] border-b rounded-2xl text-sm"
+          className="px-4 flex gap-1 active:scale-75 transition items-center py-1 font-semibold text-orange-600 border-[#5C4C49] border-b rounded-2xl text-[12px] sm:text-sm"
         >
           <FaPlus />
           Add to Cart
         </button>
 
         <div className="flex items-center text-orange-500">
-          <span className="mr-2">4.5</span>
+          <span className="mr-2 text-[12px] sm:text-sm">4.5</span>
           <Ratings ratings={3.5} />
         </div>
       </div>

@@ -44,8 +44,12 @@ const ScrollBooks = ({ autoScroll = true, books }) => {
           swiperRef.current = swiper;
         }}
         breakpoints={{
-          320: {
-            slidesPerView: 1.3,
+          350: {
+            slidesPerView: 1,
+            spaceBetween: 10,
+          },
+          360: {
+            slidesPerView: 1.2,
             spaceBetween: 10,
           },
           640: {
