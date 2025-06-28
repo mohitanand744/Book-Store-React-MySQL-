@@ -61,7 +61,7 @@ const QuantitySelector = ({ initialQuantity = 1, onChange }) => {
       <div className="flex items-center w-40">
         <button
           onClick={decrementQuantity}
-          className="px-2 h-8 w-10 pb-1 flex justify-center items-center text-2xl bg-[#D3BD9D] text-[#fff] hover:bg-[#c5ae8d] transition rounded-l-full"
+          className="px-2 h-8 w-10 pb-0.5 sm:pb-1 flex justify-center items-center text-2xl bg-[#D3BD9D] text-[#fff] hover:bg-[#c5ae8d] transition rounded-l-full"
         >
           -
         </button>

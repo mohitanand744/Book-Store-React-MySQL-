@@ -87,14 +87,14 @@ const ShoppingCart = ({ isCartOpen, setIsCartOpen }) => {
                 className="relative w-screen max-w-md"
               >
                 <div className="flex flex-col h-full bg-white bg-[url('https://images.rawpixel.com/image_800/czNmcy1wcml2YXRlL3Jhd3BpeGVsX2ltYWdlcy93ZWJzaXRlX2NvbnRlbnQvbHIvcm00MjgtMDAxOWIuanBn.jpg')] bg-cover bg-top shadow-xl">
-                  <div className="flex-1 px-4 pt-6 pb-2 overflow-y-auto sm:px-6">
-                    <div className="flex h-[2.5rem] bg-[#FEF9F8] border-b-2 px-3 rounded-3xl border-[#8a7b78] items-center justify-between">
+                  <div className="flex-1 pt-6 pb-2 pl-4 pr-2 overflow-y-auto sm:px-6">
+                    <div className="flex h-[2.5rem] bg-[#F8F5F0] border-r-2 border-red-600 px-3 rounded-3xl items-center justify-between">
                       <h2 className="text-xl font-medium text-gray-900">
                         Shopping cart
                       </h2>
                       <button
                         onClick={toggleCart}
-                        className="flex items-center justify-center w-10 h-10 text-red-700 rounded-full hover:text-gray-500"
+                        className="flex items-center justify-center h-10 text-red-700 rounded-full w-7 hover:text-gray-500"
                       >
                         <FaArrowRightLong size={20} />
                       </button>
@@ -173,6 +173,15 @@ const ShoppingCart = ({ isCartOpen, setIsCartOpen }) => {
                                             )
                                           }
                                         />
+                                      </div>
+
+                                      <div className="flex justify-end mt-4">
+                                        <button
+                                          onClick={() => removeItem(item.id)}
+                                          className="text-sm font-medium text-red-600 hover:text-red-500"
+                                        >
+                                          <RiDeleteBin6Line size={20} />
+                                        </button>
                                       </div>
                                     </div>
                                   </motion.li>
