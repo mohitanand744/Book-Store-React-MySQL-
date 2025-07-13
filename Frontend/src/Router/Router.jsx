@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Loading from "../components/Loaders/Loading";
 import BookstoreLoader from "../components/Loaders/bookstoreLoader";
 import SignUp from "../components/Auth/Pages/SignUp";
+import UserProfile from "../Pages/UserProfile";
 
 // Lazy-loaded components
 const Login = lazy(() => import("../components/Auth/Pages/Login"));
@@ -67,6 +68,18 @@ const Router = () => {
               </Suspense>
             }
           />
+
+          <Route path="user">
+            <Route
+              path="profile"
+              element={
+                <Suspense fallback={<BookstoreLoader />}>
+                  <UserProfile />
+                </Suspense>
+              }
+            />
+          </Route>
+
           <Route
             path="aboutUs"
             element={

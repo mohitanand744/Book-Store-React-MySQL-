@@ -128,17 +128,19 @@ const Navbar = () => {
               </div>
               <HiOutlineShoppingCart className="text-2xl text-[#ffeccd]" />
             </div>
-            {/* <div className="">
-              <div className="w-12 h-12 cursor-pointer active:scale-75 transition border-2 bg-[#5C4C49] border-orange-500 rounded-full">
-                <img
-                  className="object-cover w-full h-full rounded-full"
-                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSHyzy1C_qA0SZxKf_Fq9xc1ZViTXyUhvDFc2QRbb7vdjRB1KDUEMniw4GdDaJqdYoacTs&usqp=CAU"
-                  alt=""
-                />
-              </div>
-            </div> */}
+            <div className="">
+              <Link to="/bookstore/user/profile">
+                <div className="w-12 h-12 cursor-pointer active:scale-75 transition border-2 bg-[#5C4C49] border-orange-500 rounded-full">
+                  <img
+                    className="object-cover w-full h-full rounded-full"
+                    src="https://media.istockphoto.com/id/1322973325/photo/black-girl-standing-with-tablet-at-yellow-studio.jpg?s=612x612&w=0&k=20&c=wZapeoTwD4wICqSnACYEp7VZdOkVtVfBhzBg-1dueJU="
+                    alt=""
+                  />
+                </div>
+              </Link>
+            </div>
 
-            <Link to="/">
+            {/*  <Link to="/">
               <Button
                 variant="outline"
                 className="flex items-center justify-center h-8"
@@ -153,7 +155,7 @@ const Navbar = () => {
               >
                 Signup
               </Button>
-            </Link>
+            </Link> */}
 
             {/* Mobile Hamburger */}
             <div className="lg:hidden">

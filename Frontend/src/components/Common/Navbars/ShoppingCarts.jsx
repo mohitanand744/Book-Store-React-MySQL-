@@ -130,14 +130,21 @@ const ShoppingCart = ({ isCartOpen, setIsCartOpen }) => {
                               </motion.li>
                             ) : (
                               <div className="space-y-5">
-                                {cartItems.map((item) => (
+                                {cartItems.map((item, i) => (
                                   <motion.li
                                     key={item.id}
-                                    initial={{ opacity: 0, x: 20 }}
-                                    animate={{ opacity: 1, x: 0 }}
-                                    exit={{ opacity: 0, x: 20 }}
-                                    transition={{ duration: 0.1 }}
-                                    whileHover={{ scale: 1.05 }}
+                                    initial={{ y: 10, opacity: 0 }}
+                                    animate={{ y: 0, opacity: 1 }}
+                                    transition={{
+                                      delay: i * 0.25,
+                                      type: "spring",
+                                      stiffness: 100,
+                                      damping: 10,
+                                    }}
+                                    whileHover={{
+                                      scale: 1.05,
+                                      transition: { duration: 0.2 },
+                                    }}
                                     className="flex p-3 transition-all duration-300 bg-[#F8F5F0] rounded-2xl"
                                   >
                                     <div className="flex-shrink-0 w-24 h-24 p-1 overflow-hidden border border-gray-200 rounded-2xl">
