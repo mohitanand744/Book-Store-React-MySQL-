@@ -12,7 +12,7 @@ const ScrollBooks = ({ autoScroll = true, books }) => {
   return (
     <div className="container relative mb-15">
       {/* Custom Navigation Buttons */}
-      <div className="absolute left-0 flex items-center justify-between w-full h-12 top-1/2">
+      <div className="absolute left-0 flex items-center justify-between w-full h-12 top-[14rem]">
         <button
           onClick={() => swiperRef.current?.slidePrev()}
           className="flex items-center justify-center w-12 h-12 z-10 rounded-full bg-[#D3BD9D] shadow-lg hover:bg-[#c5ac85] text-[#5C4C49] hover:text-[#3E3432] transition-all duration-300"

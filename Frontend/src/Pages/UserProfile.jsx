@@ -2,8 +2,16 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { MdOutlineMail } from "react-icons/md";
-import { FaRegAddressCard, FaRegHeart } from "react-icons/fa";
+import {
+  FaHeart,
+  FaHistory,
+  FaRegAddressCard,
+  FaRegHeart,
+  FaShoppingBag,
+} from "react-icons/fa";
 import { FiPhone } from "react-icons/fi";
+import { mockBooks } from "./../../Data/mockData";
+import ScrollBooks from "../components/ScrollingContainer/ScrollBooks";
 
 // Mock user data with additional details
 const mockUser = {
@@ -457,38 +465,121 @@ const UserProfile = () => {
               />
             </motion.div>
 
-            {/* Tabs */}
-            <div className="flex border-b border-[#D3BD9D]">
-              <button
+            {/* Desktop Tabs Navigation */}
+            <div className="hidden md:flex border-b border-[#D3BD9D]">
+              <motion.button
                 onClick={() => setActiveTab("activity")}
-                className={`px-4 py-2 font-medium ${
+                className={`px-4 py-2 font-medium text-nowrap text-[16px] relative ${
                   activeTab === "activity"
-                    ? "text-[#5C4C49] border-b-2 border-[#5C4C49]"
+                    ? "text-[#5C4C49]"
                     : "text-[#5C4C49] opacity-70"
                 }`}
+                whileHover={{ opacity: 1 }}
               >
                 Recent Activity
-              </button>
-              <button
+                {activeTab === "activity" && (
+                  <motion.div
+                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#5C4C49]"
+                    layoutId="underline"
+                  />
+                )}
+              </motion.button>
+
+              <motion.button
                 onClick={() => setActiveTab("orders")}
-                className={`px-4 py-2 font-medium ${
+                className={`px-4 py-2 font-medium text-nowrap text-[16px] relative ${
                   activeTab === "orders"
-                    ? "text-[#5C4C49] border-b-2 border-[#5C4C49]"
+                    ? "text-[#5C4C49]"
                     : "text-[#5C4C49] opacity-70"
                 }`}
+                whileHover={{ opacity: 1 }}
               >
                 Recent Orders
-              </button>
-              <button
+                {activeTab === "orders" && (
+                  <motion.div
+                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#5C4C49]"
+                    layoutId="underline"
+                  />
+                )}
+              </motion.button>
+
+              <motion.button
                 onClick={() => setActiveTab("wishlist")}
-                className={`px-4 py-2 font-medium ${
+                className={`px-4 py-2 font-medium text-nowrap text-[16px] relative ${
                   activeTab === "wishlist"
-                    ? "text-[#5C4C49] border-b-2 border-[#5C4C49]"
+                    ? "text-[#5C4C49]"
                     : "text-[#5C4C49] opacity-70"
                 }`}
+                whileHover={{ opacity: 1 }}
               >
                 Wishlist Preview
-              </button>
+                {activeTab === "wishlist" && (
+                  <motion.div
+                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#5C4C49]"
+                    layoutId="underline"
+                  />
+                )}
+              </motion.button>
+            </div>
+
+            {/* Mobile Bottom Navigation */}
+            <div className="bg-white border-t border-[#D3BD9D] md:hidden flex justify-around py-2 z-50">
+              <motion.button
+                onClick={() => setActiveTab("activity")}
+                className={`flex flex-col items-center p-2 w-full relative ${
+                  activeTab === "activity"
+                    ? "text-[#5C4C49]"
+                    : "text-[#5C4C49] opacity-70"
+                }`}
+                whileTap={{ scale: 0.95 }}
+              >
+                <FaHistory className="w-5 h-5" />
+                <span className="mt-1 text-xs">Activity</span>
+                {activeTab === "activity" && (
+                  <motion.div
+                    className="absolute top-0 left-0 right-0 h-0.5 bg-[#5C4C49]"
+                    layoutId="mobileUnderline"
+                  />
+                )}
+              </motion.button>
+
+              <motion.button
+                onClick={() => setActiveTab("orders")}
+                className={`flex flex-col items-center p-2 w-full relative ${
+                  activeTab === "orders"
+                    ? "text-[#5C4C49]"
+                    : "text-[#5C4C49] opacity-70"
+                }`}
+                whileTap={{ scale: 0.95 }}
+              >
+                <FaShoppingBag className="w-5 h-5" />
+                <span className="mt-1 text-xs">Orders</span>
+                {activeTab === "orders" && (
+                  <motion.div
+                    className="absolute top-0 left-0 right-0 h-0.5 bg-[#5C4C49]"
+                    layoutId="mobileUnderline"
+                  />
+                )}
+              </motion.button>
+
+              <motion.button
+                onClick={() => setActiveTab("wishlist")}
+                className={`flex flex-col items-center p-2 w-full relative ${
+                  activeTab === "wishlist"
+                    ? "text-[#5C4C49]"
+                    : "text-[#5C4C49] opacity-70"
+                }`}
+                whileTap={{ scale: 0.95 }}
+              >
+                <FaHeart className="w-5 h-5" />
+                <span className="mt-1 text-xs">Wishlist</span>
+                {activeTab === "wishlist" && (
+                  <motion.div
+                    className="absolute top-0 left-0 right-0 h-0.5 bg-[#5C4C49]"
+                    layoutId="mobileUnderline"
+                  />
+                )}
+              </motion.button>
             </div>
 
             {/* Tab Content */}
@@ -539,7 +630,7 @@ const UserProfile = () => {
                               "https://via.placeholder.com/100x150?text=Book+Cover"
                             }
                             alt={order.title}
-                            className="object-contain h-full"
+                            className="object-contain h-[7rem]"
                           />
                         </div>
 
@@ -679,6 +770,22 @@ const UserProfile = () => {
               )}
             </motion.div>
           </div>
+        </div>
+      </motion.div>
+
+      {/* Related Books Section */}
+      <motion.div
+        initial={{ y: 20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ delay: 1.1 }}
+        className="mt-16"
+      >
+        <h2 className="text-2xl font-bold text-[#5C4C49] mb-6">
+          {/*  More by {book.author.author_name} */}
+          Related Books
+        </h2>
+        <div className="">
+          <ScrollBooks autoScroll={false} books={mockBooks?.slice(5, 11)} />
         </div>
       </motion.div>
 
@@ -950,7 +1057,9 @@ const ModernProfileDetail = ({ icon, label, value, delay, isCopyable }) => (
         {label}
       </p>
       <div className="flex items-center justify-between">
-        <p className="text-[#5C4C49] text-sm md:text-md font-medium">{value}</p>
+        <p className="text-[#5C4C49] text-xs sm:text-sm md:text-md font-medium">
+          {value}
+        </p>
         {isCopyable && (
           <motion.button
             whileHover={{ scale: 1.1 }}

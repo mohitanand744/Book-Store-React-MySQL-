@@ -4,6 +4,7 @@ import Loading from "../components/Loaders/Loading";
 import BookstoreLoader from "../components/Loaders/bookstoreLoader";
 import SignUp from "../components/Auth/Pages/SignUp";
 import UserProfile from "../Pages/UserProfile";
+import OrdersPage from "../Pages/OrderPage";
 
 // Lazy-loaded components
 const Login = lazy(() => import("../components/Auth/Pages/Login"));
@@ -93,6 +94,14 @@ const Router = () => {
             element={
               <Suspense fallback={<BookstoreLoader />}>
                 <AllBooks />
+              </Suspense>
+            }
+          />
+          <Route
+            path="orders"
+            element={
+              <Suspense fallback={<BookstoreLoader />}>
+                <OrdersPage />
               </Suspense>
             }
           />
