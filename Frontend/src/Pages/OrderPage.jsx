@@ -21,7 +21,8 @@ const orders = [
     items: [
       {
         id: 101,
-        image: "/book1.jpg",
+        image:
+          "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSP_hMkSxjENfaqsEcGvw5Ni3UaqF6_ATeO0nts8zlkI04wVpaVSVk5a11bgQv6vZViNlAPIv95ayyCvpSnX7m4_uuR00smJvXNrCu4PetABK-po4yFDNjBhQ",
         title: "Desert Storms",
         description: "A soldier's survival tale.",
         price: "₹350",
@@ -33,7 +34,8 @@ const orders = [
       },
       {
         id: 102,
-        image: "/book2.jpg",
+        image:
+          "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQxvujwWsfysExcKQ13qZqcHYwWGHtUt7_YwdWK16u5pLLEvun2GzDX2e0yiHYk7dzD7G9YzytI1YQFQGvheUr9yO0my5CHLE-9ziS8whUw1nHL_UL_cm4i",
         title: "Love in the Time of...",
         description: "Romance and tech collide.",
         price: "₹269",
@@ -53,7 +55,8 @@ const orders = [
     items: [
       {
         id: 201,
-        image: "/book3.jpg",
+        image:
+          "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTBXUSzMiGmOTeAtYJTCYdvr0uTfSRRh_KvNvGBolkPlZRdtpqo8VCG_1Hx8dHOzgQ6Om2pDwOFSg1YMSJy-paH9cGr3Y_tJLwD_Ef9nVRmQ5810WqZ5cxLcA",
         title: "Biotech Rising",
         description: "Gene editing in near future.",
         price: "₹410",
@@ -172,10 +175,10 @@ const OrdersPage = () => {
                                 className="z-10 flex flex-col items-center"
                               >
                                 <div
-                                  className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                                  className={`w-10 h-10  rounded-full flex items-center justify-center ${
                                     config.progress <=
                                     statusConfig[order.status].progress
-                                      ? `${config.color} shadow-sm`
+                                      ? `${config.color} border-2 border-[#D3BD9D]`
                                       : "bg-gray-100 text-gray-400"
                                   }`}
                                 >
@@ -188,7 +191,7 @@ const OrdersPage = () => {
                             )
                           )}
                           {/* Progress Line */}
-                          <div className="absolute left-0 right-0 h-1 bg-gray-200 top-5">
+                          <div className="absolute h-1 bg-gray-200 left-5 right-5 top-5">
                             <motion.div
                               className="absolute top-0 left-0 h-full bg-[#D3BD9D]"
                               initial={{ width: 0 }}
