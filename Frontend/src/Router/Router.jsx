@@ -13,6 +13,7 @@ const Home = lazy(() => import("../Pages/Home"));
 const AllBooks = lazy(() => import("../Pages/AllBooks"));
 const SingleBooks = lazy(() => import("../Pages/SingleBooks"));
 const AboutUs = lazy(() => import("../Pages/AboutUs"));
+import { Toaster } from "react-hot-toast";
 
 const Router = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -27,6 +28,22 @@ const Router = () => {
 
   return (
     <BrowserRouter>
+      <Toaster
+        position="top-right"
+        reverseOrder={false}
+        gutter={8}
+        containerClassName=""
+        containerStyle={{}}
+        toastOptions={{
+          className: "",
+          style: {
+            background: "linear-gradient(to right, #5C4C49, #D3BD9D)",
+            color: "#fff",
+            border: "2px solid #fff",
+          },
+        }}
+      />
+
       <Routes>
         <Route
           path="/"

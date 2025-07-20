@@ -33,7 +33,7 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`bg-[#D3BD9D] transition-all z-[999999] duration-300  ${
+      className={`bg-[#D3BD9D] transition-all z-[999] duration-300  ${
         isFixed
           ? animation
             ? "sticky top-[-8rem] left-0 w-full opacity-80 shadow-xl animate-slideDown"

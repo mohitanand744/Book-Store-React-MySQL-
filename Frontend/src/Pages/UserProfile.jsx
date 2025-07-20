@@ -12,6 +12,9 @@ import {
 import { FiPhone } from "react-icons/fi";
 import { mockBooks } from "./../../Data/mockData";
 import ScrollBooks from "../components/ScrollingContainer/ScrollBooks";
+import toast from "react-hot-toast";
+import Button from "../components/Buttons/Button";
+import { CopyIcon } from "../components/SVGs/SVGs";
 
 // Mock user data with additional details
 const mockUser = {
@@ -127,62 +130,68 @@ const UserProfile = () => {
             My Profile
           </motion.h1>
           <div className="flex flex-wrap justify-center gap-3 sm:justify-start md:space-x-3">
-            <motion.button
+            <motion.div
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={navigateToOrders}
-              className="flex items-center text-nowrap px-4 py-2 bg-[#5C4C49] text-[#E8D9C5] rounded-lg shadow-md"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="w-5 h-5 mr-2"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M10 2a4 4 0 00-4 4v1H5a1 1 0 00-.994.89l-1 9A1 1 0 004 18h12a1 1 0 00.994-1.11l-1-9A1 1 0 0015 7h-1V6a4 4 0 00-4-4zm2 5V6a2 2 0 10-4 0v1h4zm-6 3a1 1 0 112 0 1 1 0 01-2 0zm7-1a1 1 0 100 2 1 1 0 000-2z"
-                  clipRule="evenodd"
-                />
-              </svg>
-              My Orders
-            </motion.button>
-            <motion.button
+              <Button className="flex items-center text-nowrap px-4 py-2 bg-[#5C4C49] text-[#E8D9C5] rounded-lg shadow-md">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="w-5 h-5 mr-2"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M10 2a4 4 0 00-4 4v1H5a1 1 0 00-.994.89l-1 9A1 1 0 004 18h12a1 1 0 00.994-1.11l-1-9A1 1 0 0015 7h-1V6a4 4 0 00-4-4zm2 5V6a2 2 0 10-4 0v1h4zm-6 3a1 1 0 112 0 1 1 0 01-2 0zm7-1a1 1 0 100 2 1 1 0 000-2z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+                My Orders
+              </Button>
+            </motion.div>
+            <motion.div
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={navigateToWishlist}
-              className="flex items-center text-nowrap px-4 py-2 bg-[#D3BD9D] text-[#5C4C49] rounded-lg shadow-md"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="w-5 h-5 mr-2"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"
-                  clipRule="evenodd"
-                />
-              </svg>
-              Wishlist
-            </motion.button>
-            <motion.button
+              <Button className="flex items-center text-nowrap px-4 py-2 bg-[#D3BD9D] text-[#5C4C49] rounded-lg shadow-md">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="w-5 h-5 mr-2"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+                Wishlist
+              </Button>
+            </motion.div>
+            <motion.div
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={handleEdit}
-              className="flex items-center px-4 text-nowrap py-2 bg-[#5C4C49] text-[#E8D9C5] rounded-lg shadow-md"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="w-5 h-5 mr-2"
-                viewBox="0 0 20 20"
-                fill="currentColor"
+              <Button
+                className="flex items-center px-4 text-nowrap py-2 bg-[#5C4C49] text-[#E8D9C5] rounded-lg shadow-md"
+                type="button"
               >
-                <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
-              </svg>
-              Edit Profile
-            </motion.button>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="w-5 h-5 mr-2"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+                </svg>
+                Edit Profile
+              </Button>
+            </motion.div>
           </div>
         </div>
 
@@ -379,30 +388,25 @@ const UserProfile = () => {
 
               {/* Edit Button */}
               <motion.div
-                className="mt-6"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.8 }}
+                onClick={handleEdit}
               >
-                <motion.button
-                  whileHover={{
-                    y: -2,
-                    boxShadow: "0 4px 12px rgba(92, 76, 73, 0.2)",
-                  }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={handleEdit}
-                  className="w-full py-3 bg-[#5C4C49] text-[#E8D9C5] rounded-lg font-medium flex items-center justify-center gap-2"
+                <Button
+                  className="flex items-center w-full mt-5 justify-center px-4 text-nowrap py-2 bg-[#5C4C49] text-[#E8D9C5] rounded-lg shadow-md"
+                  type="button"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="w-5 h-5"
+                    className="w-5 h-5 mr-2"
                     viewBox="0 0 20 20"
                     fill="currentColor"
                   >
                     <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
                   </svg>
                   Edit Profile
-                </motion.button>
+                </Button>
               </motion.div>
             </div>
           </motion.div>
@@ -778,7 +782,7 @@ const UserProfile = () => {
         initial={{ y: 20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 1.1 }}
-        className="mt-16"
+        className="container mt-16"
       >
         <h2 className="text-2xl font-bold text-[#5C4C49] mb-6">
           {/*  More by {book.author.author_name} */}
@@ -1002,33 +1006,38 @@ const ActivityItem = ({
             <span className="text-sm text-[#5C4C49] opacity-80">Activity</span>
           </div>
 
-          <motion.button
+          <motion.div
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="px-4 py-2 bg-[#5C4C49] text-[#E8D9C5] rounded-lg text-sm font-medium flex items-center"
+            className=""
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="w-4 h-4 mr-1"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
+            <Button
+              type="button"
+              className="px-4 py-2 bg-[#5C4C49] text-[#E8D9C5] rounded-lg text-sm font-medium flex items-center"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-              />
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-              />
-            </svg>
-            View Details
-          </motion.button>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="w-4 h-4 mr-1"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                />
+              </svg>
+              View Details
+            </Button>
+          </motion.div>
         </div>
       </div>
     </div>
@@ -1064,24 +1073,20 @@ const ModernProfileDetail = ({ icon, label, value, delay, isCopyable }) => (
           <motion.button
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
-            onClick={() => navigator.clipboard.writeText(value)}
+            onClick={() => {
+              navigator.clipboard
+                .writeText(value)
+                .then(() => {
+                  toast.success("Copied to clipboard!");
+                })
+                .catch((error) => {
+                  console.error("Failed to copy to clipboard:", error);
+                });
+            }}
             className="text-[#5C4C49]/50 hover:text-[#5C4C49] transition-colors"
             title="Copy to clipboard"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="w-4 h-4"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"
-              />
-            </svg>
+            <CopyIcon />
           </motion.button>
         )}
       </div>

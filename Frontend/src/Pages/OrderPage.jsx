@@ -8,21 +8,29 @@ import {
   FiFileText,
   FiRepeat,
   FiShoppingCart,
+  FiCalendar,
+  FiCreditCard,
+  FiDollarSign,
+  FiHash,
 } from "react-icons/fi";
+import { CopyIcon } from "../components/SVGs/SVGs";
+import toast from "react-hot-toast";
 
-// Mock Data
 const orders = [
   {
     id: 1,
     orderNumber: "ORD-2023-001",
     date: "15 July 2023",
+    time: "10:45 AM",
     total: "₹1,029",
-    status: "Shipped", // Overall order status
+    status: "Shipped",
+    paymentMethod: "VISA",
+    lastFourDigits: "4242",
+    isDelayed: false,
     items: [
       {
         id: 101,
-        image:
-          "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSP_hMkSxjENfaqsEcGvw5Ni3UaqF6_ATeO0nts8zlkI04wVpaVSVk5a11bgQv6vZViNlAPIv95ayyCvpSnX7m4_uuR00smJvXNrCu4PetABK-po4yFDNjBhQ",
+        image: "https://m.media-amazon.com/images/I/71UwSHSZRnS._AC_UL320_.jpg",
         title: "Desert Storms",
         description: "A soldier's survival tale.",
         price: "₹350",
@@ -34,8 +42,7 @@ const orders = [
       },
       {
         id: 102,
-        image:
-          "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQxvujwWsfysExcKQ13qZqcHYwWGHtUt7_YwdWK16u5pLLEvun2GzDX2e0yiHYk7dzD7G9YzytI1YQFQGvheUr9yO0my5CHLE-9ziS8whUw1nHL_UL_cm4i",
+        image: "https://m.media-amazon.com/images/I/81s6DUyQCZL._AC_UL320_.jpg",
         title: "Love in the Time of...",
         description: "Romance and tech collide.",
         price: "₹269",
@@ -50,13 +57,16 @@ const orders = [
     id: 2,
     orderNumber: "ORD-2023-002",
     date: "10 July 2023",
+    time: "2:30 PM",
     total: "₹820",
     status: "Delivered",
+    paymentMethod: "MasterCard",
+    lastFourDigits: "5555",
+    isDelayed: false,
     items: [
       {
         id: 201,
-        image:
-          "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTBXUSzMiGmOTeAtYJTCYdvr0uTfSRRh_KvNvGBolkPlZRdtpqo8VCG_1Hx8dHOzgQ6Om2pDwOFSg1YMSJy-paH9cGr3Y_tJLwD_Ef9nVRmQ5810WqZ5cxLcA",
+        image: "https://m.media-amazon.com/images/I/81Pk+-9oJkL._AC_UL320_.jpg",
         title: "Biotech Rising",
         description: "Gene editing in near future.",
         price: "₹410",
@@ -68,6 +78,176 @@ const orders = [
       },
     ],
   },
+  {
+    id: 3,
+    orderNumber: "ORD-2023-003",
+    date: "5 July 2023",
+    time: "9:15 AM",
+    total: "₹1,499",
+    status: "Delivered",
+    paymentMethod: "PayPal",
+    lastFourDigits: "7890",
+    isDelayed: false,
+    items: [
+      {
+        id: 301,
+        image: "https://m.media-amazon.com/images/I/81zq7Yzv2jL._AC_UL320_.jpg",
+        title: "Quantum Paradox",
+        description: "Sci-fi thriller about time loops.",
+        price: "₹599",
+        originalPrice: "₹799",
+        quantity: 1,
+        status: "Delivered",
+        deliveryDate: "9 July 2023",
+        trackingNumber: "TRK456789123",
+      },
+      {
+        id: 302,
+        image: "https://m.media-amazon.com/images/I/71aFt4+OTOL._AC_UL320_.jpg",
+        title: "The Midnight Library",
+        description: "Explore infinite possibilities.",
+        price: "₹399",
+        originalPrice: "₹499",
+        quantity: 1,
+        status: "Delivered",
+        deliveryDate: "9 July 2023",
+        trackingNumber: "TRK456789124",
+      },
+      {
+        id: 303,
+        image: "https://m.media-amazon.com/images/I/81dQwQlmAXL._AC_UL320_.jpg",
+        title: "Atomic Habits",
+        description: "Tiny changes, remarkable results.",
+        price: "₹501",
+        originalPrice: "₹699",
+        quantity: 1,
+        status: "Delivered",
+        deliveryDate: "9 July 2023",
+        trackingNumber: "TRK456789125",
+      },
+    ],
+  },
+  {
+    id: 4,
+    orderNumber: "ORD-2023-004",
+    date: "1 July 2023",
+    time: "7:20 PM",
+    total: "₹2,349",
+    status: "Processing",
+    paymentMethod: "AMEX",
+    lastFourDigits: "1001",
+    isDelayed: true,
+    items: [
+      {
+        id: 401,
+        image: "https://m.media-amazon.com/images/I/71N4oeWwYlL._AC_UL320_.jpg",
+        title: "The Silent Patient",
+        description: "Psychological thriller.",
+        price: "₹349",
+        originalPrice: "₹499",
+        quantity: 3,
+        status: "Processing",
+        deliveryDate: "Estimated 10 July 2023",
+      },
+      {
+        id: 402,
+        image: "https://m.media-amazon.com/images/I/81bsw6fnUiL._AC_UL320_.jpg",
+        title: "Where the Crawdads Sing",
+        description: "Mystery and nature intertwined.",
+        price: "₹299",
+        originalPrice: "₹399",
+        quantity: 2,
+        status: "Processing",
+        deliveryDate: "Estimated 10 July 2023",
+      },
+    ],
+  },
+  {
+    id: 5,
+    orderNumber: "ORD-2023-005",
+    date: "28 June 2023",
+    time: "11:05 AM",
+    total: "₹899",
+    status: "Shipped",
+    paymentMethod: "VISA",
+    lastFourDigits: "1881",
+    isDelayed: false,
+    items: [
+      {
+        id: 501,
+        image: "https://m.media-amazon.com/images/I/71X1p4TGlxL._AC_UL320_.jpg",
+        title: "Educated",
+        description: "Memoir of self-discovery.",
+        price: "₹499",
+        originalPrice: "₹699",
+        quantity: 1,
+        status: "Shipped",
+        deliveryDate: "3 July 2023",
+        trackingNumber: "TRK112233445",
+      },
+      {
+        id: 502,
+        image: "https://m.media-amazon.com/images/I/81bsw6fnUiL._AC_UL320_.jpg",
+        title: "The Guest List",
+        description: "Murder mystery at a wedding.",
+        price: "₹400",
+        originalPrice: "₹599",
+        quantity: 1,
+        status: "Shipped",
+        deliveryDate: "3 July 2023",
+        trackingNumber: "TRK112233446",
+      },
+    ],
+  },
+  {
+    id: 6,
+    orderNumber: "ORD-2023-006",
+    date: "25 June 2023",
+    time: "4:50 PM",
+    total: "₹1,599",
+    status: "Delivered",
+    paymentMethod: "UPI",
+    lastFourDigits: "2023",
+    isDelayed: false,
+    items: [
+      {
+        id: 601,
+        image: "https://m.media-amazon.com/images/I/71aFt4+OTOL._AC_UL320_.jpg",
+        title: "The Vanishing Half",
+        description: "Story of twin sisters.",
+        price: "₹599",
+        originalPrice: "₹799",
+        quantity: 1,
+        status: "Delivered",
+        deliveryDate: "29 June 2023",
+        trackingNumber: "TRK998877665",
+      },
+      {
+        id: 602,
+        image: "https://m.media-amazon.com/images/I/81dQwQlmAXL._AC_UL320_.jpg",
+        title: "Project Hail Mary",
+        description: "Space adventure novel.",
+        price: "₹499",
+        originalPrice: "₹699",
+        quantity: 1,
+        status: "Delivered",
+        deliveryDate: "29 June 2023",
+        trackingNumber: "TRK998877666",
+      },
+      {
+        id: 603,
+        image: "https://m.media-amazon.com/images/I/71N4oeWwYlL._AC_UL320_.jpg",
+        title: "Circe",
+        description: "Mythological fiction.",
+        price: "₹501",
+        originalPrice: "₹699",
+        quantity: 1,
+        status: "Delivered",
+        deliveryDate: "29 June 2023",
+        trackingNumber: "TRK998877667",
+      },
+    ],
+  },
 ];
 
 const statusConfig = {
@@ -75,16 +255,19 @@ const statusConfig = {
     icon: <FiPackage className="text-blue-500" />,
     color: "bg-blue-100 text-blue-800",
     progress: 1,
+    estimatedText: "Est. delivery 5-7 business days",
   },
   Shipped: {
     icon: <FiTruck className="text-yellow-500" />,
     color: "bg-yellow-100 text-yellow-800",
     progress: 2,
+    estimatedText: "Arriving in 2-3 business days",
   },
   Delivered: {
     icon: <FiCheckCircle className="text-green-500" />,
     color: "bg-green-100 text-green-800",
     progress: 3,
+    estimatedText: "Delivered on " + new Date().toLocaleDateString(),
   },
 };
 
@@ -96,8 +279,8 @@ const OrdersPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#FFE6C1] py-8 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-6xl mx-auto">
+    <div className="min-h-screen bg-[#F5F1ED] py-8 px-4 sm:px-6 lg:px-8">
+      <div className="container px-4">
         <motion.h1
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -113,41 +296,125 @@ const OrdersPage = () => {
               key={order.id}
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              whileHover={{ scale: 1.02 }}
               transition={{ duration: 0.3, delay: order.id * 0.1 }}
-              className="transition-shadow bg-white shadow-sm rounded-xl hover:shadow-md"
+              className="bg-[url('https://images.rawpixel.com/image_800/czNmcy1wcml2YXRlL3Jhd3BpeGVsX2ltYWdlcy93ZWJzaXRlX2NvbnRlbnQvbHIvcm00MjgtMDAxOWIuanBn.jpg')] bg-no-repeat bg-bottom bg-cover rounded-2xl"
             >
               {/* Order Summary (Clickable Header) */}
               <div
                 onClick={() => toggleOrder(order.id)}
-                className="flex items-center justify-between p-5 cursor-pointer"
+                className="flex items-center justify-between p-5 transition cursor-pointer backdrop-blur-sm rounded-xl"
               >
-                <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-8">
-                  <div>
-                    <p className="text-xs text-gray-500">ORDER PLACED</p>
-                    <p className="font-medium text-[#5C4C49]">{order.date}</p>
+                <div className="flex flex-col gap-4 sm:flex-row sm:gap-8">
+                  {/* Order Date */}
+                  <div className="flex items-start gap-3">
+                    <div className="p-2 bg-[#FFE6C1] rounded-lg">
+                      <FiCalendar className="text-[#5C4C49]" />
+                    </div>
+                    <div>
+                      <p className="text-xs text-gray-500">ORDER PLACED</p>
+                      <p className="font-medium text-[#5C4C49]">{order.date}</p>
+                      <p className="text-xs text-gray-400">{order.time}</p>
+                    </div>
                   </div>
-                  <div>
-                    <p className="text-xs text-gray-500">TOTAL</p>
-                    <p className="font-medium text-[#5C4C49]">{order.total}</p>
+
+                  {/* Payment Method */}
+                  <div className="flex items-start gap-3">
+                    <div className="p-2 bg-[#FFE6C1] rounded-lg">
+                      <FiCreditCard className="text-[#5C4C49]" />
+                    </div>
+                    <div>
+                      <p className="text-xs text-gray-500">PAYMENT</p>
+                      <p className="font-medium text-[#5C4C49]">
+                        {order.paymentMethod}
+                      </p>
+                      <p className="text-xs text-gray-400">
+                        ****{order.lastFourDigits}
+                      </p>
+                    </div>
                   </div>
-                  <div>
-                    <p className="text-xs text-gray-500">ORDER #</p>
-                    <p className="font-medium text-[#5C4C49]">
-                      {order.orderNumber}
-                    </p>
+
+                  {/* Order Total */}
+                  <div className="flex items-start gap-3">
+                    <div className="p-1 px-3 text-[#5C4C49] bg-[#FFE6C1] rounded-lg">
+                      ₹
+                    </div>
+                    <div>
+                      <p className="text-xs text-gray-500">TOTAL</p>
+                      <p className="font-medium text-[#5C4C49]">
+                        {order.total}
+                      </p>
+                      <p className="text-xs text-gray-400">
+                        {order.items.length} items
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Order Number */}
+                  <div className="flex items-start gap-3">
+                    <div className="p-2 bg-[#FFE6C1] rounded-lg">
+                      <FiHash className="text-[#5C4C49]" />
+                    </div>
+                    <div className="">
+                      <p className="text-xs text-gray-500">ORDER #</p>
+                      <div className="flex items-center gap-2">
+                        <p className="font-medium text-[#5C4C49]">
+                          {order.orderNumber}
+                        </p>
+                        <motion.button
+                          whileHover={{ scale: 1.1 }}
+                          whileTap={{ scale: 0.9 }}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            navigator.clipboard
+                              .writeText(order.orderNumber)
+                              .then(() => {
+                                toast.success(`Copied to clipboard!`);
+                              })
+                              .catch((error) => {
+                                console.error(
+                                  "Failed to copy to clipboard:",
+                                  error
+                                );
+                              });
+                          }}
+                          className="text-[#5C4C49]/50 hover:text-[#5C4C49] transition-colors"
+                          title="Copy to clipboard"
+                        >
+                          <CopyIcon />
+                        </motion.button>
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <div className="flex items-center gap-2">
-                  <span
-                    className={`px-3 py-1 rounded-full text-xs font-medium ${
-                      statusConfig[order.status].color
-                    }`}
-                  >
-                    {order.status}
-                  </span>
+
+                {/* Status and Chevron */}
+                <div className="flex items-center gap-4">
+                  <div className="flex-col items-end hidden sm:flex">
+                    <div className="flex items-center gap-2">
+                      <span
+                        className={`px-3 py-1 rounded-full text-xs font-medium ${
+                          statusConfig[order.status].color
+                        }`}
+                      >
+                        {order.status}
+                      </span>
+                      {order.isDelayed && (
+                        <span className="px-2 py-1 text-xs text-red-500 rounded-full bg-red-50">
+                          Delayed
+                        </span>
+                      )}
+                    </div>
+                    <p className="mt-1 text-xs text-gray-400">
+                      {statusConfig[order.status].estimatedText}
+                    </p>
+                  </div>
+
                   <motion.div
                     animate={{ rotate: expandedOrder === order.id ? 180 : 0 }}
                     transition={{ duration: 0.2 }}
+                    className="p-2 bg-[#FFE6C1] rounded-lg"
                   >
                     <FiChevronDown className="text-[#5C4C49]" />
                   </motion.div>
@@ -162,7 +429,7 @@ const OrdersPage = () => {
                     animate={{ opacity: 1, height: "auto" }}
                     exit={{ opacity: 0, height: 0 }}
                     transition={{ duration: 0.3, ease: "easeInOut" }}
-                    className="overflow-hidden"
+                    className="overflow-hidden backdrop-blur-sm"
                   >
                     <div className="border-t border-[#D3BD9D] px-5 py-4">
                       {/* Status Stepper */}

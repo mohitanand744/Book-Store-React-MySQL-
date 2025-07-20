@@ -10,7 +10,7 @@ const BookCard = ({ book }) => {
 
   return (
     <div
-      className="relative flex flex-col border-t justify-between   shadow-xl
+      className="relative flex flex-col bg-white border-t justify-between   shadow-xl
      md:h-[29rem] h-[26rem] card rounded-3xl"
     >
       <div className="absolute top-1 right-1 px-2 py-1 bg-[#ffcd81ab] rounded-3xl">
