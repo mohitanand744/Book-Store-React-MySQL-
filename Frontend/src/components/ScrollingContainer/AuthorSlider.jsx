@@ -1,14 +1,22 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 import "swiper/css";
 import "swiper/css/effect-coverflow";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
-import { EffectCoverflow, Pagination, Navigation } from "swiper/modules";
+import {
+  EffectCoverflow,
+  Pagination,
+  Navigation,
+  Autoplay,
+} from "swiper/modules";
 import Ratings from "../RatingsReviews/Ratings";
+import SwiperNavButtons from "../Buttons/SwiperNavButtons";
 
 function AuthorSlider({ books }) {
+  const swiperRef = useRef(null);
+
   const findUniqueAuthors = (booksArray) => {
     const uniqueAuthors = [];
     const seen = new Set();
@@ -27,21 +35,35 @@ function AuthorSlider({ books }) {
   const uniqueAuthors = books ? findUniqueAuthors(books) : [];
 
   return (
-    <div className="mx-auto container xl-custom:w-[100rem]  authorSlider">
+    <div className="mx-auto relative container xl-custom:w-[100rem]  authorSlider">
+      {/* Custom Navigation Buttons */}
+      <SwiperNavButtons
+        swiperRef={swiperRef}
+        className="my-custom-class"
+        position={{ top: "37%" }}
+        prevButtonClass=""
+        nextButtonClass=""
+      />
       <Swiper
         effect={"coverflow"}
+        onSwiper={(swiper) => {
+          swiperRef.current = swiper;
+        }}
         grabCursor={true}
         centeredSlides={true}
         loop={true}
         slidesPerView={"auto"}
         coverflowEffect={{
-          rotate: 0,
-          stretch: 20,
-          depth: 200,
+          rotate: 20,
+          stretch: 10,
+          depth: 140,
           modifier: 1,
         }}
-        navigation={{ clickable: true }}
-        modules={[EffectCoverflow, Navigation]}
+        autoplay={{
+          delay: 3500, // Auto slide change every 1.5 seconds
+          disableOnInteraction: false,
+        }}
+        modules={[EffectCoverflow, Navigation, Pagination, Autoplay]}
       >
         {uniqueAuthors?.map((author, i) => (
           <SwiperSlide key={i}>

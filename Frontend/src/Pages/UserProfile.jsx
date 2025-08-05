@@ -473,12 +473,11 @@ const UserProfile = () => {
             <div className="hidden md:flex border-b border-[#D3BD9D]">
               <motion.button
                 onClick={() => setActiveTab("activity")}
-                className={`px-4 py-2 font-medium text-nowrap text-[16px] relative ${
+                className={`px-4 py-2 text-nowrap text-[16px] relative ${
                   activeTab === "activity"
-                    ? "text-[#5C4C49]"
-                    : "text-[#5C4C49] opacity-70"
+                    ? "text-[#5C4C49] opacity-100 font-bold"
+                    : "text-[#5C4C49] opacity-70 font-medium"
                 }`}
-                whileHover={{ opacity: 1 }}
               >
                 Recent Activity
                 {activeTab === "activity" && (
@@ -491,12 +490,11 @@ const UserProfile = () => {
 
               <motion.button
                 onClick={() => setActiveTab("orders")}
-                className={`px-4 py-2 font-medium text-nowrap text-[16px] relative ${
+                className={`px-4 py-2 text-nowrap text-[16px] relative ${
                   activeTab === "orders"
-                    ? "text-[#5C4C49]"
-                    : "text-[#5C4C49] opacity-70"
+                    ? "text-[#5C4C49] opacity-100 font-bold"
+                    : "text-[#5C4C49] opacity-70 font-medium"
                 }`}
-                whileHover={{ opacity: 1 }}
               >
                 Recent Orders
                 {activeTab === "orders" && (
@@ -509,12 +507,11 @@ const UserProfile = () => {
 
               <motion.button
                 onClick={() => setActiveTab("wishlist")}
-                className={`px-4 py-2 font-medium text-nowrap text-[16px] relative ${
+                className={`px-4 py-2 text-nowrap text-[16px] relative ${
                   activeTab === "wishlist"
-                    ? "text-[#5C4C49]"
-                    : "text-[#5C4C49] opacity-70"
+                    ? "text-[#5C4C49] opacity-100 font-bold"
+                    : "text-[#5C4C49] opacity-70 font-medium"
                 }`}
-                whileHover={{ opacity: 1 }}
               >
                 Wishlist Preview
                 {activeTab === "wishlist" && (
@@ -527,7 +524,7 @@ const UserProfile = () => {
             </div>
 
             {/* Mobile Bottom Navigation */}
-            <div className="bg-white border-t border-[#D3BD9D] md:hidden flex justify-around py-2 z-50">
+            <div className="bg-white rounded-3xl border-t border-[#D3BD9D] md:hidden flex justify-around py-2 z-50">
               <motion.button
                 onClick={() => setActiveTab("activity")}
                 className={`flex flex-col items-center p-2 w-full relative ${
@@ -541,7 +538,7 @@ const UserProfile = () => {
                 <span className="mt-1 text-xs">Activity</span>
                 {activeTab === "activity" && (
                   <motion.div
-                    className="absolute top-0 left-0 right-0 h-0.5 bg-[#5C4C49]"
+                    className="absolute top-0 left-6 right-6 h-0.5 bg-[#5C4C49]"
                     layoutId="mobileUnderline"
                   />
                 )}
@@ -560,7 +557,7 @@ const UserProfile = () => {
                 <span className="mt-1 text-xs">Orders</span>
                 {activeTab === "orders" && (
                   <motion.div
-                    className="absolute top-0 left-0 right-0 h-0.5 bg-[#5C4C49]"
+                    className="absolute top-0 left-6 right-6 h-0.5 bg-[#5C4C49]"
                     layoutId="mobileUnderline"
                   />
                 )}
@@ -579,7 +576,7 @@ const UserProfile = () => {
                 <span className="mt-1 text-xs">Wishlist</span>
                 {activeTab === "wishlist" && (
                   <motion.div
-                    className="absolute top-0 left-0 right-0 h-0.5 bg-[#5C4C49]"
+                    className="absolute top-0 left-6 right-6 h-0.5 bg-[#5C4C49]"
                     layoutId="mobileUnderline"
                   />
                 )}
@@ -594,7 +591,7 @@ const UserProfile = () => {
               className="p-6 bg-white rounded-2xl"
             >
               {activeTab === "activity" && (
-                <div className="space-y-4">
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                   {user.recentOrders.slice(0, 3).map((order, index) => (
                     <ActivityItem
                       key={order.id}
@@ -610,7 +607,7 @@ const UserProfile = () => {
               )}
 
               {activeTab === "orders" && (
-                <div className="space-y-4">
+                <div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
                   {user.recentOrders.map((order, index) => (
                     <motion.div
                       key={order.id}
@@ -640,7 +637,7 @@ const UserProfile = () => {
 
                         {/* Order Details */}
                         <div className="flex-1 p-4">
-                          <div className="flex flex-col justify-between gap-2 md:flex-row md:items-center">
+                          <div className="flex flex-col flex-wrap justify-between gap-2 md:flex-row md:items-center">
                             <div>
                               <h3 className="text-lg font-semibold text-[#5C4C49]">
                                 {order.title}
@@ -667,7 +664,7 @@ const UserProfile = () => {
                             </div>
                           </div>
 
-                          <div className="grid grid-cols-2 gap-4 mt-4 text-sm md:grid-cols-4">
+                          <div className="grid grid-cols-2 gap-4 mt-4 text-sm md:grid-cols-2">
                             <div>
                               <p className="text-[#5C4C49] opacity-70">
                                 Order ID
@@ -998,13 +995,13 @@ const ActivityItem = ({
           {description}
         </p>
 
-        <div className="flex items-center justify-between mt-auto">
-          <div className="flex items-center">
+        <div className="flex items-center justify-end mt-auto">
+          {/* <div className="flex items-center">
             <div className="bg-[#5C4C49] text-[#E8D9C5] rounded-full w-8 h-8 flex items-center justify-center mr-2">
               {title.charAt(0)}
             </div>
             <span className="text-sm text-[#5C4C49] opacity-80">Activity</span>
-          </div>
+          </div> */}
 
           <motion.div
             whileHover={{ scale: 1.05 }}
@@ -1013,7 +1010,7 @@ const ActivityItem = ({
           >
             <Button
               type="button"
-              className="px-4 py-2 bg-[#5C4C49] text-[#E8D9C5] rounded-lg text-sm font-medium flex items-center"
+              className="px-4 py-2 bg-[#5C4C49] text-[#E8D9C5] rounded-lg text-xs md:text-sm font-medium flex items-center"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"

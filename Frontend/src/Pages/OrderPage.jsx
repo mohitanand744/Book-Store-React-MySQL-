@@ -15,6 +15,7 @@ import {
 } from "react-icons/fi";
 import { CopyIcon } from "../components/SVGs/SVGs";
 import toast from "react-hot-toast";
+import Banners from "../components/Banners/Banners";
 
 const orders = [
   {
@@ -279,278 +280,277 @@ const OrdersPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#F5F1ED] py-8 px-4 sm:px-6 lg:px-8">
-      <div className="container px-4">
-        <motion.h1
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4 }}
-          className="text-3xl font-bold text-[#5C4C49] mb-8"
-        >
-          Your Orders
-        </motion.h1>
-
-        <div className="space-y-4">
-          {orders.map((order) => (
-            <motion.div
-              key={order.id}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              whileHover={{ scale: 1.02 }}
-              transition={{ duration: 0.3, delay: order.id * 0.1 }}
-              className="bg-[url('https://images.rawpixel.com/image_800/czNmcy1wcml2YXRlL3Jhd3BpeGVsX2ltYWdlcy93ZWJzaXRlX2NvbnRlbnQvbHIvcm00MjgtMDAxOWIuanBn.jpg')] bg-no-repeat bg-bottom bg-cover rounded-2xl"
-            >
-              {/* Order Summary (Clickable Header) */}
-              <div
-                onClick={() => toggleOrder(order.id)}
-                className="flex items-center justify-between p-5 transition cursor-pointer backdrop-blur-sm rounded-xl"
+    <>
+      <Banners
+        titleFirst={"Your"}
+        titleSecond={"Orders"}
+        description={"Checkout your orders"}
+      />
+      <div className="min-h-screen bg-[#F5F1ED] py-8 px-4 sm:px-6 lg:px-8">
+        <div className="container px-4">
+          <div className="space-y-4">
+            {orders.map((order) => (
+              <motion.div
+                key={order.id}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                whileHover={{ scale: 1.02 }}
+                transition={{ duration: 0.3, delay: order.id * 0.1 }}
+                className="bg-[url('https://img.freepik.com/premium-photo/close-up-light-cream-paper-texture-cardboard-background-old-paper-texture-aesthetic-creative-design_364465-127.jpg')]  bg-no-repeat bg-bottom bg-cover rounded-2xl"
               >
-                <div className="flex flex-col gap-4 sm:flex-row sm:gap-8">
-                  {/* Order Date */}
-                  <div className="flex items-start gap-3">
-                    <div className="p-2 bg-[#FFE6C1] rounded-lg">
-                      <FiCalendar className="text-[#5C4C49]" />
-                    </div>
-                    <div>
-                      <p className="text-xs text-gray-500">ORDER PLACED</p>
-                      <p className="font-medium text-[#5C4C49]">{order.date}</p>
-                      <p className="text-xs text-gray-400">{order.time}</p>
-                    </div>
-                  </div>
-
-                  {/* Payment Method */}
-                  <div className="flex items-start gap-3">
-                    <div className="p-2 bg-[#FFE6C1] rounded-lg">
-                      <FiCreditCard className="text-[#5C4C49]" />
-                    </div>
-                    <div>
-                      <p className="text-xs text-gray-500">PAYMENT</p>
-                      <p className="font-medium text-[#5C4C49]">
-                        {order.paymentMethod}
-                      </p>
-                      <p className="text-xs text-gray-400">
-                        ****{order.lastFourDigits}
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Order Total */}
-                  <div className="flex items-start gap-3">
-                    <div className="p-1 px-3 text-[#5C4C49] bg-[#FFE6C1] rounded-lg">
-                      ₹
-                    </div>
-                    <div>
-                      <p className="text-xs text-gray-500">TOTAL</p>
-                      <p className="font-medium text-[#5C4C49]">
-                        {order.total}
-                      </p>
-                      <p className="text-xs text-gray-400">
-                        {order.items.length} items
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Order Number */}
-                  <div className="flex items-start gap-3">
-                    <div className="p-2 bg-[#FFE6C1] rounded-lg">
-                      <FiHash className="text-[#5C4C49]" />
-                    </div>
-                    <div className="">
-                      <p className="text-xs text-gray-500">ORDER #</p>
-                      <div className="flex items-center gap-2">
+                {/* Order Summary (Clickable Header) */}
+                <div
+                  onClick={() => toggleOrder(order.id)}
+                  className="flex items-center justify-between p-5 transition cursor-pointer backdrop-blur-sm rounded-xl"
+                >
+                  <div className="flex flex-col gap-4 sm:flex-row sm:gap-8">
+                    {/* Order Date */}
+                    <div className="flex items-start gap-3">
+                      <div className="p-2 bg-[#FFE6C1] rounded-lg">
+                        <FiCalendar className="text-[#5C4C49]" />
+                      </div>
+                      <div>
+                        <p className="text-xs text-[#5C4C49]">ORDER PLACED</p>
                         <p className="font-medium text-[#5C4C49]">
-                          {order.orderNumber}
+                          {order.date}
                         </p>
-                        <motion.button
-                          whileHover={{ scale: 1.1 }}
-                          whileTap={{ scale: 0.9 }}
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            navigator.clipboard
-                              .writeText(order.orderNumber)
-                              .then(() => {
-                                toast.success(`Copied to clipboard!`);
-                              })
-                              .catch((error) => {
-                                console.error(
-                                  "Failed to copy to clipboard:",
-                                  error
-                                );
-                              });
-                          }}
-                          className="text-[#5C4C49]/50 hover:text-[#5C4C49] transition-colors"
-                          title="Copy to clipboard"
-                        >
-                          <CopyIcon />
-                        </motion.button>
+                        <p className="text-xs text-[#5C4C49]">{order.time}</p>
                       </div>
                     </div>
-                  </div>
-                </div>
 
-                {/* Status and Chevron */}
-                <div className="flex items-center gap-4">
-                  <div className="flex-col items-end hidden sm:flex">
-                    <div className="flex items-center gap-2">
-                      <span
-                        className={`px-3 py-1 rounded-full text-xs font-medium ${
-                          statusConfig[order.status].color
-                        }`}
-                      >
-                        {order.status}
-                      </span>
-                      {order.isDelayed && (
-                        <span className="px-2 py-1 text-xs text-red-500 rounded-full bg-red-50">
-                          Delayed
-                        </span>
-                      )}
+                    {/* Payment Method */}
+                    <div className="flex items-start gap-3">
+                      <div className="p-2 bg-[#FFE6C1] rounded-lg">
+                        <FiCreditCard className="text-[#5C4C49]" />
+                      </div>
+                      <div>
+                        <p className="text-xs text-[#5C4C49]">PAYMENT</p>
+                        <p className="font-medium text-[#5C4C49]">
+                          {order.paymentMethod}
+                        </p>
+                        <p className="text-xs text-[#5C4C49]">
+                          ****{order.lastFourDigits}
+                        </p>
+                      </div>
                     </div>
-                    <p className="mt-1 text-xs text-gray-400">
-                      {statusConfig[order.status].estimatedText}
-                    </p>
-                  </div>
 
-                  <motion.div
-                    animate={{ rotate: expandedOrder === order.id ? 180 : 0 }}
-                    transition={{ duration: 0.2 }}
-                    className="p-2 bg-[#FFE6C1] rounded-lg"
-                  >
-                    <FiChevronDown className="text-[#5C4C49]" />
-                  </motion.div>
-                </div>
-              </div>
+                    {/* Order Total */}
+                    <div className="flex items-start gap-3">
+                      <div className="p-1 px-3 text-[#5C4C49] bg-[#FFE6C1] rounded-lg">
+                        ₹
+                      </div>
+                      <div>
+                        <p className="text-xs text-[#5C4C49]">TOTAL</p>
+                        <p className="font-medium text-[#5C4C49]">
+                          {order.total}
+                        </p>
+                        <p className="text-xs text-[#5C4C49]">
+                          {order.items.length} items
+                        </p>
+                      </div>
+                    </div>
 
-              {/* Dropdown Content */}
-              <AnimatePresence>
-                {expandedOrder === order.id && (
-                  <motion.div
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: "auto" }}
-                    exit={{ opacity: 0, height: 0 }}
-                    transition={{ duration: 0.3, ease: "easeInOut" }}
-                    className="overflow-hidden backdrop-blur-sm"
-                  >
-                    <div className="border-t border-[#D3BD9D] px-5 py-4">
-                      {/* Status Stepper */}
-                      <div className="mb-6">
-                        <div className="relative flex justify-between mb-8">
-                          {Object.entries(statusConfig).map(
-                            ([status, config]) => (
-                              <div
-                                key={status}
-                                className="z-10 flex flex-col items-center"
-                              >
-                                <div
-                                  className={`w-10 h-10  rounded-full flex items-center justify-center ${
-                                    config.progress <=
-                                    statusConfig[order.status].progress
-                                      ? `${config.color} border-2 border-[#D3BD9D]`
-                                      : "bg-gray-100 text-gray-400"
-                                  }`}
-                                >
-                                  {config.icon}
-                                </div>
-                                <span className="mt-2 text-xs text-gray-600">
-                                  {status}
-                                </span>
-                              </div>
-                            )
-                          )}
-                          {/* Progress Line */}
-                          <div className="absolute h-1 bg-gray-200 left-5 right-5 top-5">
-                            <motion.div
-                              className="absolute top-0 left-0 h-full bg-[#D3BD9D]"
-                              initial={{ width: 0 }}
-                              animate={{
-                                width: `${
-                                  (statusConfig[order.status].progress / 3) *
-                                  100
-                                }%`,
-                              }}
-                              transition={{ duration: 0.6 }}
-                            />
-                          </div>
+                    {/* Order Number */}
+                    <div className="flex items-start gap-3">
+                      <div className="p-2 bg-[#FFE6C1] rounded-lg">
+                        <FiHash className="text-[#5C4C49]" />
+                      </div>
+                      <div className="">
+                        <p className="text-xs text-[#5C4C49]">ORDER ID</p>
+                        <div className="flex items-center gap-2">
+                          <p className="font-medium text-[#5C4C49]">
+                            {order.orderNumber}
+                          </p>
+                          <motion.button
+                            whileHover={{ scale: 1.1 }}
+                            whileTap={{ scale: 0.9 }}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              navigator.clipboard
+                                .writeText(order.orderNumber)
+                                .then(() => {
+                                  toast.success(`Copied to clipboard!`);
+                                })
+                                .catch((error) => {
+                                  console.error(
+                                    "Failed to copy to clipboard:",
+                                    error
+                                  );
+                                });
+                            }}
+                            className="text-[#5C4C49]/50 hover:text-[#5C4C49] transition-colors"
+                            title="Copy to clipboard"
+                          >
+                            <CopyIcon />
+                          </motion.button>
                         </div>
                       </div>
+                    </div>
+                  </div>
 
-                      {/* Order Items */}
-                      <div className="space-y-4">
-                        {order.items.map((item) => (
-                          <motion.div
-                            key={item.id}
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            transition={{ delay: 0.2 }}
-                            className="p-4 flex flex-col sm:flex-row gap-4 border border-[#D3BD9D]/30 rounded-lg bg-[#FFE6C1]/10"
-                          >
-                            <img
-                              src={item.image}
-                              alt={item.title}
-                              className="self-center object-cover w-20 h-24 rounded-lg sm:self-start"
-                            />
-                            <div className="flex-1">
-                              <h3 className="font-medium text-[#5C4C49]">
-                                {item.title}
-                              </h3>
-                              <p className="mt-1 text-sm text-gray-600">
-                                {item.description}
-                              </p>
-                              <div className="flex items-center mt-2">
-                                <span className="font-medium text-[#5C4C49]">
-                                  {item.price}
-                                </span>
-                                {item.originalPrice && (
-                                  <span className="ml-2 text-xs text-gray-500 line-through">
-                                    {item.originalPrice}
-                                  </span>
-                                )}
-                                <span className="ml-auto text-xs text-gray-500">
-                                  Qty: {item.quantity}
-                                </span>
-                              </div>
-                              <div className="flex flex-col gap-2 mt-3 sm:flex-row sm:items-center sm:justify-between">
-                                <div className="flex items-center text-sm">
-                                  {statusConfig[item.status].icon}
-                                  <span className="ml-2">
-                                    {item.status} •{" "}
-                                    <span className="text-gray-600">
-                                      Arrives {item.deliveryDate}
-                                    </span>
+                  {/* Status and Chevron */}
+                  <div className="flex items-center gap-4">
+                    <div className="flex-col items-end hidden sm:flex">
+                      <div className="flex items-center gap-2">
+                        <span
+                          className={`px-3 py-1 rounded-full text-xs font-medium ${
+                            statusConfig[order.status].color
+                          }`}
+                        >
+                          {order.status}
+                        </span>
+                        {order.isDelayed && (
+                          <span className="px-2 py-1 text-xs text-red-500 rounded-full bg-red-50">
+                            Delayed
+                          </span>
+                        )}
+                      </div>
+                      <p className="mt-1 text-xs text-[#5C4C49]">
+                        {statusConfig[order.status].estimatedText}
+                      </p>
+                    </div>
+
+                    <motion.div
+                      animate={{ rotate: expandedOrder === order.id ? 180 : 0 }}
+                      transition={{ duration: 0.2 }}
+                      className="p-2 bg-[#FFE6C1] rounded-lg"
+                    >
+                      <FiChevronDown className="text-[#5C4C49]" />
+                    </motion.div>
+                  </div>
+                </div>
+
+                {/* Dropdown Content */}
+                <AnimatePresence>
+                  {expandedOrder === order.id && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: "auto" }}
+                      exit={{ opacity: 0, height: 0 }}
+                      transition={{ duration: 0.3, ease: "easeInOut" }}
+                      className="overflow-hidden backdrop-blur-sm"
+                    >
+                      <div className="border-t border-[#D3BD9D] px-5 py-4">
+                        {/* Status Stepper */}
+                        {/* <div className="mb-6">
+                          <div className="relative flex justify-between mb-8">
+                            {Object.entries(statusConfig).map(
+                              ([status, config]) => (
+                                <div
+                                  key={status}
+                                  className="z-10 flex flex-col items-center"
+                                >
+                                  <div
+                                    className={`w-10 h-10  rounded-full flex items-center justify-center ${
+                                      config.progress <=
+                                      statusConfig[order.status].progress
+                                        ? `${config.color} border-2 border-[#D3BD9D]`
+                                        : "bg-gray-100 text-[#5C4C49]"
+                                    }`}
+                                  >
+                                    {config.icon}
+                                  </div>
+                                  <span className="mt-2 text-xs text-gray-600">
+                                    {status}
                                   </span>
                                 </div>
-                                {item.trackingNumber && (
-                                  <button className="px-3 py-1 text-xs bg-[#D3BD9D] hover:bg-[#5C4C49] text-[#5C4C49] hover:text-white rounded-full transition-colors">
-                                    Track Package
-                                  </button>
-                                )}
-                              </div>
+                              )
+                            )}
+                            <div className="absolute h-1 bg-gray-200 left-5 right-5 top-5">
+                              <motion.div
+                                className="absolute top-0 left-0 h-full bg-[#D3BD9D]"
+                                initial={{ width: 0 }}
+                                animate={{
+                                  width: `${
+                                    (statusConfig[order.status].progress / 3) *
+                                    100
+                                  }%`,
+                                }}
+                                transition={{ duration: 0.6 }}
+                              />
                             </div>
-                          </motion.div>
-                        ))}
-                      </div>
+                          </div>
+                        </div> */}
 
-                      {/* Order Actions */}
-                      <div className="flex flex-wrap justify-end gap-2 mt-6">
-                        <button className="flex items-center gap-1 px-3 py-2 text-sm border border-[#5C4C49] text-[#5C4C49] hover:bg-[#5C4C49] hover:text-white rounded-lg transition-colors">
-                          <FiFileText /> Invoice
-                        </button>
-                        <button className="flex items-center gap-1 px-3 py-2 text-sm border border-[#5C4C49] text-[#5C4C49] hover:bg-[#5C4C49] hover:text-white rounded-lg transition-colors">
-                          <FiRepeat /> Return
-                        </button>
-                        <button className="flex items-center gap-1 px-3 py-2 text-sm border border-[#5C4C49] text-[#5C4C49] hover:bg-[#5C4C49] hover:text-white rounded-lg transition-colors">
-                          <FiShoppingCart /> Buy Again
-                        </button>
+                        {/* Order Items */}
+                        <div className="space-y-4">
+                          {order.items.map((item) => (
+                            <motion.div
+                              key={item.id}
+                              initial={{ opacity: 0 }}
+                              animate={{ opacity: 1 }}
+                              transition={{ delay: 0.2 }}
+                              className="p-4 flex flex-col sm:flex-row gap-4 border border-[#D3BD9D]/30 rounded-lg bg-[#FFE6C1]/10"
+                            >
+                              <img
+                                src={item.image}
+                                alt={item.title}
+                                className="self-center object-cover w-20 h-24 rounded-lg sm:self-start"
+                              />
+                              <div className="flex-1">
+                                <h3 className="font-medium text-[#5C4C49]">
+                                  {item.title}
+                                </h3>
+                                <p className="mt-1 text-sm text-gray-600">
+                                  {item.description}
+                                </p>
+                                <div className="flex items-center mt-2">
+                                  <span className="font-medium text-[#5C4C49]">
+                                    {item.price}
+                                  </span>
+                                  {item.originalPrice && (
+                                    <span className="ml-2 text-xs text-[#5C4C49] line-through">
+                                      {item.originalPrice}
+                                    </span>
+                                  )}
+                                  <span className="ml-auto text-xs text-[#5C4C49]">
+                                    Qty: {item.quantity}
+                                  </span>
+                                </div>
+                                <div className="flex flex-col gap-2 mt-3 sm:flex-row sm:items-center sm:justify-between">
+                                  <div className="flex items-center text-sm">
+                                    {statusConfig[item.status].icon}
+                                    <span className="ml-2">
+                                      {item.status} •{" "}
+                                      <span className="text-gray-600">
+                                        Arrives {item.deliveryDate}
+                                      </span>
+                                    </span>
+                                  </div>
+                                  {item.trackingNumber && (
+                                    <button className="px-3 py-1 text-xs bg-[#D3BD9D] hover:bg-[#5C4C49] text-[#5C4C49] hover:text-white rounded-full transition-colors">
+                                      Track Package
+                                    </button>
+                                  )}
+                                </div>
+                              </div>
+                            </motion.div>
+                          ))}
+                        </div>
+
+                        {/* Order Actions */}
+                        <div className="flex flex-wrap justify-end gap-2 mt-6">
+                          <button className="flex items-center gap-1 px-3 py-2 text-sm border border-[#5C4C49] text-[#5C4C49] hover:bg-[#5C4C49] hover:text-white rounded-lg transition-colors">
+                            <FiFileText /> Invoice
+                          </button>
+                          <button className="flex items-center gap-1 px-3 py-2 text-sm border border-[#5C4C49] text-[#5C4C49] hover:bg-[#5C4C49] hover:text-white rounded-lg transition-colors">
+                            <FiRepeat /> Return
+                          </button>
+                          <button className="flex items-center gap-1 px-3 py-2 text-sm border border-[#5C4C49] text-[#5C4C49] hover:bg-[#5C4C49] hover:text-white rounded-lg transition-colors">
+                            <FiShoppingCart /> Buy Again
+                          </button>
+                        </div>
                       </div>
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </motion.div>
-          ))}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

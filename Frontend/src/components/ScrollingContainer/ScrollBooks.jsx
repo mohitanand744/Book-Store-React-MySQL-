@@ -5,6 +5,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import BookCard from "../Cards/BookCard";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import SwiperNavButtons from "../Buttons/SwiperNavButtons";
 
 const ScrollBooks = ({ autoScroll = true, books }) => {
   const swiperRef = useRef(null);
@@ -12,23 +13,13 @@ const ScrollBooks = ({ autoScroll = true, books }) => {
   return (
     <div className="container relative mb-15">
       {/* Custom Navigation Buttons */}
-      <div className="absolute left-0 flex items-center justify-between w-full h-12 top-[14rem]">
-        <button
-          onClick={() => swiperRef.current?.slidePrev()}
-          className="flex items-center justify-center w-12 h-12 z-10 rounded-full bg-[#D3BD9D] shadow-lg hover:bg-[#c5ac85] text-[#5C4C49] hover:text-[#3E3432] transition-all duration-300"
-          aria-label="Previous"
-        >
-          <FiChevronLeft className="w-6 h-6" />
-        </button>
-
-        <button
-          onClick={() => swiperRef.current?.slideNext()}
-          className="flex items-center justify-center w-12 h-12 z-10 rounded-full bg-[#D3BD9D] shadow-lg hover:bg-[#ceb896] text-[#5C4C49] hover:text-[#3E3432] transition-all duration-300"
-          aria-label="Next"
-        >
-          <FiChevronRight className="w-6 h-6" />
-        </button>
-      </div>
+      <SwiperNavButtons
+        swiperRef={swiperRef}
+        className="my-custom-class"
+        position={{ top: "40%" }}
+        prevButtonClass=""
+        nextButtonClass=""
+      />
 
       <Swiper
         modules={[Navigation, Autoplay]}

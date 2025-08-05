@@ -7,7 +7,7 @@ const SearchBooks = ({
   iconStyles = "top-1 right-1",
 }) => {
   return (
-    <div className={`relative ${styling} searchbar `}>
+    <div className={`relative ${styling} searchbar`}>
       <input
         type="text"
         className={`${inputStylrs} w-full px-4   focus:outline-none`}

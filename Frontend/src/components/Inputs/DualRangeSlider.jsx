@@ -36,11 +36,11 @@ function DualRangeSlider({ setOpenCategory, PriceFilter }) {
 
       <div
         onClick={(e) => e.stopPropagation()}
-        className={` ${
+        className={`${
           PriceFilter ? "h-[7rem]" : "h-[0rem]"
         } overflow-hidden flex justify-center items-center flex-col transition-all duration-300 ease-in-out w-full bg-[#FFF5E4] rounded-lg `}
       >
-        <div className="p-8 w-full">
+        <div className="w-full p-8 pt-0">
           {/* Display Min and Max Prices */}
           <div className="flex justify-between w-full">
             <h1>₹{min}</h1>

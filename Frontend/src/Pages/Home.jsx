@@ -55,7 +55,7 @@ const Home = () => {
       </div>
       <HomeBanner />
       <div className="mx-auto w-[97%]">
-        <div className="">
+        <div className="mb-14">
           <h1 className="relative mx-auto my-5 text-2xl font-semibold text-center w-fit md:text-4xl ">
             Deal of the day <CountdownTimer />
           </h1>
@@ -69,7 +69,7 @@ const Home = () => {
           )}
         </div>
 
-        <div className="">
+        <div className="mb-14">
           <h1 className="my-5 text-2xl font-semibold text-center md:text-4xl ">
             Explore Your Favorite Books
           </h1>
@@ -91,7 +91,8 @@ const Home = () => {
             </Link>
           </div>
         </div>
-        <div className="">
+
+        <div className="mb-14">
           <h1 className="my-5 text-2xl font-semibold text-center md:text-4xl ">
             Find Your Favorite Author
           </h1>
@@ -104,7 +105,7 @@ const Home = () => {
           )}
         </div>
 
-        <div className="">
+        <div className="container">
           <h1 className="my-5 text-2xl font-semibold text-center md:text-4xl ">
             What Our Readers Say About Us
           </h1>

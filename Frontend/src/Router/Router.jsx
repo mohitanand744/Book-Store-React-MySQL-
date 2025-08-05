@@ -14,6 +14,8 @@ const AllBooks = lazy(() => import("../Pages/AllBooks"));
 const SingleBooks = lazy(() => import("../Pages/SingleBooks"));
 const AboutUs = lazy(() => import("../Pages/AboutUs"));
 import { Toaster } from "react-hot-toast";
+import Wishlist from "../Pages/Wishlist";
+import CheckoutPage from "../Pages/CheckoutPage";
 
 const Router = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -115,10 +117,26 @@ const Router = () => {
             }
           />
           <Route
+            path="checkout"
+            element={
+              <Suspense fallback={<BookstoreLoader />}>
+                <CheckoutPage />
+              </Suspense>
+            }
+          />
+          <Route
             path="orders"
             element={
               <Suspense fallback={<BookstoreLoader />}>
                 <OrdersPage />
+              </Suspense>
+            }
+          />
+          <Route
+            path="wishlist"
+            element={
+              <Suspense fallback={<BookstoreLoader />}>
+                <Wishlist />
               </Suspense>
             }
           />

@@ -4,6 +4,7 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 import QuantitySelector from "../../QuantitySelector";
 import Button from "../../Buttons/Button";
 import { FaArrowRightLong } from "react-icons/fa6";
+import { Link } from "react-router-dom";
 
 // Mock data for cart items
 const mockCartItems = [
@@ -220,14 +221,16 @@ const ShoppingCart = ({ isCartOpen, setIsCartOpen }) => {
                           whileTap={{ scale: 0.98 }}
                           className="w-full"
                         >
-                          <Button
-                            type="button"
-                            variant="primary"
-                            className="w-full"
-                            //onClick={handleCheckout}
-                          >
-                            Checkout
-                          </Button>
+                          <Link to="/bookstore/checkout">
+                            <Button
+                              type="button"
+                              variant="primary"
+                              className="w-full"
+                              //onClick={handleCheckout}
+                            >
+                              Checkout
+                            </Button>
+                          </Link>
                         </motion.button>
                       </div>
                       <div className="flex justify-center mt-6 text-sm text-center text-gray-500">

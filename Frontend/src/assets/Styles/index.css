@@ -18,11 +18,13 @@
 }
 
 .swiper {
-  border-radius: 3rem !important;
+  /* border-radius: 3rem !important;
   -webkit-border-radius: 3rem !important;
   -moz-border-radius: 3rem !important;
   -ms-border-radius: 3rem !important;
-  -o-border-radius: 3rem !important;
+  -o-border-radius: 3rem !important; */
+
+  padding: 0 10px !important;
 }
 
 .swiper-button-prev:after,

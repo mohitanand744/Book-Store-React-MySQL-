@@ -1,12 +1,27 @@
-import React from "react";
-import { FaStar } from "react-icons/fa";
+import React, { useState } from "react";
+import { FaHeart, FaStar } from "react-icons/fa";
 import { FaRegStarHalfStroke } from "react-icons/fa6";
 import { FaPlus } from "react-icons/fa6";
 import Ratings from "../RatingsReviews/Ratings";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
+import toast from "react-hot-toast";
 
 const BookCard = ({ book }) => {
   const navigate = useNavigate();
+  const path = useLocation().pathname;
+  const [isLiked, setIsLiked] = useState(
+    path === "/bookstore/wishlist" ? true : false
+  );
+
+  const handleLike = () => {
+    const newLikeStatus = !isLiked;
+    setIsLiked(newLikeStatus);
+
+    if (newLikeStatus) {
+      toast.success(`${book.title.slice(0, 20)}... added to favorites!`);
+    }
+  };
 
   return (
     <div
@@ -54,7 +69,7 @@ const BookCard = ({ book }) => {
           </p>
         </div>
       </div>
-      <div className="image w-[60%] md:w-[90%] mx-auto pt-2 h-[15rem]">
+      <div className="image w-[60%] md:w-[90%] mx-auto pt-8 h-[15rem]">
         <img
           onClick={() => navigate(`/bookstore/book/${book.book_id}`)}
           className="object-contain w-full h-full cursor-pointer"
@@ -63,9 +78,65 @@ const BookCard = ({ book }) => {
         />
       </div>
       <div className="px-4 text-xl">
-        <h2 className="text-lg font-semibold md:text-xl">
-          {book.title.slice(0, 20)}...
-        </h2>
+        <div className="text-xl">
+          <div className="flex items-center justify-between">
+            <h2 className="text-lg font-semibold md:text-xl">
+              {book.title.slice(0, 20)}...
+            </h2>
+
+            <motion.div
+              whileTap={{ scale: 0.8 }}
+              whileHover={{ scale: 1.1 }}
+              onClick={handleLike}
+              className="cursor-pointer"
+            >
+              <motion.div
+                animate={{
+                  scale: isLiked ? [1, 1.2, 1] : 1,
+                  color: isLiked ? "#ff0000" : "#E9D2AF",
+                }}
+                transition={{ duration: 0.5 }}
+              >
+                <FaHeart
+                  className={`${isLiked ? "text-red-500" : "text-[#E9D2AF]"}`}
+                />
+              </motion.div>
+
+              {/* Optional floating hearts animation when liked */}
+              {isLiked && (
+                <>
+                  <motion.div
+                    initial={{ scale: 0, opacity: 1 }}
+                    animate={{
+                      scale: [0, 1.5],
+                      opacity: [1, 0],
+                      y: -30,
+                      x: -5,
+                    }}
+                    transition={{ duration: 0.8 }}
+                    className="absolute text-red-400 pointer-events-none"
+                  >
+                    <FaHeart />
+                  </motion.div>
+                  <motion.div
+                    initial={{ scale: 0, opacity: 1 }}
+                    animate={{
+                      scale: [0, 1.2],
+                      opacity: [1, 0],
+                      y: -20,
+                      x: 5,
+                    }}
+                    transition={{ duration: 0.6, delay: 0.2 }}
+                    className="absolute text-red-400 pointer-events-none"
+                  >
+                    <FaHeart />
+                  </motion.div>
+                </>
+              )}
+            </motion.div>
+          </div>
+        </div>
+
         <p className="text-sm text-gray-500 md:text-lg">
           {book.description.slice(0, 50)}...
         </p>
@@ -91,7 +162,7 @@ const BookCard = ({ book }) => {
 
         <div className="flex items-center text-orange-500">
           <span className="mr-2 text-[12px] sm:text-sm">4.5</span>
-          <Ratings ratings={3.5} />
+          <Ratings ratings={4.5} />
         </div>
       </div>
     </div>

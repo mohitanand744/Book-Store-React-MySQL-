@@ -15,6 +15,7 @@ const Checkbox = ({
         id={id}
         checked={checked}
         onChange={onChange}
+        onClick={(e) => e.stopPropagation()}
         className={`w-4 h-4 md:w-5 md:h-5 text-blue-600 bg-gray-50 rounded-md appearance-none checked:after:content-['✓'] checked:after:text-white flex justify-center items-center checked:bg-[#D3BD9D] ${className}`}
         {...props}
       />
