@@ -6,7 +6,6 @@ import Button from "../../Buttons/Button";
 import { FaArrowRightLong } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import CheckoutBooksCard from "../../Cards/CheckoutBooksCard";
-import CartItemsNoData from "../../EmptyData/CartItemsNoData";
 
 // Mock data for cart items
 const mockCartItems = [
@@ -104,74 +103,7 @@ const ShoppingCart = ({ isCartOpen, setIsCartOpen }) => {
                         <ul className="-my-6 divide-y divide-gray-200">
                           <AnimatePresence>
                             {cartItems.length === 0 ? (
-                              <motion.div
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.5, ease: "easeOut" }}
-                                className="flex flex-col items-center justify-center max-w-md p-8 mx-auto rounded-xl"
-                              >
-                                <motion.div
-                                  animate={{
-                                    scale: [1, 1.1, 1],
-                                    rotate: [0, 5, -5, 0],
-                                  }}
-                                  transition={{
-                                    duration: 2,
-                                    ease: "easeInOut",
-                                    repeat: Infinity,
-                                    repeatDelay: 3,
-                                  }}
-                                  className="mb-6"
-                                >
-                                  <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    className="w-16 h-16 text-[#D3BD9D]"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke="currentColor"
-                                  >
-                                    <path
-                                      strokeLinecap="round"
-                                      strokeLinejoin="round"
-                                      strokeWidth={1.5}
-                                      d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
-                                    />
-                                  </svg>
-                                </motion.div>
-
-                                <motion.h3
-                                  className="mb-2 text-xl font-semibold text-gray-800"
-                                  initial={{ opacity: 0 }}
-                                  animate={{ opacity: 1 }}
-                                  transition={{ delay: 0.2 }}
-                                >
-                                  Your cart is empty
-                                </motion.h3>
-
-                                <motion.p
-                                  className="mb-6 text-center text-gray-500"
-                                  initial={{ opacity: 0 }}
-                                  animate={{ opacity: 1 }}
-                                  transition={{ delay: 0.3 }}
-                                >
-                                  Looks like you haven't added anything to your
-                                  cart yet
-                                </motion.p>
-
-                                <div className="flex justify-center mt-6 text-sm text-center text-gray-500">
-                                  <p>
-                                    or{" "}
-                                    <button
-                                      type="button"
-                                      onClick={toggleCart}
-                                      className="font-medium text-[#5C4C49] hover:text-indigo-500"
-                                    >
-                                      Continue Shopping
-                                      <span aria-hidden="true"> &rarr;</span>
-                                    </button>
-                                  </p>
-                                </div>
-                              </motion.div>
+                              <CartItemsNoData />
                             ) : (
                               <div className="pb-4 space-y-5">
                                 <CheckoutBooksCard
@@ -187,7 +119,53 @@ const ShoppingCart = ({ isCartOpen, setIsCartOpen }) => {
                     </div>
                   </div>
 
-                  {cartItems.length > 0 && <CartItemsNoData />}
+                  {cartItems.length > 0 && (
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      className="px-4 py-6 border-t rounded-t-3xl bg-[#F8F5F0] border-gray-200 sm:px-6"
+                    >
+                      <div className="flex justify-between text-base font-medium text-gray-900">
+                        <p>Subtotal</p>
+                        <p>${subtotal.toFixed(2)}</p>
+                      </div>
+                      <p className="mt-0.5 text-sm text-gray-500">
+                        Shipping and taxes calculated at checkout.
+                      </p>
+                      <div className="mt-6">
+                        <motion.button
+                          whileHover={{ scale: 1.02 }}
+                          whileTap={{ scale: 0.98 }}
+                          className="w-full"
+                        >
+                          <Link to="/bookstore/checkout">
+                            <Button
+                              type="button"
+                              variant="primary"
+                              className="w-full"
+                              //onClick={handleCheckout}
+                              onClick={toggleCart}
+                            >
+                              Checkout
+                            </Button>
+                          </Link>
+                        </motion.button>
+                      </div>
+                      <div className="flex justify-center mt-6 text-sm text-center text-gray-500">
+                        <p>
+                          or{" "}
+                          <button
+                            type="button"
+                            onClick={toggleCart}
+                            className="font-medium text-[#5C4C49] hover:text-indigo-500"
+                          >
+                            Continue Shopping
+                            <span aria-hidden="true"> &rarr;</span>
+                          </button>
+                        </p>
+                      </div>
+                    </motion.div>
+                  )}
                 </div>
               </motion.div>
             </div>
