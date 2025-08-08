@@ -21,7 +21,7 @@ function DualRangeSlider({ setOpenCategory, PriceFilter }) {
           e.stopPropagation();
           setOpenCategory((prev) => ({ ...prev, PriceFilter: !PriceFilter }));
         }}
-        className="flex items-center cursor-pointer justify-between mb-2 p-3   bg-[#FFF5E4] rounded-lg"
+        className="flex items-center cursor-pointer justify-between mb-2 p-3 bg-[#FFF5E4] rounded-lg"
       >
         <h1 className="text-lg font-semibold ">Price Filter</h1>
 
@@ -58,17 +58,16 @@ function DualRangeSlider({ setOpenCategory, PriceFilter }) {
             step={500} // Step size for the slider
             sx={{
               "& .MuiSlider-thumb": {
-                color: "#D3BD9D", // Tailwind blue-500
+                color: "#D3BD9D",
                 "&:hover": {
                   boxShadow: "0 0 0 10px #FFF5E4", // Focus effect
                 },
               },
               "& .MuiSlider-track": {
                 color: "#D3BD9D",
-                // Tailwind blue-500
               },
               "& .MuiSlider-rail": {
-                color: "#D3BD9D", // Tailwind gray-300
+                color: "#D3BD9D",
               },
             }}
           />

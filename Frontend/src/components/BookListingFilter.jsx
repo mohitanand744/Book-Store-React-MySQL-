@@ -57,7 +57,7 @@ const BookListingFilter = ({ openCategory, setOpenCategory }) => {
       initial={{ opacity: 0, y: -20, scale: 0.1 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
       transition={{ duration: 0.3 }}
-      className={`hideScroll overflow-y-scroll border bg-white z-[9999] sm:w-[20rem] overflow-hidden duration-300 mt-32 ease-in-out shadow-xl border-gray-200 rounded-3xl`}
+      className={`hideScroll h-[25.5rem] overflow-y-scroll border bg-white z-[9999] sm:w-[20rem] overflow-hidden duration-300 mt-32 ease-in-out shadow-xl border-gray-200 rounded-3xl`}
     >
       {/* Price Filter Section */}
       <div className="p-5 border-b border-gray-200 shadow-lg rounded-3xl">

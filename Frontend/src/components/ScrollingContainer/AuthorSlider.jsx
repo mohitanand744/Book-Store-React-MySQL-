@@ -59,10 +59,10 @@ function AuthorSlider({ books }) {
           depth: 140,
           modifier: 1,
         }}
-        autoplay={{
-          delay: 3500, // Auto slide change every 1.5 seconds
-          disableOnInteraction: false,
-        }}
+        //autoplay={{
+        //delay: 3500,
+        //disableOnInteraction: false,
+        //}}
         modules={[EffectCoverflow, Navigation, Pagination, Autoplay]}
       >
         {uniqueAuthors?.map((author, i) => (

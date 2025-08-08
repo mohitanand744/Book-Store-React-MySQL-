@@ -1,9 +1,11 @@
 import React, { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import {
   ExclamationCircleIcon,
   EyeIcon,
   EyeSlashIcon,
 } from "@heroicons/react/24/outline";
+import CustomSelect from "./CustomSelect";
 
 const Input = React.forwardRef(
   (
@@ -17,11 +19,16 @@ const Input = React.forwardRef(
       icon,
       value,
       onChange,
+      setSelectedValue,
+      selectedValue,
+      options,
+      as: Component = "input", // Default to 'input' if not specified
       ...props
     },
     ref
   ) => {
     const [showPassword, setShowPassword] = useState(false);
+    const [isOpen, setIsOpen] = useState(false);
 
     // Determine input type based on toggle and original type
     const inputType =
@@ -35,19 +42,42 @@ const Input = React.forwardRef(
           </label>
         )}
         <div className="relative">
-          <input
-            ref={ref}
-            type={inputType}
-            placeholder={placeholder}
-            className={`w-full px-4 py-2 rounded-lg border ${
-              error
-                ? "border-red-500 focus:ring-red-500 focus:border-red-500"
-                : "border-gray-300 focus:ring-[#8a7053] focus:border-[#8a7053]"
-            } shadow-sm focus:outline-none focus:ring-2 ${className}`}
-            value={value}
-            onChange={onChange}
-            {...props}
-          />
+          {Component === "select" ? (
+            <CustomSelect
+              options={options}
+              value={selectedValue}
+              onChange={onChange}
+              error={error}
+              className="text-gray-800"
+              placeholder="Choose an option"
+            />
+          ) : Component === "textarea" ? (
+            <textarea
+              ref={ref}
+              className={`w-full px-4 py-2 rounded-lg border ${
+                error
+                  ? "border-red-500 focus:ring-red-500 focus:border-red-500"
+                  : "border-gray-300 focus:ring-[#8a7053] focus:border-[#8a7053]"
+              } shadow-sm focus:outline-none focus:ring-2 ${className}`}
+              value={value}
+              onChange={onChange}
+              {...props}
+            />
+          ) : (
+            <input
+              ref={ref}
+              type={inputType}
+              className={`w-full px-4 py-2 rounded-lg border ${
+                error
+                  ? "border-red-500 focus:ring-red-500 focus:border-red-500"
+                  : "border-gray-300 focus:ring-[#8a7053] focus:border-[#8a7053]"
+              } shadow-sm focus:outline-none focus:ring-2 ${className}`}
+              placeholder={placeholder}
+              value={value}
+              onChange={onChange}
+              {...props}
+            />
+          )}
 
           {/* Custom right icon: show/hide or external icon */}
           {!error && (
@@ -87,7 +117,6 @@ const Input = React.forwardRef(
     );
   }
 );
-
 Input.displayName = "Input";
 
 export default Input;
