@@ -28,7 +28,7 @@ const HomeBanner = () => {
           {/* Image with a gradient fade at the bottom */}
           <img
             className="object-cover object-top w-full h-full"
-            src="/images/Welcome Banner.png"
+            src="/images/Welcome_Banner.webp"
             alt="Welcome Banner"
           />
           {/* Gradient effect */}
@@ -37,7 +37,7 @@ const HomeBanner = () => {
         <SwiperSlide className="relative">
           <img
             className="object-cover object-top w-full h-full"
-            src="/images/bannersec.png"
+            src="/images/bannersec.webp"
             alt="Second Banner"
           />
           {/* Gradient effect */}

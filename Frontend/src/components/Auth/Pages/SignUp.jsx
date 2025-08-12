@@ -7,11 +7,11 @@ import {
   EnvelopeIcon,
   LockClosedIcon,
   UserIcon,
-  PhoneIcon,
 } from "@heroicons/react/24/outline";
 import Input from "./../../Inputs/Input";
 import Checkbox from "../../Inputs/Checkbox";
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-hot-toast";
 
 const SignUp = () => {
   const {
@@ -25,7 +25,7 @@ const SignUp = () => {
 
   const onSubmit = async (data) => {
     if (!termsAccepted) {
-      toast("Please accept the terms and conditions.");
+      toast.error("Please accept the terms and conditions.");
       return;
     }
 
@@ -92,7 +92,7 @@ const SignUp = () => {
                     <Input
                       label="First Name"
                       type="text"
-                      placeholder="John"
+                      placeholder="First Name"
                       icon={<UserIcon className="w-5 h-5 text-[#5e4c379f]" />}
                       error={errors.firstName?.message}
                       {...register("firstName", {
@@ -113,7 +113,7 @@ const SignUp = () => {
                     <Input
                       label="Last Name"
                       type="text"
-                      placeholder="Doe"
+                      placeholder="Last Name"
                       icon={<UserIcon className="w-5 h-5 text-[#5e4c379f]" />}
                       error={errors.lastName?.message}
                       {...register("lastName", {
@@ -236,7 +236,7 @@ const SignUp = () => {
                     variant="primary"
                     className="w-full"
                     isLoading={isSubmitting}
-                    disabled={!termsAccepted}
+                    disabled={isSubmitting}
                   >
                     Create Account
                   </Button>
