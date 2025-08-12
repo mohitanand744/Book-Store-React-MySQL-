@@ -1,148 +1,103 @@
 const db = require("../DB/db.connection");
 
-// ! Query
-const QUERY = `
-SELECT 
-  B.ID, 
-  B.TITLE, 
-  B.DESCRIPTION, 
-  B.AUTHOR, 
-  B.BOOK_PRICE, 
-  B.CATEGORY,
-  A.AUTHOR_DESCRIPTION,
-  A.AUTHOR_ID,
-  A.AUTHOR_IMAGE_URL,
-  A.AUTHOR_RATING,
-  BI.IMAGE_URL 
-FROM books B 
-LEFT JOIN book_images BI 
-ON B.ID = BI.BOOK_ID LEFT JOIN author_details A 
-  ON B.AUTHOR = A.AUTHOR_NAME;
+const BASE_QUERY = `
+  SELECT 
+    B.ID, B.TITLE, B.DESCRIPTION, B.AUTHOR, B.BOOK_PRICE, B.CATEGORY,
+    A.AUTHOR_DESCRIPTION, A.AUTHOR_ID, A.AUTHOR_IMAGE_URL, A.AUTHOR_RATING,
+    BI.IMAGE_URL 
+  FROM books B 
+  LEFT JOIN book_images BI ON B.ID = BI.BOOK_ID 
+  LEFT JOIN author_details A ON B.AUTHOR = A.AUTHOR_NAME
 `;
+
+// Helper function for error handling
+const handleError = (res, err) =>
+  res.status(500).json({ success: false, error: err.message });
+const notFound = (res) =>
+  res.status(404).json({ success: false, message: "Book not found" });
 
 // Get all books
 exports.getBooks = (req, res) => {
-  const query = QUERY;
-
-  db.query(query, (err, data) => {
-    if (err) {
-      return res.status(500).json({ success: false, error: err.message });
-    }
-
-    const books = data.map((item) => ({
-      book_id: item.ID,
-      title: item.TITLE,
-      description: item.DESCRIPTION,
-      author: {
-        author_id: item.AUTHOR_ID,
-        author_name: item.AUTHOR,
-        author_description: item.AUTHOR_DESCRIPTION,
-        author_image: item.AUTHOR_IMAGE_URL,
-        author_rating: item.AUTHOR_RATING,
-      },
-      book_price: item.BOOK_PRICE,
-      category: item.CATEGORY,
-      images: item.IMAGE_URL,
-    }));
-
-    return res.status(200).json({ success: true, books });
+  db.query(BASE_QUERY, (err, data) => {
+    if (err) return handleError(res, err);
+    res.status(200).json({
+      success: true,
+      books: data.map((item) => ({
+        book_id: item.ID,
+        title: item.TITLE,
+        description: item.DESCRIPTION,
+        author: {
+          author_id: item.AUTHOR_ID,
+          author_name: item.AUTHOR,
+          author_description: item.AUTHOR_DESCRIPTION,
+          author_image: item.AUTHOR_IMAGE_URL,
+          author_rating: item.AUTHOR_RATING,
+        },
+        book_price: item.BOOK_PRICE,
+        category: item.CATEGORY,
+        images: item.IMAGE_URL,
+      })),
+    });
   });
 };
 
 // Get a book by ID
 exports.getBookById = (req, res) => {
-  const { id } = req.params;
-  const query = `SELECT 
-  B.ID, 
-  B.TITLE, 
-  B.DESCRIPTION, 
-  B.AUTHOR, 
-  B.BOOK_PRICE, 
-  B.CATEGORY,
-  A.AUTHOR_DESCRIPTION,
-  A.AUTHOR_ID,
-  A.AUTHOR_IMAGE_URL,
-  A.AUTHOR_RATING,
-  BI.IMAGE_URL 
-FROM books B 
-LEFT JOIN book_images BI 
-ON B.ID = BI.BOOK_ID LEFT JOIN author_details A 
-  ON B.AUTHOR = A.AUTHOR_NAME WHERE B.ID = ?;`;
-
-  db.query(query, [id], (err, data) => {
-    if (err)
-      return res.status(500).json({ success: false, error: err.message });
-    if (data.length === 0)
-      return res
-        .status(404)
-        .json({ success: false, message: "Book not found" });
-    return res.status(200).json({ success: true, data: data[0] });
+  db.query(`${BASE_QUERY} WHERE B.ID = ?`, [req.params.id], (err, [data]) => {
+    if (err) return handleError(res, err);
+    if (!data) return notFound(res);
+    res.status(200).json({ success: true, data });
   });
 };
 
 // Delete a book by ID
 exports.deleteBook = (req, res) => {
-  const { id } = req.params;
-  const query = "DELETE FROM books WHERE id = ?";
-  db.query(query, [id], (err, result) => {
-    if (err)
-      return res.status(500).json({ success: false, error: err.message });
-    if (result.affectedRows === 0)
-      return res
-        .status(404)
-        .json({ success: false, message: "Book not found" });
-    return res
+  db.query("DELETE FROM books WHERE id = ?", [req.params.id], (err, result) => {
+    if (err) return handleError(res, err);
+    if (!result.affectedRows) return notFound(res);
+    res
       .status(200)
       .json({ success: true, message: "Book deleted successfully" });
   });
 };
 
 // Update book details
-exports.updateBook = (req, res) => {
+exports.updateBook = async (req, res) => {
   const { id } = req.params;
-  const { title, author, description, price, images } = req.body; // images is an array
+  const { title, author, description, price, images } = req.body;
 
-  const updateBookQuery =
-    "UPDATE books SET title = ?, author = ?, description = ?, book_price = ? WHERE id = ?";
-  db.query(
-    updateBookQuery,
-    [title, author, description, price, id],
-    (err, result) => {
-      if (err)
-        return res.status(500).json({ success: false, error: err.message });
-      if (result.affectedRows === 0)
-        return res
-          .status(404)
-          .json({ success: false, message: "Book not found" });
+  try {
+    const [bookResult] = await db
+      .promise()
+      .query(
+        "UPDATE books SET title = ?, author = ?, description = ?, book_price = ? WHERE id = ?",
+        [title, author, description, price, id]
+      );
 
-      if (images && Array.isArray(images)) {
-        const insertImageQuery =
-          "UPDATE book_images SET image_url = ? WHERE book_id = ?";
+    if (!bookResult.affectedRows) return notFound(res);
 
-        const jsonImages = JSON.stringify(images);
-
-        db.query(insertImageQuery, [jsonImages, id], (err, result) => {
-          if (err)
-            return res.status(500).json({ success: false, error: err.message });
-          if (result.affectedRows === 0)
-            return res
-              .status(404)
-              .json({ success: false, message: "Book not found" });
-          return res.status(200).json({
-            success: true,
-            message: "Book & Images updated successfully",
-          });
-        });
-      } else {
-        res
-          .status(200)
-          .json({ success: true, message: "Book updated successfully" });
-      }
+    if (images?.length) {
+      await db
+        .promise()
+        .query("UPDATE book_images SET image_url = ? WHERE book_id = ?", [
+          JSON.stringify(images),
+          id,
+        ]);
     }
-  );
+
+    res.status(200).json({
+      success: true,
+      message: images?.length
+        ? "Book & Images updated successfully"
+        : "Book updated successfully",
+    });
+  } catch (err) {
+    handleError(res, err);
+  }
 };
 
-exports.postBooks = (req, res) => {
+// Add new book
+exports.postBooks = async (req, res) => {
   if (!req.body)
     return res
       .status(400)
@@ -150,52 +105,34 @@ exports.postBooks = (req, res) => {
 
   const { title, author, description, price, category, images } = req.body;
 
-  // Check if 'images' is a valid array of non-empty strings
-  if (
-    !Array.isArray(images) ||
-    images.length === 0 ||
-    images.some((image) => typeof image !== "string" || image.trim() === "")
-  ) {
+  if (!Array.isArray(images) || !images.length) {
     return res.status(400).json({
       success: false,
       message: "Invalid or empty image URLs provided.",
     });
   }
 
-  const queryBook =
-    "INSERT INTO BOOKS (TITLE, DESCRIPTION, AUTHOR, BOOK_PRICE, CATEGORY) VALUE (?, ?, ?, ?, ?)";
+  try {
+    const [bookResult] = await db
+      .promise()
+      .query(
+        "INSERT INTO BOOKS (TITLE, DESCRIPTION, AUTHOR, BOOK_PRICE, CATEGORY) VALUES (?, ?, ?, ?, ?)",
+        [title, description, author, price, category]
+      );
 
-  db.query(
-    queryBook,
-    [title, description, author, price, category],
-    (err, result) => {
-      if (err)
-        return res.status(500).json({ success: false, error: err.message });
+    await db
+      .promise()
+      .query("INSERT INTO BOOK_IMAGES (BOOK_ID, IMAGE_URL) VALUES (?, ?)", [
+        bookResult.insertId,
+        JSON.stringify(images),
+      ]);
 
-      if (result.affectedRows === 0)
-        return res
-          .status(404)
-          .json({ success: false, message: "Book not found" });
-
-      const queryImage =
-        "INSERT INTO BOOK_IMAGES (BOOK_ID, IMAGE_URL) VALUES (?, ?)";
-
-      const jsonImages = JSON.stringify(images);
-      db.query(queryImage, [result.insertId, jsonImages], (err, result) => {
-        if (err)
-          return res.status(500).json({ success: false, error: err.message });
-
-        if (result.affectedRows === 0)
-          return res
-            .status(404)
-            .json({ success: false, message: "Images not added" });
-
-        return res.status(201).json({
-          success: true,
-          message: "Book and images added successfully",
-          bookId: result.insertId,
-        });
-      });
-    }
-  );
+    res.status(201).json({
+      success: true,
+      message: "Book and images added successfully",
+      bookId: bookResult.insertId,
+    });
+  } catch (err) {
+    handleError(res, err);
+  }
 };
