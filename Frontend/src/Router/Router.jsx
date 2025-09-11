@@ -1,10 +1,15 @@
 import React, { lazy, Suspense, useEffect, useState } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Loading from "../components/Loaders/Loading";
 import BookstoreLoader from "../components/Loaders/bookstoreLoader";
 import SignUp from "../components/Auth/Pages/SignUp";
 import UserProfile from "../Pages/UserProfile";
 import OrdersPage from "../Pages/OrderPage";
+import { Toaster } from "react-hot-toast";
+import Wishlist from "../Pages/Wishlist";
+import CheckoutPage from "../Pages/CheckoutPage";
+import { FallbackRoute } from "./FallbackRoute";
+//import { useAuth } from "../contexts/AuthContext"; // Assuming you have an auth context
 
 // Lazy-loaded components
 const Login = lazy(() => import("../components/Auth/Pages/Login"));
@@ -13,20 +18,28 @@ const Home = lazy(() => import("../Pages/Home"));
 const AllBooks = lazy(() => import("../Pages/AllBooks"));
 const SingleBooks = lazy(() => import("../Pages/SingleBooks"));
 const AboutUs = lazy(() => import("../Pages/AboutUs"));
-import { Toaster } from "react-hot-toast";
-import Wishlist from "../Pages/Wishlist";
-import CheckoutPage from "../Pages/CheckoutPage";
+
+// Protected Route Component
+const ProtectedRoute = ({ children }) => {
+  const { currentUser } = useAuth(); // Get authentication state
+  return currentUser ? children : <Navigate to="/" replace />;
+};
 
 const Router = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    // Simulate initial app loading (resources, data, etc.)
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 4000);
+    }, 2000); // Reduced to 2 seconds for better UX
 
     return () => clearTimeout(timer);
   }, []);
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <BrowserRouter>
@@ -34,10 +47,7 @@ const Router = () => {
         position="top-right"
         reverseOrder={false}
         gutter={8}
-        containerClassName=""
-        containerStyle={{}}
         toastOptions={{
-          className: "",
           style: {
             background: "linear-gradient(to right, #5C4C49, #D3BD9D)",
             color: "#fff",
@@ -46,110 +56,36 @@ const Router = () => {
         }}
       />
 
-      <Routes>
-        <Route
-          path="/"
-          element={
-            isLoading ? (
-              <Loading />
-            ) : (
-              <Suspense fallback={<Loading />}>
-                <Login />
-              </Suspense>
-            )
-          }
-        />
-        <Route
-          path="/signup"
-          element={
-            isLoading ? (
-              <Loading />
-            ) : (
-              <Suspense fallback={<Loading />}>
-                <SignUp />
-              </Suspense>
-            )
-          }
-        />
+      <Suspense fallback={<Loading />}>
+        <Routes>
+          <Route path="/" element={<Login />} />
+          <Route path="/signup" element={<SignUp />} />
 
-        <Route
-          path="/bookstore"
-          element={
-            <Suspense fallback={<BookstoreLoader />}>
-              <Layout />
-            </Suspense>
-          }
-        >
+          {/* Protected routes */}
           <Route
-            index
+            path="/bookstore"
             element={
-              <Suspense fallback={<BookstoreLoader />}>
-                <Home />
-              </Suspense>
+              //<ProtectedRoute>
+              <Layout />
+              //</ProtectedRoute>
             }
-          />
-
-          <Route path="user">
-            <Route
-              path="profile"
-              element={
-                <Suspense fallback={<BookstoreLoader />}>
-                  <UserProfile />
-                </Suspense>
-              }
-            />
+          >
+            <Route index element={<Home />} />
+            <Route path="user">
+              <Route path="profile" element={<UserProfile />} />
+            </Route>
+            <Route path="aboutUs" element={<AboutUs />} />
+            <Route path="books" element={<AllBooks />} />
+            <Route path="checkout" element={<CheckoutPage />} />
+            <Route path="orders" element={<OrdersPage />} />
+            <Route path="wishlist" element={<Wishlist />} />
+            <Route path="book/:id" element={<SingleBooks />} />
           </Route>
 
-          <Route
-            path="aboutUs"
-            element={
-              <Suspense fallback={<BookstoreLoader />}>
-                <AboutUs />
-              </Suspense>
-            }
-          />
-          <Route
-            path="books"
-            element={
-              <Suspense fallback={<BookstoreLoader />}>
-                <AllBooks />
-              </Suspense>
-            }
-          />
-          <Route
-            path="checkout"
-            element={
-              <Suspense fallback={<BookstoreLoader />}>
-                <CheckoutPage />
-              </Suspense>
-            }
-          />
-          <Route
-            path="orders"
-            element={
-              <Suspense fallback={<BookstoreLoader />}>
-                <OrdersPage />
-              </Suspense>
-            }
-          />
-          <Route
-            path="wishlist"
-            element={
-              <Suspense fallback={<BookstoreLoader />}>
-                <Wishlist />
-              </Suspense>
-            }
-          />
-          <Route
-            path="book/:id"
-            element={
-              <Suspense fallback={<BookstoreLoader />}>
-                <SingleBooks />
-              </Suspense>
-            }
-          />
-        </Route>
-      </Routes>
+          {/* Fallback route for 404 pages */}
+          <Route path="*" element={<FallbackRoute />} />
+        </Routes>
+      </Suspense>
     </BrowserRouter>
   );
 };

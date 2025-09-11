@@ -8,25 +8,48 @@ import Input from "./../../Inputs/Input";
 import Checkbox from "../../Inputs/Checkbox";
 import { Link, useNavigate } from "react-router-dom";
 import ForgotPasswordModal from "../Modal/ForgotPassword";
+import { login } from "../../../utils/apis/authApi";
+import toast from "react-hot-toast";
 
 const Login = () => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors, isSubmitting },
   } = useForm();
   const navigate = useNavigate();
   const [showForgot, setShowForgot] = useState(false);
 
   const onSubmit = async (data) => {
-    // Simulate API call
-    await new Promise((resolve) => {
-      setTimeout(resolve, 2000);
-    });
-    console.log(data);
-    // Handle login logic here
+    const payload = {
+      email: data.email,
+      password: data.password,
+    };
 
-    navigate("/bookstore");
+    try {
+      const response = await login(payload);
+      console.log(response);
+
+      if (response?.success) {
+        localStorage.setItem("token", response?.data?.token);
+        navigate("/bookstore");
+        toast.success("Login successful!");
+        reset();
+      } else {
+        toast.error(response?.message || "Login failed. Please try again.");
+        reset();
+        navigate("/signup");
+      }
+    } catch (error) {
+      console.error("Error logging in:", error);
+      toast.error(
+        error.response?.data?.message ||
+          "Something went wrong. Please try again later."
+      );
+      reset();
+      navigate("/signup");
+    }
   };
 
   return (

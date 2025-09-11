@@ -12,32 +12,48 @@ import Input from "./../../Inputs/Input";
 import Checkbox from "../../Inputs/Checkbox";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
+import { signup } from "../../../utils/apis/authApi";
 
 const SignUp = () => {
   const {
     register,
     handleSubmit,
     watch,
+    reset,
     formState: { errors, isSubmitting },
   } = useForm();
   const navigate = useNavigate();
-  const [termsAccepted, setTermsAccepted] = useState(false);
 
   const onSubmit = async (data) => {
-    if (!termsAccepted) {
-      toast.error("Please accept the terms and conditions.");
-      return;
+    const payload = {
+      first_name: data.firstName,
+      last_name: data.lastName,
+      email: data.email,
+      password: data.password,
+      terms_accepted: data.termsAccepted,
+    };
+
+    try {
+      const response = await signup(payload);
+
+      if (response?.success) {
+        toast.success("Signup successful!");
+        navigate("/");
+        reset();
+      } else {
+        toast.error(response?.message || "Signup failed. Please try again.");
+        reset();
+        navigate("/");
+      }
+    } catch (error) {
+      console.error("Error signing up:", error);
+      toast.error(
+        error.response?.data?.message ||
+          "Something went wrong. Please try again later."
+      );
+      reset();
+      navigate("/");
     }
-
-    // Simulate API call
-    await new Promise((resolve) => {
-      setTimeout(resolve, 2000);
-    });
-
-    console.log(data);
-    // Handle signup logic here
-
-    navigate("/bookstore");
   };
 
   return (
@@ -208,7 +224,7 @@ const SignUp = () => {
                   className="flex items-center mb-6"
                 >
                   <Checkbox
-                    id="terms"
+                    id="termsAccepted"
                     label={
                       <span>
                         I agree to the{" "}
@@ -221,8 +237,11 @@ const SignUp = () => {
                         </a>
                       </span>
                     }
-                    checked={termsAccepted}
-                    onChange={(e) => setTermsAccepted(e.target.checked)}
+                    error={errors.termsAccepted?.message}
+                    {...register("termsAccepted", {
+                      required: "Please accept the terms and conditions",
+                      validate: (value) => value === true || "Please accept",
+                    })}
                   />
                 </motion.div>
 

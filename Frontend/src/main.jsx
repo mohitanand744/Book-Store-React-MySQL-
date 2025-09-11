@@ -10,11 +10,14 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Provider } from "react-redux";
 import store from "./store/Redux/ConfigureReduxStore.js";
+import { LoaderProvider } from "./store/Context/LoaderProvider.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <Provider store={store}>
-      <Router />
-    </Provider>
+    <LoaderProvider>
+      <Provider store={store}>
+        <Router />
+      </Provider>
+    </LoaderProvider>
   </StrictMode>
 );

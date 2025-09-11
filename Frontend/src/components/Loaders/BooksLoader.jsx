@@ -4,8 +4,8 @@ const BooksLoader = () => {
   return (
     <center className="min-h-[40rem] mt-5">
       <img
-        className="w-20"
-        src="https://icon-library.com/images/progress-icon-gif/progress-icon-gif-1.jpg"
+        className="w-64"
+        src="https://www.eyes4work.se/wp-content/themes/eyes4work/assets/img/icons/loading.gif"
         alt=""
       />
     </center>

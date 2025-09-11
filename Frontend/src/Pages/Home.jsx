@@ -13,8 +13,11 @@ import { Link } from "react-router-dom";
 import BooksLoader from "../components/Loaders/BooksLoader";
 import Button from "../components/Buttons/Button";
 import { mockBooks } from "../../Data/mockData";
+import { useLoader } from "../Hooks/useLoader";
 
 const Home = () => {
+  const { loading } = useLoader();
+
   /*   const dispatch = useDispatch();
   const { books, error, loading } = useSelector((state) => state.books);
 
@@ -41,7 +44,6 @@ const Home = () => {
 
   const books = mockBooks;
   const uniqueBooks = books;
-  const loading = false;
   const error = null;
 
   return (

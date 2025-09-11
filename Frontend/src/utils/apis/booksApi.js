@@ -1,4 +1,4 @@
-import axiosInstance from "../services/api";
+import { axiosInstance } from "../../services/api";
 
 const getSingleBook = async (id) => {
   console.log(id);
