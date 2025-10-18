@@ -2,6 +2,7 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { createUser, findUserByEmail } = require("../Models/userModel");
+const { formatUser } = require("../utils/formatter");
 
 exports.registerUser = async ({
   first_name,
@@ -31,10 +32,27 @@ exports.registerUser = async ({
 
 exports.loginUser = async ({ email, password }) => {
   const user = await findUserByEmail(email);
-  if (!user) throw new Error("Invalid email or password");
+
+  if (!user) {
+    return {
+      success: false,
+      field: "email",
+      type: "credential",
+      message:
+        "User not found. Please create an account to continue with NextChapter",
+    };
+  }
+  console.log(password, user.password);
 
   const isMatch = await bcrypt.compare(password, user.password);
-  if (!isMatch) throw new Error("Invalid email or password");
+  if (!isMatch) {
+    return {
+      success: false,
+      field: "password",
+      type: "credential",
+      message: "Invalid password.",
+    };
+  }
 
   const token = jwt.sign(
     { id: user.id, email: user.email },
@@ -42,13 +60,10 @@ exports.loginUser = async ({ email, password }) => {
     { expiresIn: "24h" }
   );
 
+  const userDetails = formatUser([user]);
+
   return {
     token,
-    user: {
-      id: user.id,
-      firstName: user.first_name,
-      lastName: user.last_name,
-      email: user.email,
-    },
+    user: userDetails,
   };
 };

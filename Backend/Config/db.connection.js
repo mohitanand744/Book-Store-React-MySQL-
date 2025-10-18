@@ -21,18 +21,17 @@ async function initDB() {
       `🎉 Hooray! Database (${process.env.MYSQL_DATABASE}) handshake complete!`
     );
     connection.release();
-
-    return connection;
   } catch (err) {
     console.error("❌ Database connection failed:", err.message);
     process.exit(1);
   }
 }
 
-const connection = initDB();
+// Initialize immediately
+initDB();
 
 module.exports = {
-  // Export the pool instead of a single connection
+  // Export helpers
   getConnection: () => pool.getConnection(),
   query: (...params) => pool.query(...params),
   execute: (...params) => pool.execute(...params),

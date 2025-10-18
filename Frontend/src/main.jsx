@@ -13,11 +13,9 @@ import store from "./store/Redux/ConfigureReduxStore.js";
 import { LoaderProvider } from "./store/Context/LoaderProvider.jsx";
 
 createRoot(document.getElementById("root")).render(
-  <StrictMode>
+  <Provider store={store}>
     <LoaderProvider>
-      <Provider store={store}>
-        <Router />
-      </Provider>
+      <Router />
     </LoaderProvider>
-  </StrictMode>
+  </Provider>
 );

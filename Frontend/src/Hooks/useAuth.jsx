@@ -1,0 +1,50 @@
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  loginSuccess,
+  logoutSuccess,
+  updateUserData,
+  validateToken,
+} from "../store/Redux/Slices/authSlice";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
+
+const useAuth = () => {
+  const dispatch = useDispatch();
+  const auth = useSelector((state) => state.auth);
+  const navigate = useNavigate();
+
+  const loginStatusSuccess = (userData, token) => {
+    dispatch(loginSuccess({ user: userData, token }));
+  };
+
+  const logoutStatusSuccess = () => {
+    navigate("/nextChapter");
+    setTimeout(() => {
+      dispatch(logoutSuccess());
+      toast.success("Logout successful!");
+    }, 100);
+  };
+
+  const setUpdateUserData = (userData) => {
+    dispatch(updateUserData(userData));
+  };
+
+  const getUserUpdatedDetails = async () => {
+    if (auth.token) {
+      dispatch(validateToken());
+    }
+  };
+
+  return {
+    userData: auth.userData,
+    token: auth.token,
+    isAuthenticated: auth.isAuthenticated,
+    loginStatusSuccess,
+    logoutStatusSuccess,
+    setUpdateUserData,
+    getUserUpdatedDetails,
+  };
+};
+
+export default useAuth;

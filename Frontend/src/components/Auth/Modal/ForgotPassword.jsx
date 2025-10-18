@@ -1,7 +1,7 @@
 import { set, useForm } from "react-hook-form";
 import Input from "../../Inputs/Input";
 import { EnvelopeIcon } from "@heroicons/react/24/outline";
-import Modal from "../../Modal/Modal";
+import Modal from "../../Modal/ModalContainer";
 import Button from "../../Buttons/Button";
 import { useState } from "react";
 

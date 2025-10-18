@@ -7,7 +7,6 @@ const authRoutes = require("./Routes/authRoutes");
 
 app.use(express.json());
 app.use(cors());
-
 app.use("/api/v1/books", bookRoutes);
 app.use("/api/v1/auth", authRoutes);
 

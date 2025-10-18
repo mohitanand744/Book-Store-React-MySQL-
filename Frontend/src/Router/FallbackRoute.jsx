@@ -12,7 +12,7 @@ export const FallbackRoute = () => {
     if (showNotification && !hasShownToast) {
       toast.error(`The page "${location.pathname}" was not found.`, {
         duration: 3000,
-        id: "page-not-found", // Unique ID to prevent duplicates
+        id: "page-not-found",
       });
       setHasShownToast(true);
 
@@ -27,7 +27,7 @@ export const FallbackRoute = () => {
 
   return (
     <>
-      <Navigate to="/" replace />
+      <Navigate to="/nextChapter" replace />
     </>
   );
 };

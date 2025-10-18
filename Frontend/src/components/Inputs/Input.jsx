@@ -34,20 +34,20 @@ const Input = (
     type === "password" ? (showPassword ? "text" : "password") : type;
 
   return (
-    <div className={`mb-4 ${containerClassName}`}>
+    <div className={`mb-4 w-full ${containerClassName}`}>
       {label && (
         <label className="block text-sm font-medium text-[#5e4c37] mb-1">
           {label}
         </label>
       )}
-      <div className="relative">
+      <div className="relative w-full">
         {Component === "select" ? (
           <CustomSelect
             options={options}
             value={selectedValue}
             onChange={onChange}
             error={error}
-            className="text-gray-800"
+            className={className}
             placeholder="Choose an option"
           />
         ) : Component === "textarea" ? (

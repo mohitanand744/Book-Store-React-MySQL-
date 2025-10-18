@@ -91,7 +91,7 @@ const CheckoutPage = () => {
     >
       <div className="container px-4 py-12 mx-auto sm:px-6 lg:px-8">
         <div className="flex items-center mb-8">
-          <Link to={"/bookstore/books"}>
+          <Link to={"/nextChapter/books"}>
             <motion.button
               whileTap={{ scale: 0.95 }}
               className="flex items-center group font-semibold text-[#5C4C49] hover:text-[#3a302e]"
@@ -207,7 +207,7 @@ const CheckoutPage = () => {
                   //icon={<FiHome className="text-[#5C4C49]/80" />}
                   containerClassName="group"
                   className=" bg-white/80 border-[#E8DBC5] hover:shadow-[0_5px_15px_-5px_rgba(0,0,0,0.1)] focus:ring-[#3A2F2D]/50 appearance-none"
-                ></Input>
+                />
               </motion.div>
 
               <motion.div

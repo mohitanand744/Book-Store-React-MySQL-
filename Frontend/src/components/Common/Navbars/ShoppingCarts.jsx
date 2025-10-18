@@ -4,8 +4,10 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 import QuantitySelector from "../../QuantitySelector";
 import Button from "../../Buttons/Button";
 import { FaArrowRightLong } from "react-icons/fa6";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import CheckoutBooksCard from "../../Cards/CheckoutBooksCard";
+import CartItemsNoData from "../../EmptyData/CartItemsNoData";
+import NoData from "../../EmptyData/noData";
 
 // Mock data for cart items
 const mockCartItems = [
@@ -39,7 +41,7 @@ const ShoppingCart = ({ isCartOpen, setIsCartOpen }) => {
   const [cartItems, setCartItems] = useState(mockCartItems);
   const [quantity, setQuantity] = useState(1);
   const toggleCart = () => setIsCartOpen(!isCartOpen);
-
+  const navigate = useNavigate();
   const removeItem = (id) => {
     setCartItems(cartItems.filter((item) => item.id !== id));
   };
@@ -103,7 +105,15 @@ const ShoppingCart = ({ isCartOpen, setIsCartOpen }) => {
                         <ul className="-my-6 divide-y divide-gray-200">
                           <AnimatePresence>
                             {cartItems.length === 0 ? (
-                              <CartItemsNoData />
+                              <NoData
+                                title="Your cart is empty"
+                                message="Looks like you haven't added anything to your cart yet"
+                                icon="cart"
+                                showAction={true}
+                                actionText="Continue Shopping"
+                                actionLink="/nextChapter/books"
+                                onActionClick={toggleCart}
+                              />
                             ) : (
                               <div className="pb-4 space-y-5">
                                 <CheckoutBooksCard
@@ -138,17 +148,18 @@ const ShoppingCart = ({ isCartOpen, setIsCartOpen }) => {
                           whileTap={{ scale: 0.98 }}
                           className="w-full"
                         >
-                          <Link to="/bookstore/checkout">
-                            <Button
-                              type="button"
-                              variant="primary"
-                              className="w-full"
-                              //onClick={handleCheckout}
-                              onClick={toggleCart}
-                            >
-                              Checkout
-                            </Button>
-                          </Link>
+                          <Button
+                            onClick={() => {
+                              navigate("/nextChapter/checkout");
+                              toggleCart();
+                            }}
+                            type="button"
+                            variant="primary"
+                            className="w-full"
+                            //onClick={handleCheckout}
+                          >
+                            Checkout
+                          </Button>
                         </motion.button>
                       </div>
                       <div className="flex justify-center mt-6 text-sm text-center text-gray-500">

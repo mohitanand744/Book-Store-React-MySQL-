@@ -1,54 +1,75 @@
 // src/pages/Login.jsx
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
 import Button from "./../../Buttons/Button";
 import { EnvelopeIcon, LockClosedIcon } from "@heroicons/react/24/outline";
 import Input from "./../../Inputs/Input";
 import Checkbox from "../../Inputs/Checkbox";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import ForgotPasswordModal from "../Modal/ForgotPassword";
 import { login } from "../../../utils/apis/authApi";
 import toast from "react-hot-toast";
+import useAuth from "../../../Hooks/useAuth";
 
 const Login = () => {
   const {
     register,
     handleSubmit,
     reset,
+    setError,
     formState: { errors, isSubmitting },
   } = useForm();
+
   const navigate = useNavigate();
+  const { loginStatusSuccess, isAuthenticated } = useAuth();
   const [showForgot, setShowForgot] = useState(false);
+  const location = useLocation();
+
+  console.log(isAuthenticated);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/nextChapter", { replace: true });
+    }
+  }, [isAuthenticated, navigate]);
 
   const onSubmit = async (data) => {
-    const payload = {
-      email: data.email,
-      password: data.password,
-    };
-
     try {
-      const response = await login(payload);
-      console.log(response);
+      const response = await login({
+        email: data.email,
+        password: data.password,
+      });
 
       if (response?.success) {
-        localStorage.setItem("token", response?.data?.token);
-        navigate("/bookstore");
+        const { token, user } = response.data;
+
+        loginStatusSuccess(user, token);
+
         toast.success("Login successful!");
+        navigate("/nextChapter");
         reset();
       } else {
-        toast.error(response?.message || "Login failed. Please try again.");
-        reset();
-        navigate("/signup");
+        toast.error(response?.message || "Invalid credentials");
       }
     } catch (error) {
-      console.error("Error logging in:", error);
-      toast.error(
-        error.response?.data?.message ||
-          "Something went wrong. Please try again later."
-      );
-      reset();
-      navigate("/signup");
+      console.error("Login error:", error);
+
+      if (
+        error.response?.data?.error?.type === "credential" &&
+        error.response?.data?.error?.field === "password"
+      ) {
+        setError(error.response?.data?.error?.field || "root", {
+          type: error.response?.data?.error?.type || "credential",
+          message:
+            error.response?.data?.error?.message || "Something went wrong",
+        });
+      } else {
+        toast.error(
+          error.response?.data?.message ||
+            "Something went wrong. Please try again later."
+        );
+      }
     }
   };
 

@@ -12,6 +12,8 @@ export const LoaderProvider = ({ children }) => {
 
   // Function to show loader
   const showLoader = () => {
+    console.log("Loader started");
+
     setRequestCount((prev) => prev + 1);
     setLoading(true);
     setProgress(30); // Start at 30% to give immediate feedback
@@ -19,6 +21,8 @@ export const LoaderProvider = ({ children }) => {
 
   // Function to hide loader
   const hideLoader = () => {
+    console.log("Loader End");
+
     setRequestCount((prev) => {
       if (prev <= 1) {
         // Complete the progress animation before hiding
@@ -47,9 +51,7 @@ export const LoaderProvider = ({ children }) => {
           <div
             className="h-full transition-all duration-300 ease-out bg-red-600 rounded-full"
             style={{ width: `${progress}%` }}
-          >
-            <div className="absolute right-0 w-3 h-3 -mt-1 bg-red-600 rounded-full opacity-0 animate-pulse"></div>
-          </div>
+          ></div>
         </div>
       )}
     </LoaderContext.Provider>

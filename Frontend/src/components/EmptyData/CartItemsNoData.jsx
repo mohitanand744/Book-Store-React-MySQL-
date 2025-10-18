@@ -2,7 +2,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 
-const CartItemsNoData = () => {
+const CartItemsNoData = ({ toggleCart }) => {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -58,11 +58,11 @@ const CartItemsNoData = () => {
       </motion.p>
 
       <div className="flex justify-center mt-6 text-sm text-center text-gray-500">
-        <Link to="/bookstore/books">
+        <Link to="/nextChapter/books">
           or{" "}
           <button
             type="button"
-            // onClick={toggleCart}
+            onClick={toggleCart}
             className="font-medium text-[#5C4C49] hover:text-indigo-500"
           >
             Continue Shopping

@@ -9,6 +9,7 @@ function successResponse(res, statusCode, message, data = {}) {
 
 // Error response
 function errorResponse(res, statusCode, message, error = null) {
+  console.log(error || message || `${statusCode} Error`);
   return res.status(statusCode).json({
     success: false,
     message,

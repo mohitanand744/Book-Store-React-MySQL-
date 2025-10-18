@@ -13,16 +13,20 @@ const Modal = ({ isOpen, onClose, children }) => {
             exit={{ opacity: 0 }}
             onClick={onClose}
           />
-
           {/* Modal content */}
           <motion.div
-            className="fixed z-50 w-[90%] max-w-md bg-[#D3BD9D] p-6 rounded-xl shadow-xl"
+            className="fixed inset-0 z-50 flex items-center justify-center p-4"
             initial={{ opacity: 0, scale: 0.9, y: -170 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.8, y: 170 }}
-            onClick={(e) => e.stopPropagation()} // prevent closing when clicking inside modal
+            onClick={onClose}
           >
-            {children}
+            <div
+              onClick={(e) => e.stopPropagation()}
+              className="w-full max-w-md bg-[#D3BD9D] p-6 rounded-xl shadow-xl"
+            >
+              {children}
+            </div>
           </motion.div>
         </>
       )}

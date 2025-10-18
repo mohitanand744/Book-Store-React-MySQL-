@@ -11,7 +11,7 @@ const BookCard = ({ book }) => {
   const navigate = useNavigate();
   const path = useLocation().pathname;
   const [isLiked, setIsLiked] = useState(
-    path === "/bookstore/wishlist" ? true : false
+    path === "/nextChapter/wishlist" ? true : false
   );
 
   const handleLike = () => {
@@ -31,20 +31,23 @@ const BookCard = ({ book }) => {
       <div className="absolute top-1 right-1 px-2 py-1 bg-[#ffcd81ab] rounded-3xl">
         <p>{book.category}</p>
       </div>
-      <div className="absolute z-50 w-12 group border-2 border-orange-600 p-[0.1rem] h-12 top-1 left-1 rounded-full ">
-        <img
-          src={
-            book.author?.author_image_url ||
-            "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
-          }
-          className="object-cover w-full h-full rounded-full cursor-pointer"
-          alt=""
-        />
-        <div className="absolute left-0  text-sm  transition-all duration-300 scale-0 group-hover:translate-y-0 group-hover:scale-100 group-hover:translate-x-0 rotate-45 group-hover:rotate-0 translate-x-[-6rem] translate-y-[-10rem]  font-medium bg-[#5C4C49] p-4 rounded-3xl  profilePOPup">
+      <div className="absolute group top-1 left-1">
+        <div className=" w-12 border-2 rounded-full border-orange-600 p-[0.1rem] h-12">
+          <img
+            src={
+              book.author?.author_image ||
+              "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+            }
+            className="object-cover w-full h-full rounded-full cursor-pointer"
+            alt=""
+          />
+        </div>
+
+        <div className="absolute left-0  text-sm z-[9999] transition-all duration-300 scale-0 group-hover:translate-y-0 group-hover:scale-100 group-hover:translate-x-0 rotate-45 group-hover:rotate-0 translate-x-[-6rem] translate-y-[-10rem]  font-medium bg-[#5C4C49] p-4 rounded-3xl  profilePOPup">
           <div className="relative mx-auto mb-2 border border-white h-44 w-44 rounded-3xl">
             <img
               src={
-                book.author?.author_image_url ||
+                book.author?.author_image ||
                 "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
               }
               className="object-cover object-top w-full h-full rounded-3xl"
@@ -71,7 +74,7 @@ const BookCard = ({ book }) => {
       </div>
       <div className="image w-[60%] md:w-[90%] mx-auto pt-8 h-[15rem]">
         <img
-          onClick={() => navigate(`/bookstore/book/${book.book_id}`)}
+          onClick={() => navigate(`/nextChapter/book/${book.book_id}`)}
           className="object-contain w-full h-full cursor-pointer"
           src={book?.images[0]}
           alt=""

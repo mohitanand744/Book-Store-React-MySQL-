@@ -88,7 +88,7 @@ const Home = () => {
           )}
 
           <div className="flex justify-center my-5">
-            <Link to={"/bookstore/books"}>
+            <Link to={"/nextChapter/books"}>
               <Button variant="primary">View All</Button>
             </Link>
           </div>

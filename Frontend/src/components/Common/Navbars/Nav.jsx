@@ -3,9 +3,11 @@ import MegaMenu from "./MegaMenu";
 import { HiOutlineShoppingCart } from "react-icons/hi2";
 import { IoIosArrowDown } from "react-icons/io";
 import SearchBooks from "../../SearchBars/SearchBooks";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Button from "../../Buttons/Button";
 import ShoppingCart from "./ShoppingCarts";
+import MobileMenu from "./MobileMenu";
+import useAuth from "../../../Hooks/useAuth";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -13,6 +15,9 @@ const Navbar = () => {
   const pathName = useLocation().pathname.replaceAll("/", "");
   const [animation, setAnimation] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const { isAuthenticated, userData } = useAuth();
+  const navigate = useNavigate();
+  console.log(isAuthenticated);
 
   console.log(pathName);
 
@@ -45,7 +50,7 @@ const Navbar = () => {
         <div className="flex items-center justify-between">
           {/* Logo */}
           <div className="flex-shrink-0 w-20">
-            <Link to="/bookstore">
+            <Link to="/nextChapter">
               <img
                 className="object-cover w-full h-full"
                 src="/images/logoBS.png"
@@ -58,9 +63,9 @@ const Navbar = () => {
           <ul className="items-center hidden space-x-4 lg:flex">
             <li>
               <Link
-                to={"/bookstore"}
+                to={"/nextChapter"}
                 className={`px-3 py-1 border-[#5C4C49] text-lg font-bold  transition-all ${
-                  pathName === "bookstore" ? "text-[#5C4C49]" : "text-white"
+                  pathName === "nextChapter" ? "text-[#5C4C49]" : "text-white"
                 }  hover:scale-105  hover:text-[#5C4C49] duration-200 rounded-xl`}
               >
                 Home
@@ -68,7 +73,7 @@ const Navbar = () => {
             </li>
             <li>
               <Link
-                to="/bookstore/aboutUs"
+                to="/nextChapter/aboutUs"
                 className="px-3 py-1 border-[#5C4C49] text-lg font-bold text-white transition-all  hover:scale-105  hover:text-[#5C4C49] duration-200 rounded-xl"
               >
                 About
@@ -95,9 +100,9 @@ const Navbar = () => {
 
               <li className="px-3 py-1">
                 <Link
-                  to={"/bookstore/books"}
+                  to={"/nextChapter/books"}
                   className={` border-[#5C4C49] text-lg font-bold  transition-all ${
-                    pathName === "bookstorebooks"
+                    pathName === "nextChapterbooks"
                       ? "text-[#5C4C49]"
                       : "text-white"
                   }  hover:scale-105  hover:text-[#5C4C49] duration-200 rounded-xl`}
@@ -128,34 +133,36 @@ const Navbar = () => {
               </div>
               <HiOutlineShoppingCart className="text-2xl text-[#ffeccd]" />
             </div>
-            <div className="">
-              <Link to="/bookstore/user/profile">
-                <div className="w-12 h-12 cursor-pointer active:scale-75 transition border-2 bg-[#5C4C49] border-orange-500 rounded-full">
-                  <img
-                    className="object-cover w-full h-full rounded-full"
-                    src="https://media.istockphoto.com/id/1322973325/photo/black-girl-standing-with-tablet-at-yellow-studio.jpg?s=612x612&w=0&k=20&c=wZapeoTwD4wICqSnACYEp7VZdOkVtVfBhzBg-1dueJU="
-                    alt=""
-                  />
-                </div>
-              </Link>
-            </div>
-
-            {/*  <Link to="/">
-              <Button
-                variant="outline"
-                className="flex items-center justify-center h-8"
-              >
-                Login
-              </Button>
-            </Link>
-            <Link to="/signup">
-              <Button
-                variant="outline"
-                className="items-center justify-center hidden h-8 lg:flex"
-              >
-                Signup
-              </Button>
-            </Link> */}
+            {isAuthenticated ? (
+              <div className="">
+                <Link to="/nextChapter/user/profile">
+                  <div className="w-12 h-12 cursor-pointer active:scale-75 transition border-2 bg-[#5C4C49] border-orange-500 rounded-full">
+                    <img
+                      className="object-cover w-full h-full rounded-full"
+                      src={userData?.profilePic}
+                      alt=""
+                    />
+                  </div>
+                </Link>
+              </div>
+            ) : (
+              <>
+                <Button
+                  onClick={() => navigate("/")}
+                  variant="outline"
+                  className="flex items-center justify-center h-8"
+                >
+                  Login
+                </Button>
+                <Button
+                  onClick={() => navigate("/signup")}
+                  variant="outline"
+                  className="items-center justify-center hidden h-8 lg:flex"
+                >
+                  Signup
+                </Button>
+              </>
+            )}
 
             {/* Mobile Hamburger */}
             <div className="lg:hidden">
@@ -194,55 +201,7 @@ const Navbar = () => {
       </div>
 
       {/* Mobile Menu */}
-      <div
-        className={`lg:hidden ${
-          isOpen ? "h-[13rem]" : "h-0"
-        } transition-all duration-200 ease-in-out overflow-hidden`}
-      >
-        <ul className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-          <li
-            href="#"
-            className="px-3 py-1 border-[#5C4C49] text-lg font-bold text-white transition-all    hover:text-[#5C4C49] duration-200 rounded-xl"
-          >
-            <Link to="/bookstore">Home</Link>
-          </li>
-          <li className="px-3 py-1 border-[#5C4C49] text-lg font-bold text-white transition-all    hover:text-[#5C4C49] duration-200 rounded-xl">
-            <Link to="/bookstore/aboutUs">About</Link>
-          </li>
-          <ul className="group">
-            <li
-              href="#"
-              className="px-3 flex gap-1 items-center py-1 text-lg font-bold text-white transition-all  group-hover:text-[#5C4C49] duration-200 rounded-xl"
-            >
-              Books Types{" "}
-              <span>
-                <IoIosArrowDown className="transition-all group-hover:rotate-180" />
-              </span>
-            </li>
-            {/* Mega Menu */}
-            <div className="absolute z-50 transform  opacity-0 scale-0 transition-all duration-500 group-hover:opacity-100 group-hover:scale-100 top-[3.8rem] inset-x-0 w-[80%] mx-auto">
-              <MegaMenu />
-            </div>
-          </ul>
-          <ul className="relative">
-            <span className="absolute top-2 left-20 bg-[#5C4C49] w-[5rem]">
-              <img src="/images/tag.avif" alt="" />
-            </span>
-            <li
-              href="#"
-              className="px-3 py-1 border-[#5C4C49] text-lg font-bold text-white transition-all    hover:text-[#5C4C49] duration-200 rounded-xl"
-            >
-              <Link to="/bookstore/books"> Books</Link>
-            </li>
-          </ul>
-          <a
-            href="#"
-            className="px-3 py-1 border-[#5C4C49] text-lg font-bold text-white transition-all    hover:text-[#5C4C49] duration-200 rounded-xl"
-          >
-            Contact
-          </a>
-        </ul>
-      </div>
+      <MobileMenu isOpen={isOpen} setIsOpen={setIsOpen} />
 
       <ShoppingCart isCartOpen={isCartOpen} setIsCartOpen={setIsCartOpen} />
     </nav>

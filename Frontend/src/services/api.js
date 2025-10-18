@@ -3,8 +3,10 @@ import { useEffect } from "react";
 import axios from "axios";
 import { useLoader } from "../Hooks/useLoader";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+import useAuth from "../Hooks/useAuth";
 
-const BASE_URL = "http://localhost:3001/api/v1"; // change for prod
+const BASE_URL = "http://localhost:3001/api/v1";
 
 const axiosInstance = axios.create({
   baseURL: BASE_URL,
@@ -22,15 +24,23 @@ const axiosInstanceFormData = axios.create({
 
 export const useAxiosLoader = () => {
   const { showLoader, hideLoader, updateProgress } = useLoader();
+  const { logoutStatusSuccess } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
     // Request interceptor
     const requestInterceptor = axiosInstance.interceptors.request.use(
       (config) => {
+        console.log("Loader Start");
         showLoader();
-        const token = localStorage.getItem("token");
-        if (token) config.headers.Authorization = `Bearer ${token}`;
+
+        // ✅ Only attach token if explicitly required
+        if (config.requiresAuth) {
+          const token = localStorage.getItem("token");
+          if (token) config.headers.Authorization = `Bearer ${token}`;
+        }
+
+        // Track progress if available
         config.onUploadProgress = (progressEvent) => {
           const percentCompleted = Math.round(
             (progressEvent.loaded * 100) / progressEvent.total
@@ -61,22 +71,35 @@ export const useAxiosLoader = () => {
       },
       (error) => {
         hideLoader();
-        // handle 401 (unauthorized) globally
+
         if (error.response?.status === 401) {
-          localStorage.removeItem("token");
-          navigate("/"); // redirect to login
+          const err = error.response?.data?.error;
+
+          console.log("ERR-->", err);
+
+          if (err?.name === "TokenExpiredError") {
+            toast.error("Session expired. Please login again.");
+          } else {
+            toast.error("Unauthorized. Please login again.");
+          }
+
+          navigate("/nextChapter");
+
+          setTimeout(() => {
+            logoutStatusSuccess();
+          }, 100);
         }
 
         return Promise.reject(error);
       }
     );
 
-    // Cleanup on unmount (important!)
+    // Cleanup interceptors on unmount
     return () => {
       axiosInstance.interceptors.request.eject(requestInterceptor);
       axiosInstance.interceptors.response.eject(responseInterceptor);
     };
-  }, [showLoader, hideLoader, updateProgress]);
+  }, []);
 };
 
 export { axiosInstance, axiosInstanceFormData };

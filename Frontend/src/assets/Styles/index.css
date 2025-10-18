@@ -13,9 +13,6 @@
   max-width: 1600px !important;
   margin: 0 auto;
 }
-.profilePOPup {
-  z-index: 9999 !important;
-}
 
 .swiper {
   /* border-radius: 3rem !important;

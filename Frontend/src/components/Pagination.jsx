@@ -1,115 +1,99 @@
 import React from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 
-const PaginationComp = ({ currentPage, totalPages, paginate }) => {
-  const pageNumbers = [];
+const Pagination = ({ currentPage, totalPages, paginate }) => {
+  if (totalPages <= 1) return null;
 
-  // Always show first page, last page, current page, and 1 adjacent page
-  const visiblePages = new Set([1, totalPages, currentPage]);
-  if (currentPage > 1) visiblePages.add(currentPage - 1);
-  if (currentPage < totalPages) visiblePages.add(currentPage + 1);
-
-  for (let i = 1; i <= totalPages; i++) {
-    if (totalPages <= 7 || visiblePages.has(i)) {
-      pageNumbers.push(i);
-    } else if (i === 2 && currentPage > 3) {
-      pageNumbers.push("left-ellipsis");
-    } else if (i === totalPages - 1 && currentPage < totalPages - 2) {
-      pageNumbers.push("right-ellipsis");
+  const getVisiblePages = () => {
+    const pages = [];
+    if (totalPages <= 5) {
+      for (let i = 1; i <= totalPages; i++) pages.push(i);
+    } else {
+      if (currentPage <= 3) {
+        pages.push(1, 2, 3, 4, "...", totalPages);
+      } else if (currentPage >= totalPages - 2) {
+        pages.push(
+          1,
+          "...",
+          totalPages - 3,
+          totalPages - 2,
+          totalPages - 1,
+          totalPages
+        );
+      } else {
+        pages.push(
+          1,
+          "...",
+          currentPage - 1,
+          currentPage,
+          currentPage + 1,
+          "...",
+          totalPages
+        );
+      }
     }
-  }
+    return pages;
+  };
+
+  const visiblePages = getVisiblePages();
+
+  const btnBase =
+    "px-3 py-1 rounded transition-colors duration-200 font-medium";
+  const activeStyle = "bg-[#D3BD9D] text-[#F6F2EC]";
+  const normalStyle =
+    "bg-[#F6F2EC] text-[#3a3a3a] hover:bg-[#D3BD9D] hover:text-[#F6F2EC]";
 
   return (
-    <div className="flex justify-center px-4 my-8">
-      <ul className="flex items-center space-x-1 sm:space-x-2">
-        <motion.li whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
-          <button
-            onClick={() => paginate(Math.max(1, currentPage - 1))}
+    <div className="flex justify-center my-6">
+      <ul className="flex items-center space-x-2">
+        {/* Prev */}
+        <li>
+          <motion.button
+            whileTap={{ scale: 0.9 }}
+            onClick={() => paginate(currentPage - 1)}
             disabled={currentPage === 1}
-            className="px-3 py-1 bg-gray-100 rounded-md sm:px-4 sm:py-2 hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed"
+            className={`${btnBase} ${normalStyle} disabled:opacity-50`}
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="w-5 h-5"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-            >
-              <path
-                fillRule="evenodd"
-                d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-                clipRule="evenodd"
-              />
-            </svg>
-          </button>
-        </motion.li>
+            Prev
+          </motion.button>
+        </li>
 
-        <AnimatePresence initial={false}>
-          {pageNumbers.map((number) => (
-            <React.Fragment
-              key={
-                number === "left-ellipsis" || number === "right-ellipsis"
-                  ? number
-                  : `page-${number}`
-              }
-            >
-              {number === "left-ellipsis" || number === "right-ellipsis" ? (
-                <motion.span
-                  className="px-2 text-gray-500"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                >
-                  ...
-                </motion.span>
-              ) : (
-                <motion.li
-                  layout
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.8 }}
-                  transition={{ type: "spring", stiffness: 500, damping: 30 }}
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <button
-                    onClick={() => paginate(number)}
-                    className={`px-3 py-1 sm:px-4 sm:py-2 rounded-md transition-all duration-200 ${
-                      currentPage === number
-                        ? "bg-[#D3BD9D] text-white shadow-md"
-                        : "bg-gray-100 hover:bg-gray-200"
-                    }`}
-                  >
-                    {number}
-                  </button>
-                </motion.li>
-              )}
-            </React.Fragment>
-          ))}
-        </AnimatePresence>
+        {/* Numbers + Ellipsis */}
+        {visiblePages.map((page, idx) =>
+          page === "..." ? (
+            <li key={`ellipsis-${idx}`} className="px-2 text-gray-500">
+              …
+            </li>
+          ) : (
+            <li key={page}>
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                onClick={() => paginate(page)}
+                className={`${btnBase} ${
+                  currentPage === page ? activeStyle : normalStyle
+                }`}
+              >
+                {page}
+              </motion.button>
+            </li>
+          )
+        )}
 
-        <motion.li whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
-          <button
-            onClick={() => paginate(Math.min(totalPages, currentPage + 1))}
+        {/* Next */}
+        <li>
+          <motion.button
+            whileTap={{ scale: 0.9 }}
+            onClick={() => paginate(currentPage + 1)}
             disabled={currentPage === totalPages}
-            className="px-3 py-1 bg-gray-100 rounded-md sm:px-4 sm:py-2 hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed"
+            className={`${btnBase} ${normalStyle} disabled:opacity-50`}
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="w-5 h-5"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-            >
-              <path
-                fillRule="evenodd"
-                d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                clipRule="evenodd"
-              />
-            </svg>
-          </button>
-        </motion.li>
+            Next
+          </motion.button>
+        </li>
       </ul>
     </div>
   );
 };
 
-export default PaginationComp;
+export default Pagination;

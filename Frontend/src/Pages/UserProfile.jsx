@@ -2,6 +2,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { MdOutlineMail } from "react-icons/md";
+import { RiLogoutCircleLine } from "react-icons/ri";
 import {
   FaHeart,
   FaHistory,
@@ -14,13 +15,18 @@ import { mockBooks } from "./../../Data/mockData";
 import ScrollBooks from "../components/ScrollingContainer/ScrollBooks";
 import toast from "react-hot-toast";
 import Button from "../components/Buttons/Button";
-import { CopyIcon } from "../components/SVGs/SVGs";
+import { CopyIcon, NoRecentOrders } from "../components/SVGs/SVGs";
+import useAuth from "../Hooks/useAuth";
+import Input from "../components/Inputs/Input";
+import CartItemsNoData from "../components/EmptyData/CartItemsNoData";
+import NoData from "../components/EmptyData/noData";
+import AddressModal from "../components/Modal/AddressModal";
 
 // Mock user data with additional details
 const mockUser = {
   name: "Alex Johnson",
   email: "alex.johnson@example.com",
-  avatar:
+  profilePic:
     "https://media.istockphoto.com/id/1322973325/photo/black-girl-standing-with-tablet-at-yellow-studio.jpg?s=612x612&w=0&k=20&c=wZapeoTwD4wICqSnACYEp7VZdOkVtVfBhzBg-1dueJU=",
   joinDate: "January 2023",
   address: "123 Book Street, Novel City, 10001",
@@ -83,11 +89,15 @@ const mockUser = {
 };
 
 const UserProfile = () => {
-  const [user, setUser] = useState(mockUser);
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [editData, setEditData] = useState({ ...mockUser });
   const [activeTab, setActiveTab] = useState("activity");
   const navigate = useNavigate();
+  const { logoutStatusSuccess, userData, getUserUpdatedDetails } = useAuth();
+  const [user, setUser] = useState(userData);
+  const [showAddressModal, setShowAddressModal] = useState(false);
+
+  console.log(userData);
 
   const handleEdit = () => {
     setEditData({ ...user });
@@ -105,15 +115,20 @@ const UserProfile = () => {
   };
 
   const navigateToOrders = () => {
-    navigate("/bookstore/orders");
+    navigate("/nextChapter/orders");
   };
 
   const navigateToWishlist = () => {
-    navigate("/bookstore/wishlist");
+    navigate("/nextChapter/wishlist");
+  };
+
+  const handleLogout = () => {
+    navigate("/nextChapter");
+    logoutStatusSuccess();
   };
 
   return (
-    <div className="min-h-screen bg-[#F5F1ED] px-4 py-8">
+    <div className="min-h-screen relative bg-[#F5F1ED] px-4 py-8">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -176,22 +191,7 @@ const UserProfile = () => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={handleEdit}
-            >
-              <Button
-                className="flex items-center px-4 text-nowrap py-2 bg-[#5C4C49] text-[#E8D9C5] rounded-lg shadow-md"
-                type="button"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="w-5 h-5 mr-2"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                >
-                  <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
-                </svg>
-                Edit Profile
-              </Button>
-            </motion.div>
+            ></motion.div>
           </div>
         </div>
 
@@ -297,7 +297,7 @@ const UserProfile = () => {
                 className="relative"
               >
                 <img
-                  src={user.avatar}
+                  src={user?.profilePic}
                   alt="Profile"
                   className="object-cover w-32 h-32 border-4 border-white rounded-full shadow-lg"
                 />
@@ -312,7 +312,7 @@ const UserProfile = () => {
                 className="mb-6 text-center"
               >
                 <h2 className="text-2xl font-bold text-[#5C4C49]">
-                  {user.name}
+                  {user?.name}
                 </h2>
                 <p className="text-[#5C4C49]/80 flex items-center justify-center gap-1 mt-1">
                   <svg
@@ -329,7 +329,7 @@ const UserProfile = () => {
                       d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
                     />
                   </svg>
-                  Member since {user.joinDate}
+                  Member since {user?.joinDate}
                 </p>
               </motion.div>
 
@@ -338,26 +338,28 @@ const UserProfile = () => {
                 <ModernProfileDetail
                   icon={<MdOutlineMail className="text-[#5C4C49] text-xl" />}
                   label="Email"
-                  value={user.email}
+                  value={user?.email}
                   delay={0.4}
                   isCopyable
                 />
                 <ModernProfileDetail
                   icon={<FiPhone className="text-[#5C4C49] text-lg" />}
                   label="Phone"
-                  value={user.phone}
+                  value={user?.phone}
                   delay={0.5}
                 />
                 <ModernProfileDetail
                   icon={<FaRegAddressCard className="text-[#5C4C49] text-lg" />}
                   label="Address"
-                  value={user.address}
+                  //value={user?.address}
+                  value={"None"}
+                  setShowAddressModal={setShowAddressModal}
                   delay={0.6}
                 />
                 <ModernProfileDetail
                   icon={<FaRegHeart className="text-[#5C4C49] text-lg" />}
                   label="Favorite Genres"
-                  value={user.favoriteGenres.join(", ")}
+                  value={user?.favoriteGenres.join(", ")}
                   delay={0.7}
                 />
               </div>
@@ -366,19 +368,19 @@ const UserProfile = () => {
               {/*   <div className="mt-8 pt-5 border-t border-[#5C4C49]/20">
                 <div className="flex justify-around">
                   <StatPill
-                    count={user.orders}
+                    count={user?.orders}
                     label="Orders"
                     icon="🛒"
                     color="text-[#5C4C49]"
                   />
                   <StatPill
-                    count={user.wishlist}
+                    count={user?.wishlist}
                     label="Wishlist"
                     icon="❤️"
                     color="text-[#D3BD9D]"
                   />
                   <StatPill
-                    count={user.favoriteGenres.length}
+                    count={user?.favoriteGenres.length}
                     label="Genres"
                     icon="📖"
                     color="text-[#5C4C49]"
@@ -386,28 +388,48 @@ const UserProfile = () => {
                 </div>
               </div> */}
 
-              {/* Edit Button */}
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.8 }}
-                onClick={handleEdit}
-              >
-                <Button
-                  className="flex items-center w-full mt-5 justify-center px-4 text-nowrap py-2 bg-[#5C4C49] text-[#E8D9C5] rounded-lg shadow-md"
-                  type="button"
+              <div className="flex items-center w-full gap-4 mt-4">
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.8 }}
+                  onClick={handleEdit}
+                  className="flex-1"
                 >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="w-5 h-5 mr-2"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
+                  {/* Edit Button */}
+                  <Button
+                    className="flex items-center w-full justify-center px-4 text-nowrap py-2 bg-[#5C4C49] text-[#E8D9C5] rounded-lg shadow-md"
+                    type="button"
                   >
-                    <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
-                  </svg>
-                  Edit Profile
-                </Button>
-              </motion.div>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="w-5 h-5 mr-2"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                    >
+                      <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+                    </svg>
+                    Edit Profile
+                  </Button>
+                </motion.div>
+
+                {/* Logout Button */}
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.8 }}
+                  className="flex-1"
+                >
+                  <Button
+                    onClick={() => handleLogout()}
+                    className="flex items-center gap-1 w-full justify-center px-4 text-nowrap py-2 bg-[#7e362a] text-[#E8D9C5] rounded-lg shadow-md"
+                    type="button"
+                  >
+                    <RiLogoutCircleLine />
+                    Logout
+                  </Button>
+                </motion.div>
+              </div>
             </div>
           </motion.div>
           {/* Right Column */}
@@ -421,7 +443,7 @@ const UserProfile = () => {
             >
               <StatCard
                 title="Orders"
-                value={user.orders}
+                value={user?.orders}
                 color="bg-[#5C4C49]"
                 text="#E8D9C5"
                 delay={0.9}
@@ -445,7 +467,7 @@ const UserProfile = () => {
               />
               <StatCard
                 title="Wishlist"
-                value={user.wishlist}
+                value={user?.wishlist}
                 color="bg-[#D3BD9D]"
                 text="#5C4C49"
                 delay={1.0}
@@ -591,183 +613,233 @@ const UserProfile = () => {
               className="p-6 bg-white rounded-2xl"
             >
               {activeTab === "activity" && (
-                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                  {user.recentOrders.slice(0, 3).map((order, index) => (
-                    <ActivityItem
-                      key={order.id}
-                      title={`Order ${order.status}`}
-                      date={order.date}
-                      description={`${order.title} by ${order.author}`}
-                      status={order.status}
-                      delay={0.1 * index}
-                      imageUrl={order.imageUrl}
+                <>
+                  <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                    {user?.recentOrders.slice(0, 3).map((order, index) => (
+                      <ActivityItem
+                        key={order.id}
+                        title={`Order ${order.status}`}
+                        date={order.date}
+                        description={`${order.title} by ${order.author}`}
+                        status={order.status}
+                        delay={0.1 * index}
+                        imageUrl={order.imageUrl}
+                      />
+                    ))}
+                  </div>
+
+                  {user?.recentOrders.length === 0 && (
+                    <NoData
+                      title="No Activity"
+                      message="You have not made any recent activity."
+                      icon="search"
+                      showAction={true}
+                      actionText="Browse Books"
+                      actionLink="/nextChapter/books"
+                      //onActionClick={toggleCart}
                     />
-                  ))}
-                </div>
+                  )}
+                </>
               )}
 
               {activeTab === "orders" && (
-                <div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
-                  {user.recentOrders.map((order, index) => (
-                    <motion.div
-                      key={order.id}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{
-                        delay: index * 0.1,
-                        type: "spring",
-                        stiffness: 300,
-                      }}
-                      whileHover={{ y: -3 }}
-                      className="bg-white rounded-xl shadow-sm border border-[#E8D9C5] overflow-hidden transition-all duration-200 hover:shadow-md"
-                      onClick={() => navigate(`/bookstore/order/${order.id}`)}
-                    >
-                      <div className="flex flex-col md:flex-row">
-                        {/* Book Cover */}
-                        <div className="flex items-center justify-center w-full p-8 border-r rounded-2xl md:w-36">
-                          <img
-                            src={
-                              order.imageUrl ||
-                              "https://via.placeholder.com/100x150?text=Book+Cover"
-                            }
-                            alt={order.title}
-                            className="object-contain h-[7rem]"
-                          />
-                        </div>
+                <>
+                  <div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
+                    {user?.recentOrders.map((order, index) => (
+                      <motion.div
+                        key={order.id}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{
+                          delay: index * 0.1,
+                          type: "spring",
+                          stiffness: 300,
+                        }}
+                        whileHover={{ y: -3 }}
+                        className="bg-white rounded-xl shadow-sm border border-[#E8D9C5] overflow-hidden transition-all duration-200 hover:shadow-md"
+                        onClick={() =>
+                          navigate(`/nextChapter/order/${order.id}`)
+                        }
+                      >
+                        <div className="flex flex-col md:flex-row">
+                          {/* Book Cover */}
+                          <div className="flex items-center justify-center w-full p-8 border-r rounded-2xl md:w-36">
+                            <img
+                              src={
+                                order.imageUrl ||
+                                "https://via.placeholder.com/100x150?text=Book+Cover"
+                              }
+                              alt={order.title}
+                              className="object-contain h-[7rem]"
+                            />
+                          </div>
 
-                        {/* Order Details */}
-                        <div className="flex-1 p-4">
-                          <div className="flex flex-col flex-wrap justify-between gap-2 md:flex-row md:items-center">
-                            <div>
-                              <h3 className="text-lg font-semibold text-[#5C4C49]">
-                                {order.title}
-                              </h3>
-                              <p className="text-sm text-[#5C4C49] opacity-80">
-                                by {order.author}
-                              </p>
+                          {/* Order Details */}
+                          <div className="flex-1 p-4">
+                            <div className="flex flex-col flex-wrap justify-between gap-2 md:flex-row md:items-center">
+                              <div>
+                                <h3 className="text-lg font-semibold text-[#5C4C49]">
+                                  {order.title}
+                                </h3>
+                                <p className="text-sm text-[#5C4C49] opacity-80">
+                                  by {order.author}
+                                </p>
+                              </div>
+                              <div className="flex items-center gap-3">
+                                <span className="text-sm text-[#5C4C49] opacity-70">
+                                  {order.date}
+                                </span>
+                                <span
+                                  className={`px-3 py-1 rounded-full text-xs font-medium ${
+                                    order.status === "Delivered"
+                                      ? "bg-green-100 text-green-800"
+                                      : order.status === "Shipped"
+                                      ? "bg-blue-100 text-blue-800"
+                                      : "bg-yellow-100 text-yellow-800"
+                                  }`}
+                                >
+                                  {order.status}
+                                </span>
+                              </div>
                             </div>
-                            <div className="flex items-center gap-3">
-                              <span className="text-sm text-[#5C4C49] opacity-70">
-                                {order.date}
-                              </span>
-                              <span
-                                className={`px-3 py-1 rounded-full text-xs font-medium ${
-                                  order.status === "Delivered"
-                                    ? "bg-green-100 text-green-800"
-                                    : order.status === "Shipped"
-                                    ? "bg-blue-100 text-blue-800"
-                                    : "bg-yellow-100 text-yellow-800"
-                                }`}
+
+                            <div className="grid grid-cols-2 gap-4 mt-4 text-sm md:grid-cols-2">
+                              <div>
+                                <p className="text-[#5C4C49] opacity-70">
+                                  Order ID
+                                </p>
+                                <p className="font-medium text-[#5C4C49]">
+                                  {order.id}
+                                </p>
+                              </div>
+                              <div>
+                                <p className="text-[#5C4C49] opacity-70">
+                                  Price
+                                </p>
+                                <p className="font-medium text-[#5C4C49]">
+                                  {order.price || "$19.99"}
+                                </p>
+                              </div>
+                              <div>
+                                <p className="text-[#5C4C49] opacity-70">
+                                  Quantity
+                                </p>
+                                <p className="font-medium text-[#5C4C49]">
+                                  {order.quantity || 1}
+                                </p>
+                              </div>
+                              <div>
+                                <p className="text-[#5C4C49] opacity-70">
+                                  Total
+                                </p>
+                                <p className="font-medium text-[#5C4C49]">
+                                  {order.total || "$19.99"}
+                                </p>
+                              </div>
+                            </div>
+
+                            <div className="flex justify-end mt-4">
+                              <motion.button
+                                whileHover={{ scale: 1.03 }}
+                                whileTap={{ scale: 0.98 }}
+                                className="flex items-center gap-1 px-4 py-2 bg-[#5C4C49] text-[#E8D9C5] rounded-lg text-sm font-medium"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  navigate(`/nextChapter/order/${order.id}`);
+                                }}
                               >
-                                {order.status}
-                              </span>
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  className="w-4 h-4"
+                                  fill="none"
+                                  viewBox="0 0 24 24"
+                                  stroke="currentColor"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                                  />
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                                  />
+                                </svg>
+                                View Details
+                              </motion.button>
                             </div>
-                          </div>
-
-                          <div className="grid grid-cols-2 gap-4 mt-4 text-sm md:grid-cols-2">
-                            <div>
-                              <p className="text-[#5C4C49] opacity-70">
-                                Order ID
-                              </p>
-                              <p className="font-medium text-[#5C4C49]">
-                                {order.id}
-                              </p>
-                            </div>
-                            <div>
-                              <p className="text-[#5C4C49] opacity-70">Price</p>
-                              <p className="font-medium text-[#5C4C49]">
-                                {order.price || "$19.99"}
-                              </p>
-                            </div>
-                            <div>
-                              <p className="text-[#5C4C49] opacity-70">
-                                Quantity
-                              </p>
-                              <p className="font-medium text-[#5C4C49]">
-                                {order.quantity || 1}
-                              </p>
-                            </div>
-                            <div>
-                              <p className="text-[#5C4C49] opacity-70">Total</p>
-                              <p className="font-medium text-[#5C4C49]">
-                                {order.total || "$19.99"}
-                              </p>
-                            </div>
-                          </div>
-
-                          <div className="flex justify-end mt-4">
-                            <motion.button
-                              whileHover={{ scale: 1.03 }}
-                              whileTap={{ scale: 0.98 }}
-                              className="flex items-center gap-1 px-4 py-2 bg-[#5C4C49] text-[#E8D9C5] rounded-lg text-sm font-medium"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                navigate(`/bookstore/order/${order.id}`);
-                              }}
-                            >
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                className="w-4 h-4"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  strokeWidth={2}
-                                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                                />
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  strokeWidth={2}
-                                  d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-                                />
-                              </svg>
-                              View Details
-                            </motion.button>
                           </div>
                         </div>
-                      </div>
-                    </motion.div>
-                  ))}
-                </div>
+                      </motion.div>
+                    ))}
+                  </div>
+
+                  {user?.recentOrders?.length === 0 && (
+                    <div className="">
+                      <NoData
+                        title="No Orders Found"
+                        message="You have not placed any orders yet."
+                        icon="cart"
+                        showAction={true}
+                        actionText="Explore More"
+                        actionLink="/nextChapter/books"
+                        //onActionClick={toggleCart}
+                      />
+                    </div>
+                  )}
+                </>
               )}
 
               {activeTab === "wishlist" && (
-                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                  {user.wishlistItems.map((item, index) => (
-                    <motion.div
-                      key={item.id}
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: index * 0.1 }}
-                      whileHover={{ y: -5 }}
-                      className="flex items-center p-3 border border-[#D3BD9D] rounded-lg cursor-pointer"
-                      onClick={() => navigate(`/bookstore/book/${item.id}`)}
-                    >
-                      <div className="flex items-center justify-center flex-shrink-0 w-20 h-24 mr-4 rounded-md">
-                        <img
-                          src={item.image}
-                          className="object-contain w-full h-full"
-                          alt=""
-                        />
-                      </div>
-                      <div>
-                        <h4 className="font-medium text-[#5C4C49]">
-                          {item.title}
-                        </h4>
-                        <p className="text-sm text-[#5C4C49] opacity-80">
-                          {item.author}
-                        </p>
-                        <p className="text-[#5C4C49] font-semibold mt-1">
-                          {item.price}
-                        </p>
-                      </div>
-                    </motion.div>
-                  ))}
-                </div>
+                <>
+                  <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                    {user?.recentWishlist?.map((item, index) => (
+                      <motion.div
+                        key={item.id}
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: index * 0.1 }}
+                        whileHover={{ y: -5 }}
+                        className="flex items-center p-3 border border-[#D3BD9D] rounded-lg cursor-pointer"
+                        onClick={() => navigate(`/nextChapter/book/${item.id}`)}
+                      >
+                        <div className="flex items-center justify-center flex-shrink-0 w-20 h-24 mr-4 rounded-md">
+                          <img
+                            src={item.image}
+                            className="object-contain w-full h-full"
+                            alt=""
+                          />
+                        </div>
+                        <div>
+                          <h4 className="font-medium text-[#5C4C49]">
+                            {item.title}
+                          </h4>
+                          <p className="text-sm text-[#5C4C49] opacity-80">
+                            {item.author}
+                          </p>
+                          <p className="text-[#5C4C49] font-semibold mt-1">
+                            {item.price}
+                          </p>
+                        </div>
+                      </motion.div>
+                    ))}
+                  </div>
+                  <div className="flex items-center justify-center">
+                    {user?.recentWishlist?.length === 0 && (
+                      <NoData
+                        title="No favorites yet"
+                        message="Start adding books to your favorites collection"
+                        icon="heart"
+                        showAction={true}
+                        actionText="Browse Books"
+                        actionLink="/nextChapter/books"
+                      />
+                    )}
+                  </div>
+                </>
               )}
             </motion.div>
           </div>
@@ -909,6 +981,11 @@ const UserProfile = () => {
           </motion.div>
         )}
       </AnimatePresence>
+
+      <AddressModal
+        showAddress={showAddressModal}
+        setShowAddress={setShowAddressModal}
+      />
     </div>
   );
 };
@@ -1050,22 +1127,30 @@ const StatPill = ({ count, label, icon, color }) => (
   </motion.div>
 );
 
-const ModernProfileDetail = ({ icon, label, value, delay, isCopyable }) => (
+const ModernProfileDetail = ({
+  icon,
+  label,
+  value,
+  setShowAddressModal,
+  delay,
+  isCopyable,
+}) => (
   <motion.div
     initial={{ opacity: 0, x: -10 }}
     animate={{ opacity: 1, x: 0 }}
     transition={{ delay }}
     className="flex items-start gap-3 p-3 bg-white/50 rounded-lg backdrop-blur-sm border border-[#5C4C49]/10"
   >
-    <span className="text-xl mt-0.5">{icon}</span>
+    <span className="text-xl text-[#5C4C49]">{icon}</span>
     <div className="flex-1">
       <p className="text-xs font-medium text-[#5C4C49]/70 uppercase tracking-wider">
         {label}
       </p>
-      <div className="flex items-center justify-between">
+      <div className="z-20 flex items-center justify-between w-full mt-1">
         <p className="text-[#5C4C49] text-xs sm:text-sm md:text-md font-medium">
           {value}
         </p>
+
         {isCopyable && (
           <motion.button
             whileHover={{ scale: 1.1 }}
@@ -1085,6 +1170,22 @@ const ModernProfileDetail = ({ icon, label, value, delay, isCopyable }) => (
           >
             <CopyIcon />
           </motion.button>
+        )}
+        {label === "Address" && (
+          <motion.div
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            className="text-[#5C4C49]/50 hover:text-[#5C4C49] transition-colors"
+            title="Copy to clipboard"
+          >
+            <Button
+              type="button"
+              onClick={() => setShowAddressModal(true)}
+              className="bg-[#5C4C49] text-[#E8D9C5] rounded-[7px] text-xs font-medium flex items-center"
+            >
+              Select Address
+            </Button>
+          </motion.div>
         )}
       </div>
     </div>

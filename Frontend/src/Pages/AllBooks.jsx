@@ -1,42 +1,28 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import BookCard from "../components/Cards/BookCard";
 import { fetchAllBooks } from "../store/Redux/Slices/BooksSlice";
 import BooksLoader from "../components/Loaders/BooksLoader";
 import ShowErrors from "../components/Errors/ShowErrors";
-import { mockBooks } from "../../Data/mockData";
 import { motion } from "framer-motion";
 import BookListingFilter from "../components/BookListingFilter";
-import PaginationComp from "../components/Pagination";
 import CategorySlider from "../components/ScrollingContainer/CategorySlider";
 
 const AllBooks = () => {
   const dispatch = useDispatch();
-  //const { books, error, loading } = useSelector((state) => state.books);
+  const { books, error, loading } = useSelector((state) => state.books);
   const [showFilters, setShowFilters] = useState(false);
   const [openCategory, setOpenCategory] = useState({
     PriceFilter: false,
     CategoryFilter: false,
     LanguageFilter: false,
   });
-  const [currentPage, setCurrentPage] = useState(1);
-  const booksPerPage = 8;
 
-  const books = mockBooks;
-  const loading = false;
-  const error = null;
-
-  /* useEffect(() => {
+  useEffect(() => {
     dispatch(fetchAllBooks());
-  }, [dispatch]); */
+  }, [dispatch]);
 
-  // Pagination logic
-  const indexOfLastBook = currentPage * booksPerPage;
-  const indexOfFirstBook = indexOfLastBook - booksPerPage;
-  const currentBooks = books.slice(indexOfFirstBook, indexOfLastBook);
-  const totalPages = Math.ceil(books.length / booksPerPage);
-
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  console.log(books);
 
   return (
     <div
@@ -74,36 +60,28 @@ const AllBooks = () => {
       ) : error ? (
         <ShowErrors text={error || "Sorry we are Unable Fetch Books"} />
       ) : (
-        <>
-          <div className="my-10">
-            <div className="flex-1">
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.5 }}
-                className={`grid container mx-auto grid-cols-12 gap-3 px-6`}
-              >
-                {currentBooks?.map((book) => (
-                  <motion.div
-                    key={book.book_id}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.3 }}
-                    className={`col-span-12 sm:col-span-6 lg:col-span-4 xl:col-span-3`}
-                  >
-                    <BookCard book={book} />
-                  </motion.div>
-                ))}
-              </motion.div>
-            </div>
+        <div className="my-10">
+          <div className="flex-1">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5 }}
+              className={`grid container mx-auto grid-cols-12 gap-3 px-6`}
+            >
+              {books?.map((book) => (
+                <motion.div
+                  key={book.book_id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3 }}
+                  className={`col-span-12 sm:col-span-6 lg:col-span-4 xl:col-span-3`}
+                >
+                  <BookCard book={book} />
+                </motion.div>
+              ))}
+            </motion.div>
           </div>
-
-          <PaginationComp
-            currentPage={currentPage}
-            totalPages={totalPages}
-            paginate={paginate}
-          />
-        </>
+        </div>
       )}
 
       {showFilters && (
