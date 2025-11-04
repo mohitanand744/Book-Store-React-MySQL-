@@ -1,4 +1,3 @@
-import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   loginSuccess,
@@ -20,10 +19,8 @@ const useAuth = () => {
 
   const logoutStatusSuccess = () => {
     navigate("/nextChapter");
-    setTimeout(() => {
-      dispatch(logoutSuccess());
-      toast.success("Logout successful!");
-    }, 100);
+    dispatch(logoutSuccess("tokenExpired"));
+    toast.success("Logout successful!");
   };
 
   const setUpdateUserData = (userData) => {
@@ -44,6 +41,7 @@ const useAuth = () => {
     logoutStatusSuccess,
     setUpdateUserData,
     getUserUpdatedDetails,
+    logoutReason: auth.logoutReason,
   };
 };
 

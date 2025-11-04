@@ -83,11 +83,7 @@ export const useAxiosLoader = () => {
             toast.error("Unauthorized. Please login again.");
           }
 
-          navigate("/nextChapter");
-
-          setTimeout(() => {
-            logoutStatusSuccess();
-          }, 100);
+          logoutStatusSuccess("tokenExpired");
         }
 
         return Promise.reject(error);

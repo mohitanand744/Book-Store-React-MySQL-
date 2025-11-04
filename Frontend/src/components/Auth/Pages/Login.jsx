@@ -11,6 +11,7 @@ import ForgotPasswordModal from "../Modal/ForgotPassword";
 import { login } from "../../../utils/apis/authApi";
 import toast from "react-hot-toast";
 import useAuth from "../../../Hooks/useAuth";
+import ResetPasswordModal from "../Modal/resetPassword";
 
 const Login = () => {
   const {
@@ -18,15 +19,56 @@ const Login = () => {
     handleSubmit,
     reset,
     setError,
+    setValue,
+    watch,
     formState: { errors, isSubmitting },
   } = useForm();
 
   const navigate = useNavigate();
   const { loginStatusSuccess, isAuthenticated } = useAuth();
   const [showForgot, setShowForgot] = useState(false);
+  const [showResetModal, setShowResetModal] = useState(false);
+  const [isChecked, setIsChecked] = useState(false);
+  const [resetToken, setResetToken] = useState(
+    null || localStorage.getItem("resetToken")
+  );
+  const emailValue = watch("email");
+  //const passwordValue = watch("password");
   const location = useLocation();
 
-  console.log(isAuthenticated);
+  useEffect(() => {
+    const queryParams = new URLSearchParams(location.search);
+    const token = queryParams.get("token");
+
+    if (token) {
+      setShowResetModal(true);
+      localStorage.setItem("resetToken", token);
+      setResetToken(token);
+      navigate("/", { replace: true });
+    } else {
+      setShowResetModal(false);
+    }
+
+    if (resetToken) {
+      setShowResetModal(true);
+    }
+  }, [location, navigate]);
+
+  const handleCheckboxChange = (e) => {
+    setIsChecked(e.target.checked);
+    console.log(isChecked);
+  };
+
+  useEffect(() => {
+    const { email, password } =
+      JSON.parse(localStorage.getItem("loginData")) || {};
+
+    if (email && password) {
+      setValue("email", email);
+      setValue("password", password);
+      setIsChecked(true);
+    }
+  }, [setValue]);
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -47,6 +89,19 @@ const Login = () => {
         loginStatusSuccess(user, token);
 
         toast.success("Login successful!");
+
+        if (isChecked) {
+          localStorage.setItem(
+            "loginData",
+            JSON.stringify({
+              email: data.email,
+              password: data.password,
+            })
+          );
+        } else {
+          localStorage.removeItem("loginData");
+        }
+
         navigate("/nextChapter");
         reset();
       } else {
@@ -170,8 +225,8 @@ const Login = () => {
                     <Checkbox
                       id="remember-me"
                       label="Remember me"
-                      //checked={isChecked}
-                      //onChange={(e) => setIsChecked(e.target.checked)}
+                      checked={isChecked}
+                      onChange={(e) => handleCheckboxChange(e)}
                     />
                   </motion.div>
 
@@ -327,6 +382,15 @@ const Login = () => {
       <ForgotPasswordModal
         showForgot={showForgot}
         setShowForgot={setShowForgot}
+        email={emailValue}
+        setShowResetModal={setShowResetModal}
+      />
+      <ResetPasswordModal
+        showReset={showResetModal}
+        setShowReset={setShowResetModal}
+        resetToken={resetToken}
+        email={emailValue}
+        emailVerified={resetToken}
       />
     </div>
   );

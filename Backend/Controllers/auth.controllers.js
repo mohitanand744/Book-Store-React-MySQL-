@@ -1,5 +1,10 @@
 const { validationResult } = require("express-validator");
-const { registerUser, loginUser } = require("../Services/authService");
+const {
+  registerUser,
+  loginUser,
+  sendResetPasswordLink,
+  resetPassword,
+} = require("../Services/authService");
 const { successResponse, errorResponse } = require("../utils/response");
 const handleDbError = require("../utils/handleDbError");
 const { getUserDetailsById } = require("../Models/userModel");
@@ -8,6 +13,7 @@ const { getUserDetailsById } = require("../Models/userModel");
 const signup = async (req, res, next) => {
   try {
     const errors = validationResult(req);
+
     if (!errors.isEmpty()) {
       return errorResponse(res, 400, "Validation failed", errors.array()[0]);
     }
@@ -25,6 +31,7 @@ const signup = async (req, res, next) => {
 const login = async (req, res, next) => {
   try {
     const errors = validationResult(req);
+
     if (!errors.isEmpty()) {
       return errorResponse(res, 400, "Validation failed", errors.array()[0]);
     }
@@ -45,9 +52,52 @@ const login = async (req, res, next) => {
   }
 };
 
-const getUserProfile = async (req, res, next) => {
-  /*   console.log("Data", req); */
+// FORGET PASSWORD
+const forgotPassword = async (req, res, next) => {
+  try {
+    const error = validationResult(req);
 
+    if (!error.isEmpty()) {
+      return errorResponse(res, 400, "Validation failed", error.array()[0]);
+    }
+
+    const { email } = req.body;
+    const result = await sendResetPasswordLink(email);
+
+    if (result?.success === false) {
+      return errorResponse(res, 400, result?.message, result);
+    }
+
+    successResponse(res, 200, "Password reset link sent successfully");
+  } catch (error) {
+    handleDbError(error, res, next);
+  }
+};
+
+// RESET PASSWORD
+
+const resetPasswordController = async (req, res, next) => {
+  try {
+    const error = validationResult(req);
+
+    if (!error.isEmpty()) {
+      return errorResponse(res, 400, "Validation failed", error.array()[0]);
+    }
+
+    const { token, newPassword } = req.body;
+    const result = await resetPassword(token, newPassword);
+
+    if (result?.success) {
+      return successResponse(res, 200, "Password reset successfully");
+    }
+    errorResponse(res, 400, "Password reset failed", result);
+  } catch (error) {
+    handleDbError(error, res, next);
+  }
+};
+
+// GET USER
+const getUserProfile = async (req, res, next) => {
   try {
     const user = await getUserDetailsById(req.userId);
 
@@ -64,4 +114,10 @@ const getUserProfile = async (req, res, next) => {
   }
 };
 
-module.exports = { signup, login, getUserProfile };
+module.exports = {
+  signup,
+  login,
+  getUserProfile,
+  resetPasswordController,
+  forgotPassword,
+};

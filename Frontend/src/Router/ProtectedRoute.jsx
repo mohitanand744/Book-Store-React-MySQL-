@@ -4,15 +4,15 @@ import useAuth from "../Hooks/useAuth";
 import toast from "react-hot-toast";
 
 const ProtectedRoute = ({ children }) => {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, logoutReason } = useAuth();
 
   useEffect(() => {
-    if (!isAuthenticated) {
+    if (!isAuthenticated && logoutReason !== "tokenExpired") {
       toast.error("You must be logged in to access this page.");
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, logoutReason]);
 
-  if (!isAuthenticated) return <Navigate to="/" replace />;
+  if (!isAuthenticated) return <Navigate to="/nextChapter" replace />;
   return children;
 };
 

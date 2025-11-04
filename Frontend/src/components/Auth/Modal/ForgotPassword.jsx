@@ -3,25 +3,50 @@ import Input from "../../Inputs/Input";
 import { EnvelopeIcon } from "@heroicons/react/24/outline";
 import Modal from "../../Modal/ModalContainer";
 import Button from "../../Buttons/Button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { forgotPassword } from "../../../utils/apis/authApi";
+import toast from "react-hot-toast";
 
-const ForgotPasswordModal = ({ showForgot, setShowForgot }) => {
+const ForgotPasswordModal = ({
+  showForgot,
+  setShowForgot,
+  email,
+  setShowResetModal,
+}) => {
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
     reset,
+    setValue,
   } = useForm();
 
-  const onSubmit = async (data) => {
-    // Simulate delay
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+  useEffect(() => {
+    if (email) {
+      setValue("email", email);
+    }
+  }, [email, setValue, showForgot]);
 
-    // Now handle the result
+  const onSubmit = async (data) => {
+    try {
+      const response = await forgotPassword(data.email);
+
+      if (response?.success) {
+        setShowResetModal(true);
+        toast.success(response?.message);
+        setShowForgot(false);
+      }
+    } catch (error) {
+      console.error("Error sending password reset email:", error);
+      setShowForgot(false);
+
+      toast.error(
+        error.response?.data?.message ||
+          "Something went wrong. Please try again later."
+      );
+    }
     reset();
-    console.log("Email:", data.email);
     setShowForgot(false);
-    // Optionally close the modal or show a success message
   };
 
   return (
@@ -53,7 +78,7 @@ const ForgotPasswordModal = ({ showForgot, setShowForgot }) => {
 
           <div className="grid grid-cols-2 gap-4">
             <Button type="submit" variant="primary" isLoading={isSubmitting}>
-              Reset Password
+              Send Reset Link
             </Button>
             <Button
               variant="outline"

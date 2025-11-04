@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { getUserDetails } from "../../../utils/apis/authApi";
+import { forgotPassword, getUserDetails } from "../../../utils/apis/authApi";
 import toast from "react-hot-toast";
 
 // Async thunk for token validation
@@ -29,6 +29,7 @@ const getInitialState = () => {
       isAuthenticated: token !== null,
       loading: true,
       error: null,
+      logoutReason: null,
     };
   } catch (error) {
     console.error("Error loading auth state from localStorage:", error);
@@ -38,6 +39,7 @@ const getInitialState = () => {
       isAuthenticated: false,
       loading: false,
       error: null,
+      logoutReason: null,
     };
   }
 };
@@ -58,12 +60,14 @@ const authSlice = createSlice({
       localStorage.setItem("userData", JSON.stringify(action.payload.user));
     },
 
-    logoutSuccess: (state) => {
+    logoutSuccess: (state, action) => {
       state.userData = null;
       state.loading = false;
+      state.logoutReason = action.payload || null;
+      state.error = null;
       state.isAuthenticated = false;
       state.token = null;
-      state.error = null;
+
       localStorage.removeItem("token");
       localStorage.removeItem("userData");
     },
@@ -89,10 +93,8 @@ const authSlice = createSlice({
       .addCase(validateToken.fulfilled, (state, action) => {
         state.loading = false;
         state.isAuthenticated = true;
-        state.userData = action.payload; // Update with fresh user data
+        state.userData = action.payload;
         state.error = null;
-
-        console.log("Token Success:", action);
 
         // Update localStorage with fresh data
         localStorage.setItem("userData", JSON.stringify(action.payload));
@@ -102,6 +104,7 @@ const authSlice = createSlice({
         state.isAuthenticated = false;
         state.userData = null;
         state.token = null;
+        logoutReason = "tokenExpired";
         state.error = action.payload;
 
         // Clear invalid data from localStorage
