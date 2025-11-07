@@ -112,6 +112,7 @@ exports.sendResetPasswordLink = async (email) => {
 
 exports.verifyResetToken = async (token) => {
   try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET_RESET);
     const user = await findUserByResetToken(token);
 
     if (!user) {
@@ -122,7 +123,6 @@ exports.verifyResetToken = async (token) => {
       };
     }
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET_RESET);
     return { valid: true, id: decoded.id };
   } catch (err) {
     if (err.name === "TokenExpiredError") {

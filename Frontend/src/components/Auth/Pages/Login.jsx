@@ -56,17 +56,15 @@ const Login = () => {
     }
   };
 
-  const queryParams = new URLSearchParams(location.search);
-  const token = queryParams.get("token");
   useEffect(() => {
+    const queryParams = new URLSearchParams(location.search);
+    const token = queryParams.get("token");
     if (token) {
       localStorage.setItem("resetToken", token);
       setResetToken(token);
       navigate("/", { replace: true });
     } else {
       setShowResetModal(false);
-      localStorage.removeItem("resetToken");
-      setResetToken(null);
     }
   }, [location, navigate]);
 
