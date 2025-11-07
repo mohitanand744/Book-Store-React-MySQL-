@@ -5,6 +5,7 @@
   "main": "server.js",
   "scripts": {
     "dev": "nodemon --env-file=.env server.js",
+    "migrate": "node ./Config/runMigrations.js",
     "start": "node server.js"
   },
   "author": "Mohit Anand",

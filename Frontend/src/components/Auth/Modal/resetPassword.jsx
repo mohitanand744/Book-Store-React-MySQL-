@@ -19,6 +19,8 @@ const ResetPasswordModal = ({
   emailVerified,
   email,
   resetToken,
+  countdown,
+  setCountdown,
 }) => {
   const {
     register,
@@ -39,7 +41,7 @@ const ResetPasswordModal = ({
 
   const onSubmit = async (data) => {
     try {
-      const response = await resetPassword(resetToken, data.newPassword);
+      const response = await resetPassword(email, data.newPassword);
 
       if (response?.success) {
         setShowReset(false);
@@ -90,14 +92,16 @@ const ResetPasswordModal = ({
           "Something went wrong. Please try again later."
       );
     }
+
+    setCountdown(30);
     reset();
   };
 
-  useEffect(() => {
+  /*   useEffect(() => {
     if (emailVerified) {
       setShowReset(false);
     }
-  }, [emailVerified, setShowReset]);
+  }, [emailVerified, setShowReset]); */
 
   useEffect(() => {
     if (emailResent) {
@@ -106,9 +110,22 @@ const ResetPasswordModal = ({
       }, 5000);
     }
   }, [emailResent]);
+  useEffect(() => {
+    let timer;
+
+    if (countdown > 0) {
+      timer = setTimeout(() => {
+        setCountdown((prevCountdown) => prevCountdown - 1);
+      }, 1000);
+    }
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [countdown]);
 
   // Email Sent UI - Show when email is not verified yet
-  if (!emailVerified) {
+  if (emailVerified) {
     return (
       <Modal isOpen={showReset} onClose={handleClose}>
         <div className="w-full">
@@ -181,16 +198,26 @@ const ResetPasswordModal = ({
             </AnimatePresence>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="relative grid grid-cols-2 gap-4">
             <Button
               onClick={handleResendEmail}
               variant="primary"
               isLoading={isResending}
               className="w-full"
+              disabled={isResending || countdown > 0}
             >
-              {isResending ? "Sending..." : "Resend Reset Link"}
+              {countdown > 0
+                ? `Resend in ${countdown}s`
+                : isResending
+                ? "Sending..."
+                : "Resend Reset Link"}
             </Button>
-
+            {warningMsg && (
+              <CancelModalWarning
+                setWarningMsg={setWarningMsg}
+                confirmClose={confirmClose}
+              />
+            )}
             <Button
               variant="outline"
               onClick={handleClose}
@@ -284,35 +311,10 @@ const ResetPasswordModal = ({
             </Button>
 
             {warningMsg && (
-              <div className="absolute top-[-10rem] left-0 flex items-center justify-center w-full h-full bg-black bg-opacity-50">
-                <div className="p-4 bg-white rounded-lg shadow-lg">
-                  <h2 className="mb-2 text-xl text-[#5E4C37] font-bold">
-                    Password Reset
-                  </h2>
-                  <p className="text-gray-600">
-                    <b className="text-yellow-500">Warning</b>: If you cancel
-                    the reset process, you'll need to use the reset link sent to
-                    your email. Remember, the reset link is valid for only 10
-                    minutes. Are you sure you want to cancel?
-                  </p>
-                  <div className="flex items-center gap-4 mt-4">
-                    <Button
-                      variant="primary"
-                      className=""
-                      onClick={confirmClose}
-                    >
-                      Confirm
-                    </Button>
-                    <Button
-                      variant="outline"
-                      className="hover:bg-red-800 hover:text-white"
-                      onClick={() => setWarningMsg(false)}
-                    >
-                      Cancel
-                    </Button>
-                  </div>
-                </div>
-              </div>
+              <CancelModalWarning
+                setWarningMsg={setWarningMsg}
+                confirmClose={confirmClose}
+              />
             )}
             <Button
               variant="outline"
@@ -329,3 +331,33 @@ const ResetPasswordModal = ({
 };
 
 export default ResetPasswordModal;
+
+const CancelModalWarning = ({ confirmClose, setWarningMsg }) => {
+  return (
+    <div className="absolute top-[-10rem] left-0 flex items-center justify-center w-full h-full bg-black bg-opacity-50">
+      <div className="p-4 bg-white rounded-lg shadow-lg">
+        <h2 className="mb-2 text-xl text-[#5E4C37] font-bold">
+          Password Reset
+        </h2>
+        <p className="text-gray-600">
+          <b className="text-yellow-500">Warning</b>: If you cancel the reset
+          process, you'll need to use the reset link sent to your email.
+          Remember, the reset link is valid for only 10 minutes. Are you sure
+          you want to cancel?
+        </p>
+        <div className="flex items-center gap-4 mt-4">
+          <Button variant="primary" className="" onClick={confirmClose}>
+            Confirm
+          </Button>
+          <Button
+            variant="outline"
+            className="hover:bg-red-800 hover:text-white"
+            onClick={() => setWarningMsg(false)}
+          >
+            Cancel
+          </Button>
+        </div>
+      </div>
+    </div>
+  );
+};

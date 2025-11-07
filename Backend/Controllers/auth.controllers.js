@@ -4,6 +4,7 @@ const {
   loginUser,
   sendResetPasswordLink,
   resetPassword,
+  verifyResetToken,
 } = require("../Services/authService");
 const { successResponse, errorResponse } = require("../utils/response");
 const handleDbError = require("../utils/handleDbError");
@@ -74,6 +75,23 @@ const forgotPassword = async (req, res, next) => {
   }
 };
 
+// Verify resetToken
+
+const verifyResetTokenController = async (req, res, next) => {
+  try {
+    const { token } = req.body;
+
+    const result = await verifyResetToken(token);
+    if (result.valid) {
+      return successResponse(res, 200);
+    }
+
+    errorResponse(res, 400, result?.message);
+  } catch (error) {
+    handleDbError(error, res, next);
+  }
+};
+
 // RESET PASSWORD
 
 const resetPasswordController = async (req, res, next) => {
@@ -84,11 +102,11 @@ const resetPasswordController = async (req, res, next) => {
       return errorResponse(res, 400, "Validation failed", error.array()[0]);
     }
 
-    const { token, newPassword } = req.body;
-    const result = await resetPassword(token, newPassword);
+    const { email, newPassword } = req.body;
+    const result = await resetPassword(email, newPassword);
 
     if (result?.success) {
-      return successResponse(res, 200, "Password reset successfully");
+      return successResponse(res, 200, "Password reset successful");
     }
     errorResponse(res, 400, "Password reset failed", result);
   } catch (error) {
@@ -120,4 +138,5 @@ module.exports = {
   getUserProfile,
   resetPasswordController,
   forgotPassword,
+  verifyResetTokenController,
 };

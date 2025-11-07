@@ -27,6 +27,7 @@ exports.formatUser = (rows) => {
   return {
     name: `${user.first_name} ${user.last_name}`,
     email: user.email,
+    userId: user.id,
     profilePic:
       user.profile_pic ||
       "https://img.freepik.com/premium-vector/human-icon_970584-3.jpg?semt=ais_hybrid&w=740&q=80",

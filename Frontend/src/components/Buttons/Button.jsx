@@ -26,7 +26,11 @@ const Button = ({
       type={type}
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
-      className={`${baseClasses} ${variantClasses[variant]} ${className}`}
+      className={`${baseClasses} ${variantClasses[variant]} ${className} ${
+        isLoading || props.disabled
+          ? "cursor-not-allowed hover:bg-[#5c4c49]/60 bg-[#5c4c49]/50"
+          : ""
+      }`}
       disabled={isLoading}
       {...props}
     >

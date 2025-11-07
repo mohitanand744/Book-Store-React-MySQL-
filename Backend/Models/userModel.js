@@ -44,9 +44,36 @@ const getUserDetailsById = async (id) => {
   return rows.length ? userDetails : null;
 };
 
+const saveResetToken = async (email, resetToken) => {
+  const query = "UPDATE users SET reset_token = ? WHERE email = ?";
+  const values = [resetToken, email];
+  await db.query(query, values);
+};
+
+const findUserByResetToken = async (resetToken) => {
+  const query = "SELECT * FROM users WHERE reset_token = ?";
+  const [rows] = await db.query(query, [resetToken]);
+  return rows[0] || null;
+};
+
+const clearResetToken = async (email) => {
+  const query = "UPDATE users SET reset_token = NULL WHERE email = ?";
+  await db.query(query, [email]);
+};
+
+const findUserById = async (userId) => {
+  const query = "SELECT * FROM users WHERE id = ?";
+  const [rows] = await db.query(query, [userId]);
+  return rows[0] || null;
+};
+
 module.exports = {
   createUser,
   findUserByEmail,
   getAllUsers,
   getUserDetailsById,
+  findUserByResetToken,
+  clearResetToken,
+  saveResetToken,
+  findUserById,
 };

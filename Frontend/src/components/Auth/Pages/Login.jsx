@@ -8,7 +8,7 @@ import Input from "./../../Inputs/Input";
 import Checkbox from "../../Inputs/Checkbox";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import ForgotPasswordModal from "../Modal/ForgotPassword";
-import { login } from "../../../utils/apis/authApi";
+import { login, verifyResetToken } from "../../../utils/apis/authApi";
 import toast from "react-hot-toast";
 import useAuth from "../../../Hooks/useAuth";
 import ResetPasswordModal from "../Modal/resetPassword";
@@ -29,30 +29,52 @@ const Login = () => {
   const [showForgot, setShowForgot] = useState(false);
   const [showResetModal, setShowResetModal] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
-  const [resetToken, setResetToken] = useState(
-    null || localStorage.getItem("resetToken")
+  const [resetToken, setResetToken] = useState(() =>
+    localStorage.getItem("resetToken")
   );
+
+  const [countdown, setCountdown] = useState(0);
+  const [linkSent, setLinkSent] = useState(false);
   const emailValue = watch("email");
   //const passwordValue = watch("password");
   const location = useLocation();
 
-  useEffect(() => {
-    const queryParams = new URLSearchParams(location.search);
-    const token = queryParams.get("token");
+  console.log(resetToken, "ResetToken");
 
+  const handleResetTokenVerification = async () => {
+    try {
+      const response = await verifyResetToken(resetToken);
+
+      if (response?.success) {
+        setShowResetModal(true);
+        setLinkSent(false);
+      }
+    } catch (error) {
+      setShowResetModal(false);
+      toast.error(error.response?.data?.message || "Invalid Link");
+      localStorage.removeItem("resetToken");
+    }
+  };
+
+  const queryParams = new URLSearchParams(location.search);
+  const token = queryParams.get("token");
+  useEffect(() => {
     if (token) {
-      setShowResetModal(true);
       localStorage.setItem("resetToken", token);
       setResetToken(token);
       navigate("/", { replace: true });
     } else {
       setShowResetModal(false);
-    }
-
-    if (resetToken) {
-      setShowResetModal(true);
+      localStorage.removeItem("resetToken");
+      setResetToken(null);
     }
   }, [location, navigate]);
+
+  useEffect(() => {
+    if (resetToken) {
+      handleResetTokenVerification();
+    }
+  }, [resetToken]);
 
   const handleCheckboxChange = (e) => {
     setIsChecked(e.target.checked);
@@ -208,8 +230,8 @@ const Login = () => {
                     {...register("password", {
                       required: "Password is required",
                       minLength: {
-                        value: 6,
-                        message: "Password must be at least 6 characters",
+                        value: 8,
+                        message: "Password must be at least 8 characters",
                       },
                     })}
                   />
@@ -236,13 +258,12 @@ const Login = () => {
                     transition={{ delay: 0.7 }}
                     className="text-sm"
                   >
-                    <a
-                      href="#"
+                    <p
                       onClick={() => setShowForgot(true)}
-                      className="font-medium text-[#5e4c37] hover:text-indigo-500"
+                      className="font-medium text-[#5e4c37] hover:text-[#5e4c37]/80 cursor-pointer"
                     >
                       Forgot password?
-                    </a>
+                    </p>
                   </motion.div>
                 </div>
 
@@ -384,13 +405,18 @@ const Login = () => {
         setShowForgot={setShowForgot}
         email={emailValue}
         setShowResetModal={setShowResetModal}
+        setCountdown={setCountdown}
+        setLinkSent={setLinkSent}
       />
+
       <ResetPasswordModal
         showReset={showResetModal}
         setShowReset={setShowResetModal}
         resetToken={resetToken}
         email={emailValue}
-        emailVerified={resetToken}
+        emailVerified={linkSent}
+        countdown={countdown}
+        setCountdown={setCountdown}
       />
     </div>
   );

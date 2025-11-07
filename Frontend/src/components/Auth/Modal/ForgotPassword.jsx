@@ -12,6 +12,8 @@ const ForgotPasswordModal = ({
   setShowForgot,
   email,
   setShowResetModal,
+  setCountdown,
+  setLinkSent,
 }) => {
   const {
     register,
@@ -33,6 +35,7 @@ const ForgotPasswordModal = ({
 
       if (response?.success) {
         setShowResetModal(true);
+        setLinkSent(true);
         toast.success(response?.message);
         setShowForgot(false);
       }
@@ -47,6 +50,7 @@ const ForgotPasswordModal = ({
     }
     reset();
     setShowForgot(false);
+    setCountdown(30);
   };
 
   return (

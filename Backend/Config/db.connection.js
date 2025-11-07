@@ -4,6 +4,8 @@ require("dotenv").config();
 let pool;
 
 async function initDB() {
+  if (pool) return pool;
+
   try {
     const tempConnection = await mysql.createConnection({
       host: process.env.MYSQL_HOST,
@@ -51,6 +53,7 @@ async function createTables() {
         email VARCHAR(100) UNIQUE NOT NULL,
         password VARCHAR(255) NOT NULL,
         terms_accepted BOOLEAN DEFAULT false,
+        reset_token VARCHAR(255),
         provider VARCHAR(50),
         provider_id VARCHAR(100),
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -104,7 +107,8 @@ async function createTables() {
 initDB();
 
 module.exports = {
-  getConnection: () => pool.getConnection(),
-  query: (...params) => pool.query(...params),
-  execute: (...params) => pool.execute(...params),
+  initDB,
+  getConnection: () => pool?.getConnection(),
+  query: (...params) => pool?.query(...params),
+  execute: (...params) => pool?.execute(...params),
 };

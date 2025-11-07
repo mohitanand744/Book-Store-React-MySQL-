@@ -1,7 +1,13 @@
 // services/authService.js
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const { createUser, findUserByEmail } = require("../Models/userModel");
+const {
+  createUser,
+  findUserByEmail,
+  saveResetToken,
+  findUserByResetToken,
+  clearResetToken,
+} = require("../Models/userModel");
 const { formatUser } = require("../utils/formatter");
 const { sendPasswordResetEmail } = require("./emailService");
 const db = require("../Config/db.connection");
@@ -89,6 +95,8 @@ exports.sendResetPasswordLink = async (email) => {
       { expiresIn: "10m" }
     );
 
+    await saveResetToken(email, resetToken);
+
     const resetLink = `${process.env.FRONTEND_URL}/?token=${resetToken}`;
 
     await sendPasswordResetEmail(email, resetLink);
@@ -102,15 +110,46 @@ exports.sendResetPasswordLink = async (email) => {
   }
 };
 
-exports.resetPassword = async (token, password) => {
+exports.verifyResetToken = async (token) => {
   try {
+    const user = await findUserByResetToken(token);
+
+    if (!user) {
+      return {
+        valid: false,
+        message:
+          "This reset link has already been used or is invalid. Please request a new one.",
+      };
+    }
+
     const decoded = jwt.verify(token, process.env.JWT_SECRET_RESET);
-    const userId = decoded.id;
+    return { valid: true, id: decoded.id };
+  } catch (err) {
+    if (err.name === "TokenExpiredError") {
+      return {
+        valid: false,
+        message: "Your reset link has expired. Please request a new one.",
+      };
+    }
+    if (err.name === "JsonWebTokenError") {
+      return {
+        valid: false,
+        message: "Invalid reset link. Please request a new one.",
+      };
+    }
+    return { valid: false, message: "Something went wrong." };
+  }
+};
+
+exports.resetPassword = async (email, password) => {
+  try {
     const hashedPassword = await bcrypt.hash(password, 10);
-    const query = "UPDATE users SET password = ? WHERE id = ?";
-    const value = [hashedPassword, userId];
+    const query = "UPDATE users SET password = ? WHERE email = ?";
+    const value = [hashedPassword, email];
 
     await db.query(query, value);
+
+    await clearResetToken(email);
 
     return { success: true };
   } catch (err) {
