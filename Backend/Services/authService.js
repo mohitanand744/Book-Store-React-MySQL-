@@ -112,6 +112,9 @@ exports.sendResetPasswordLink = async (email) => {
 
 exports.verifyResetToken = async (token) => {
   try {
+    console.log("start Checking...");
+    console.log(token);
+
     const decoded = jwt.verify(token, process.env.JWT_SECRET_RESET);
     const user = await findUserByResetToken(token);
 

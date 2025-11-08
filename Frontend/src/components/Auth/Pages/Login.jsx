@@ -1,5 +1,5 @@
 // src/pages/Login.jsx
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
 import Button from "./../../Buttons/Button";

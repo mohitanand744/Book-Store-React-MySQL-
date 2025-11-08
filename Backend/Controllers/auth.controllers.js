@@ -102,8 +102,8 @@ const resetPasswordController = async (req, res, next) => {
       return errorResponse(res, 400, "Validation failed", error.array()[0]);
     }
 
-    const { email, newPassword } = req.body;
-    const result = await resetPassword(email, newPassword);
+    const { email, newPassword, resetToken } = req.body;
+    const result = await resetPassword(email, newPassword, resetToken);
 
     if (result?.success) {
       return successResponse(res, 200, "Password reset successful");
