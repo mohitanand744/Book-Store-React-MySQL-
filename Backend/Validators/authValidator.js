@@ -117,6 +117,12 @@ exports.resetPasswordValidation = [
       }
       return true;
     }),
+
+  check("resetToken")
+    .notEmpty()
+    .withMessage("Reset token is required")
+    .isLength({ min: 1 })
+    .withMessage("Reset token is required"),
 ];
 
 // Optional: Add a comprehensive email validation middleware

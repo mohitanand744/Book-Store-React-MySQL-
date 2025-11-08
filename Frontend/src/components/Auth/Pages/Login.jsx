@@ -63,8 +63,6 @@ const Login = () => {
       localStorage.setItem("resetToken", token);
       setResetToken(token);
       navigate("/", { replace: true });
-    } else {
-      setShowResetModal(false);
     }
   }, [location, navigate]);
 

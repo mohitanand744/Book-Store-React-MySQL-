@@ -108,7 +108,7 @@ const resetPasswordController = async (req, res, next) => {
     if (result?.success) {
       return successResponse(res, 200, "Password reset successful");
     }
-    errorResponse(res, 400, "Password reset failed", result);
+    errorResponse(res, 400, result?.message || "Password reset failed", result);
   } catch (error) {
     handleDbError(error, res, next);
   }

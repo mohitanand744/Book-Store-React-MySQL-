@@ -41,7 +41,7 @@ const ResetPasswordModal = ({
 
   const onSubmit = async (data) => {
     try {
-      const response = await resetPassword(email, data.newPassword);
+      const response = await resetPassword(email, data.newPassword, resetToken);
 
       if (response?.success) {
         setShowReset(false);

@@ -24,10 +24,11 @@ export const verifyResetToken = async (token) => {
 
   return response.data;
 };
-export const resetPassword = async (email, newPassword) => {
+export const resetPassword = async (email, newPassword, resetToken) => {
   const response = await axiosInstance.post("/auth/reset-password", {
     email,
     newPassword,
+    resetToken,
   });
   return response.data;
 };

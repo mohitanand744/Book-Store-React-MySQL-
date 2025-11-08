@@ -141,8 +141,16 @@ exports.verifyResetToken = async (token) => {
   }
 };
 
-exports.resetPassword = async (email, password) => {
+exports.resetPassword = async (email, password, token) => {
   try {
+    const result = await exports.verifyResetToken(token);
+
+    if (!result.valid) {
+      return {
+        message: result.message,
+      };
+    }
+
     const hashedPassword = await bcrypt.hash(password, 10);
     const query = "UPDATE users SET password = ? WHERE email = ?";
     const value = [hashedPassword, email];
