@@ -39,15 +39,22 @@ const ResetPasswordModal = ({
 
   console.log(resetToken);
 
+  const forgotPasswordEmail = localStorage.getItem("forgotPasswordEmail");
+
   const onSubmit = async (data) => {
     try {
-      const response = await resetPassword(email, data.newPassword, resetToken);
+      const response = await resetPassword(
+        forgotPasswordEmail || email,
+        data.newPassword,
+        resetToken
+      );
 
       if (response?.success) {
         setShowReset(false);
         toast.success(response?.message);
         reset();
         localStorage.removeItem("resetToken");
+        localStorage.removeItem("forgotPasswordEmail");
       }
     } catch (error) {
       console.error("Error resetting password:", error);
@@ -58,6 +65,7 @@ const ResetPasswordModal = ({
       reset();
       setShowReset(false);
       localStorage.removeItem("resetToken");
+      localStorage.removeItem("forgotPasswordEmail");
     }
   };
 
@@ -75,9 +83,9 @@ const ResetPasswordModal = ({
 
   const handleResendEmail = async () => {
     setIsResending(true);
-    // Simulate API call to resend email
+
     try {
-      const response = await forgotPassword(email);
+      const response = await forgotPassword(forgotPasswordEmail || email);
 
       if (response?.success) {
         setIsResending(false);
@@ -303,6 +311,7 @@ const ResetPasswordModal = ({
                 value === newPassword || "Passwords do not match",
             })}
             className="h-[50px]"
+            preventCopyPaste={true}
           />
 
           <div className="relative grid grid-cols-2 gap-4">

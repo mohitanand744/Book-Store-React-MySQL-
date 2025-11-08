@@ -125,6 +125,14 @@ exports.resetPasswordValidation = [
     .withMessage("Reset token is required"),
 ];
 
+exports.verifyResetTokenValidation = [
+  check("token")
+    .notEmpty()
+    .withMessage("Reset token is required")
+    .isLength({ min: 1 })
+    .withMessage("Reset token is required"),
+];
+
 // Optional: Add a comprehensive email validation middleware
 exports.emailValidation = [
   check("email")

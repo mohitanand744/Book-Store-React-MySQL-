@@ -6,6 +6,7 @@ import {
   EyeSlashIcon,
 } from "@heroicons/react/24/outline";
 import CustomSelect from "./CustomSelect";
+import toast from "react-hot-toast";
 
 const Input = (
   {
@@ -20,6 +21,7 @@ const Input = (
     onChange,
     setSelectedValue,
     selectedValue,
+    preventCopyPaste = false,
     options,
     as: Component = "input", // Default to 'input' if not specified
     ...props
@@ -28,6 +30,13 @@ const Input = (
 ) => {
   const [showPassword, setShowPassword] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+
+  const handleBlock = (e) => {
+    if (preventCopyPaste) {
+      e.preventDefault();
+      toast.error("You are not allowed to Copy & Paste here.");
+    }
+  };
 
   // Determine input type based on toggle and original type
   const inputType =
@@ -74,6 +83,12 @@ const Input = (
             placeholder={placeholder}
             value={value}
             onChange={onChange}
+            onCopy={handleBlock}
+            onPaste={handleBlock}
+            onCut={handleBlock}
+            onDrag={handleBlock}
+            onDrop={handleBlock}
+            autoComplete="newPassword"
             {...props}
           />
         )}

@@ -21,13 +21,19 @@ const ForgotPasswordModal = ({
     formState: { errors, isSubmitting },
     reset,
     setValue,
+    watch,
   } = useForm();
 
+  const emailValue = watch("email");
+
+  const forgotPasswordEmail = localStorage.getItem("forgotPasswordEmail");
+
   useEffect(() => {
-    if (email) {
-      setValue("email", email);
+    if (email || emailValue) {
+      setValue("email", email || emailValue);
+      localStorage.setItem("forgotPasswordEmail", emailValue || email);
     }
-  }, [email, setValue, showForgot]);
+  }, [email, setValue, showForgot, emailValue]);
 
   const onSubmit = async (data) => {
     try {
