@@ -9,7 +9,7 @@ const {
   clearResetToken,
 } = require("../Models/userModel");
 const { formatUser } = require("../utils/formatter");
-const { sendPasswordResetEmail } = require("./emailService");
+const { sendPasswordResetEmail } = require("./Emails/sendResetLink");
 const db = require("../Config/db.connection");
 
 exports.registerUser = async ({
