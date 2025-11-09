@@ -64,7 +64,7 @@ exports.loginUser = async ({ email, password }) => {
   const token = jwt.sign(
     { id: user.id, email: user.email },
     process.env.JWT_SECRET,
-    { expiresIn: "24h" }
+    { expiresIn: `${process.env.USER_TOKEN_EXPIRES_IN}h` }
   );
 
   const userDetails = formatUser([user]);
@@ -92,7 +92,7 @@ exports.sendResetPasswordLink = async (email) => {
     const resetToken = jwt.sign(
       { id: user.id, email: user.email },
       process.env.JWT_SECRET_RESET,
-      { expiresIn: "10m" }
+      { expiresIn: `${process.env.RESET_TOKEN_EXPIRES_IN}m` }
     );
 
     await saveResetToken(email, resetToken);
