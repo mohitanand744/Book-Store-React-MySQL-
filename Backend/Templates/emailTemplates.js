@@ -80,7 +80,7 @@ exports.getEmailTemplate = (options) => {
           <a
             href="${buttonLink}"
             style="display: inline-block; background-color: #9D8C7A; color: white !important;
-                   text-decoration: none; padding: 14px 32px; border-radius: 4px;
+                   text-decoration: none; padding: 14px 32px; border-radius: 1rem;
                    font-weight: bold; font-size: 16px; transition: background-color 0.3s;"
           >
             ${buttonText}
@@ -129,7 +129,7 @@ exports.getEmailTemplate = (options) => {
 
       <div
         style="background-color: #f9f9f9; padding: 20px; text-align: center;
-               font-size: 12px; color: #777; border-top: 1px solid #eee;"
+               font-size: 12px; border-radius: 1rem; color: #777; border-top: 1px solid #eee;"
       >
         <p>&copy; ${new Date().getFullYear()} NextChapter. All rights reserved.</p>
         <p style="margin-top: 10px; color: #7C664D;">

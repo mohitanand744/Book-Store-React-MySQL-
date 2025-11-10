@@ -37,7 +37,7 @@ const SignUp = () => {
       const response = await signup(payload);
 
       if (response?.success) {
-        toast.success("Signup successful!");
+        toast.success(response?.message || "Signup successful!");
         navigate("/");
         reset();
       } else {
@@ -214,6 +214,7 @@ const SignUp = () => {
                       validate: (value) =>
                         value === watch("password") || "Passwords do not match",
                     })}
+                    preventCopyPaste={true}
                   />
                 </motion.div>
 

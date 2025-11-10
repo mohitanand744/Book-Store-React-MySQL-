@@ -12,6 +12,7 @@ import { login, verifyResetToken } from "../../../utils/apis/authApi";
 import toast from "react-hot-toast";
 import useAuth from "../../../Hooks/useAuth";
 import ResetPasswordModal from "../Modal/resetPassword";
+import EmailVerificationStatus from "../Modal/EmailVerificationStatus";
 
 const Login = () => {
   const {
@@ -32,11 +33,11 @@ const Login = () => {
   const [resetToken, setResetToken] = useState(() =>
     localStorage.getItem("resetToken")
   );
-
+  const [verificationStatus, setVerificationStatus] = useState("");
   const [countdown, setCountdown] = useState(0);
   const [linkSent, setLinkSent] = useState(false);
   const emailValue = watch("email");
-  //const passwordValue = watch("password");
+  const passwordValue = watch("password");
   const location = useLocation();
 
   console.log(resetToken, "ResetToken");
@@ -59,10 +60,23 @@ const Login = () => {
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
     const token = queryParams.get("token");
+    const status = queryParams.get("status");
     if (token) {
       localStorage.setItem("resetToken", token);
       setResetToken(token);
       navigate("/", { replace: true });
+    } else if (status) {
+      if (status === "verified") {
+        setVerificationStatus("verified");
+        navigate("/", { replace: true });
+      } else if (status === "failed") {
+        setVerificationStatus("failed");
+        navigate("/", { replace: true });
+      } else if (status === "alreadyVerified") {
+        setVerificationStatus("alreadyVerified");
+        navigate("/", { replace: true });
+        toast.error("Email is already verified!");
+      }
     }
   }, [location, navigate]);
 
@@ -127,6 +141,13 @@ const Login = () => {
       }
     } catch (error) {
       console.error("Login error:", error);
+
+      const errData = error?.response?.data?.error;
+
+      if (errData?.emailVerified) {
+        setVerificationStatus(errData.emailVerified);
+        return;
+      }
 
       if (
         error.response?.data?.error?.type === "credential" &&
@@ -413,6 +434,14 @@ const Login = () => {
         emailVerified={linkSent}
         countdown={countdown}
         setCountdown={setCountdown}
+      />
+
+      <EmailVerificationStatus
+        status={verificationStatus}
+        setStatus={setVerificationStatus}
+        email={emailValue}
+        password={passwordValue}
+        onClose={setVerificationStatus}
       />
     </div>
   );

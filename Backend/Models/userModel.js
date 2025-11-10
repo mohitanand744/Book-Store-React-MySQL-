@@ -61,6 +61,11 @@ const clearResetToken = async (email) => {
   await db.query(query, [email]);
 };
 
+const updateEmailVerified = async (email) => {
+  const query = "UPDATE users SET email_verified = 1 WHERE email = ?";
+  await db.query(query, [email]);
+};
+
 const findUserById = async (userId) => {
   const query = "SELECT * FROM users WHERE id = ?";
   const [rows] = await db.query(query, [userId]);
@@ -76,4 +81,5 @@ module.exports = {
   clearResetToken,
   saveResetToken,
   findUserById,
+  updateEmailVerified,
 };

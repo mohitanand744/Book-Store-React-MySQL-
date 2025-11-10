@@ -5,6 +5,7 @@ const {
   sendResetPasswordLink,
   resetPassword,
   verifyResetToken,
+  verifyEmailToken,
 } = require("../Services/authService");
 const { successResponse, errorResponse } = require("../utils/response");
 const handleDbError = require("../utils/handleDbError");
@@ -20,9 +21,13 @@ const signup = async (req, res, next) => {
     }
 
     const userData = req.body;
-    const result = await registerUser(userData);
+    const result = await registerUser(userData, res);
 
-    successResponse(res, 201, "User registered successfully", result);
+    if (result?.success === false) {
+      return errorResponse(res, 400, result?.message, result);
+    }
+
+    successResponse(res, 201, result?.message, result);
   } catch (error) {
     handleDbError(error, res, next);
   }
@@ -38,9 +43,9 @@ const login = async (req, res, next) => {
     }
 
     const { email, password } = req.body;
-    const result = await loginUser({ email, password });
+    const result = await loginUser({ email, password, res });
 
-    console.log(result);
+    console.log("result");
     if (result?.success === false) {
       console.log(result);
 
@@ -70,6 +75,30 @@ const forgotPassword = async (req, res, next) => {
     }
 
     successResponse(res, 200, "Password reset link sent successfully");
+  } catch (error) {
+    handleDbError(error, res, next);
+  }
+};
+
+const verifyEmailTokenController = async (req, res, next) => {
+  try {
+    const { token } = req.params;
+
+    const result = await verifyEmailToken(token);
+
+    if (result.success) {
+      const redirectUrl = `${process.env.FRONTEND_URL}/?status=verified`;
+      return successResponse(res, 200, result?.message, {}, redirectUrl);
+    }
+
+    if (result?.emailVerified) {
+      const redirectUrl = `${process.env.FRONTEND_URL}/?status=alreadyVerified`;
+      return successResponse(res, 200, result?.message, {}, redirectUrl);
+    }
+
+    const redirectUrl = `${process.env.FRONTEND_URL}/?status=failed`;
+
+    errorResponse(res, 400, result?.message, null, redirectUrl);
   } catch (error) {
     handleDbError(error, res, next);
   }
@@ -139,4 +168,5 @@ module.exports = {
   resetPasswordController,
   forgotPassword,
   verifyResetTokenController,
+  verifyEmailTokenController,
 };

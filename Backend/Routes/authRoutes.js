@@ -6,13 +6,14 @@ const {
   forgotPassword,
   resetPasswordController,
   verifyResetTokenController,
+  verifyEmailTokenController,
 } = require("../Controllers/auth.controllers");
 const {
   signupValidation,
   loginValidation,
   forgotPasswordValidation,
   resetPasswordValidation,
-  verifyResetTokenValidation,
+  verifyTokenValidation,
 } = require("../Validators/authValidator");
 const verifyToken = require("../Middleware/verifyToken");
 
@@ -23,13 +24,18 @@ router.post("/login", loginValidation, login);
 router.post("/forgot-password", forgotPasswordValidation, forgotPassword);
 router.post(
   "/verify-reset-token/",
-  verifyResetTokenValidation,
+  verifyTokenValidation,
   verifyResetTokenController
 );
 router.post(
   "/reset-password",
   resetPasswordValidation,
   resetPasswordController
+);
+router.get(
+  "/verify-email/:token",
+  verifyTokenValidation,
+  verifyEmailTokenController
 );
 router.get("/me", verifyToken, getUserProfile);
 
