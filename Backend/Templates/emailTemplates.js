@@ -28,8 +28,8 @@ exports.getEmailTemplate = (options) => {
     background-color: #f2e8da;
     border-radius: 8px;
     overflow: hidden;
-    background-image: linear-gradient(rgba(242, 232, 218, 0.85), rgba(242, 232, 218, 0.85)),
-                      url('https://images.unsplash.com/photo-1512820790803-83ca734da794');
+    background-image: linear-gradient(rgba(242, 232, 218, 0.05), rgba(55, 45, 44, 0.7)),
+                      url('${images.nextChapterBg}');
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
