@@ -1,5 +1,9 @@
 const { check } = require("express-validator");
 
+const passwordRegex =
+  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/;
+const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
 exports.signupValidation = [
   check("first_name")
     .notEmpty()
@@ -24,8 +28,6 @@ exports.signupValidation = [
     .isLength({ max: 100 })
     .withMessage("Email must not exceed 100 characters")
     .custom((email) => {
-      // Additional email validation
-      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
       if (!emailRegex.test(email)) {
         throw new Error("Please provide a valid email address");
       }
@@ -43,7 +45,7 @@ exports.signupValidation = [
   check("password")
     .isLength({ min: 8 })
     .withMessage("Password must be at least 8 characters long")
-    .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/)
+    .matches(passwordRegex)
     .withMessage(
       "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character"
     )
@@ -67,7 +69,6 @@ exports.loginValidation = [
     .withMessage("Valid email is required")
     .normalizeEmail()
     .custom((email) => {
-      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
       if (!emailRegex.test(email)) {
         throw new Error("Please provide a valid email address");
       }
@@ -87,7 +88,6 @@ exports.forgotPasswordValidation = [
     .withMessage("Valid email is required")
     .normalizeEmail()
     .custom((email) => {
-      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
       if (!emailRegex.test(email)) {
         throw new Error("Please provide a valid email address");
       }
@@ -97,21 +97,31 @@ exports.forgotPasswordValidation = [
 
 exports.resetPasswordValidation = [
   check("newPassword")
-    .isLength({ min: 8 })
-    .withMessage("Password must be at least 8 characters long")
-    .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/)
+    .trim()
+    .isLength({ min: 8, max: 128 })
+    .withMessage("Password must be 8–128 characters long")
+    .matches(passwordRegex)
     .withMessage(
       "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character"
-    )
-    .isLength({ max: 128 })
-    .withMessage("Password must not exceed 128 characters"),
+    ),
+
+  check("confirmPassword")
+    .trim()
+    .notEmpty()
+    .withMessage("Confirm password is required")
+    .custom((confirmPassword, { req }) => {
+      if (confirmPassword !== req.body.newPassword) {
+        throw new Error("Confirm password do not match please try again");
+      }
+      return true;
+    }),
 
   check("email")
+    .trim()
     .isEmail()
     .withMessage("Valid email is required")
     .normalizeEmail()
     .custom((email) => {
-      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
       if (!emailRegex.test(email)) {
         throw new Error("Please provide a valid email address");
       }
@@ -119,6 +129,7 @@ exports.resetPasswordValidation = [
     }),
 
   check("resetToken")
+    .trim()
     .notEmpty()
     .withMessage("Reset token is required")
     .isLength({ min: 1 })
@@ -142,8 +153,6 @@ exports.emailValidation = [
     .isLength({ max: 100 })
     .withMessage("Email must not exceed 100 characters")
     .custom((email) => {
-      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-
       if (!emailRegex.test(email)) {
         throw new Error("Please provide a valid email address format");
       }

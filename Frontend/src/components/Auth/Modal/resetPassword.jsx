@@ -46,6 +46,7 @@ const ResetPasswordModal = ({
       const response = await resetPassword(
         forgotPasswordEmail || email,
         data.newPassword,
+        data.confirmPassword,
         resetToken
       );
 
@@ -79,6 +80,7 @@ const ResetPasswordModal = ({
     setEmailResent(false);
     setIsResending(false);
     localStorage.removeItem("resetToken");
+    setWarningMsg(false);
   };
 
   const handleResendEmail = async () => {
