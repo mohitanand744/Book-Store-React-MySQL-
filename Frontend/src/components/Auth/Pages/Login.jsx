@@ -63,6 +63,10 @@ const Login = () => {
     const status = queryParams.get("status");
     const verifiedEmail = queryParams.get("email");
 
+    if (verifiedEmail) {
+      setVerificationEmail(verifiedEmail);
+    }
+
     if (token) {
       localStorage.setItem("resetToken", token);
       setResetToken(token);
@@ -77,10 +81,6 @@ const Login = () => {
         setVerificationStatus("failed");
       } else if (status === "alreadyVerified") {
         setVerificationStatus("alreadyVerified");
-      }
-
-      if (verifiedEmail) {
-        setVerificationEmail(verifiedEmail);
       }
 
       navigate("/", { replace: true });
