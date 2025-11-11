@@ -89,10 +89,10 @@ const Login = () => {
   }, [location, navigate]);
 
   useEffect(() => {
-    if (emailValue) {
+    if ((verificationEmail == null || verificationEmail === "") && emailValue) {
       setVerificationEmail(emailValue);
     }
-  }, [emailValue]);
+  }, [emailValue, verificationEmail]);
 
   useEffect(() => {
     if (resetToken) {
@@ -130,6 +130,7 @@ const Login = () => {
 
   const onSubmit = async (data) => {
     try {
+      setVerificationEmail(data.email);
       const response = await login({
         email: data.email,
         password: data.password,
@@ -165,6 +166,7 @@ const Login = () => {
 
       if (errData?.emailVerified) {
         setVerificationStatus(errData.emailVerified);
+
         return;
       }
 
