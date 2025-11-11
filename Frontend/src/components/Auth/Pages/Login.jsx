@@ -86,11 +86,13 @@ const Login = () => {
       navigate("/", { replace: true });
       return;
     }
+  }, [location, navigate]);
 
-    if (!verificationEmail && emailValue) {
+  useEffect(() => {
+    if (emailValue) {
       setVerificationEmail(emailValue);
     }
-  }, [location, navigate, emailValue]);
+  }, [emailValue]);
 
   useEffect(() => {
     if (resetToken) {
