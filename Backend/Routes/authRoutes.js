@@ -32,11 +32,7 @@ router.post(
   resetPasswordValidation,
   resetPasswordController
 );
-router.get(
-  "/verify-email/:token",
-  verifyTokenValidation,
-  verifyEmailTokenController
-);
+router.get("/verify-email/", verifyTokenValidation, verifyEmailTokenController);
 router.get("/me", verifyToken, getUserProfile);
 
 module.exports = router;

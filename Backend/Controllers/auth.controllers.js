@@ -82,12 +82,17 @@ const forgotPassword = async (req, res, next) => {
 
 const verifyEmailTokenController = async (req, res, next) => {
   try {
-    const { token } = req.params;
+    const { token, email } = req.query;
 
-    const result = await verifyEmailToken(token);
+    console.log(email, "eeeee");
+
+    const result = await verifyEmailToken(token, email);
+
+    console.log("mmmmmmmmmm", result);
 
     if (result.success) {
-      const redirectUrl = `${process.env.FRONTEND_URL}/?status=verified`;
+      const redirectUrl = `${process.env.FRONTEND_URL}/?status=verified&email=${result?.email}`;
+
       return successResponse(res, 200, result?.message, {}, redirectUrl);
     }
 

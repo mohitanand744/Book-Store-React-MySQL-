@@ -30,10 +30,10 @@ const ForgotPasswordModal = ({
 
   useEffect(() => {
     if (email || emailValue) {
-      setValue("email", email || emailValue);
+      setValue("email", emailValue || email);
       localStorage.setItem("forgotPasswordEmail", emailValue || email);
     }
-  }, [email, setValue, showForgot, emailValue]);
+  }, [email, emailValue]);
 
   const onSubmit = async (data) => {
     try {

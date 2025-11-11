@@ -39,7 +39,7 @@ const Login = () => {
   const emailValue = watch("email");
   const passwordValue = watch("password");
   const location = useLocation();
-
+  const [verificationEmail, setVerificationEmail] = useState(null);
   console.log(resetToken, "ResetToken");
 
   const handleResetTokenVerification = async () => {
@@ -61,6 +61,8 @@ const Login = () => {
     const queryParams = new URLSearchParams(location.search);
     const token = queryParams.get("token");
     const status = queryParams.get("status");
+    const verifiedEmail = queryParams.get("email");
+
     if (token) {
       localStorage.setItem("resetToken", token);
       setResetToken(token);
@@ -77,8 +79,14 @@ const Login = () => {
         navigate("/", { replace: true });
         toast.error("Email is already verified!");
       }
+
+      if (verifiedEmail) {
+        setVerificationEmail(verifiedEmail);
+      }
+    } else if (emailValue) {
+      setVerificationEmail(emailValue);
     }
-  }, [location, navigate]);
+  }, [location, navigate, emailValue]);
 
   useEffect(() => {
     if (resetToken) {
@@ -439,7 +447,7 @@ const Login = () => {
       <EmailVerificationStatus
         status={verificationStatus}
         setStatus={setVerificationStatus}
-        email={emailValue}
+        email={verificationEmail}
         password={passwordValue}
         onClose={setVerificationStatus}
       />

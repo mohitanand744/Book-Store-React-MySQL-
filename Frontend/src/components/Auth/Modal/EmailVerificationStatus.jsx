@@ -17,7 +17,7 @@ const EmailVerificationStatus = ({
   const [isResending, setIsResending] = useState(false);
   const [countdown, setCountdown] = useState(0);
 
-  console.log(status);
+  console.log(email, "email");
 
   useEffect(() => {
     if (countdown > 0) {
@@ -63,7 +63,7 @@ const EmailVerificationStatus = ({
   };
 
   // Success Modal - Email Verified
-  const renderSuccessModal = () => (
+  const renderSuccessModal = (email) => (
     <Modal isOpen={showModal} onClose={handleClose}>
       <div className="w-full">
         <div className="mb-6 text-center">
@@ -131,7 +131,7 @@ const EmailVerificationStatus = ({
   );
 
   // Failure Modal - Email Verification Failed
-  const renderFailureModal = () => (
+  const renderFailureModal = (email) => (
     <Modal isOpen={showModal} onClose={handleClose}>
       <div className="w-full">
         <div className="mb-6 text-center">
@@ -229,7 +229,7 @@ const EmailVerificationStatus = ({
   );
 
   // Unverified Modal - Check Your Inbox
-  const renderUnverifiedModal = () => (
+  const renderUnverifiedModal = (email) => (
     <Modal isOpen={showModal} onClose={handleClose}>
       <div className="w-full">
         <div className="mb-6 text-center">
@@ -328,20 +328,20 @@ const EmailVerificationStatus = ({
   );
 
   // Render modal based on status
-  const renderModal = () => {
+  const renderModal = (email) => {
     switch (status) {
       case "verified":
-        return renderSuccessModal();
+        return renderSuccessModal(email);
       case "failed":
-        return renderFailureModal();
+        return renderFailureModal(email);
       case "unverified":
-        return renderUnverifiedModal();
+        return renderUnverifiedModal(email);
       default:
         return null;
     }
   };
 
-  return renderModal();
+  return renderModal(email);
 };
 
 export default EmailVerificationStatus;

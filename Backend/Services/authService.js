@@ -110,11 +110,9 @@ exports.loginUser = async ({ email, password, res }) => {
   };
 };
 
-exports.verifyEmailToken = async (token) => {
+exports.verifyEmailToken = async (token, email) => {
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET_EMAIL_VERIFY);
-
-    const user = await findUserByEmail(decoded.email);
+    const user = await findUserByEmail(email);
 
     if (!user) {
       return {
@@ -131,12 +129,13 @@ exports.verifyEmailToken = async (token) => {
           "Your email has already been verified. Please login to continue.",
       };
     }
+    const decoded = jwt.verify(token, process.env.JWT_SECRET_EMAIL_VERIFY);
 
     await updateEmailVerified(decoded?.email);
 
     return {
       success: true,
-      id: decoded.id,
+      email: decoded.email,
       message: "Email verified successfully.",
     };
   } catch (err) {
@@ -169,10 +168,10 @@ async function sendEmailVerificationLinkServices(email) {
     const emailVerificationToken = jwt.sign(
       { id: user.id, email: user.email, email_verified: user.email_verified },
       process.env.JWT_SECRET_EMAIL_VERIFY,
-      { expiresIn: `${process.env.EMAIL_VERIFICATION_TOKEN_EXPIRES_IN}h` }
+      { expiresIn: `${process.env.EMAIL_VERIFICATION_TOKEN_EXPIRES_IN}m` }
     );
 
-    const emailVerificationLink = `${process.env.BACKEND_URL}auth/verify-email/${emailVerificationToken}`;
+    const emailVerificationLink = `${process.env.BACKEND_URL}auth/verify-email/?token=${emailVerificationToken}&email=${email}`;
 
     await sendEmailVerificationLink(
       email,
