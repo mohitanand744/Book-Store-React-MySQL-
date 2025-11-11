@@ -67,23 +67,27 @@ const Login = () => {
       localStorage.setItem("resetToken", token);
       setResetToken(token);
       navigate("/", { replace: true });
-    } else if (status) {
+      return;
+    }
+
+    if (status) {
       if (status === "verified") {
         setVerificationStatus("verified");
-        navigate("/", { replace: true });
       } else if (status === "failed") {
         setVerificationStatus("failed");
-        navigate("/", { replace: true });
       } else if (status === "alreadyVerified") {
         setVerificationStatus("alreadyVerified");
-        navigate("/", { replace: true });
-        toast.error("Email is already verified!");
       }
 
       if (verifiedEmail) {
         setVerificationEmail(verifiedEmail);
       }
-    } else if (emailValue) {
+
+      navigate("/", { replace: true });
+      return;
+    }
+
+    if (!verificationEmail && emailValue) {
       setVerificationEmail(emailValue);
     }
   }, [location, navigate, emailValue]);
@@ -93,6 +97,12 @@ const Login = () => {
       handleResetTokenVerification();
     }
   }, [resetToken]);
+
+  useEffect(() => {
+    if (verificationStatus === "alreadyVerified") {
+      toast.success("Email already verified!");
+    }
+  }, [verificationStatus]);
 
   const handleCheckboxChange = (e) => {
     setIsChecked(e.target.checked);
@@ -127,7 +137,6 @@ const Login = () => {
         const { token, user } = response.data;
 
         loginStatusSuccess(user, token);
-
         toast.success("Login successful!");
 
         if (isChecked) {
