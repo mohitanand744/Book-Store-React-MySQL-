@@ -77,6 +77,7 @@ const Login = () => {
     if (status) {
       if (status === "verified") {
         setVerificationStatus("verified");
+        setVerificationEmail(verifiedEmail);
       } else if (status === "failed") {
         setVerificationStatus("failed");
       } else if (status === "alreadyVerified") {
@@ -87,12 +88,6 @@ const Login = () => {
       return;
     }
   }, [location, navigate]);
-
-  useEffect(() => {
-    if ((verificationEmail == null || verificationEmail === "") && emailValue) {
-      setVerificationEmail(emailValue);
-    }
-  }, [emailValue, verificationEmail]);
 
   useEffect(() => {
     if (resetToken) {
@@ -115,7 +110,7 @@ const Login = () => {
     const { email, password } =
       JSON.parse(localStorage.getItem("loginData")) || {};
 
-    if (email && password) {
+    if (!verificationStatus && email && password) {
       setValue("email", email);
       setValue("password", password);
       setIsChecked(true);
