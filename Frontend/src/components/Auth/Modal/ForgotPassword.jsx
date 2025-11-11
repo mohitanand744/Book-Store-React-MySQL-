@@ -26,18 +26,22 @@ const ForgotPasswordModal = ({
 
   const emailValue = watch("email");
 
-  const forgotPasswordEmail = localStorage.getItem("forgotPasswordEmail");
-
   useEffect(() => {
-    if (email || emailValue) {
-      setValue("email", emailValue || email);
-      localStorage.setItem("forgotPasswordEmail", emailValue || email);
+    if (email) {
+      setValue("email", email);
     }
-  }, [email, emailValue]);
+  }, [email]);
+
+  /*   useEffect(() => {
+    if (emailValue) {
+      localStorage.setItem("forgotPasswordEmail", emailValue);
+    }
+  }, [email]); */
 
   const onSubmit = async (data) => {
     try {
       const response = await forgotPassword(data.email);
+      localStorage.setItem("forgotPasswordEmail", data.email);
 
       if (response?.success) {
         setShowResetModal(true);
@@ -55,6 +59,7 @@ const ForgotPasswordModal = ({
       );
     }
     reset();
+    setValue("email", email);
     setShowForgot(false);
     setCountdown(30);
   };

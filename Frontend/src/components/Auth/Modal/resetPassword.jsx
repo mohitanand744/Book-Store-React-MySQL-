@@ -27,6 +27,7 @@ const ResetPasswordModal = ({
     handleSubmit,
     formState: { errors, isSubmitting },
     reset,
+    setValue,
     watch,
   } = useForm();
 
@@ -36,15 +37,27 @@ const ResetPasswordModal = ({
   const [isResending, setIsResending] = useState(false);
   const [warningMsg, setWarningMsg] = useState(false);
   const newPassword = watch("newPassword");
-
+  const emailValue = watch("email");
   console.log(resetToken);
 
+  /*   useEffect(() => {
+    if (email) {
+      setValue("email", email);
+    }
+  }, []);
+ */
   const forgotPasswordEmail = localStorage.getItem("forgotPasswordEmail");
+
+  useEffect(() => {
+    if (forgotPasswordEmail) {
+      setValue("email", forgotPasswordEmail);
+    }
+  }, [forgotPasswordEmail]);
 
   const onSubmit = async (data) => {
     try {
       const response = await resetPassword(
-        forgotPasswordEmail || email,
+        emailValue,
         data.newPassword,
         data.confirmPassword,
         resetToken
@@ -53,9 +66,8 @@ const ResetPasswordModal = ({
       if (response?.success) {
         setShowReset(false);
         toast.success(response?.message);
-        reset();
+
         localStorage.removeItem("resetToken");
-        localStorage.removeItem("forgotPasswordEmail");
       }
     } catch (error) {
       console.error("Error resetting password:", error);
@@ -63,10 +75,9 @@ const ResetPasswordModal = ({
         error.response?.data?.message ||
           "Something went wrong. Please try again later."
       );
-      reset();
+
       setShowReset(false);
       localStorage.removeItem("resetToken");
-      localStorage.removeItem("forgotPasswordEmail");
     }
   };
 
@@ -80,6 +91,8 @@ const ResetPasswordModal = ({
     setEmailResent(false);
     setIsResending(false);
     localStorage.removeItem("resetToken");
+    localStorage.removeItem("forgotPasswordEmail");
+
     setWarningMsg(false);
   };
 
@@ -87,7 +100,7 @@ const ResetPasswordModal = ({
     setIsResending(true);
 
     try {
-      const response = await forgotPassword(forgotPasswordEmail || email);
+      const response = await forgotPassword(emailValue);
 
       if (response?.success) {
         setIsResending(false);
@@ -104,7 +117,6 @@ const ResetPasswordModal = ({
     }
 
     setCountdown(30);
-    reset();
   };
 
   /*   useEffect(() => {
@@ -185,7 +197,7 @@ const ResetPasswordModal = ({
               Check Your Email
             </h2>
             <p className="mb-4 text-sm text-center text-[#5E4C37]">
-              We've sent a password reset link to your email <b>{email}</b>{" "}
+              We've sent a password reset link to your email <b>{emailValue}</b>{" "}
               address. Please check your inbox and click the link to reset your
               password.
             </p>
