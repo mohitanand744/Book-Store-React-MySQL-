@@ -40,12 +40,6 @@ const ResetPasswordModal = ({
   const emailValue = watch("email");
   console.log(resetToken);
 
-  /*   useEffect(() => {
-    if (email) {
-      setValue("email", email);
-    }
-  }, []);
- */
   const forgotPasswordEmail = localStorage.getItem("forgotPasswordEmail");
 
   useEffect(() => {
@@ -118,12 +112,6 @@ const ResetPasswordModal = ({
 
     setCountdown(30);
   };
-
-  /*   useEffect(() => {
-    if (emailVerified) {
-      setShowReset(false);
-    }
-  }, [emailVerified, setShowReset]); */
 
   useEffect(() => {
     if (emailResent) {

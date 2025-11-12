@@ -139,9 +139,12 @@ exports.verifyEmailToken = async (token, email) => {
       message: "Email verified successfully.",
     };
   } catch (err) {
+    console.log(err, "eeeeeeeeeeeee");
+
     if (err.name === "TokenExpiredError") {
       return {
         success: false,
+        email: email,
         message: "Your reset link has expired. Please request a new one.",
       };
     }
@@ -151,7 +154,7 @@ exports.verifyEmailToken = async (token, email) => {
         message: "Invalid reset link. Please request a new one.",
       };
     }
-    return { success: false, message: "Something went wrong." };
+    return { success: false, email: email, message: "Something went wrong." };
   }
 };
 

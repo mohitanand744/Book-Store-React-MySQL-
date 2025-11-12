@@ -101,7 +101,7 @@ const verifyEmailTokenController = async (req, res, next) => {
       return successResponse(res, 200, result?.message, {}, redirectUrl);
     }
 
-    const redirectUrl = `${process.env.FRONTEND_URL}/?status=failed`;
+    const redirectUrl = `${process.env.FRONTEND_URL}/?status=failed&email=${result?.email}`;
 
     errorResponse(res, 400, result?.message, null, redirectUrl);
   } catch (error) {

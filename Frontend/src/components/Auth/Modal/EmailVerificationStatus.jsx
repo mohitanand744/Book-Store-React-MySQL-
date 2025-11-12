@@ -11,11 +11,12 @@ const EmailVerificationStatus = ({
   email,
   onClose,
   password,
+  countdown,
+  setCountdown,
 }) => {
   const [showModal, setShowModal] = useState(true);
   const [emailResent, setEmailResent] = useState(false);
   const [isResending, setIsResending] = useState(false);
-  const [countdown, setCountdown] = useState(0);
 
   console.log(email, "email");
 
@@ -32,14 +33,12 @@ const EmailVerificationStatus = ({
     setIsResending(true);
     try {
       await login({ email, password });
-
-      setCountdown(30);
     } catch (error) {
       setEmailResent(true);
       console.error("Failed to resend email:", error);
-      setCountdown(30);
     } finally {
       setIsResending(false);
+      setCountdown(30);
     }
   };
 
@@ -175,12 +174,15 @@ const EmailVerificationStatus = ({
               />
             </motion.svg>
           </motion.div>
-          <h2 className="mb-1 text-2xl font-bold text-center text-[#5E4C37]">
+          <h2 className="mb-3 text-2xl font-bold text-center text-[#5E4C37]">
             Verification Failed
           </h2>
           <p className="mb-4 text-sm text-center text-[#5E4C37]">
-            The verification link is invalid or has expired. Please request a
-            new verification email.
+            The{" "}
+            <b className="text-red-500">
+              verification link is invalid or has expired
+            </b>
+            . Please request a new verification email <b>({email})</b>.
           </p>
 
           <AnimatePresence>

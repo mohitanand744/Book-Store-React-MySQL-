@@ -156,7 +156,7 @@ const Login = () => {
       }
     } catch (error) {
       console.error("Login error:", error);
-
+      setCountdown(30);
       const errData = error?.response?.data?.error;
 
       if (errData?.emailVerified) {
@@ -458,6 +458,8 @@ const Login = () => {
         email={verificationEmail}
         password={passwordValue}
         onClose={setVerificationStatus}
+        countdown={countdown}
+        setCountdown={setCountdown}
       />
     </div>
   );
