@@ -6,10 +6,18 @@ const {
   resetPassword,
   verifyResetToken,
   verifyEmailToken,
+  handleSocialLogin,
 } = require("../Services/authService");
 const { successResponse, errorResponse } = require("../utils/response");
 const handleDbError = require("../utils/handleDbError");
 const { getUserDetailsById } = require("../Models/userModel");
+const {
+  generateState,
+  generateCodeVerifier,
+  decodeIdToken,
+} = require("arctic");
+const { OAUTH_EXCHANGE_EXPIRY_MS } = require("../Config/constants");
+const google = require("../Config/oAuth/google");
 
 // SIGNUP
 const signup = async (req, res, next) => {
@@ -43,6 +51,7 @@ const login = async (req, res, next) => {
     }
 
     const { email, password } = req.body;
+
     const result = await loginUser({ email, password, res });
 
     console.log("result");
@@ -148,6 +157,98 @@ const resetPasswordController = async (req, res, next) => {
   }
 };
 
+const getGoogleLoginPage = (req, res, next) => {
+  try {
+    const state = generateState();
+    const codeVerifier = generateCodeVerifier();
+    const scopes = ["openid", "profile", "email"];
+    const url = google.createAuthorizationURL(state, codeVerifier, scopes);
+
+    const cookieConfig = {
+      httpOnly: true,
+      secure: false,
+      maxAge: OAUTH_EXCHANGE_EXPIRY_MS,
+      sameSite: "lax",
+    };
+
+    res.cookie("google_oauth_state", state, cookieConfig);
+    res.cookie("google_code_verifier", codeVerifier, cookieConfig);
+
+    console.log(
+      `${process.env.BACKEND_BASE_URL}/api/${process.env.API_VERSION}/auth/google/callback`
+    );
+
+    res.redirect(url.toString());
+  } catch (error) {
+    handleDbError(error, res);
+  }
+};
+
+const getGoogleCallBack = async (req, res, next) => {
+  const { state, code } = req.query;
+
+  const {
+    google_code_verifier: codeVerifier,
+    google_oauth_state: storedState,
+  } = req.cookies;
+
+  if (
+    !state ||
+    !code ||
+    !codeVerifier ||
+    !storedState ||
+    state !== storedState
+  ) {
+    return errorResponse(res, 400, "Invalid request parameters", null, "/");
+  }
+
+  let token;
+
+  try {
+    token = await google.validateAuthorizationCode(code, codeVerifier);
+  } catch (error) {
+    handleDbError(error, res, next);
+  }
+
+  console.log("Google Token", token);
+
+  const claims = decodeIdToken(token.data.id_token);
+
+  console.log("Google Claims", claims);
+
+  const {
+    sub: googleUserId,
+    given_name,
+    family_name,
+    email,
+    email_verified,
+    picture,
+  } = claims;
+
+  try {
+    const result = await handleSocialLogin({
+      provider: "google",
+      providerId: googleUserId,
+      email,
+      emailVerified: !!email_verified,
+      firstName: given_name,
+      lastName: family_name,
+      picture,
+    });
+
+    return successResponse(res, 200, "Logged in with Google", {
+      user: result.user,
+      token: result.token,
+      isNewUser: result.isNewUser,
+    });
+  } catch (err) {
+    console.log("gggggggg", err);
+    const status = err.status || 500;
+    const msg = err.message || "Social login failed";
+    return errorResponse(res, status, msg);
+  }
+};
+
 // GET USER
 const getUserProfile = async (req, res, next) => {
   try {
@@ -174,4 +275,6 @@ module.exports = {
   forgotPassword,
   verifyResetTokenController,
   verifyEmailTokenController,
+  getGoogleLoginPage,
+  getGoogleCallBack,
 };

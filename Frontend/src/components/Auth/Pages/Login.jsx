@@ -40,7 +40,6 @@ const Login = () => {
   const passwordValue = watch("password");
   const location = useLocation();
   const [verificationEmail, setVerificationEmail] = useState(null);
-  console.log(resetToken, "ResetToken");
 
   const handleResetTokenVerification = async () => {
     try {
@@ -103,7 +102,6 @@ const Login = () => {
 
   const handleCheckboxChange = (e) => {
     setIsChecked(e.target.checked);
-    console.log(isChecked);
   };
 
   useEffect(() => {
@@ -155,7 +153,6 @@ const Login = () => {
         toast.error(response?.message || "Invalid credentials");
       }
     } catch (error) {
-      console.error("Login error:", error);
       setCountdown(30);
       const errData = error?.response?.data?.error;
 
@@ -341,6 +338,10 @@ const Login = () => {
                     <Button
                       variant="outline"
                       className="flex items-center justify-center w-full"
+                      onClick={() =>
+                        (window.location.href =
+                          "http://localhost:3001/api/v1/auth/google")
+                      }
                     >
                       <motion.img
                         initial={{ opacity: 0 }}
@@ -348,7 +349,7 @@ const Login = () => {
                         transition={{ delay: 0.9 }}
                         src="/images/google.png"
                         alt="Google"
-                        className="w-5 h-5"
+                        className="w-6 h-6"
                       />{" "}
                       <span className="ms-1">Google</span>
                     </Button>
@@ -367,7 +368,7 @@ const Login = () => {
                         transition={{ delay: 0.9 }}
                         src="/images/fb.jpg"
                         alt="Facebook"
-                        className="w-5 h-5 rounded-full"
+                        className="w-6 h-6 rounded-full"
                       />{" "}
                       <span className="ms-1">Facebook</span>
                     </Button>

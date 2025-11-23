@@ -4,7 +4,9 @@ const cors = require("cors");
 const app = express();
 const bookRoutes = require("./Routes/bookRoutes");
 const authRoutes = require("./Routes/authRoutes");
+const cookieParser = require("cookie-parser");
 
+app.use(cookieParser());
 app.use(express.json());
 app.use(cors());
 app.use("/api/v1/books", bookRoutes);

@@ -8,6 +8,10 @@ const {
   findUserByResetToken,
   clearResetToken,
   updateEmailVerified,
+  findUserByProvider,
+  updateUserProvider,
+  findUserById,
+  updateUserPicture,
 } = require("../Models/userModel");
 const { formatUser } = require("../utils/formatter");
 const { sendPasswordResetEmail } = require("./Emails/sendResetLink");
@@ -16,6 +20,12 @@ const {
   sendEmailVerificationLink,
 } = require("./Emails/sendEmailVerificationLink");
 const { successResponse, errorResponse } = require("../utils/response");
+const {
+  USER_TOKEN_EXPIRES_IN,
+  EMAIL_VERIFICATION_TOKEN_EXPIRES_IN,
+  RESET_TOKEN_EXPIRES_IN,
+} = require("../Config/constants");
+const generateJWT = require("../utils/Token/generateJWT");
 
 exports.registerUser = async (
   { first_name, last_name, email, password, terms_accepted },
@@ -62,6 +72,8 @@ exports.registerUser = async (
 exports.loginUser = async ({ email, password, res }) => {
   const user = await findUserByEmail(email);
 
+  console.log("loginUserrrrrrrrr", user);
+
   if (!user) {
     return {
       success: false,
@@ -96,13 +108,17 @@ exports.loginUser = async ({ email, password, res }) => {
     };
   }
 
-  const token = jwt.sign(
+  const token = generateJWT(
     { id: user.id, email: user.email },
     process.env.JWT_SECRET,
-    { expiresIn: `${process.env.USER_TOKEN_EXPIRES_IN}h` }
+    `${USER_TOKEN_EXPIRES_IN}h`
   );
 
+  console.log("loginUserrrrrrrrr", user);
+
   const userDetails = formatUser([user]);
+
+  console.log("2loginUserrrrrrrrr", userDetails);
 
   return {
     token,
@@ -168,13 +184,12 @@ async function sendEmailVerificationLinkServices(email) {
       return false;
     }
 
-    const emailVerificationToken = jwt.sign(
+    const emailVerificationToken = generateJWT(
       { id: user.id, email: user.email, email_verified: user.email_verified },
       process.env.JWT_SECRET_EMAIL_VERIFY,
-      { expiresIn: `${process.env.EMAIL_VERIFICATION_TOKEN_EXPIRES_IN}m` }
+      `${EMAIL_VERIFICATION_TOKEN_EXPIRES_IN}m`
     );
-
-    const emailVerificationLink = `${process.env.BACKEND_URL}auth/verify-email/?token=${emailVerificationToken}&email=${email}`;
+    const emailVerificationLink = `${process.env.BACKEND_BASE_URL}/api/${process.env.API_VERSION}/auth/verify-email/?token=${emailVerificationToken}&email=${email}`;
 
     await sendEmailVerificationLink(
       email,
@@ -205,12 +220,11 @@ exports.sendResetPasswordLink = async (email) => {
       };
     }
 
-    const resetToken = jwt.sign(
+    const resetToken = generateJWT(
       { id: user.id, email: user.email },
       process.env.JWT_SECRET_RESET,
-      { expiresIn: `${process.env.RESET_TOKEN_EXPIRES_IN}m` }
+      `${RESET_TOKEN_EXPIRES_IN}m`
     );
-
     await saveResetToken(email, resetToken);
 
     const resetLink = `${process.env.FRONTEND_URL}/?token=${resetToken}`;
@@ -296,4 +310,143 @@ exports.resetPassword = async (email, password, token) => {
 
     throw err;
   }
+};
+
+// !social login
+
+const DEFAULT_PROFILE_IMAGE =
+  "https://img.freepik.com/premium-vector/human-icon_970584-3.jpg?semt=ais_hybrid&w=740&q=80";
+
+exports.handleSocialLogin = async ({
+  provider,
+  providerId,
+  email,
+  emailVerified = false,
+  firstName = "",
+  lastName = "",
+  picture = null,
+}) => {
+  const existingByProvider = await findUserByProvider(provider, providerId);
+  if (existingByProvider) {
+    if (picture && existingByProvider.profile_pic === DEFAULT_PROFILE_IMAGE) {
+      await updateUserPicture(existingByProvider.id, picture);
+      existingByProvider.profile_pic = picture;
+    }
+    const userDetails = formatUser([existingByProvider]);
+
+    const token = generateJWT(
+      { id: userDetails.id, email: userDetails.email },
+      process.env.JWT_SECRET,
+      `${USER_TOKEN_EXPIRES_IN}h`
+    );
+
+    return {
+      success: true,
+      user: userDetails,
+      token,
+      isNewUser: false,
+      linked: true,
+    };
+  }
+
+  if (email) {
+    const existingByEmail = await findUserByEmail(email);
+
+    if (existingByEmail) {
+      if (existingByEmail.provider === "local" || !existingByEmail.provider) {
+        if (emailVerified) {
+          await updateUserProvider(existingByEmail.id, provider, providerId);
+
+          // *** NEW: Update picture if default ***
+          if (
+            picture &&
+            existingByEmail.profile_pic === DEFAULT_PROFILE_IMAGE
+          ) {
+            await updateUserPicture(existingByEmail.id, picture);
+          }
+
+          const updatedUser = await findUserById(existingByEmail.id);
+          const token = generateJWT(
+            { id: updatedUser.id, email: updatedUser.email },
+            process.env.JWT_SECRET,
+            `${USER_TOKEN_EXPIRES_IN}h`
+          );
+          return {
+            success: true,
+            user: formatUser([updatedUser]),
+            token,
+            isNewUser: false,
+            linked: true,
+          };
+        } else {
+          throw {
+            status: 400,
+            message:
+              "Email not verified by provider. Please verify your email with the provider or link from your account settings.",
+          };
+        }
+      }
+      if (existingByEmail.provider && existingByEmail.provider !== provider) {
+        if (emailVerified) {
+          await updateUserProvider(existingByEmail.id, provider, providerId);
+
+          // *** NEW: Update picture if default ***
+          if (
+            picture &&
+            existingByEmail.profile_pic === DEFAULT_PROFILE_IMAGE
+          ) {
+            await updateUserPicture(existingByEmail.id, picture);
+          }
+
+          const updatedUser = await findUserById(existingByEmail.id);
+          const token = generateJWT(
+            { id: updatedUser.id, email: updatedUser.email },
+            process.env.JWT_SECRET,
+            `${USER_TOKEN_EXPIRES_IN}h`
+          );
+          return {
+            success: true,
+            user: formatUser([updatedUser]),
+            token,
+            isNewUser: false,
+            linked: true,
+          };
+        } else {
+          throw {
+            status: 400,
+            message:
+              "Provider did not verify email. Unable to link accounts automatically.",
+          };
+        }
+      }
+    }
+  }
+
+  const newUserResult = await createUser({
+    firstName,
+    lastName,
+    email,
+    provider,
+    providerId,
+    emailVerified: emailVerified ? 1 : 0,
+    picture,
+  });
+
+  const newUserId = newUserResult.insertId;
+  const newUser = await findUserById(newUserId);
+
+  const token = generateJWT(
+    { id: newUser.id, email: newUser.email },
+    process.env.JWT_SECRET,
+    `${USER_TOKEN_EXPIRES_IN}h`
+  );
+
+  const user = formatUser([newUser]);
+  return {
+    success: true,
+    user,
+    token,
+    isNewUser: true,
+    linked: true,
+  };
 };

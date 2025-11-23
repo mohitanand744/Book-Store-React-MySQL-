@@ -24,19 +24,11 @@ const ForgotPasswordModal = ({
     watch,
   } = useForm();
 
-  const emailValue = watch("email");
-
   useEffect(() => {
     if (email) {
       setValue("email", email);
     }
   }, [email]);
-
-  /*   useEffect(() => {
-    if (emailValue) {
-      localStorage.setItem("forgotPasswordEmail", emailValue);
-    }
-  }, [email]); */
 
   const onSubmit = async (data) => {
     try {
@@ -50,7 +42,6 @@ const ForgotPasswordModal = ({
         setShowForgot(false);
       }
     } catch (error) {
-      console.error("Error sending password reset email:", error);
       setShowForgot(false);
 
       toast.error(

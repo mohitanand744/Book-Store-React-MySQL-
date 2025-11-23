@@ -99,7 +99,7 @@ const Router = () => {
           </Route>
 
           {/* Fallback route */}
-          <Route path="*" element={<FallbackRoute />} />
+          {/* <Route path="*" element={<FallbackRoute />} /> */}
         </Routes>
       </Suspense>
     </BrowserRouter>

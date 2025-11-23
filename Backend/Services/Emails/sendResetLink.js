@@ -1,3 +1,4 @@
+const { RESET_TOKEN_EXPIRES_IN } = require("../../Config/constants");
 const {
   getEmailTemplate,
   getPlainTextTemplate,
@@ -10,7 +11,7 @@ exports.sendPasswordResetEmail = async (email, resetLink) => {
   const text = getPlainTextTemplate({
     mainMessage: "Reset your NextChapter password using the link below.",
     buttonLink: resetLink,
-    expiryMinutes: process.env.RESET_TOKEN_EXPIRES_IN,
+    expiryMinutes: RESET_TOKEN_EXPIRES_IN,
   });
 
   const html = getEmailTemplate({
@@ -21,7 +22,7 @@ exports.sendPasswordResetEmail = async (email, resetLink) => {
     buttonLink: resetLink,
     secondaryMessage:
       "If you didn't request a password reset, please ignore this email. Your account remains secure.",
-    expiryMinutes: process.env.RESET_TOKEN_EXPIRES_IN,
+    expiryMinutes: RESET_TOKEN_EXPIRES_IN,
   });
 
   await sendEmail({ to: email, subject, html, text });

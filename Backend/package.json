@@ -11,7 +11,9 @@
   "author": "Mohit Anand",
   "license": "ISC",
   "dependencies": {
+    "arctic": "^3.7.0",
     "bcrypt": "^6.0.0",
+    "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",

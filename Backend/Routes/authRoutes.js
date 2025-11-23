@@ -7,6 +7,8 @@ const {
   resetPasswordController,
   verifyResetTokenController,
   verifyEmailTokenController,
+  getGoogleLoginPage,
+  getGoogleCallBack,
 } = require("../Controllers/auth.controllers");
 const {
   signupValidation,
@@ -21,6 +23,10 @@ const router = express.Router();
 
 router.post("/register", signupValidation, signup);
 router.post("/login", loginValidation, login);
+
+router.route("/google").get(getGoogleLoginPage);
+router.route("/google/callback").get(getGoogleCallBack);
+
 router.post("/forgot-password", forgotPasswordValidation, forgotPassword);
 router.post(
   "/verify-reset-token/",

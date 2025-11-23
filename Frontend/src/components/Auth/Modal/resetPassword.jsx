@@ -38,7 +38,6 @@ const ResetPasswordModal = ({
   const [warningMsg, setWarningMsg] = useState(false);
   const newPassword = watch("newPassword");
   const emailValue = watch("email");
-  console.log(resetToken);
 
   const forgotPasswordEmail = localStorage.getItem("forgotPasswordEmail");
 
@@ -64,7 +63,6 @@ const ResetPasswordModal = ({
         localStorage.removeItem("resetToken");
       }
     } catch (error) {
-      console.error("Error resetting password:", error);
       toast.error(
         error.response?.data?.message ||
           "Something went wrong. Please try again later."
@@ -86,7 +84,6 @@ const ResetPasswordModal = ({
     setIsResending(false);
     localStorage.removeItem("resetToken");
     localStorage.removeItem("forgotPasswordEmail");
-
     setWarningMsg(false);
   };
 
@@ -101,7 +98,6 @@ const ResetPasswordModal = ({
         setEmailResent(true);
       }
     } catch (error) {
-      console.error("Error sending password reset email:", error);
       setIsResending(false);
       setEmailResent(false);
       toast.error(

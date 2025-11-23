@@ -1,33 +1,31 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import toast from "react-hot-toast";
-import { Navigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Navigate } from "react-router-dom";
 
-// Fallback Route Component
 export const FallbackRoute = () => {
-  const [showNotification, setShowNotification] = useState(true);
-  const [hasShownToast, setHasShownToast] = useState(false);
+  const navigate = useNavigate();
   const location = useLocation();
 
   useEffect(() => {
-    if (showNotification && !hasShownToast) {
-      toast.error(`The page "${location.pathname}" was not found.`, {
+    const redirect = () => {
+      if (window.history.state && window.history.state.idx > 0) {
+        navigate(-1); // Go back if there's history
+      } else {
+        navigate("/", { replace: true }); // Fallback to home page
+      }
+    };
+
+    toast.error(
+      `The page "${location.pathname}" was not found. Redirecting...`,
+      {
         duration: 3000,
         id: "page-not-found",
-      });
-      setHasShownToast(true);
+      }
+    );
 
-      // Auto-dismiss after 3 seconds
-      const timer = setTimeout(() => {
-        setShowNotification(false);
-      }, 3000);
+    const timer = setTimeout(redirect, 0);
+    return () => clearTimeout(timer);
+  }, [location.pathname, navigate]);
 
-      return () => clearTimeout(timer);
-    }
-  }, [showNotification, hasShownToast, location.pathname]);
-
-  return (
-    <>
-      <Navigate to="/nextChapter" replace />
-    </>
-  );
+  return null;
 };

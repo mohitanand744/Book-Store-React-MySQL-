@@ -1,4 +1,7 @@
 const {
+  EMAIL_VERIFICATION_TOKEN_EXPIRES_IN,
+} = require("../../Config/constants");
+const {
   getEmailTemplate,
   getPlainTextTemplate,
 } = require("../../Templates/emailTemplates");
@@ -14,7 +17,7 @@ exports.sendEmailVerificationLink = async (
   const text = getPlainTextTemplate({
     mainMessage: "Reset your NextChapter password using the link below.",
     buttonLink: emailVerificationLink,
-    expiryMinutes: process.env.EMAIL_VERIFICATION_TOKEN_EXPIRES_IN,
+    expiryMinutes: EMAIL_VERIFICATION_TOKEN_EXPIRES_IN,
   });
 
   const html = getEmailTemplate({
@@ -25,7 +28,7 @@ exports.sendEmailVerificationLink = async (
     buttonLink: emailVerificationLink,
     secondaryMessage:
       "If you didn't create an account, please ignore this email.",
-    expiryMinutes: process.env.EMAIL_VERIFICATION_TOKEN_EXPIRES_IN,
+    expiryMinutes: EMAIL_VERIFICATION_TOKEN_EXPIRES_IN,
   });
 
   await sendEmail({ to: email, subject, html, text });

@@ -2,18 +2,35 @@ const db = require("../Config/db.connection");
 const { formatUser } = require("../utils/formatter");
 
 // Create new user
-const createUser = async (
-  firstName,
-  lastName,
-  email,
-  hashedPassword,
-  termsAccepted
-) => {
+const createUser = async (userData) => {
+  const {
+    firstName,
+    lastName,
+    email,
+    password = null,
+    provider = null,
+    providerId = null,
+    emailVerified = false,
+    termsAccepted = false,
+    profilePic = null,
+  } = userData;
+
   const [result] = await db.execute(
-    `INSERT INTO users (first_name, last_name, email, password, terms_accepted) 
-     VALUES (?, ?, ?, ?, ?)`,
-    [firstName, lastName, email, hashedPassword, termsAccepted]
+    `INSERT INTO users (first_name, last_name, email, password, provider, provider_id, email_verified, terms_accepted, profile_pic)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    [
+      firstName,
+      lastName,
+      email,
+      password,
+      provider,
+      providerId,
+      emailVerified,
+      termsAccepted,
+      profilePic,
+    ]
   );
+
   return result;
 };
 
@@ -72,6 +89,22 @@ const findUserById = async (userId) => {
   return rows[0] || null;
 };
 
+const findUserByProvider = async (provider, providerId) => {
+  const query = "SELECT * FROM users WHERE provider = ? AND provider_id = ?";
+  const [rows] = await db.query(query, [provider, providerId]);
+  return rows[0] || null;
+};
+
+const updateUserProvider = async (userId, provider, providerId) => {
+  const query = `UPDATE users SET provider = ?, provider_id = ? WHERE id = ?`;
+  await db.query(query, [provider, providerId, userId]);
+};
+
+const updateUserPicture = async (userId, picture) => {
+  const query = `UPDATE users SET profile_pic = ? WHERE id = ?`;
+  await db.query(query, [picture, userId]);
+};
+
 module.exports = {
   createUser,
   findUserByEmail,
@@ -82,4 +115,7 @@ module.exports = {
   saveResetToken,
   findUserById,
   updateEmailVerified,
+  findUserByProvider,
+  updateUserProvider,
+  updateUserPicture,
 };

@@ -1,4 +1,5 @@
 const { images } = require("../Config/cloudinary");
+const { RESET_TOKEN_EXPIRES_IN } = require("../Config/constants");
 
 exports.getEmailTemplate = (options) => {
   const {
@@ -7,7 +8,7 @@ exports.getEmailTemplate = (options) => {
     buttonText,
     buttonLink,
     secondaryMessage,
-    expiryMinutes = process.env.RESET_TOKEN_EXPIRES_IN,
+    expiryMinutes = RESET_TOKEN_EXPIRES_IN,
   } = options;
 
   return `
@@ -150,7 +151,7 @@ exports.getPlainTextTemplate = (options) => {
   const {
     mainMessage,
     buttonLink,
-    expiryMinutes = process.env.RESET_TOKEN_EXPIRES_IN,
+    expiryMinutes = RESET_TOKEN_EXPIRES_IN,
   } = options;
 
   let text = `${mainMessage}`;
