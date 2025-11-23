@@ -12,8 +12,10 @@ const createUser = async (userData) => {
     providerId = null,
     emailVerified = false,
     termsAccepted = false,
-    profilePic = null,
+    picture = null,
   } = userData;
+
+  console.log("gggggggppppppppptttttttt", picture, userData);
 
   const [result] = await db.execute(
     `INSERT INTO users (first_name, last_name, email, password, provider, provider_id, email_verified, terms_accepted, profile_pic)
@@ -27,7 +29,7 @@ const createUser = async (userData) => {
       providerId,
       emailVerified,
       termsAccepted,
-      profilePic,
+      picture,
     ]
   );
 
@@ -47,18 +49,6 @@ const findUserByEmail = async (email) => {
 const getAllUsers = async () => {
   const [rows] = await db.execute(`SELECT * FROM users`);
   return rows;
-};
-
-// Get user by ID
-const getUserDetailsById = async (id) => {
-  const [rows] = await db.query(
-    "SELECT id, first_name, last_name, created_at, email FROM users WHERE id = ?",
-    [id]
-  );
-
-  const userDetails = formatUser(rows);
-
-  return rows.length ? userDetails : null;
 };
 
 const saveResetToken = async (email, resetToken) => {
@@ -109,7 +99,6 @@ module.exports = {
   createUser,
   findUserByEmail,
   getAllUsers,
-  getUserDetailsById,
   findUserByResetToken,
   clearResetToken,
   saveResetToken,

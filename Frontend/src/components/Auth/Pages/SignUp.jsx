@@ -288,6 +288,10 @@ const SignUp = () => {
                     <Button
                       variant="outline"
                       className="flex items-center justify-center w-full"
+                      onClick={() =>
+                        (window.location.href =
+                          "http://localhost:3001/api/v1/auth/google")
+                      }
                     >
                       <motion.img
                         initial={{ opacity: 0 }}

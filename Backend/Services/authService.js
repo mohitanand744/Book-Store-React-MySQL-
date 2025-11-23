@@ -97,6 +97,13 @@ exports.loginUser = async ({ email, password, res }) => {
     }
   }
 
+  if (user.password === null && user.provider !== "local") {
+    return {
+      success: false,
+      message: `Please Login with ${user.provider}. Or You can Update Your Password By Clicking on Forgot Password?`,
+    };
+  }
+
   const isMatch = await bcrypt.compare(password, user.password);
 
   if (!isMatch) {
@@ -327,6 +334,7 @@ exports.handleSocialLogin = async ({
   picture = null,
 }) => {
   const existingByProvider = await findUserByProvider(provider, providerId);
+
   if (existingByProvider) {
     if (picture && existingByProvider.profile_pic === DEFAULT_PROFILE_IMAGE) {
       await updateUserPicture(existingByProvider.id, picture);
@@ -346,6 +354,7 @@ exports.handleSocialLogin = async ({
       token,
       isNewUser: false,
       linked: true,
+      provider: existingByProvider.provider,
     };
   }
 
@@ -356,8 +365,6 @@ exports.handleSocialLogin = async ({
       if (existingByEmail.provider === "local" || !existingByEmail.provider) {
         if (emailVerified) {
           await updateUserProvider(existingByEmail.id, provider, providerId);
-
-          // *** NEW: Update picture if default ***
           if (
             picture &&
             existingByEmail.profile_pic === DEFAULT_PROFILE_IMAGE
@@ -366,6 +373,7 @@ exports.handleSocialLogin = async ({
           }
 
           const updatedUser = await findUserById(existingByEmail.id);
+
           const token = generateJWT(
             { id: updatedUser.id, email: updatedUser.email },
             process.env.JWT_SECRET,
@@ -377,6 +385,7 @@ exports.handleSocialLogin = async ({
             token,
             isNewUser: false,
             linked: true,
+            provider: updatedUser.provider,
           };
         } else {
           throw {
@@ -390,7 +399,6 @@ exports.handleSocialLogin = async ({
         if (emailVerified) {
           await updateUserProvider(existingByEmail.id, provider, providerId);
 
-          // *** NEW: Update picture if default ***
           if (
             picture &&
             existingByEmail.profile_pic === DEFAULT_PROFILE_IMAGE
@@ -410,6 +418,7 @@ exports.handleSocialLogin = async ({
             token,
             isNewUser: false,
             linked: true,
+            provider: updatedUser.provider,
           };
         } else {
           throw {
@@ -421,6 +430,8 @@ exports.handleSocialLogin = async ({
       }
     }
   }
+
+  console.log("ppppppppppppppppp", picture);
 
   const newUserResult = await createUser({
     firstName,
@@ -448,5 +459,6 @@ exports.handleSocialLogin = async ({
     token,
     isNewUser: true,
     linked: true,
+    provider: user.provider,
   };
 };

@@ -297,7 +297,7 @@ const UserProfile = () => {
                 className="relative"
               >
                 <img
-                  src={user?.profilePic}
+                  src={user?.profile_pic}
                   alt="Profile"
                   className="object-cover w-32 h-32 border-4 border-white rounded-full shadow-lg"
                 />
@@ -359,7 +359,7 @@ const UserProfile = () => {
                 <ModernProfileDetail
                   icon={<FaRegHeart className="text-[#5C4C49] text-lg" />}
                   label="Favorite Genres"
-                  value={user?.favoriteGenres.join(", ")}
+                  value={user?.favoriteGenres?.join(", ")}
                   delay={0.7}
                 />
               </div>
@@ -615,7 +615,7 @@ const UserProfile = () => {
               {activeTab === "activity" && (
                 <>
                   <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                    {user?.recentOrders.slice(0, 3).map((order, index) => (
+                    {user?.recentOrders?.slice(0, 3).map((order, index) => (
                       <ActivityItem
                         key={order.id}
                         title={`Order ${order.status}`}
@@ -628,7 +628,7 @@ const UserProfile = () => {
                     ))}
                   </div>
 
-                  {user?.recentOrders.length === 0 && (
+                  {user?.recentOrders?.length === 0 && (
                     <NoData
                       title="No Activity"
                       message="You have not made any recent activity."

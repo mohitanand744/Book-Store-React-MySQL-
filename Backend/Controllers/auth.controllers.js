@@ -10,7 +10,7 @@ const {
 } = require("../Services/authService");
 const { successResponse, errorResponse } = require("../utils/response");
 const handleDbError = require("../utils/handleDbError");
-const { getUserDetailsById } = require("../Models/userModel");
+const { findUserById } = require("../Models/userModel");
 const {
   generateState,
   generateCodeVerifier,
@@ -55,8 +55,10 @@ const login = async (req, res, next) => {
     const result = await loginUser({ email, password, res });
 
     console.log("result");
+    console.log("login Success", result);
+
     if (result?.success === false) {
-      console.log(result);
+      console.log("login Error", result);
 
       delete result.success;
       return errorResponse(res, 400, result?.message, result);
@@ -236,11 +238,17 @@ const getGoogleCallBack = async (req, res, next) => {
       picture,
     });
 
-    return successResponse(res, 200, "Logged in with Google", {
-      user: result.user,
-      token: result.token,
-      isNewUser: result.isNewUser,
-    });
+    return successResponse(
+      res,
+      200,
+      "Logged in with Google",
+      {
+        user: result.user,
+        token: result.token,
+        isNewUser: result.isNewUser,
+      },
+      `${process.env.FRONTEND_URL}/nextChapter`
+    );
   } catch (err) {
     console.log("gggggggg", err);
     const status = err.status || 500;
@@ -252,7 +260,7 @@ const getGoogleCallBack = async (req, res, next) => {
 // GET USER
 const getUserProfile = async (req, res, next) => {
   try {
-    const user = await getUserDetailsById(req.userId);
+    const user = await findUserById(req.userId);
 
     if (!user) {
       return res
