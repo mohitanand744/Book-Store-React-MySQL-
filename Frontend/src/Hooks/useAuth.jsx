@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   loginSuccess,
   logoutSuccess,
+  logoutThunk,
   updateUserData,
   validateToken,
 } from "../store/Redux/Slices/authSlice";
@@ -17,9 +18,9 @@ const useAuth = () => {
     dispatch(loginSuccess({ user: userData, token }));
   };
 
-  const logoutStatusSuccess = () => {
+  const logoutStatusSuccess = (logoutReason) => {
     navigate("/nextChapter");
-    dispatch(logoutSuccess("tokenExpired"));
+    dispatch(logoutThunk(logoutReason));
     toast.success("Logout successful!");
   };
 

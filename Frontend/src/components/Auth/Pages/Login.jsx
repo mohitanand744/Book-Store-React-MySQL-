@@ -146,8 +146,6 @@ const Login = () => {
         } else {
           localStorage.removeItem("loginData");
         }
-
-        navigate("/nextChapter");
         reset();
       } else {
         toast.error(response?.message || "Invalid credentials");

@@ -9,6 +9,7 @@ const {
   verifyEmailTokenController,
   getGoogleLoginPage,
   getGoogleCallBack,
+  logout,
 } = require("../Controllers/auth.controllers");
 const {
   signupValidation,
@@ -23,6 +24,7 @@ const router = express.Router();
 
 router.post("/register", signupValidation, signup);
 router.post("/login", loginValidation, login);
+router.post("/logout", verifyToken, logout);
 
 router.route("/google").get(getGoogleLoginPage);
 router.route("/google/callback").get(getGoogleCallBack);

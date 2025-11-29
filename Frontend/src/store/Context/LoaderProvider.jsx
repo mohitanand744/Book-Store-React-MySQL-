@@ -6,7 +6,7 @@ export const LoaderContext = createContext();
 
 // Loader provider component
 export const LoaderProvider = ({ children }) => {
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [progress, setProgress] = useState(0);
   const [requestCount, setRequestCount] = useState(0);
 

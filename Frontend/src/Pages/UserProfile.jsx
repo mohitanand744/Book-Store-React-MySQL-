@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { MdOutlineMail } from "react-icons/md";
@@ -99,6 +99,12 @@ const UserProfile = () => {
 
   console.log(userData);
 
+  useEffect(() => {
+    if (userData) {
+      setUser(userData);
+    }
+  }, [userData]);
+
   const handleEdit = () => {
     setEditData({ ...user });
     setIsEditOpen(true);
@@ -122,9 +128,12 @@ const UserProfile = () => {
     navigate("/nextChapter/wishlist");
   };
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     navigate("/nextChapter");
-    logoutStatusSuccess();
+
+    setTimeout(() => {
+      logoutStatusSuccess();
+    }, 200);
   };
 
   return (
@@ -294,12 +303,12 @@ const UserProfile = () => {
                 initial={{ scale: 0.95 }}
                 animate={{ scale: 1 }}
                 transition={{ type: "spring", stiffness: 300 }}
-                className="relative"
+                className="relative w-32 h-32 rounded-full bg-[#5C4C49]"
               >
                 <img
-                  src={user?.profile_pic}
+                  src={user?.profilePic}
                   alt="Profile"
-                  className="object-cover w-32 h-32 border-4 border-white rounded-full shadow-lg"
+                  className="object-cover w-full h-full border-4 border-white rounded-full shadow-lg"
                 />
               </motion.div>
             </div>
@@ -421,7 +430,7 @@ const UserProfile = () => {
                   className="flex-1"
                 >
                   <Button
-                    onClick={() => handleLogout()}
+                    onClick={handleLogout}
                     className="flex items-center gap-1 w-full justify-center px-4 text-nowrap py-2 bg-[#7e362a] text-[#E8D9C5] rounded-lg shadow-md"
                     type="button"
                   >

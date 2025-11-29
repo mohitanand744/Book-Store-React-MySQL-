@@ -139,7 +139,7 @@ const Navbar = () => {
                   <div className="w-12 h-12 cursor-pointer active:scale-75 transition border-2 bg-[#5C4C49] border-orange-500 rounded-full">
                     <img
                       className="object-cover w-full h-full rounded-full"
-                      src={userData?.profile_pic}
+                      src={userData?.profilePic}
                       alt=""
                     />
                   </div>

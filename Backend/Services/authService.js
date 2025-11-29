@@ -343,7 +343,7 @@ exports.handleSocialLogin = async ({
     const userDetails = formatUser([existingByProvider]);
 
     const token = generateJWT(
-      { id: userDetails.id, email: userDetails.email },
+      { id: userDetails.userId, email: userDetails.email },
       process.env.JWT_SECRET,
       `${USER_TOKEN_EXPIRES_IN}h`
     );
@@ -372,16 +372,18 @@ exports.handleSocialLogin = async ({
             await updateUserPicture(existingByEmail.id, picture);
           }
 
-          const updatedUser = await findUserById(existingByEmail.id);
+          const User = await findUserById(existingByEmail.id);
+
+          const updatedUser = formatUser([User]);
 
           const token = generateJWT(
-            { id: updatedUser.id, email: updatedUser.email },
+            { id: updatedUser.userId, email: updatedUser.email },
             process.env.JWT_SECRET,
             `${USER_TOKEN_EXPIRES_IN}h`
           );
           return {
             success: true,
-            user: formatUser([updatedUser]),
+            user: updatedUser,
             token,
             isNewUser: false,
             linked: true,
@@ -406,9 +408,12 @@ exports.handleSocialLogin = async ({
             await updateUserPicture(existingByEmail.id, picture);
           }
 
-          const updatedUser = await findUserById(existingByEmail.id);
+          const User = await findUserById(existingByEmail.id);
+
+          const updatedUser = formatUser([User]);
+
           const token = generateJWT(
-            { id: updatedUser.id, email: updatedUser.email },
+            { id: updatedUser.userId, email: updatedUser.email },
             process.env.JWT_SECRET,
             `${USER_TOKEN_EXPIRES_IN}h`
           );
@@ -453,6 +458,7 @@ exports.handleSocialLogin = async ({
   );
 
   const user = formatUser([newUser]);
+
   return {
     success: true,
     user,

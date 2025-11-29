@@ -24,7 +24,7 @@ const axiosInstanceFormData = axios.create({
 
 export const useAxiosLoader = () => {
   const { showLoader, hideLoader, updateProgress } = useLoader();
-  const { logoutStatusSuccess } = useAuth();
+  const { logoutStatusSuccess, isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -34,11 +34,7 @@ export const useAxiosLoader = () => {
         console.log("Loader Start");
         showLoader();
 
-        // ✅ Only attach token if explicitly required
-        if (config.requiresAuth) {
-          const token = localStorage.getItem("token");
-          if (token) config.headers.Authorization = `Bearer ${token}`;
-        }
+        if (config.requiresAuth) config.withCredentials = true;
 
         // Track progress if available
         config.onUploadProgress = (progressEvent) => {
@@ -79,11 +75,7 @@ export const useAxiosLoader = () => {
 
           if (err?.name === "TokenExpiredError") {
             toast.error("Session expired. Please login again.");
-          } else {
-            toast.error("Unauthorized. Please login again.");
           }
-
-          logoutStatusSuccess("tokenExpired");
         }
 
         return Promise.reject(error);

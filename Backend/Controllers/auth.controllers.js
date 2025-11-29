@@ -18,6 +18,7 @@ const {
 } = require("arctic");
 const { OAUTH_EXCHANGE_EXPIRY_MS } = require("../Config/constants");
 const google = require("../Config/oAuth/google");
+const { formatUser } = require("../utils/formatter");
 
 // SIGNUP
 const signup = async (req, res, next) => {
@@ -52,6 +53,8 @@ const login = async (req, res, next) => {
 
     const { email, password } = req.body;
 
+    console.log("loginData", email);
+
     const result = await loginUser({ email, password, res });
 
     console.log("result");
@@ -63,10 +66,33 @@ const login = async (req, res, next) => {
       delete result.success;
       return errorResponse(res, 400, result?.message, result);
     }
+
+    res.cookie("token", result.token, {
+      httpOnly: true,
+      secure: false,
+      sameSite: "strict",
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    });
+
     successResponse(res, 200, "Login successful", result);
   } catch (error) {
     handleDbError(error, res, next);
   }
+};
+
+// LOGOUT
+const logout = (_, res) => {
+  res.clearCookie("token", {
+    httpOnly: true,
+    secure: false,
+    sameSite: "lax",
+    path: "/",
+  });
+
+  res.clearCookie("google_oauth_state", { path: "/", sameSite: "lax" });
+  res.clearCookie("google_code_verifier", { path: "/", sameSite: "lax" });
+
+  successResponse(res, 200, "Logout successful");
 };
 
 // FORGET PASSWORD
@@ -212,7 +238,8 @@ const getGoogleCallBack = async (req, res, next) => {
     handleDbError(error, res, next);
   }
 
-  console.log("Google Token", token);
+  console.log("Google Token", token.data.id_token);
+  console.log("Google Token222", token);
 
   const claims = decodeIdToken(token.data.id_token);
 
@@ -235,22 +262,24 @@ const getGoogleCallBack = async (req, res, next) => {
       emailVerified: !!email_verified,
       firstName: given_name,
       lastName: family_name,
-      picture,
+      picture: picture.replace(/=s\d+-c$/, ""),
+    });
+
+    res.cookie("token", result.token, {
+      httpOnly: true,
+      secure: false,
+      sameSite: "lax",
+      maxAge: 1000 * 60 * 60 * 24,
     });
 
     return successResponse(
       res,
       200,
       "Logged in with Google",
-      {
-        user: result.user,
-        token: result.token,
-        isNewUser: result.isNewUser,
-      },
-      `${process.env.FRONTEND_URL}/nextChapter`
+      {},
+      `${process.env.FRONTEND_URL}/nextChapter/?loginProvider=google`
     );
   } catch (err) {
-    console.log("gggggggg", err);
     const status = err.status || 500;
     const msg = err.message || "Social login failed";
     return errorResponse(res, status, msg);
@@ -263,12 +292,12 @@ const getUserProfile = async (req, res, next) => {
     const user = await findUserById(req.userId);
 
     if (!user) {
-      return res
-        .status(404)
-        .json({ success: false, message: "User not found" });
+      return errorResponse(res, 400, "User not found");
     }
 
-    res.json({ success: true, data: user });
+    const userDetails = formatUser([user]);
+
+    successResponse(res, 200, "", userDetails);
   } catch (error) {
     console.log(error);
     handleDbError(error, res, next);
@@ -285,4 +314,5 @@ module.exports = {
   verifyEmailTokenController,
   getGoogleLoginPage,
   getGoogleCallBack,
+  logout,
 };
