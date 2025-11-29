@@ -2,7 +2,7 @@ import { axiosInstance } from "../../services/api";
 
 export const login = async (credentials) => {
   const response = await axiosInstance.post("/auth/login", credentials, {
-    requiresAuth: true,
+    withCredentials: true,
   });
   return response.data;
 };
@@ -52,6 +52,6 @@ export const resetPassword = async (
 };
 
 export const getUserDetails = async () => {
-  const response = await axiosInstance.get("/auth/me", { requiresAuth: true });
+  const response = await axiosInstance.get("/auth/me", { withCredentials: true });
   return response.data;
 };

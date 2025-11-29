@@ -43,14 +43,13 @@ exports.registerUser = async (
   }
 
   const hashedPassword = await bcrypt.hash(password, 10);
-
-  const result = await createUser(
-    first_name,
-    last_name,
+  const result = await createUser({
+    firstName: first_name,
+    lastName: last_name,
     email,
-    hashedPassword,
-    terms_accepted
-  );
+    password: hashedPassword,
+    termsAccepted: terms_accepted,
+  });
 
   const response = await sendEmailVerificationLinkServices(email);
 

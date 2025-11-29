@@ -30,6 +30,7 @@ const signup = async (req, res, next) => {
     }
 
     const userData = req.body;
+    
     const result = await registerUser(userData, res);
 
     if (result?.success === false) {
@@ -58,7 +59,7 @@ const login = async (req, res, next) => {
     const result = await loginUser({ email, password, res });
 
     console.log("result");
-    console.log("login Success", result);
+    console.log("login Success", result, result?.success);
 
     if (result?.success === false) {
       console.log("login Error", result);
@@ -66,11 +67,11 @@ const login = async (req, res, next) => {
       delete result.success;
       return errorResponse(res, 400, result?.message, result);
     }
-
+    console.log("setting cookie");
     res.cookie("token", result.token, {
       httpOnly: true,
       secure: false,
-      sameSite: "strict",
+      sameSite: "lax",
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     });
 
