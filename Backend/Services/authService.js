@@ -334,11 +334,14 @@ exports.handleSocialLogin = async ({
 }) => {
   const existingByProvider = await findUserByProvider(provider, providerId);
 
+  console.log("existingByProvider Profile", picture);
+
   if (existingByProvider) {
     if (picture && existingByProvider.profile_pic === DEFAULT_PROFILE_IMAGE) {
       await updateUserPicture(existingByProvider.id, picture);
       existingByProvider.profile_pic = picture;
     }
+    
     const userDetails = formatUser([existingByProvider]);
 
     const token = generateJWT(

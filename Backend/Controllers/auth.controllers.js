@@ -19,6 +19,7 @@ const {
 const { OAUTH_EXCHANGE_EXPIRY_MS } = require("../Config/constants");
 const google = require("../Config/oAuth/google");
 const { formatUser } = require("../utils/formatter");
+const { uploadFromUrl } = require("../utils/cloudinaryUpload");
 
 // SIGNUP
 const signup = async (req, res, next) => {
@@ -255,6 +256,10 @@ const getGoogleCallBack = async (req, res, next) => {
     picture,
   } = claims;
 
+  const cloudinaryUrl = await uploadFromUrl(picture.replace(/=s\d+-c$/, ""));
+
+  console.log("Cloudinary URL", cloudinaryUrl);
+
   try {
     const result = await handleSocialLogin({
       provider: "google",
@@ -263,7 +268,7 @@ const getGoogleCallBack = async (req, res, next) => {
       emailVerified: !!email_verified,
       firstName: given_name,
       lastName: family_name,
-      picture: picture.replace(/=s\d+-c$/, ""),
+      picture: cloudinaryUrl,
     });
 
     res.cookie("token", result.token, {

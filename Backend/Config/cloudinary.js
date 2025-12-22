@@ -1,11 +1,9 @@
-const cloudName = process.env.CLOUDINARY_CLOUD_NAME || "djm2qtqpb";
+const cloudinary = require('cloudinary').v2;
 
-module.exports = {
-  cloudName: cloudName,
-  baseUrl: `https://res.cloudinary.com/${cloudName}/image/upload`,
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
-  images: {
-    logo: `https://res.cloudinary.com/${cloudName}/image/upload/nextChapterLogo_czmhas.png`,
-    nextChapterBg: `https://res.cloudinary.com/${cloudName}/image/upload/v1762758585/NextChapterBackground_h5kzrc.png`,
-  },
-};
+module.exports = cloudinary;
