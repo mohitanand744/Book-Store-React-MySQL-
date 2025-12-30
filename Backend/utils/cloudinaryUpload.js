@@ -1,15 +1,41 @@
-const cloudinary = require('../Config/cloudinary');
+const cloudinary = require("../Config/cloudinary");
+const streamifier = require("streamifier");
 
 const uploadFromUrl = async (url) => {
   try {
     const result = await cloudinary.uploader.upload(url, {
-      folder: 'user_profiles',
-      resource_type: 'image',
+      folder: "user_profiles",
+      resource_type: "image",
     });
-    return result.secure_url; 
+    return result.secure_url;
   } catch (error) {
-    console.error('Cloudinary Upload Error:', error);
+    console.error("Cloudinary Upload Error:", error);
     return null;
   }
 };
-module.exports = { uploadFromUrl };
+
+const uploadFromBuffer = async (buffer) => {
+  return new Promise((resolve, reject) => {
+    const uploadStream = cloudinary.uploader.upload_stream(
+      {
+        folder: "user_profiles",
+        resource_type: "image",
+      },
+      (error, result) => {
+        if (error) {
+          console.error("Cloudinary Buffer Upload Error:", error);
+          reject(error);
+        } else {
+          resolve(result.secure_url);
+        }
+      }
+    );
+    streamifier.createReadStream(buffer).pipe(uploadStream);
+  });
+};
+
+const isCloudinaryUrl = (
+  url = "https://img.freepik.com/premium-vector/human-icon_970584-3.jpg?semt=ais_hybrid&w=740&q=80"
+) => url.includes("res.cloudinary.com");
+
+module.exports = { uploadFromUrl, uploadFromBuffer, isCloudinaryUrl };

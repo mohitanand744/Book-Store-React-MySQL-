@@ -26,6 +26,7 @@ const {
   RESET_TOKEN_EXPIRES_IN,
 } = require("../Config/constants");
 const generateJWT = require("../utils/Token/generateJWT");
+const { isCloudinaryUrl, uploadFromUrl } = require("../utils/cloudinaryUpload");
 
 exports.registerUser = async (
   { first_name, last_name, email, password, terms_accepted },
@@ -43,6 +44,7 @@ exports.registerUser = async (
   }
 
   const hashedPassword = await bcrypt.hash(password, 10);
+
   const result = await createUser({
     firstName: first_name,
     lastName: last_name,
@@ -195,7 +197,10 @@ async function sendEmailVerificationLinkServices(email) {
       process.env.JWT_SECRET_EMAIL_VERIFY,
       `${EMAIL_VERIFICATION_TOKEN_EXPIRES_IN}m`
     );
+
     const emailVerificationLink = `${process.env.BACKEND_BASE_URL}/api/${process.env.API_VERSION}/auth/verify-email/?token=${emailVerificationToken}&email=${email}`;
+
+    console.log("emailVerificationLink", emailVerificationLink);
 
     await sendEmailVerificationLink(
       email,
@@ -337,11 +342,17 @@ exports.handleSocialLogin = async ({
   console.log("existingByProvider Profile", picture);
 
   if (existingByProvider) {
-    if (picture && existingByProvider.profile_pic === DEFAULT_PROFILE_IMAGE) {
-      await updateUserPicture(existingByProvider.id, picture);
-      existingByProvider.profile_pic = picture;
+    let finalProfilePic = picture;
+
+    if (
+      picture &&
+      !isCloudinaryUrl(existingByProvider.profile_pic || DEFAULT_PROFILE_IMAGE)
+    ) {
+      finalProfilePic = await uploadFromUrl(picture.replace(/=s\d+-c$/, ""));
+
+      await updateUserPicture(existingByProvider.id, finalProfilePic);
     }
-    
+
     const userDetails = formatUser([existingByProvider]);
 
     const token = generateJWT(
@@ -367,11 +378,18 @@ exports.handleSocialLogin = async ({
       if (existingByEmail.provider === "local" || !existingByEmail.provider) {
         if (emailVerified) {
           await updateUserProvider(existingByEmail.id, provider, providerId);
+
           if (
             picture &&
-            existingByEmail.profile_pic === DEFAULT_PROFILE_IMAGE
+            !isCloudinaryUrl(
+              existingByEmail.profile_pic || DEFAULT_PROFILE_IMAGE
+            )
           ) {
-            await updateUserPicture(existingByEmail.id, picture);
+            finalProfilePic = await uploadFromUrl(
+              picture.replace(/=s\d+-c$/, "")
+            );
+
+            await updateUserPicture(existingByEmail.id, finalProfilePic);
           }
 
           const User = await findUserById(existingByEmail.id);
@@ -405,9 +423,15 @@ exports.handleSocialLogin = async ({
 
           if (
             picture &&
-            existingByEmail.profile_pic === DEFAULT_PROFILE_IMAGE
+            !isCloudinaryUrl(
+              existingByEmail.profile_pic || DEFAULT_PROFILE_IMAGE
+            )
           ) {
-            await updateUserPicture(existingByEmail.id, picture);
+            finalProfilePic = await uploadFromUrl(
+              picture.replace(/=s\d+-c$/, "")
+            );
+
+            await updateUserPicture(existingByEmail.id, finalProfilePic);
           }
 
           const User = await findUserById(existingByEmail.id);
@@ -470,3 +494,24 @@ exports.handleSocialLogin = async ({
     provider: user.provider,
   };
 };
+
+exports.updateProfilePic = async (userId, pictureUrl) => {
+  try {
+    const user = await findUserById(userId);
+    if (!user) {
+      throw { status: 404, message: "User not found" };
+    }
+
+    await updateUserPicture(userId, pictureUrl);
+    
+    return {
+      success: true,
+      profilePic: pictureUrl,
+      message: "Profile picture updated successfully",
+    };
+  } catch (err) {
+    console.error("Update profile pic error:", err);
+    throw err.customMessage ? err : { message: "Failed to update profile picture" };
+  }
+};
+

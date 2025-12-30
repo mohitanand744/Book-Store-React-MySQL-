@@ -16,6 +16,7 @@ import {
 import { CopyIcon } from "../components/SVGs/SVGs";
 import toast from "react-hot-toast";
 import Banners from "../components/Banners/Banners";
+import { useNavigate } from "react-router-dom";
 
 const orders = [
   {
@@ -274,7 +275,7 @@ const statusConfig = {
 
 const OrdersPage = () => {
   const [expandedOrder, setExpandedOrder] = useState(null);
-
+  const navigate = useNavigate();
   const toggleOrder = (orderId) => {
     setExpandedOrder(expandedOrder === orderId ? null : orderId);
   };
@@ -297,7 +298,7 @@ const OrdersPage = () => {
                 exit={{ opacity: 0, y: -10 }}
                 whileHover={{ scale: 1.02 }}
                 transition={{ duration: 0.3, delay: order.id * 0.1 }}
-                className="bg-[url('https://img.freepik.com/premium-photo/close-up-light-cream-paper-texture-cardboard-background-old-paper-texture-aesthetic-creative-design_364465-127.jpg')]  bg-no-repeat bg-bottom bg-cover rounded-2xl"
+                className="bg-[url('https://img.freepik.com/premium-photo/close-up-light-cream-paper-texture-cardboard-background-old-paper-texture-aesthetic-creative-design_364465-127.jpg')] bg-no-repeat bg-bottom bg-cover rounded-2xl"
               >
                 {/* Order Summary (Clickable Header) */}
                 <div
@@ -481,6 +482,7 @@ const OrdersPage = () => {
                               initial={{ opacity: 0 }}
                               animate={{ opacity: 1 }}
                               transition={{ delay: 0.2 }}
+                             
                               className="p-4 flex flex-col sm:flex-row gap-4 border border-[#D3BD9D]/30 rounded-lg bg-[#FFE6C1]/10"
                             >
                               <img
@@ -518,9 +520,15 @@ const OrdersPage = () => {
                                       </span>
                                     </span>
                                   </div>
-                                  {item.trackingNumber && (
-                                    <button className="px-3 py-1 text-xs bg-[#D3BD9D] hover:bg-[#5C4C49] text-[#5C4C49] hover:text-white rounded-full transition-colors">
+                                  {item.trackingNumber ? (
+                                    <button 
+                                     onClick={() => navigate(`/nextChapter/tracking/${order.id}/${item.id}`)}
+                                    className="px-3 py-1 text-xs bg-[#D3BD9D] hover:bg-[#5C4C49] text-[#5C4C49] hover:text-white rounded-full transition-colors">
                                       Track Package
+                                    </button>
+                                  ) : (
+                                    <button className="px-3 py-1 text-xs bg-[#D3BD9D] hover:bg-[#5C4C49] text-[#5C4C49] hover:text-white rounded-full transition-colors">
+                                      Not Shipped
                                     </button>
                                   )}
                                 </div>

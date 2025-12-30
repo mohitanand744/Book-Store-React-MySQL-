@@ -52,6 +52,18 @@ export const resetPassword = async (
 };
 
 export const getUserDetails = async () => {
-  const response = await axiosInstance.get("/auth/me", { withCredentials: true });
+  const response = await axiosInstance.get("/auth/me", {
+    withCredentials: true,
+  });
+  return response.data;
+};
+
+export const uploadProfilePic = async (formData) => {
+  const response = await axiosInstance.post("/auth/profile-pic", formData, {
+    withCredentials: true,
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
   return response.data;
 };

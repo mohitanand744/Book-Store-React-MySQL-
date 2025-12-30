@@ -1,4 +1,4 @@
-const { images } = require("../Config/cloudinary");
+const { images } = require("../Config/cloudinaryUrls");
 const { RESET_TOKEN_EXPIRES_IN } = require("../Config/constants");
 
 exports.getEmailTemplate = (options) => {

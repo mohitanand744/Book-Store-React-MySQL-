@@ -25,7 +25,7 @@ function errorResponse(
   error = null,
   redirectUrl = null
 ) {
-  console.log(`Error: ${error}` || message || `${statusCode} Error`);
+  console.log(`Error Details: ${error}` || message || `${statusCode} Error`);
 
   if (redirectUrl) {
     return res.redirect(redirectUrl);

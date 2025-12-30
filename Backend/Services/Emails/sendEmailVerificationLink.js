@@ -12,24 +12,31 @@ exports.sendEmailVerificationLink = async (
   emailVerificationLink,
   name
 ) => {
-  const subject = "Welcome to Our Website - Verify Your Email";
+  try {
+    const APP_NAME = "NextChapter";
 
-  const text = getPlainTextTemplate({
-    mainMessage: "Reset your NextChapter password using the link below.",
-    buttonLink: emailVerificationLink,
-    expiryMinutes: EMAIL_VERIFICATION_TOKEN_EXPIRES_IN,
-  });
+    const subject = `Welcome to ${APP_NAME} - Verify Your Email`;
 
-  const html = getEmailTemplate({
-    title: `Welcome to Our Website - ${name}`,
-    mainMessage:
-      "Thank you for signing up. We're excited to have you on board.To get started, please verify your email address by clicking the link below:",
-    buttonText: "Verify Email Address",
-    buttonLink: emailVerificationLink,
-    secondaryMessage:
-      "If you didn't create an account, please ignore this email.",
-    expiryMinutes: EMAIL_VERIFICATION_TOKEN_EXPIRES_IN,
-  });
+    const text = getPlainTextTemplate({
+      mainMessage: "Verify your email address using the link below.",
+      buttonLink: emailVerificationLink,
+      expiryMinutes: EMAIL_VERIFICATION_TOKEN_EXPIRES_IN,
+    });
 
-  await sendEmail({ to: email, subject, html, text });
+    const html = getEmailTemplate({
+      title: `Welcome to ${APP_NAME}, ${name}`,
+      mainMessage:
+        "Thank you for signing up! To get started, please verify your email address by clicking the button below.",
+      buttonText: "Verify Email Address",
+      buttonLink: emailVerificationLink,
+      secondaryMessage:
+        "If you didn’t create an account, you can safely ignore this email.",
+      expiryMinutes: EMAIL_VERIFICATION_TOKEN_EXPIRES_IN,
+    });
+
+    await sendEmail({ to: email, subject, html, text });
+  } catch (error) {
+    console.error("Failed to send email verification link:", error);
+    throw error;
+  }
 };

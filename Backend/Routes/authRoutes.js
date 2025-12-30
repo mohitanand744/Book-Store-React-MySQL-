@@ -1,4 +1,6 @@
 const express = require("express");
+
+const upload = require("../Middleware/multer");
 const {
   signup,
   login,
@@ -10,6 +12,7 @@ const {
   getGoogleLoginPage,
   getGoogleCallBack,
   logout,
+  uploadProfilePic,
 } = require("../Controllers/auth.controllers");
 const {
   signupValidation,
@@ -25,6 +28,8 @@ const router = express.Router();
 router.post("/register", signupValidation, signup);
 router.post("/login", loginValidation, login);
 router.post("/logout", verifyToken, logout);
+
+router.post("/profile-pic", verifyToken, upload.single("profilePic"), uploadProfilePic);
 
 router.route("/google").get(getGoogleLoginPage);
 router.route("/google/callback").get(getGoogleCallBack);

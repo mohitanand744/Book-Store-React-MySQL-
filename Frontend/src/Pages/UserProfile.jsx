@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { MdOutlineMail } from "react-icons/md";
@@ -88,6 +88,8 @@ const mockUser = {
   ],
 };
 
+import { uploadProfilePic as uploadProfilePicApi } from "../utils/apis/authApi";
+
 const UserProfile = () => {
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [editData, setEditData] = useState({ ...mockUser });
@@ -97,11 +99,62 @@ const UserProfile = () => {
   const [user, setUser] = useState(userData);
   const [showAddressModal, setShowAddressModal] = useState(false);
 
+  const fileInputRef = useRef(null);
+  const [preview, setPreview] = useState(user?.profilePic);
+
+  const uploadProfilePic = async (file) => {
+    const formData = new FormData();
+    formData.append("profilePic", file);
+
+    try {
+      const response = await uploadProfilePicApi(formData);
+      if (response.success) {
+        toast.success(response.message || "Profile picture uploaded");
+        setPreview(response.profilePic);
+        setUser((prev) => ({ ...prev, profilePic: response.profilePic }));
+        await getUserUpdatedDetails();
+      } else {
+        toast.error(response.message || "Failed to upload profile picture");
+        setPreview(user.profilePic);
+      }
+    } catch (error) {
+      console.error("Upload error:", error);
+      toast.error(
+        error.response?.data?.message || "Failed to upload profile picture"
+      );
+      setPreview(user.profilePic);
+    }
+  };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      alert("Please upload an image");
+      return;
+    }
+
+    if (file.size > 2 * 1024 * 1024) {
+      alert("Image size must be under 2MB");
+      return;
+    }
+
+    const objectUrl = URL.createObjectURL(file);
+    setPreview(objectUrl);
+
+    uploadProfilePic(file);
+  };
+
   console.log(userData);
 
   useEffect(() => {
     if (userData) {
       setUser(userData);
+
+      if (userData.profilePic) {
+        setPreview(userData.profilePic);
+      }
     }
   }, [userData]);
 
@@ -298,7 +351,7 @@ const UserProfile = () => {
                 <path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
               </svg>
             </div>
-            <div className="flex justify-center mt-[-4.8rem] ">
+            <div className="flex relative justify-center mt-[-4.8rem] ">
               <motion.div
                 initial={{ scale: 0.95 }}
                 animate={{ scale: 1 }}
@@ -306,9 +359,24 @@ const UserProfile = () => {
                 className="relative w-32 h-32 rounded-full bg-[#5C4C49]"
               >
                 <img
-                  src={user?.profilePic}
+                  src={preview}
                   alt="Profile"
                   className="object-cover w-full h-full border-4 border-white rounded-full shadow-lg"
+                />
+
+                <img
+                  onClick={() => fileInputRef.current.click()}
+                  className="absolute bottom-0 w-12 h-12 rounded-full cursor-pointer active:scale-75 -right-1"
+                  src="/images/camera.png"
+                  alt="Upload"
+                />
+
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  hidden
+                  onChange={(e) => handleFileChange(e)}
                 />
               </motion.div>
             </div>

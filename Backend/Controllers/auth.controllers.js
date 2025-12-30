@@ -31,7 +31,7 @@ const signup = async (req, res, next) => {
     }
 
     const userData = req.body;
-    
+
     const result = await registerUser(userData, res);
 
     if (result?.success === false) {
@@ -256,10 +256,6 @@ const getGoogleCallBack = async (req, res, next) => {
     picture,
   } = claims;
 
-  const cloudinaryUrl = await uploadFromUrl(picture.replace(/=s\d+-c$/, ""));
-
-  console.log("Cloudinary URL", cloudinaryUrl);
-
   try {
     const result = await handleSocialLogin({
       provider: "google",
@@ -268,7 +264,7 @@ const getGoogleCallBack = async (req, res, next) => {
       emailVerified: !!email_verified,
       firstName: given_name,
       lastName: family_name,
-      picture: cloudinaryUrl,
+      picture,
     });
 
     res.cookie("token", result.token, {
@@ -310,6 +306,29 @@ const getUserProfile = async (req, res, next) => {
   }
 };
 
+const { uploadFromBuffer } = require("../utils/cloudinaryUpload");
+const { updateProfilePic } = require("../Services/authService");
+
+const uploadProfilePic = async (req, res, next) => {
+  try {
+    if (!req.file) {
+      return errorResponse(res, 400, "Please upload an image file");
+    }
+
+    const pictureUrl = await uploadFromBuffer(req.file.buffer);
+    
+    if (!pictureUrl) {
+      return errorResponse(res, 500, "Failed to upload image to cloud storage");
+    }
+
+    const result = await updateProfilePic(req.userId, pictureUrl);
+
+    successResponse(res, 200, result.message, { profilePic: result.profilePic });
+  } catch (error) {
+    handleDbError(error, res, next);
+  }
+};
+
 module.exports = {
   signup,
   login,
@@ -321,4 +340,6 @@ module.exports = {
   getGoogleLoginPage,
   getGoogleCallBack,
   logout,
+  uploadProfilePic,
 };
+

@@ -9,6 +9,12 @@ const transporter = nodemailer.createTransport({
 });
 
 exports.sendEmail = async ({ to, subject, html, text }) => {
+  /*  if (!to || !subject || !html || !text) {
+    console.error("❌ Missing required email parameters.");
+    throw new Error("❌ Missing required email parameters.");
+  } */
+  console.log("SendEmailDetails", to, subject, html, text);
+
   try {
     const info = await transporter.sendMail({
       from: `"NextChapter Support" <${process.env.EMAIL_USER}>`,
@@ -21,6 +27,6 @@ exports.sendEmail = async ({ to, subject, html, text }) => {
     return info;
   } catch (error) {
     console.error("❌ Email sending failed:", error.message);
-    throw new Error("Failed to send email");
+    throw new Error("❌ Email sending failed:", error.message);
   }
 };

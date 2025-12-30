@@ -9,6 +9,7 @@ import Wishlist from "../Pages/Wishlist";
 import CheckoutPage from "../Pages/CheckoutPage";
 import { FallbackRoute } from "./FallbackRoute";
 import ProtectedRoute from "./ProtectedRoute";
+import TrackingPage from "../Pages/TrackingPage";
 
 // Lazy-loaded components
 const Login = lazy(() => import("../components/Auth/Pages/Login"));
@@ -96,6 +97,7 @@ const Router = () => {
                 </ProtectedRoute>
               }
             />
+             <Route path="tracking/:orderId/:itemId" element={<TrackingPage />} />
           </Route>
 
           {/* Fallback route */}

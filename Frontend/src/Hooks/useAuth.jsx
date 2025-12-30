@@ -29,9 +29,7 @@ const useAuth = () => {
   };
 
   const getUserUpdatedDetails = async () => {
-    if (auth.token) {
-      dispatch(validateToken());
-    }
+    dispatch(validateToken());
   };
 
   return {
