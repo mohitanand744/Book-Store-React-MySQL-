@@ -2,9 +2,7 @@
 import { useEffect } from "react";
 import axios from "axios";
 import { useLoader } from "../Hooks/useLoader";
-import { useNavigate } from "react-router-dom";
-import toast from "react-hot-toast";
-import useAuth from "../Hooks/useAuth";
+import attachInterceptors from "../Helper/attachInterceptors";
 
 const BASE_URL = "http://localhost:3001/api/v1";
 
@@ -24,69 +22,19 @@ const axiosInstanceFormData = axios.create({
 
 export const useAxiosLoader = () => {
   const { showLoader, hideLoader, updateProgress } = useLoader();
-  const { logoutStatusSuccess, isAuthenticated } = useAuth();
-  const navigate = useNavigate();
 
   useEffect(() => {
-    // Request interceptor
-    const requestInterceptor = axiosInstance.interceptors.request.use(
-      (config) => {
-        console.log("Loader Start");
-        showLoader();
+    attachInterceptors(axiosInstance, {
+      showLoader,
+      hideLoader,
+      updateProgress,
+    });
 
-        if (config.requiresAuth) config.withCredentials = true;
-
-        // Track progress if available
-        config.onUploadProgress = (progressEvent) => {
-          const percentCompleted = Math.round(
-            (progressEvent.loaded * 100) / progressEvent.total
-          );
-          updateProgress(percentCompleted);
-        };
-
-        config.onDownloadProgress = (progressEvent) => {
-          const percentCompleted = Math.round(
-            (progressEvent.loaded * 100) / progressEvent.total
-          );
-          updateProgress(percentCompleted);
-        };
-
-        return config;
-      },
-      (error) => {
-        hideLoader();
-        return Promise.reject(error);
-      }
-    );
-
-    // Response interceptor
-    const responseInterceptor = axiosInstance.interceptors.response.use(
-      (response) => {
-        hideLoader();
-        return response;
-      },
-      (error) => {
-        hideLoader();
-
-        if (error.response?.status === 401) {
-          const err = error.response?.data?.error;
-
-          console.log("ERR-->", err);
-
-          if (err?.name === "TokenExpiredError") {
-            toast.error("Session expired. Please login again.");
-          }
-        }
-
-        return Promise.reject(error);
-      }
-    );
-
-    // Cleanup interceptors on unmount
-    return () => {
-      axiosInstance.interceptors.request.eject(requestInterceptor);
-      axiosInstance.interceptors.response.eject(responseInterceptor);
-    };
+    attachInterceptors(axiosInstanceFormData, {
+      showLoader,
+      hideLoader,
+      updateProgress,
+    });
   }, []);
 };
 

@@ -1,4 +1,4 @@
-import { axiosInstance } from "../../services/api";
+import { axiosInstance, axiosInstanceFormData } from "../../services/api";
 
 export const login = async (credentials) => {
   const response = await axiosInstance.post("/auth/login", credentials, {
@@ -59,11 +59,12 @@ export const getUserDetails = async () => {
 };
 
 export const uploadProfilePic = async (formData) => {
-  const response = await axiosInstance.post("/auth/profile-pic", formData, {
-    withCredentials: true,
-    headers: {
-      "Content-Type": "multipart/form-data",
-    },
-  });
+  const response = await axiosInstanceFormData.post(
+    "/auth/profile-pic",
+    formData,
+    {
+      withCredentials: true,
+    }
+  );
   return response.data;
 };

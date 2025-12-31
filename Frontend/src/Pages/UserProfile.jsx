@@ -89,33 +89,33 @@ const mockUser = {
 };
 
 import { uploadProfilePic as uploadProfilePicApi } from "../utils/apis/authApi";
+import { useUser } from "../store/Context/UserContext";
+import Spinner from "../components/Loaders/Spinner";
 
 const UserProfile = () => {
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [editData, setEditData] = useState({ ...mockUser });
   const [activeTab, setActiveTab] = useState("activity");
   const navigate = useNavigate();
-  const { logoutStatusSuccess, userData, getUserUpdatedDetails } = useAuth();
+  const { logoutStatusSuccess, userData, setUpdateUserData } = useAuth();
   const [user, setUser] = useState(userData);
   const [showAddressModal, setShowAddressModal] = useState(false);
 
   const fileInputRef = useRef(null);
-  const [preview, setPreview] = useState(user?.profilePic);
+  const { preview, setPreview, isUploading, setIsUploading } = useUser();
 
   const uploadProfilePic = async (file) => {
+    setIsUploading(true);
     const formData = new FormData();
     formData.append("profilePic", file);
-
     try {
       const response = await uploadProfilePicApi(formData);
       if (response.success) {
         toast.success(response.message || "Profile picture uploaded");
-        setPreview(response.profilePic);
         setUser((prev) => ({ ...prev, profilePic: response.profilePic }));
-        await getUserUpdatedDetails();
-      } else {
-        toast.error(response.message || "Failed to upload profile picture");
-        setPreview(user.profilePic);
+        setUpdateUserData({ ...userData, profilePic: response.profilePic });
+        setPreview(response.data.profilePic);
+        setIsUploading(false);
       }
     } catch (error) {
       console.error("Upload error:", error);
@@ -123,6 +123,7 @@ const UserProfile = () => {
         error.response?.data?.message || "Failed to upload profile picture"
       );
       setPreview(user.profilePic);
+      setIsUploading(false);
     }
   };
 
@@ -131,12 +132,12 @@ const UserProfile = () => {
     if (!file) return;
 
     if (!file.type.startsWith("image/")) {
-      alert("Please upload an image");
+      toast.error("Please upload a valid image file");
       return;
     }
 
     if (file.size > 2 * 1024 * 1024) {
-      alert("Image size must be under 2MB");
+      toast.error("Image size must be under 2MB");
       return;
     }
 
@@ -361,23 +362,29 @@ const UserProfile = () => {
                 <img
                   src={preview}
                   alt="Profile"
-                  className="object-cover w-full h-full border-4 border-white rounded-full shadow-lg"
+                  className="object-cover w-full h-full border-4 border-orange-500 rounded-full shadow-lg"
                 />
 
                 <img
                   onClick={() => fileInputRef.current.click()}
-                  className="absolute bottom-0 w-12 h-12 rounded-full cursor-pointer active:scale-75 -right-1"
+                  className="absolute bottom-0 z-30 w-12 h-12 rounded-full cursor-pointer active:scale-75 -right-1"
                   src="/images/camera.png"
                   alt="Upload"
                 />
 
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  accept="image/*"
-                  hidden
-                  onChange={(e) => handleFileChange(e)}
-                />
+                {isUploading ? (
+                  <div className="absolute inset-0 flex items-center justify-center rounded-full bg-black/40">
+                    <Spinner size={36} />
+                  </div>
+                ) : (
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/*"
+                    hidden
+                    onChange={(e) => handleFileChange(e)}
+                  />
+                )}
               </motion.div>
             </div>
             {/* Profile Content */}

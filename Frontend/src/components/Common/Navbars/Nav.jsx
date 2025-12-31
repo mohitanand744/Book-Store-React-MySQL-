@@ -8,6 +8,8 @@ import Button from "../../Buttons/Button";
 import ShoppingCart from "./ShoppingCarts";
 import MobileMenu from "./MobileMenu";
 import useAuth from "../../../Hooks/useAuth";
+import { useUser } from "../../../store/Context/UserContext";
+import Spinner from "../../Loaders/Spinner";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -16,6 +18,7 @@ const Navbar = () => {
   const [animation, setAnimation] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const { isAuthenticated, userData } = useAuth();
+  const { preview, isUploading, setPreview } = useUser();
   const navigate = useNavigate();
   console.log(isAuthenticated);
 
@@ -35,6 +38,14 @@ const Navbar = () => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, [isFixed]);
+
+  useEffect(() => {
+    if (userData) {
+      if (userData.profilePic) {
+        setPreview(userData.profilePic);
+      }
+    }
+  }, [userData]);
 
   return (
     <nav
@@ -136,12 +147,17 @@ const Navbar = () => {
             {isAuthenticated ? (
               <div className="">
                 <Link to="/nextChapter/user/profile">
-                  <div className="w-12 h-12 cursor-pointer active:scale-75 transition border-2 bg-[#5C4C49] border-orange-500 rounded-full">
+                  <div className="w-12 h-12 relative cursor-pointer active:scale-75 transition border-2 bg-[#5C4C49] border-orange-500 rounded-full">
                     <img
                       className="object-cover w-full h-full rounded-full"
-                      src={userData?.profilePic}
+                      src={preview}
                       alt=""
                     />
+                    {isUploading && (
+                      <div className="absolute inset-0 flex items-center justify-center rounded-full bg-black/40">
+                        <Spinner size={20} />
+                      </div>
+                    )}
                   </div>
                 </Link>
               </div>

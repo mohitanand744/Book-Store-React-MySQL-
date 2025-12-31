@@ -314,16 +314,17 @@ const uploadProfilePic = async (req, res, next) => {
     if (!req.file) {
       return errorResponse(res, 400, "Please upload an image file");
     }
-
     const pictureUrl = await uploadFromBuffer(req.file.buffer);
-    
+
     if (!pictureUrl) {
       return errorResponse(res, 500, "Failed to upload image to cloud storage");
     }
 
     const result = await updateProfilePic(req.userId, pictureUrl);
 
-    successResponse(res, 200, result.message, { profilePic: result.profilePic });
+    successResponse(res, 200, result.message, {
+      profilePic: result.profilePic,
+    });
   } catch (error) {
     handleDbError(error, res, next);
   }
@@ -342,4 +343,3 @@ module.exports = {
   logout,
   uploadProfilePic,
 };
-

@@ -11,11 +11,14 @@ import "swiper/css/pagination";
 import { Provider } from "react-redux";
 import store from "./store/Redux/ConfigureReduxStore.js";
 import { LoaderProvider } from "./store/Context/LoaderProvider.jsx";
+import { UserProvider } from "./store/Context/UserContext.jsx";
 
 createRoot(document.getElementById("root")).render(
   <Provider store={store}>
-    <LoaderProvider>
-      <Router />
-    </LoaderProvider>
+    <UserProvider>
+      <LoaderProvider>
+        <Router />
+      </LoaderProvider>
+    </UserProvider>
   </Provider>
 );
