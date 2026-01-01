@@ -91,8 +91,17 @@ const updateUserProvider = async (userId, provider, providerId) => {
 };
 
 const updateUserPicture = async (userId, picture) => {
+  console.log("Updating Profile Pic: ", picture);
+
   const query = `UPDATE users SET profile_pic = ? WHERE id = ?`;
   await db.query(query, [picture, userId]);
+};
+
+const updateUserPicturePublicId = async (userId, public_id) => {
+  console.log("Updating Profile Pic: ", public_id);
+
+  const query = `UPDATE users SET profile_pic_public_id = ? WHERE id = ?`;
+  await db.query(query, [public_id, userId]);
 };
 
 module.exports = {
@@ -107,4 +116,5 @@ module.exports = {
   findUserByProvider,
   updateUserProvider,
   updateUserPicture,
+  updateUserPicturePublicId,
 };

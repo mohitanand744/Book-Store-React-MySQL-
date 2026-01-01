@@ -16,7 +16,7 @@ export const logout = async () => {
   const response = await axiosInstance.post(
     "/auth/logout",
     {},
-    { requiresAuth: true }
+    { withCredentials: true }
   );
 
   return response.data;
@@ -52,6 +52,8 @@ export const resetPassword = async (
 };
 
 export const getUserDetails = async () => {
+  console.log("llllllllllllllllllllllllll");
+
   const response = await axiosInstance.get("/auth/me", {
     withCredentials: true,
   });

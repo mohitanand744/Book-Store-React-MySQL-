@@ -2,12 +2,18 @@ const cloudinary = require("../Config/cloudinary");
 const streamifier = require("streamifier");
 
 const uploadFromUrl = async (url) => {
+  console.log("Uploading: ", url);
+
   try {
     const result = await cloudinary.uploader.upload(url, {
       folder: "user_profiles",
       resource_type: "image",
     });
-    return result.secure_url;
+
+    return {
+      url: result.secure_url,
+      public_id: result.public_id,
+    };
   } catch (error) {
     console.error("Cloudinary Upload Error:", error);
     return null;
@@ -26,7 +32,10 @@ const uploadFromBuffer = async (buffer) => {
           console.error("Cloudinary Buffer Upload Error:", error);
           reject(error);
         } else {
-          resolve(result.secure_url);
+          resolve({
+            url: result.secure_url,
+            public_id: result.public_id,
+          });
         }
       }
     );

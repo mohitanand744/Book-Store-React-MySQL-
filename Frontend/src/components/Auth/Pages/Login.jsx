@@ -26,7 +26,8 @@ const Login = () => {
   } = useForm();
 
   const navigate = useNavigate();
-  const { loginStatusSuccess, isAuthenticated } = useAuth();
+  const { loginStatusSuccess, getUserUpdatedDetails, isAuthenticated } =
+    useAuth();
   const [showForgot, setShowForgot] = useState(false);
   const [showResetModal, setShowResetModal] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
@@ -133,6 +134,7 @@ const Login = () => {
         const { token, user } = response.data;
 
         loginStatusSuccess(user, token);
+        await getUserUpdatedDetails();
         toast.success("Login successful!");
 
         if (isChecked) {

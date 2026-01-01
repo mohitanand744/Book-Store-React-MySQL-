@@ -12,6 +12,7 @@ const {
   updateUserProvider,
   findUserById,
   updateUserPicture,
+  updateUserPicturePublicId,
 } = require("../Models/userModel");
 const { formatUser } = require("../utils/formatter");
 const { sendPasswordResetEmail } = require("./Emails/sendResetLink");
@@ -342,15 +343,13 @@ exports.handleSocialLogin = async ({
   console.log("existingByProvider Profile", picture);
 
   if (existingByProvider) {
-    let finalProfilePic = picture;
+    if (picture && !isCloudinaryUrl(existingByProvider.profile_pic)) {
+      const { url = picture, public_id } = await uploadFromUrl(
+        picture.replace(/=s\d+-c$/, "")
+      );
 
-    if (
-      picture &&
-      !isCloudinaryUrl(existingByProvider.profile_pic || DEFAULT_PROFILE_IMAGE)
-    ) {
-      finalProfilePic = await uploadFromUrl(picture.replace(/=s\d+-c$/, ""));
-
-      await updateUserPicture(existingByProvider.id, finalProfilePic);
+      await updateUserPicture(existingByProvider.id, url);
+      await updateUserPicturePublicId(existingByProvider.id, public_id);
     }
 
     const userDetails = formatUser([existingByProvider]);
@@ -379,17 +378,13 @@ exports.handleSocialLogin = async ({
         if (emailVerified) {
           await updateUserProvider(existingByEmail.id, provider, providerId);
 
-          if (
-            picture &&
-            !isCloudinaryUrl(
-              existingByEmail.profile_pic || DEFAULT_PROFILE_IMAGE
-            )
-          ) {
-            finalProfilePic = await uploadFromUrl(
+          if (picture && !isCloudinaryUrl(existingByEmail.profile_pic)) {
+            const { url = picture, public_id } = await uploadFromUrl(
               picture.replace(/=s\d+-c$/, "")
             );
 
-            await updateUserPicture(existingByEmail.id, finalProfilePic);
+            await updateUserPicture(existingByEmail.id, url);
+            await updateUserPicturePublicId(existingByEmail.id, public_id);
           }
 
           const User = await findUserById(existingByEmail.id);
@@ -421,17 +416,13 @@ exports.handleSocialLogin = async ({
         if (emailVerified) {
           await updateUserProvider(existingByEmail.id, provider, providerId);
 
-          if (
-            picture &&
-            !isCloudinaryUrl(
-              existingByEmail.profile_pic || DEFAULT_PROFILE_IMAGE
-            )
-          ) {
-            finalProfilePic = await uploadFromUrl(
+          if (picture && !isCloudinaryUrl(existingByEmail.profile_pic)) {
+            const { url = picture, public_id } = await uploadFromUrl(
               picture.replace(/=s\d+-c$/, "")
             );
 
-            await updateUserPicture(existingByEmail.id, finalProfilePic);
+            await updateUserPicture(existingByEmail.id, url);
+            await updateUserPicturePublicId(existingByEmail.id, public_id);
           }
 
           const User = await findUserById(existingByEmail.id);
@@ -471,11 +462,17 @@ exports.handleSocialLogin = async ({
     provider,
     providerId,
     emailVerified: emailVerified ? 1 : 0,
-    picture,
   });
 
   const newUserId = newUserResult.insertId;
   const newUser = await findUserById(newUserId);
+
+  const { url = picture, public_id } = await uploadFromUrl(
+    picture.replace(/=s\d+-c$/, "")
+  );
+
+  await updateUserPicture(newUserId, url);
+  await updateUserPicturePublicId(newUserId, public_id);
 
   const token = generateJWT(
     { id: newUser.id, email: newUser.email },
@@ -503,7 +500,7 @@ exports.updateProfilePic = async (userId, pictureUrl) => {
     }
 
     await updateUserPicture(userId, pictureUrl);
-    
+
     return {
       success: true,
       profilePic: pictureUrl,
@@ -511,7 +508,8 @@ exports.updateProfilePic = async (userId, pictureUrl) => {
     };
   } catch (err) {
     console.error("Update profile pic error:", err);
-    throw err.customMessage ? err : { message: "Failed to update profile picture" };
+    throw err.customMessage
+      ? err
+      : { message: "Failed to update profile picture" };
   }
 };
-

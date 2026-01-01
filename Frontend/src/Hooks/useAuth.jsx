@@ -15,6 +15,8 @@ const useAuth = () => {
   const navigate = useNavigate();
 
   const loginStatusSuccess = (userData, token) => {
+    console.log("tttttttttttt", token);
+
     dispatch(loginSuccess({ user: userData, token }));
   };
 
@@ -29,6 +31,8 @@ const useAuth = () => {
   };
 
   const getUserUpdatedDetails = async () => {
+    console.log("nnnnnnnnnnnnnnnnnnnnnnnnn");
+
     dispatch(validateToken());
   };
 

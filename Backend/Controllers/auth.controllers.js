@@ -10,7 +10,11 @@ const {
 } = require("../Services/authService");
 const { successResponse, errorResponse } = require("../utils/response");
 const handleDbError = require("../utils/handleDbError");
-const { findUserById } = require("../Models/userModel");
+const {
+  findUserById,
+  updateUserPicturePublicId,
+  findUserByEmail,
+} = require("../Models/userModel");
 const {
   generateState,
   generateCodeVerifier,
@@ -20,6 +24,9 @@ const { OAUTH_EXCHANGE_EXPIRY_MS } = require("../Config/constants");
 const google = require("../Config/oAuth/google");
 const { formatUser } = require("../utils/formatter");
 const { uploadFromUrl } = require("../utils/cloudinaryUpload");
+const { uploadFromBuffer } = require("../utils/cloudinaryUpload");
+const { updateProfilePic } = require("../Services/authService");
+const { deleteFromCloudinary } = require("../Helper/methods");
 
 // SIGNUP
 const signup = async (req, res, next) => {
@@ -306,21 +313,34 @@ const getUserProfile = async (req, res, next) => {
   }
 };
 
-const { uploadFromBuffer } = require("../utils/cloudinaryUpload");
-const { updateProfilePic } = require("../Services/authService");
-
 const uploadProfilePic = async (req, res, next) => {
   try {
-    if (!req.file) {
+    const file = req.file;
+    const userId = req.userId;
+
+    if (!file) {
       return errorResponse(res, 400, "Please upload an image file");
     }
-    const pictureUrl = await uploadFromBuffer(req.file.buffer);
+
+    const user = await findUserById(userId);
+
+    if (!user) {
+      return errorResponse(res, 404, "User not found");
+    }
+
+    if (user?.profile_pic_public_id) {
+      await deleteFromCloudinary(user?.profile_pic_public_id);
+    }
+
+    const { url: pictureUrl, public_id } = await uploadFromBuffer(file.buffer);
 
     if (!pictureUrl) {
       return errorResponse(res, 500, "Failed to upload image to cloud storage");
     }
 
-    const result = await updateProfilePic(req.userId, pictureUrl);
+    const result = await updateProfilePic(user.id, pictureUrl);
+
+    await updateUserPicturePublicId(user.id, public_id);
 
     successResponse(res, 200, result.message, {
       profilePic: result.profilePic,

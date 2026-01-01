@@ -7,8 +7,6 @@ const attachInterceptors = (
       console.log("Loader Start");
       showLoader();
 
-      if (config.requiresAuth) config.withCredentials = true;
-
       // Track progress if available
       config.onUploadProgress = (progressEvent) => {
         const percentCompleted = Math.round(

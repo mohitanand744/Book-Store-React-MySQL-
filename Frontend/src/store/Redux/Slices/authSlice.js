@@ -7,7 +7,6 @@ export const validateToken = createAsyncThunk(
   async (_, { getState, rejectWithValue }) => {
     const { logoutReason } = getState().auth;
 
-    // Prevent repeat calls if already logged out due to expired token
     if (logoutReason === "tokenExpired") return rejectWithValue("No token");
 
     try {
@@ -25,8 +24,7 @@ export const logoutThunk = createAsyncThunk(
   async (logoutReason, { dispatch, rejectWithValue }) => {
     try {
       await logout();
-      dispatch(logoutSuccess(logoutReason));
-      return true;
+      return logoutReason;
     } catch (error) {
       return rejectWithValue(error.response?.data || "Logout failed");
     }
@@ -37,6 +35,7 @@ export const logoutThunk = createAsyncThunk(
 const getInitialState = () => {
   return {
     userData: null,
+    token: null,
     isAuthenticated: false,
     loading: true,
     error: null,
@@ -52,6 +51,7 @@ const authSlice = createSlice({
   reducers: {
     loginSuccess: (state, action) => {
       state.userData = action.payload.user;
+      state.token = action.payload.token;
       state.isAuthenticated = true;
       state.loading = false;
       state.error = null;
@@ -86,33 +86,34 @@ const authSlice = createSlice({
         state.isAuthenticating = true;
         state.error = null;
       })
-
       .addCase(validateToken.fulfilled, (state, action) => {
         state.isAuthenticating = false;
         state.isAuthenticated = true;
         state.userData = action.payload;
         state.error = null;
       })
-
       .addCase(validateToken.rejected, (state, action) => {
         state.isAuthenticating = false;
-        state.isAuthenticated = false;
-        state.userData = null;
-        state.logoutReason = "tokenExpired";
+
+        if (action.payload === "Token invalid") {
+          state.isAuthenticated = false;
+          state.userData = null;
+          state.logoutReason = "tokenExpired";
+        }
+
         state.error = action.payload;
       })
-
       .addCase(logoutThunk.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-
-      .addCase(logoutThunk.fulfilled, (state) => {
-        state.loading = false;
-        state.isAuthenticated = false;
+      .addCase(logoutThunk.fulfilled, (state, action) => {
         state.userData = null;
+        state.token = null;
+        state.isAuthenticated = false;
+        state.loading = false;
+        state.logoutReason = action.payload || null;
       })
-
       .addCase(logoutThunk.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
