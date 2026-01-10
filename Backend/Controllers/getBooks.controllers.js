@@ -15,6 +15,7 @@ const { errorResponse, successResponse } = require("../utils/response");
 const handleError = (res, err) => {
   if (err.code === "ER_DUP_ENTRY")
     return errorResponse(res, 400, "Duplicate entry", err.sqlMessage);
+
   return errorResponse(res, 500, "Internal Server Error", err.message);
 };
 const notFound = (res, msg = "Book not found") => errorResponse(res, 404, msg);

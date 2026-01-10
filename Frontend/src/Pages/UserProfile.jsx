@@ -15,10 +15,16 @@ import { mockBooks } from "./../../Data/mockData";
 import ScrollBooks from "../components/ScrollingContainer/ScrollBooks";
 import toast from "react-hot-toast";
 import Button from "../components/Buttons/Button";
-import { CopyIcon, NoRecentOrders } from "../components/SVGs/SVGs";
+import {
+  BagSvg,
+  CalendarSvg,
+  CopyIcon,
+  DecorativeHeader,
+  EyesSvg,
+  HearthSvg,
+  PencilSvg,
+} from "../components/SVGs/SVGs";
 import useAuth from "../Hooks/useAuth";
-import Input from "../components/Inputs/Input";
-import CartItemsNoData from "../components/EmptyData/CartItemsNoData";
 import NoData from "../components/EmptyData/noData";
 import AddressModal from "../components/Modal/AddressModal";
 
@@ -207,25 +213,14 @@ const UserProfile = () => {
           >
             My Profile
           </motion.h1>
-          <div className="flex flex-wrap justify-center gap-3 sm:justify-start md:space-x-3">
+          <div className="flex flex-wrap justify-center gap-3 sm:justify-start">
             <motion.div
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={navigateToOrders}
             >
-              <Button className="flex items-center text-nowrap px-4 py-2 bg-[#5C4C49] text-[#E8D9C5] rounded-lg shadow-md">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="w-5 h-5 mr-2"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M10 2a4 4 0 00-4 4v1H5a1 1 0 00-.994.89l-1 9A1 1 0 004 18h12a1 1 0 00.994-1.11l-1-9A1 1 0 0015 7h-1V6a4 4 0 00-4-4zm2 5V6a2 2 0 10-4 0v1h4zm-6 3a1 1 0 112 0 1 1 0 01-2 0zm7-1a1 1 0 100 2 1 1 0 000-2z"
-                    clipRule="evenodd"
-                  />
-                </svg>
+              <Button className="flex items-center gap-1 text-nowrap px-4 py-2 bg-[#5C4C49] text-[#E8D9C5] rounded-lg shadow-md">
+                <BagSvg />
                 My Orders
               </Button>
             </motion.div>
@@ -234,27 +229,11 @@ const UserProfile = () => {
               whileTap={{ scale: 0.95 }}
               onClick={navigateToWishlist}
             >
-              <Button className="flex items-center text-nowrap px-4 py-2 bg-[#D3BD9D] text-[#5C4C49] rounded-lg shadow-md">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="w-5 h-5 mr-2"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-                Wishlist
+              <Button className="flex items-center gap-1 text-nowrap px-4 py-2 bg-[#D3BD9D] text-[#5C4C49] rounded-lg shadow-md">
+                <HearthSvg />
+                My Wishlist
               </Button>
             </motion.div>
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={handleEdit}
-            ></motion.div>
           </div>
         </div>
 
@@ -268,90 +247,8 @@ const UserProfile = () => {
             className="w-full lg:w-1/3 bg-gradient-to-br from-[#E8D9C5] to-[#D3BD9D] rounded-2xl shadow-xl overflow-hidden h-fit border border-[#5C4C49]/10"
           >
             {/* Profile Header with Decorative Elements */}
-            <div className="relative h-28 bg-[#5C4C49] rounded-t-2xl overflow-hidden">
-              {/* Subtle SVG Pattern Background */}
-              <svg
-                className="absolute inset-0 w-full h-full opacity-10"
-                preserveAspectRatio="none"
-                viewBox="0 0 100 100"
-              >
-                <pattern
-                  id="pattern-circles"
-                  x="0"
-                  y="0"
-                  width="20"
-                  height="20"
-                  patternUnits="userSpaceOnUse"
-                >
-                  <circle cx="10" cy="10" r="1.5" fill="#E8D9C5" />
-                </pattern>
-                <rect
-                  x="0"
-                  y="0"
-                  width="100"
-                  height="100"
-                  fill="url(#pattern-circles)"
-                />
-              </svg>
+            <DecorativeHeader />
 
-              {/* Wavy SVG Divider */}
-              <svg
-                className="absolute bottom-0 w-full"
-                viewBox="0 0 1200 120"
-                preserveAspectRatio="none"
-              >
-                <path
-                  d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z"
-                  opacity=".25"
-                  fill="#E8D9C5"
-                />
-                <path
-                  d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z"
-                  opacity=".5"
-                  fill="#E8D9C5"
-                />
-                <path
-                  d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z"
-                  fill="#E8D9C5"
-                />
-              </svg>
-
-              {/* Decorative Corner Elements */}
-              <svg
-                className="absolute top-2 left-2 w-8 h-8 text-[#E8D9C5]/20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1"
-              >
-                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
-              </svg>
-              <svg
-                className="absolute top-2 right-2 w-8 h-8 text-[#E8D9C5]/20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1"
-              >
-                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
-              </svg>
-
-              {/* Floating Book Icons */}
-              <svg
-                className="absolute top-1/4 left-1/4 w-6 h-6 text-[#E8D9C5]/30 animate-float"
-                viewBox="0 0 24 24"
-                fill="currentColor"
-              >
-                <path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-              </svg>
-              <svg
-                className="absolute top-1/3 right-1/4 w-5 h-5 text-[#E8D9C5]/40 animate-float animation-delay-100"
-                viewBox="0 0 24 24"
-                fill="currentColor"
-              >
-                <path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-              </svg>
-            </div>
             <div className="flex relative justify-center mt-[-4.8rem] ">
               <motion.div
                 initial={{ scale: 0.95 }}
@@ -367,7 +264,7 @@ const UserProfile = () => {
 
                 <img
                   onClick={() => fileInputRef.current.click()}
-                  className="absolute bottom-0 z-30 w-12 h-12 rounded-full cursor-pointer active:scale-75 -right-1"
+                  className="absolute bottom-0 bg-[#FFE6C1] border-2 border-[#5C4C49] p-[0.7px] z-30 w-8 h-8 rounded-full cursor-pointer duration-200 active:scale-75 top-[5rem]  -right-[0.5px]"
                   src="/images/camera.png"
                   alt="Upload"
                 />
@@ -388,7 +285,7 @@ const UserProfile = () => {
               </motion.div>
             </div>
             {/* Profile Content */}
-            <div className="px-6 pt-6 pb-6">
+            <div className="px-6 pt-2 pb-6">
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -399,21 +296,8 @@ const UserProfile = () => {
                   {user?.name}
                 </h2>
                 <p className="text-[#5C4C49]/80 flex items-center justify-center gap-1 mt-1">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="w-4 h-4"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                    />
-                  </svg>
-                  Member since {user?.joinDate}
+                  <CalendarSvg />
+                  <b>Member since</b> {user?.joinDate}
                 </p>
               </motion.div>
 
@@ -448,30 +332,6 @@ const UserProfile = () => {
                 />
               </div>
 
-              {/* Social/Stats */}
-              {/*   <div className="mt-8 pt-5 border-t border-[#5C4C49]/20">
-                <div className="flex justify-around">
-                  <StatPill
-                    count={user?.orders}
-                    label="Orders"
-                    icon="🛒"
-                    color="text-[#5C4C49]"
-                  />
-                  <StatPill
-                    count={user?.wishlist}
-                    label="Wishlist"
-                    icon="❤️"
-                    color="text-[#D3BD9D]"
-                  />
-                  <StatPill
-                    count={user?.favoriteGenres.length}
-                    label="Genres"
-                    icon="📖"
-                    color="text-[#5C4C49]"
-                  />
-                </div>
-              </div> */}
-
               <div className="flex items-center w-full gap-4 mt-4">
                 <motion.div
                   initial={{ opacity: 0 }}
@@ -485,14 +345,7 @@ const UserProfile = () => {
                     className="flex items-center w-full justify-center px-4 text-nowrap py-2 bg-[#5C4C49] text-[#E8D9C5] rounded-lg shadow-md"
                     type="button"
                   >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="w-5 h-5 mr-2"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                    >
-                      <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
-                    </svg>
+                    <PencilSvg />
                     Edit Profile
                   </Button>
                 </motion.div>
@@ -506,7 +359,7 @@ const UserProfile = () => {
                 >
                   <Button
                     onClick={handleLogout}
-                    className="flex items-center gap-1 w-full justify-center px-4 text-nowrap py-2 bg-[#7e362a] text-[#E8D9C5] rounded-lg shadow-md"
+                    className="flex items-center gap-1 w-full justify-center px-4 text-nowrap py-2 hover:bg-[#7e362a]/90 bg-[#7e362a] text-[#E8D9C5] rounded-lg shadow-md"
                     type="button"
                   >
                     <RiLogoutCircleLine />
@@ -531,22 +384,7 @@ const UserProfile = () => {
                 color="bg-[#5C4C49]"
                 text="#E8D9C5"
                 delay={0.9}
-                icon={
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="w-6 h-6"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
-                    />
-                  </svg>
-                }
+                icon={<BagSvg />}
                 onClick={navigateToOrders}
               />
               <StatCard
@@ -555,22 +393,7 @@ const UserProfile = () => {
                 color="bg-[#D3BD9D]"
                 text="#5C4C49"
                 delay={1.0}
-                icon={
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="w-6 h-6"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-                    />
-                  </svg>
-                }
+                icon={<HearthSvg />}
                 onClick={navigateToWishlist}
               />
             </motion.div>
@@ -699,7 +522,7 @@ const UserProfile = () => {
               {activeTab === "activity" && (
                 <>
                   <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                    {user?.recentOrders?.slice(0, 3).map((order, index) => (
+                    {mockUser?.recentOrders?.slice(0, 3).map((order, index) => (
                       <ActivityItem
                         key={order.id}
                         title={`Order ${order.status}`}
@@ -712,7 +535,7 @@ const UserProfile = () => {
                     ))}
                   </div>
 
-                  {user?.recentOrders?.length === 0 && (
+                  {mockUser?.recentOrders?.length === 0 && (
                     <NoData
                       title="No Activity"
                       message="You have not made any recent activity."
@@ -728,140 +551,21 @@ const UserProfile = () => {
 
               {activeTab === "orders" && (
                 <>
-                  <div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
-                    {user?.recentOrders.map((order, index) => (
-                      <motion.div
+                  <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                    {mockUser?.recentOrders.map((order, index) => (
+                      <ActivityItem
                         key={order.id}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{
-                          delay: index * 0.1,
-                          type: "spring",
-                          stiffness: 300,
-                        }}
-                        whileHover={{ y: -3 }}
-                        className="bg-white rounded-xl shadow-sm border border-[#E8D9C5] overflow-hidden transition-all duration-200 hover:shadow-md"
-                        onClick={() =>
-                          navigate(`/nextChapter/order/${order.id}`)
-                        }
-                      >
-                        <div className="flex flex-col md:flex-row">
-                          {/* Book Cover */}
-                          <div className="flex items-center justify-center w-full p-8 border-r rounded-2xl md:w-36">
-                            <img
-                              src={
-                                order.imageUrl ||
-                                "https://via.placeholder.com/100x150?text=Book+Cover"
-                              }
-                              alt={order.title}
-                              className="object-contain h-[7rem]"
-                            />
-                          </div>
-
-                          {/* Order Details */}
-                          <div className="flex-1 p-4">
-                            <div className="flex flex-col flex-wrap justify-between gap-2 md:flex-row md:items-center">
-                              <div>
-                                <h3 className="text-lg font-semibold text-[#5C4C49]">
-                                  {order.title}
-                                </h3>
-                                <p className="text-sm text-[#5C4C49] opacity-80">
-                                  by {order.author}
-                                </p>
-                              </div>
-                              <div className="flex items-center gap-3">
-                                <span className="text-sm text-[#5C4C49] opacity-70">
-                                  {order.date}
-                                </span>
-                                <span
-                                  className={`px-3 py-1 rounded-full text-xs font-medium ${
-                                    order.status === "Delivered"
-                                      ? "bg-green-100 text-green-800"
-                                      : order.status === "Shipped"
-                                      ? "bg-blue-100 text-blue-800"
-                                      : "bg-yellow-100 text-yellow-800"
-                                  }`}
-                                >
-                                  {order.status}
-                                </span>
-                              </div>
-                            </div>
-
-                            <div className="grid grid-cols-2 gap-4 mt-4 text-sm md:grid-cols-2">
-                              <div>
-                                <p className="text-[#5C4C49] opacity-70">
-                                  Order ID
-                                </p>
-                                <p className="font-medium text-[#5C4C49]">
-                                  {order.id}
-                                </p>
-                              </div>
-                              <div>
-                                <p className="text-[#5C4C49] opacity-70">
-                                  Price
-                                </p>
-                                <p className="font-medium text-[#5C4C49]">
-                                  {order.price || "$19.99"}
-                                </p>
-                              </div>
-                              <div>
-                                <p className="text-[#5C4C49] opacity-70">
-                                  Quantity
-                                </p>
-                                <p className="font-medium text-[#5C4C49]">
-                                  {order.quantity || 1}
-                                </p>
-                              </div>
-                              <div>
-                                <p className="text-[#5C4C49] opacity-70">
-                                  Total
-                                </p>
-                                <p className="font-medium text-[#5C4C49]">
-                                  {order.total || "$19.99"}
-                                </p>
-                              </div>
-                            </div>
-
-                            <div className="flex justify-end mt-4">
-                              <motion.button
-                                whileHover={{ scale: 1.03 }}
-                                whileTap={{ scale: 0.98 }}
-                                className="flex items-center gap-1 px-4 py-2 bg-[#5C4C49] text-[#E8D9C5] rounded-lg text-sm font-medium"
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  navigate(`/nextChapter/order/${order.id}`);
-                                }}
-                              >
-                                <svg
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  className="w-4 h-4"
-                                  fill="none"
-                                  viewBox="0 0 24 24"
-                                  stroke="currentColor"
-                                >
-                                  <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                                  />
-                                  <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-                                  />
-                                </svg>
-                                View Details
-                              </motion.button>
-                            </div>
-                          </div>
-                        </div>
-                      </motion.div>
+                        title={`Order ${order.status}`}
+                        date={order.date}
+                        description={`${order.title} by ${order.author}`}
+                        status={order.status}
+                        delay={0.1 * index}
+                        imageUrl={order.imageUrl}
+                      />
                     ))}
                   </div>
 
-                  {user?.recentOrders?.length === 0 && (
+                  {mockUser?.recentOrders?.length === 0 && (
                     <div className="">
                       <NoData
                         title="No Orders Found"
@@ -880,39 +584,20 @@ const UserProfile = () => {
               {activeTab === "wishlist" && (
                 <>
                   <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                    {user?.recentWishlist?.map((item, index) => (
-                      <motion.div
+                    {mockUser?.wishlistItems?.map((item, index) => (
+                      <ActivityItem
                         key={item.id}
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: index * 0.1 }}
-                        whileHover={{ y: -5 }}
-                        className="flex items-center p-3 border border-[#D3BD9D] rounded-lg cursor-pointer"
-                        onClick={() => navigate(`/nextChapter/book/${item.id}`)}
-                      >
-                        <div className="flex items-center justify-center flex-shrink-0 w-20 h-24 mr-4 rounded-md">
-                          <img
-                            src={item.image}
-                            className="object-contain w-full h-full"
-                            alt=""
-                          />
-                        </div>
-                        <div>
-                          <h4 className="font-medium text-[#5C4C49]">
-                            {item.title}
-                          </h4>
-                          <p className="text-sm text-[#5C4C49] opacity-80">
-                            {item.author}
-                          </p>
-                          <p className="text-[#5C4C49] font-semibold mt-1">
-                            {item.price}
-                          </p>
-                        </div>
-                      </motion.div>
+                        title={`${item.title}`}
+                        date={""}
+                        description={`${item.title} by ${item.author}`}
+                        status={""}
+                        delay={""}
+                        imageUrl={item.image}
+                      />
                     ))}
                   </div>
                   <div className="flex items-center justify-center">
-                    {user?.recentWishlist?.length === 0 && (
+                    {user?.wishlistItems?.length === 0 && (
                       <NoData
                         title="No favorites yet"
                         message="Start adding books to your favorites collection"
@@ -1074,18 +759,6 @@ const UserProfile = () => {
   );
 };
 
-// Reusable components
-const ProfileDetail = ({ label, value, delay }) => (
-  <motion.div
-    initial={{ opacity: 0, x: -10 }}
-    animate={{ opacity: 1, x: 0 }}
-    transition={{ delay }}
-  >
-    <p className="text-sm font-medium text-[#5C4C49] opacity-80">{label}</p>
-    <p className="text-lg text-[#5C4C49] font-semibold">{value}</p>
-  </motion.div>
-);
-
 const StatCard = ({ title, value, color, delay, icon, text, onClick }) => (
   <motion.div
     initial={{ opacity: 0, y: 10 }}
@@ -1099,7 +772,9 @@ const StatCard = ({ title, value, color, delay, icon, text, onClick }) => (
         <p className="text-lg font-medium">{title}</p>
         <p className="text-3xl font-bold">{value}</p>
       </div>
-      <div className="p-2 bg-white rounded-full bg-opacity-30">{icon}</div>
+      <div className="flex items-center justify-center w-10 h-10 bg-white rounded-full bg-opacity-30">
+        {icon}
+      </div>
     </div>
   </motion.div>
 );
@@ -1157,44 +832,17 @@ const ActivityItem = ({
         </p>
 
         <div className="flex items-center justify-end mt-auto">
-          {/* <div className="flex items-center">
-            <div className="bg-[#5C4C49] text-[#E8D9C5] rounded-full w-8 h-8 flex items-center justify-center mr-2">
-              {title.charAt(0)}
-            </div>
-            <span className="text-sm text-[#5C4C49] opacity-80">Activity</span>
-          </div> */}
-
           <motion.div
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             className=""
           >
-            <Button
+            <div
               type="button"
-              className="px-4 py-2 bg-[#5C4C49] text-[#E8D9C5] rounded-lg text-xs md:text-sm font-medium flex items-center"
+              className=" bg-[#5C4C49] w-10 h-10 text-[#E8D9C5] rounded-[4rem] font-medium flex justify-center items-center"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="w-4 h-4 mr-1"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                />
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-                />
-              </svg>
-              View Details
-            </Button>
+              <EyesSvg />
+            </div>
           </motion.div>
         </div>
       </div>
@@ -1202,14 +850,6 @@ const ActivityItem = ({
   </motion.div>
 );
 export default UserProfile;
-
-const StatPill = ({ count, label, icon, color }) => (
-  <motion.div whileHover={{ scale: 1.05 }} className="text-center">
-    <div className={`text-2xl ${color}`}>{icon}</div>
-    <p className="text-lg font-bold text-[#5C4C49]">{count}</p>
-    <p className="text-xs text-[#5C4C49]/70">{label}</p>
-  </motion.div>
-);
 
 const ModernProfileDetail = ({
   icon,
@@ -1265,7 +905,7 @@ const ModernProfileDetail = ({
             <Button
               type="button"
               onClick={() => setShowAddressModal(true)}
-              className="bg-[#5C4C49] text-[#E8D9C5] rounded-[7px] text-xs font-medium flex items-center"
+              className="bg-[#5C4C49] h-7 text-[#E8D9C5] rounded-[7px] text-xs font-medium flex items-center"
             >
               Select Address
             </Button>

@@ -4,6 +4,7 @@ const cors = require("cors");
 const app = express();
 const bookRoutes = require("./Routes/bookRoutes");
 const authRoutes = require("./Routes/authRoutes");
+const orderRoutes = require("./Routes/orderRoutes");
 const cookieParser = require("cookie-parser");
 
 app.use(
@@ -18,6 +19,7 @@ app.use(express.json());
 
 app.use("/api/v1/books", bookRoutes);
 app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1/orders", orderRoutes);
 
 app.listen(process.env.PORT || 5000, () => {
   console.log("Server is running on PORT " + process.env.PORT);

@@ -1,5 +1,5 @@
-const mysql = require("mysql2/promise");
 require("dotenv").config();
+const mysql = require("mysql2/promise");
 
 let pool;
 
@@ -98,7 +98,40 @@ async function createTables() {
       );
     `);
 
-    console.log("✅ All required tables are created or already exist.");
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS orders (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  user_id INT NOT NULL,
+  order_number VARCHAR(50) UNIQUE,
+  total_amount DECIMAL(10,2),
+  payment_method VARCHAR(50),
+  status ENUM('PLACED', 'SHIPPED', 'DELIVERED', 'CANCELLED') DEFAULT 'PLACED',
+  expected_delivery DATE,
+  is_delayed TINYINT(1) NOT NULL DEFAULT 0,
+  invoice VARCHAR(255),
+  arriving_date DATE,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (user_id) REFERENCES users(id)
+);
+`);
+
+    await pool.query(`
+  CREATE TABLE IF NOT EXISTS order_items (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  order_id INT NOT NULL,
+  book_id INT NOT NULL,
+  price DECIMAL(10,2),
+  quantity INT DEFAULT 1,
+  arriving_date DATE,
+  status ENUM('PROCESSING', 'SHIPPED', 'DELIVERED') DEFAULT 'PROCESSING',
+  FOREIGN KEY (order_id) REFERENCES orders(id)
+);
+
+  `);
+
+    console.info(
+      "✅ Database initialization complete: Scanned and created tables."
+    );
   } catch (err) {
     console.error("❌ Error creating tables:", err.message);
   }
@@ -109,6 +142,12 @@ initDB();
 module.exports = {
   initDB,
   getConnection: () => pool?.getConnection(),
-  query: (...params) => pool?.query(...params),
-  execute: (...params) => pool?.execute(...params),
+  query: (...params) => {
+    if (!pool) throw new Error("DB not initialized. Call initDB() first.");
+    return pool.query(...params);
+  },
+  execute: (...params) => {
+    if (!pool) throw new Error("DB not initialized. Call initDB() first.");
+    return pool.execute(...params);
+  },
 };
