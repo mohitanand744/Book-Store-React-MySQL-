@@ -143,9 +143,10 @@ SELECT
     o.payment_method,
     o.expected_delivery,
 
-     CASE
+    CASE
       WHEN SUM(oi.status = 'CANCELLED') = COUNT(*) THEN 'CANCELLED'
       WHEN SUM(oi.status = 'DELIVERED') = COUNT(*) THEN 'DELIVERED'
+      WHEN SUM(oi.status = 'OUT_FOR_DELIVERY') > 0 THEN 'OUT_FOR_DELIVERY'
       WHEN SUM(oi.status = 'SHIPPED') > 0 THEN 'SHIPPED'
       ELSE 'PLACED'
     END AS order_status,
@@ -164,17 +165,70 @@ SELECT
             'tracking_id', oi.tracking_id
         )
     ) AS order_items
+
 FROM orders o
 LEFT JOIN order_items oi ON o.id = oi.order_id
 LEFT JOIN books b ON oi.book_id = b.id
 WHERE o.user_id = ?
 GROUP BY o.id
-ORDER BY o.created_at DESC;`,
+ORDER BY o.created_at DESC;
+`,
 
     [userId]
   );
 
   return rows;
+};
+
+const getTrackingItem = async (itemId, trackingNumber) => {
+  const [rows] = await db.execute(
+    `
+    SELECT 
+    o.id AS order_id,
+    o.order_number,
+    o.expected_delivery,
+    o.status AS order_status,
+    o.address,
+    o.payment_method,
+    o.created_at AS order_created_at,
+    
+    oi.price AS item_price,
+    oi.quantity,
+    oi.discount,
+    
+    (oi.price * oi.quantity) AS item_subtotal,
+    ROUND((oi.price * oi.quantity) * 0.05, 2) AS tax,
+    CASE 
+        WHEN (oi.price * oi.quantity) < 500 THEN 40.00 
+        ELSE 0.00 
+    END AS shipping_fee,
+    ROUND(
+        (oi.price * oi.quantity) + 
+        ((oi.price * oi.quantity) * 0.05) + 
+        CASE 
+            WHEN (oi.price * oi.quantity) < 500 THEN 40.00 
+            ELSE 0.00 
+        END, 
+    2) - oi.discount AS item_total,
+    
+
+    oi.id AS order_item_id,
+    oi.status AS item_status,
+    oi.tracking_id,
+    
+    b.title,
+    b.cover_image,
+    b.description
+
+FROM order_items oi
+JOIN orders o ON oi.order_id = o.id
+JOIN books b ON oi.book_id = b.id
+WHERE oi.id = ? AND oi.tracking_id = ?
+    `,
+    [itemId, trackingNumber]
+  );
+
+  return rows[0] || null;
 };
 
 module.exports = {
@@ -190,4 +244,5 @@ module.exports = {
   updateOrderItemArrivingDate,
   getOrderWithItems,
   getOrdersListByUser,
+  getTrackingItem,
 };

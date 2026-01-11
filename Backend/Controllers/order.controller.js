@@ -1,6 +1,7 @@
 const {
   placeOrderService,
   getOrdersListService,
+  getTrackingItemService,
 } = require("../Services/orderService");
 const handleDbError = require("../utils/handleDbError");
 const { successResponse } = require("../utils/response");
@@ -30,6 +31,21 @@ exports.getOrdersList = async (req, res, next) => {
     successResponse(res, 200, "", orders);
   } catch (error) {
     console.error("Get Orders Error:", error);
+    handleDbError(error, res, next);
+  }
+};
+
+exports.getTrackingItems = async (req, res, next) => {
+  try {
+    const { itemId, trackingId } = req.params;
+
+    console.log("Tracking Details: ", itemId, trackingId);
+
+    const response = await getTrackingItemService(itemId, trackingId);
+
+    successResponse(res, 200, "", response);
+  } catch (error) {
+    console.error("Get Tracking Items Error:", error);
     handleDbError(error, res, next);
   }
 };

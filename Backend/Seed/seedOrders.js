@@ -27,14 +27,35 @@ const generateOrderNumber = () => {
 };
 
 // -------------------- MOCK CONSTANTS --------------------
-const ORDER_STATUSES = ["PLACED", "SHIPPED", "DELIVERED", "CANCELLED"];
+const ORDER_STATUSES = [
+  "PLACED",
+  "SHIPPED",
+  "OUT_FOR_DELIVERY",
+  "DELIVERED",
+  "CANCELLED",
+];
 
 const ITEM_STATUSES_BY_ORDER = {
   PLACED: ["PROCESSING", "SHIPPED"],
-  SHIPPED: ["SHIPPED", "DELIVERED"],
+
+  SHIPPED: ["SHIPPED", "OUT_FOR_DELIVERY"],
+
+  OUT_FOR_DELIVERY: ["OUT_FOR_DELIVERY", "DELIVERED"],
+
   DELIVERED: ["DELIVERED"],
+
   CANCELLED: ["CANCELLED"],
 };
+
+const ADDRESSES = [
+  "Flat 302, Green Residency, Sector 45, Gurgaon, Haryana - 122003",
+  "221B Baker Street, Near Metro Station, New Delhi - 110001",
+  "Plot 18, Sai Nagar, Hinjewadi Phase 2, Pune - 411057",
+  "No 45, MG Road, Indiranagar, Bengaluru - 560038",
+  "12/A Lake View Apartments, Salt Lake, Kolkata - 700091",
+];
+
+const discounts = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90];
 
 const PAYMENT_METHODS = ["COD", "UPI", "CARD"];
 
@@ -64,6 +85,7 @@ const seedOrders = async () => {
       const user = randomFromArray(users);
       const orderStatus = randomFromArray(ORDER_STATUSES);
       const paymentMethod = randomFromArray(PAYMENT_METHODS);
+      const address = randomFromArray(ADDRESSES);
 
       const createdAt = randomDateBetween(new Date("2024-01-01"), new Date());
 
@@ -86,16 +108,17 @@ const seedOrders = async () => {
       const [orderResult] = await db.query(
         `
         INSERT INTO orders 
-        (user_id, order_number, total_amount, payment_method, status, expected_delivery)
-        VALUES (?, ?, ?, ?, ?, ?);
+        (user_id, order_number, total_amount, payment_method, status, expected_delivery, address)
+        VALUES (?, ?, ?, ?, ?,?,?);
         `,
         [
           user.id,
           orderNumber,
-          0, // temp amount
+          0,
           paymentMethod,
           orderStatus,
           expectedDelivery,
+          address,
         ]
       );
 
@@ -111,10 +134,15 @@ const seedOrders = async () => {
 
         totalAmount += price * quantity;
 
-        const trackingId =
-          itemStatus === "SHIPPED"
-            ? `TRK-${Date.now()}-${Math.floor(Math.random() * 1000)}`
-            : null;
+        const shouldHaveTracking = [
+          "SHIPPED",
+          "OUT_FOR_DELIVERY",
+          "DELIVERED",
+        ].includes(itemStatus);
+
+        const trackingId = shouldHaveTracking
+          ? `TRK-${Date.now()}-${Math.floor(Math.random() * 1000)}`
+          : null;
 
         const arrivingDate =
           itemStatus === "DELIVERED"
@@ -124,8 +152,8 @@ const seedOrders = async () => {
         await db.query(
           `
           INSERT INTO order_items 
-          (order_id, book_id, price, quantity, status, arriving_date, tracking_id)
-          VALUES (?, ?, ?, ?, ?, ?, ?);
+          (order_id, book_id, price, quantity, status, arriving_date, tracking_id, discount)
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?);
           `,
           [
             orderId,
@@ -135,6 +163,7 @@ const seedOrders = async () => {
             itemStatus,
             arrivingDate,
             trackingId,
+            discounts[Math.floor(Math.random() * discounts.length)],
           ]
         );
       }

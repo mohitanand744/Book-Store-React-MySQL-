@@ -2,6 +2,7 @@ const {
   createOrder,
   createOrderItem,
   getOrdersListByUser,
+  getTrackingItem,
 } = require("../Models/orderModel");
 
 const placeOrderService = async (userId, items, paymentMethod) => {
@@ -45,7 +46,18 @@ const getOrdersListService = async (userId) => {
   return Orders;
 };
 
+const getTrackingItemService = async (itemId, trackingNumber) => {
+  const trackingItem = await getTrackingItem(itemId, trackingNumber);
+
+  if (!trackingItem) {
+    throw new Error("Tracking item not found!");
+  }
+
+  return trackingItem;
+};
+
 module.exports = {
   placeOrderService,
   getOrdersListService,
+  getTrackingItemService,
 };

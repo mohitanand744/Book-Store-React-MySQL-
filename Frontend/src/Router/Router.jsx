@@ -97,7 +97,10 @@ const Router = () => {
                 </ProtectedRoute>
               }
             />
-             <Route path="tracking/:orderId/:itemId" element={<TrackingPage />} />
+            <Route
+              path="tracking/:itemId/:trackingId"
+              element={<TrackingPage />}
+            />
           </Route>
 
           {/* Fallback route */}
