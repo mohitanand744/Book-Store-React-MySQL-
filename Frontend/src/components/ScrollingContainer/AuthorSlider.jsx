@@ -41,8 +41,8 @@ function AuthorSlider({ books }) {
         swiperRef={swiperRef}
         className="my-custom-class"
         position={{ top: "37%" }}
-        prevButtonClass=""
-        nextButtonClass=""
+        prevButtonclassName=""
+        nextButtonclassName=""
       />
       <Swiper
         effect={"coverflow"}

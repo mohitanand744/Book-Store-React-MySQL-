@@ -22,6 +22,7 @@ import { getAllOrders } from "../utils/apis/ordersApi";
 import { useEffect } from "react";
 import { useLoader } from "../Hooks/useLoader";
 import BooksLoader from "../components/Loaders/BooksLoader";
+import BackButton from "../components/Buttons/BackButton";
 
 const statusConfig = {
   PLACED: {
@@ -166,6 +167,8 @@ const OrdersPage = () => {
       />
       <div className="min-h-screen bg-[#F5F1ED] py-8 px-4 sm:px-6 lg:px-8">
         <div className="container px-4">
+          <BackButton label="Back to Profile" />
+
           <div className="space-y-4">
             {loading ? (
               <BooksLoader />

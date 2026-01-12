@@ -36,7 +36,7 @@ exports.formatUser = (rows) => {
     joinDate: formattedDate || null,
     address: [],
     phone: user?.phone || null,
-    orders: 0,
+    orders: user?.orders_count || 0,
     wishlist: 0,
     favoriteGenres: ["Fantasy", "Mystery", "Science Fiction"],
     readingPreferences: {

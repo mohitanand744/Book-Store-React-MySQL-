@@ -74,7 +74,13 @@ const updateEmailVerified = async (email) => {
 };
 
 const findUserById = async (userId) => {
-  const query = "SELECT * FROM users WHERE id = ?";
+  const query = `SELECT 
+      u.*,
+      COUNT(o.id) AS orders_count
+    FROM users u
+    LEFT JOIN orders o ON u.id = o.user_id
+    WHERE u.id = ?
+    GROUP BY u.id`;
   const [rows] = await db.query(query, [userId]);
   return rows[0] || null;
 };

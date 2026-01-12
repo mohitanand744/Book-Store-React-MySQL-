@@ -1,5 +1,5 @@
 // src/pages/SignUp.jsx
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
 import Button from "./../../Buttons/Button";
@@ -13,6 +13,9 @@ import Checkbox from "../../Inputs/Checkbox";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import { signup } from "../../../utils/apis/authApi";
+import { validateToken } from "../../../store/Redux/Slices/authSlice";
+import useAuth from "../../../Hooks/useAuth";
+import { useDispatch } from "react-redux";
 
 const SignUp = () => {
   const {
@@ -23,6 +26,14 @@ const SignUp = () => {
     formState: { errors, isSubmitting },
   } = useForm();
   const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/nextChapter", { replace: true });
+    }
+  }, [isAuthenticated, navigate]);
 
   const onSubmit = async (data) => {
     const payload = {

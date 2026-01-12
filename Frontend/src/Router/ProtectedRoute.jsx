@@ -8,7 +8,7 @@ import Loading from "../components/Loaders/Loading";
 const ProtectedRoute = ({ children }) => {
   const { isAuthenticated, logoutReason, isAuthenticating } = useAuth();
 
-  if (isAuthenticating) return;
+  if (isAuthenticating) return null;
 
   useEffect(() => {
     if (!isAuthenticated && logoutReason !== null) {

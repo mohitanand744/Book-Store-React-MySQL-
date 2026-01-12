@@ -1,5 +1,5 @@
 import React, { lazy, Suspense, useEffect, useState } from "react";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Loading from "../components/Loaders/Loading";
 import SignUp from "../components/Auth/Pages/SignUp";
 import UserProfile from "../Pages/UserProfile";
@@ -7,9 +7,10 @@ import OrdersPage from "../Pages/OrderPage";
 import { Toaster } from "react-hot-toast";
 import Wishlist from "../Pages/Wishlist";
 import CheckoutPage from "../Pages/CheckoutPage";
-import { FallbackRoute } from "./FallbackRoute";
 import ProtectedRoute from "./ProtectedRoute";
 import TrackingPage from "../Pages/TrackingPage";
+import { validateToken } from "../store/Redux/Slices/authSlice";
+import { useDispatch } from "react-redux";
 
 // Lazy-loaded components
 const Login = lazy(() => import("../components/Auth/Pages/Login"));
@@ -21,6 +22,11 @@ const AboutUs = lazy(() => import("../Pages/AboutUs"));
 
 const Router = () => {
   const [isLoading, setIsLoading] = useState(true);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(validateToken());
+  }, []);
 
   useEffect(() => {
     const timer = setTimeout(() => {

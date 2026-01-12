@@ -18,8 +18,8 @@ const ReviewsContainer = () => {
         swiperRef={swiperRef}
         className="my-custom-class"
         position={{ top: "50%" }}
-        prevButtonClass=""
-        nextButtonClass=""
+        prevButtonclassName=""
+        nextButtonclassName=""
       />
       <Swiper
         className="mb-16 "

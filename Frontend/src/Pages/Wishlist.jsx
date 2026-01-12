@@ -12,6 +12,7 @@ import { mockBooks } from "../../Data/mockData";
 import BookCard from "../components/Cards/BookCard";
 import Banners from "./../components/Banners/Banners";
 import SearchBooks from "../components/SearchBars/SearchBooks";
+import BackButton from "../components/Buttons/BackButton";
 
 const Wishlist = () => {
   const [books, setBooks] = useState([
@@ -94,6 +95,8 @@ const Wishlist = () => {
             transition={{ delay: 0.2, duration: 0.5 }}
             className="relative mb-8"
           >
+            <BackButton label="Back to Profile" />
+
             <SearchBooks styling="flex-1 md:w-[20rem]" />
           </motion.div>
 

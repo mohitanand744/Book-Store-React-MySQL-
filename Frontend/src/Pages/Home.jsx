@@ -41,6 +41,7 @@ const Home = () => {
   };
 
   const uniqueBooks = books?.books ? removeDuplicates(books.books) : []; */
+  console.log("Loader :", loading);
 
   const books = mockBooks;
   const uniqueBooks = books;

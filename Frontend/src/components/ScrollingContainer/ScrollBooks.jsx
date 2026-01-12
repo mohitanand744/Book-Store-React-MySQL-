@@ -17,8 +17,8 @@ const ScrollBooks = ({ autoScroll = true, books }) => {
         swiperRef={swiperRef}
         className="my-custom-class"
         position={{ top: "40%" }}
-        prevButtonClass=""
-        nextButtonClass=""
+        prevButtonclassName=""
+        nextButtonclassName=""
       />
 
       <Swiper

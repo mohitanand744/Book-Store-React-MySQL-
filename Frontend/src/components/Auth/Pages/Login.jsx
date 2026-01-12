@@ -13,6 +13,8 @@ import toast from "react-hot-toast";
 import useAuth from "../../../Hooks/useAuth";
 import ResetPasswordModal from "../Modal/resetPassword";
 import EmailVerificationStatus from "../Modal/EmailVerificationStatus";
+import { useDispatch } from "react-redux";
+import { validateToken } from "../../../store/Redux/Slices/authSlice";
 
 const Login = () => {
   const {
@@ -41,6 +43,9 @@ const Login = () => {
   const passwordValue = watch("password");
   const location = useLocation();
   const [verificationEmail, setVerificationEmail] = useState(null);
+  const dispatch = useDispatch();
+
+  console.log("isAuth", isAuthenticated);
 
   const handleResetTokenVerification = async () => {
     try {
