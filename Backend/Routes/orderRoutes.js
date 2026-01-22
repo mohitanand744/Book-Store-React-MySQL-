@@ -4,7 +4,7 @@ const {
   placeOrder,
   getOrdersList,
   getTrackingItems,
-} = require("../Controllers/order.controller");
+} = require("../Controllers/orderController");
 const verifyToken = require("../Middleware/verifyToken");
 
 router.post("/place-order", verifyToken, placeOrder);

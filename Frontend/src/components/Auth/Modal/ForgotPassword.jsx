@@ -5,7 +5,7 @@ import Modal from "../../Modal/ModalContainer";
 import Button from "../../Buttons/Button";
 import { useEffect, useState } from "react";
 import { forgotPassword } from "../../../utils/apis/authApi";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 
 const ForgotPasswordModal = ({
   showForgot,

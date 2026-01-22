@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { Navigate } from "react-router-dom";
 import useAuth from "../Hooks/useAuth";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import { useLoader } from "../Hooks/useLoader";
 import Loading from "../components/Loaders/Loading";
 

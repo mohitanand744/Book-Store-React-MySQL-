@@ -4,6 +4,7 @@ import DiscountHeader from "./components/Common/Navbars/DiscountHeader";
 import { Outlet, useLocation } from "react-router-dom";
 import Footer from "./components/Common/Footers/Footer";
 import { useAxiosLoader } from "./services/api";
+import FullScreenImageModal from "./components/Common/FullScreenImage";
 
 const Layout = () => {
   const pathName = useLocation().pathname;
@@ -18,6 +19,7 @@ const Layout = () => {
       <DiscountHeader />
       <Navbar />
       <Outlet />
+      <FullScreenImageModal />
       <Footer />
     </>
   );

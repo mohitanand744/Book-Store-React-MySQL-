@@ -95,6 +95,35 @@
   }
 }
 
+[data-sonner-toast][data-type="success"] {
+  border: 3px solid #22c55e !important;
+}
+
+[data-sonner-toast][data-type="error"] {
+  border: 3px solid #ef4444 !important;
+}
+
+/* Success icon */
+[data-sonner-toast][data-type="success"] svg {
+  color: #22c55e; /* green */
+}
+
+/* Error icon */
+[data-sonner-toast][data-type="error"] svg {
+  color: #ef4444; /* red */
+}
+
+/* Warning icon */
+[data-sonner-toast][data-type="warning"] svg {
+  color: #f59e0b; /* yellow */
+}
+
+/* Info icon */
+[data-sonner-toast][data-type="info"] svg {
+  color: #3b82f6; /* blue */
+}
+
+
 .ant-statistic-content-value {
   font-size: 1.3rem !important;
   color: #5c4c49 !important;

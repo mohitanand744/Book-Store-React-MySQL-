@@ -9,7 +9,7 @@ import Checkbox from "../../Inputs/Checkbox";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import ForgotPasswordModal from "../Modal/ForgotPassword";
 import { login, verifyResetToken } from "../../../utils/apis/authApi";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import useAuth from "../../../Hooks/useAuth";
 import ResetPasswordModal from "../Modal/resetPassword";
 import EmailVerificationStatus from "../Modal/EmailVerificationStatus";

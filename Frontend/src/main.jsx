@@ -12,13 +12,16 @@ import { Provider } from "react-redux";
 import store from "./store/Redux/ConfigureReduxStore.js";
 import { LoaderProvider } from "./store/Context/LoaderProvider.jsx";
 import { UserProvider } from "./store/Context/UserContext.jsx";
+import { ImagePreviewProvider } from "./store/Context/ImagePreviewContext.jsx";
 
 createRoot(document.getElementById("root")).render(
   <Provider store={store}>
     <UserProvider>
-      <LoaderProvider>
-        <Router />
-      </LoaderProvider>
+      <ImagePreviewProvider>
+        <LoaderProvider>
+          <Router />
+        </LoaderProvider>
+      </ImagePreviewProvider>
     </UserProvider>
   </Provider>
 );

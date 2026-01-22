@@ -15,7 +15,7 @@ import {
   FiXCircle,
 } from "react-icons/fi";
 import { CopyIcon } from "../components/SVGs/SVGs";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import Banners from "../components/Banners/Banners";
 import { useNavigate } from "react-router-dom";
 import { getAllOrders } from "../utils/apis/ordersApi";

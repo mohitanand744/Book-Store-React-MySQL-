@@ -38,7 +38,13 @@ const createUser = async (userData) => {
 
 // Find user by email
 const findUserByEmail = async (email) => {
-  const [rows] = await db.execute(`SELECT * FROM users WHERE email = ?`, [
+  const [rows] = await db.execute(`SELECT 
+      u.*,
+      COUNT(o.id) AS orders_count
+    FROM users u
+    LEFT JOIN orders o ON u.id = o.user_id
+    WHERE u.email = ?
+    GROUP BY u.id`, [
     email,
   ]);
 

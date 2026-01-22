@@ -13,7 +13,7 @@ import {
 import { FiPhone } from "react-icons/fi";
 import { mockBooks } from "./../../Data/mockData";
 import ScrollBooks from "../components/ScrollingContainer/ScrollBooks";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import Button from "../components/Buttons/Button";
 import {
   BagSvg,
@@ -97,6 +97,7 @@ const mockUser = {
 import { uploadProfilePic as uploadProfilePicApi } from "../utils/apis/authApi";
 import { useUser } from "../store/Context/UserContext";
 import Spinner from "../components/Loaders/Spinner";
+import { useImagePreview } from "../store/Context/ImagePreviewContext";
 
 const UserProfile = () => {
   const [isEditOpen, setIsEditOpen] = useState(false);
@@ -106,7 +107,7 @@ const UserProfile = () => {
   const { logoutStatusSuccess, userData, setUpdateUserData } = useAuth();
   const [user, setUser] = useState(userData);
   const [showAddressModal, setShowAddressModal] = useState(false);
-
+  const { openPreview } = useImagePreview();
   const fileInputRef = useRef(null);
   const { preview, setPreview, isUploading, setIsUploading } = useUser();
 
@@ -201,7 +202,7 @@ const UserProfile = () => {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
+        transition={{ duration: 0.2 }}
         className="container px-4 py-3 mx-auto"
       >
         {/* Header */}
@@ -243,7 +244,7 @@ const UserProfile = () => {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.2 }}
             className="w-full lg:w-1/3 bg-gradient-to-br from-[#E8D9C5] to-[#D3BD9D] rounded-2xl shadow-xl overflow-hidden h-fit border border-[#5C4C49]/10"
           >
             {/* Profile Header with Decorative Elements */}
@@ -253,13 +254,14 @@ const UserProfile = () => {
               <motion.div
                 initial={{ scale: 0.95 }}
                 animate={{ scale: 1 }}
-                transition={{ type: "spring", stiffness: 300 }}
+                transition={{ type: "spring", stiffness: 100 }}
                 className="relative w-32 h-32 rounded-full bg-[#5C4C49]"
               >
                 <img
                   src={preview}
                   alt="Profile"
-                  className="object-cover w-full h-full border-4 border-orange-500 rounded-full shadow-lg"
+                  className="w-full cursor-pointer h-full border-4 border-orange-500 rounded-full shadow-lg"
+                  onClick={() => openPreview(preview, "Profile Image")}
                 />
 
                 <img
@@ -289,7 +291,7 @@ const UserProfile = () => {
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ delay: 0.3 }}
+                transition={{ delay: 0.2 }}
                 className="mb-6 text-center"
               >
                 <h2 className="text-2xl font-bold text-[#5C4C49]">
@@ -336,7 +338,7 @@ const UserProfile = () => {
                 <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  transition={{ delay: 0.8 }}
+                  transition={{ delay: 0.2 }}
                   onClick={handleEdit}
                   className="flex-1"
                 >
@@ -354,7 +356,7 @@ const UserProfile = () => {
                 <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  transition={{ delay: 0.8 }}
+                  transition={{ delay: 0.2 }}
                   className="flex-1"
                 >
                   <Button
@@ -375,7 +377,7 @@ const UserProfile = () => {
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 0.8 }}
+              transition={{ delay: 0.2 }}
               className="grid grid-cols-1 gap-6 md:grid-cols-2"
             >
               <StatCard
@@ -383,7 +385,7 @@ const UserProfile = () => {
                 value={user?.orders}
                 color="bg-[#5C4C49]"
                 text="#E8D9C5"
-                delay={0.9}
+                delay={0.2}
                 icon={<BagSvg />}
                 onClick={navigateToOrders}
               />
@@ -392,7 +394,7 @@ const UserProfile = () => {
                 value={user?.wishlist}
                 color="bg-[#D3BD9D]"
                 text="#5C4C49"
-                delay={1.0}
+                delay={0.2}
                 icon={<HearthSvg />}
                 onClick={navigateToWishlist}
               />
@@ -402,11 +404,10 @@ const UserProfile = () => {
             <div className="hidden md:flex border-b border-[#D3BD9D]">
               <motion.button
                 onClick={() => setActiveTab("activity")}
-                className={`px-4 py-2 text-nowrap text-[16px] relative ${
-                  activeTab === "activity"
-                    ? "text-[#5C4C49] opacity-100 font-bold"
-                    : "text-[#5C4C49] opacity-70 font-medium"
-                }`}
+                className={`px-4 py-2 text-nowrap text-[16px] relative ${activeTab === "activity"
+                  ? "text-[#5C4C49] opacity-100 font-bold"
+                  : "text-[#5C4C49] opacity-70 font-medium"
+                  }`}
               >
                 Recent Activity
                 {activeTab === "activity" && (
@@ -419,11 +420,10 @@ const UserProfile = () => {
 
               <motion.button
                 onClick={() => setActiveTab("orders")}
-                className={`px-4 py-2 text-nowrap text-[16px] relative ${
-                  activeTab === "orders"
-                    ? "text-[#5C4C49] opacity-100 font-bold"
-                    : "text-[#5C4C49] opacity-70 font-medium"
-                }`}
+                className={`px-4 py-2 text-nowrap text-[16px] relative ${activeTab === "orders"
+                  ? "text-[#5C4C49] opacity-100 font-bold"
+                  : "text-[#5C4C49] opacity-70 font-medium"
+                  }`}
               >
                 Recent Orders
                 {activeTab === "orders" && (
@@ -436,11 +436,10 @@ const UserProfile = () => {
 
               <motion.button
                 onClick={() => setActiveTab("wishlist")}
-                className={`px-4 py-2 text-nowrap text-[16px] relative ${
-                  activeTab === "wishlist"
-                    ? "text-[#5C4C49] opacity-100 font-bold"
-                    : "text-[#5C4C49] opacity-70 font-medium"
-                }`}
+                className={`px-4 py-2 text-nowrap text-[16px] relative ${activeTab === "wishlist"
+                  ? "text-[#5C4C49] opacity-100 font-bold"
+                  : "text-[#5C4C49] opacity-70 font-medium"
+                  }`}
               >
                 Wishlist Preview
                 {activeTab === "wishlist" && (
@@ -456,11 +455,10 @@ const UserProfile = () => {
             <div className="bg-white rounded-3xl border-t border-[#D3BD9D] md:hidden flex justify-around py-2 z-50">
               <motion.button
                 onClick={() => setActiveTab("activity")}
-                className={`flex flex-col items-center p-2 w-full relative ${
-                  activeTab === "activity"
-                    ? "text-[#5C4C49]"
-                    : "text-[#5C4C49] opacity-70"
-                }`}
+                className={`flex flex-col items-center p-2 w-full relative ${activeTab === "activity"
+                  ? "text-[#5C4C49]"
+                  : "text-[#5C4C49] opacity-70"
+                  }`}
                 whileTap={{ scale: 0.95 }}
               >
                 <FaHistory className="w-5 h-5" />
@@ -475,11 +473,10 @@ const UserProfile = () => {
 
               <motion.button
                 onClick={() => setActiveTab("orders")}
-                className={`flex flex-col items-center p-2 w-full relative ${
-                  activeTab === "orders"
-                    ? "text-[#5C4C49]"
-                    : "text-[#5C4C49] opacity-70"
-                }`}
+                className={`flex flex-col items-center p-2 w-full relative ${activeTab === "orders"
+                  ? "text-[#5C4C49]"
+                  : "text-[#5C4C49] opacity-70"
+                  }`}
                 whileTap={{ scale: 0.95 }}
               >
                 <FaShoppingBag className="w-5 h-5" />
@@ -494,11 +491,10 @@ const UserProfile = () => {
 
               <motion.button
                 onClick={() => setActiveTab("wishlist")}
-                className={`flex flex-col items-center p-2 w-full relative ${
-                  activeTab === "wishlist"
-                    ? "text-[#5C4C49]"
-                    : "text-[#5C4C49] opacity-70"
-                }`}
+                className={`flex flex-col items-center p-2 w-full relative ${activeTab === "wishlist"
+                  ? "text-[#5C4C49]"
+                  : "text-[#5C4C49] opacity-70"
+                  }`}
                 whileTap={{ scale: 0.95 }}
               >
                 <FaHeart className="w-5 h-5" />
@@ -516,7 +512,7 @@ const UserProfile = () => {
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 1.1 }}
+              transition={{ delay: 0.3 }}
               className="p-6 bg-white rounded-2xl"
             >
               {activeTab === "activity" && (
@@ -543,7 +539,7 @@ const UserProfile = () => {
                       showAction={true}
                       actionText="Browse Books"
                       actionLink="/nextChapter/books"
-                      //onActionClick={toggleCart}
+                    //onActionClick={toggleCart}
                     />
                   )}
                 </>
@@ -574,7 +570,7 @@ const UserProfile = () => {
                         showAction={true}
                         actionText="Explore More"
                         actionLink="/nextChapter/books"
-                        //onActionClick={toggleCart}
+                      //onActionClick={toggleCart}
                       />
                     </div>
                   )}
@@ -807,13 +803,12 @@ const ActivityItem = ({
         />
         {status && (
           <span
-            className={`absolute top-2 right-2 px-2 py-1 rounded-full text-xs font-medium ${
-              status === "Delivered"
-                ? "bg-green-100 text-green-800"
-                : status === "Shipped"
+            className={`absolute top-2 right-2 px-2 py-1 rounded-full text-xs font-medium ${status === "Delivered"
+              ? "bg-green-100 text-green-800"
+              : status === "Shipped"
                 ? "bg-blue-100 text-blue-800"
                 : "bg-yellow-100 text-yellow-800"
-            }`}
+              }`}
           >
             {status}
           </span>

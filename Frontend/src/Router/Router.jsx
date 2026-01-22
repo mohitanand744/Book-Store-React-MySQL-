@@ -4,7 +4,7 @@ import Loading from "../components/Loaders/Loading";
 import SignUp from "../components/Auth/Pages/SignUp";
 import UserProfile from "../Pages/UserProfile";
 import OrdersPage from "../Pages/OrderPage";
-import { Toaster } from "react-hot-toast";
+import { Toaster } from "sonner";
 import Wishlist from "../Pages/Wishlist";
 import CheckoutPage from "../Pages/CheckoutPage";
 import ProtectedRoute from "./ProtectedRoute";
@@ -44,13 +44,15 @@ const Router = () => {
     <BrowserRouter>
       <Toaster
         position="top-right"
-        reverseOrder={false}
-        gutter={8}
         toastOptions={{
           style: {
             background: "linear-gradient(to right, #5C4C49, #D3BD9D)",
             color: "#fff",
             border: "2px solid #fff",
+            padding: "8px 12px",
+            minHeight: "auto",
+            fontSize: "14px",
+            lineHeight: "1.2",
           },
         }}
       />

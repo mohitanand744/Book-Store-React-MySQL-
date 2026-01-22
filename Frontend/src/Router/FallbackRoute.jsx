@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import { useNavigate, useLocation, Navigate } from "react-router-dom";
 
 export const FallbackRoute = () => {

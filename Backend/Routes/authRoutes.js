@@ -13,7 +13,7 @@ const {
   getGoogleCallBack,
   logout,
   uploadProfilePic,
-} = require("../Controllers/auth.controllers");
+} = require("../Controllers/authControllers");
 const {
   signupValidation,
   loginValidation,

@@ -16,7 +16,7 @@ export const logout = async () => {
   const response = await axiosInstance.post(
     "/auth/logout",
     {},
-    { withCredentials: true }
+    { withCredentials: true },
   );
 
   return response.data;
@@ -40,7 +40,7 @@ export const resetPassword = async (
   email,
   newPassword,
   confirmPassword,
-  resetToken
+  resetToken,
 ) => {
   const response = await axiosInstance.post("/auth/reset-password", {
     email,
@@ -66,7 +66,7 @@ export const uploadProfilePic = async (formData) => {
     formData,
     {
       withCredentials: true,
-    }
+    },
   );
   return response.data;
 };

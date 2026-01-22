@@ -5,13 +5,16 @@ import { FaPlus } from "react-icons/fa6";
 import Ratings from "../RatingsReviews/Ratings";
 import { useLocation, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
+import { useDispatch } from "react-redux";
+import { toggleWishlist } from "../../store/Redux/Slices/wishlistSlice";
 
 const BookCard = ({ book }) => {
   const navigate = useNavigate();
   const path = useLocation().pathname;
+  const dispatch = useDispatch();
   const [isLiked, setIsLiked] = useState(
-    path === "/nextChapter/wishlist" ? true : false
+    path === "/nextChapter/wishlist" ? true : false,
   );
 
   const handleLike = () => {
@@ -101,6 +104,7 @@ const BookCard = ({ book }) => {
                 transition={{ duration: 0.5 }}
               >
                 <FaHeart
+                  onClick={() => dispatch(toggleWishlist("5"))}
                   className={`${isLiked ? "text-red-500" : "text-[#E9D2AF]"}`}
                 />
               </motion.div>
@@ -119,7 +123,7 @@ const BookCard = ({ book }) => {
                     transition={{ duration: 0.8 }}
                     className="absolute text-red-400 pointer-events-none"
                   >
-                    <FaHeart />
+                    <FaHeart onClick={() => dispatch(toggleWishlist("8"))} />
                   </motion.div>
                   <motion.div
                     initial={{ scale: 0, opacity: 1 }}

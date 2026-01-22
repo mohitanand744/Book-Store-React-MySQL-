@@ -6,7 +6,7 @@ import {
   EyeSlashIcon,
 } from "@heroicons/react/24/outline";
 import CustomSelect from "./CustomSelect";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 
 const Input = (
   {

@@ -1,12 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { RiDeleteBin6Line } from "react-icons/ri";
-import QuantitySelector from "../../QuantitySelector";
-import Button from "../../Buttons/Button";
 import { FaArrowRightLong } from "react-icons/fa6";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
+import Button from "../../Buttons/Button";
 import CheckoutBooksCard from "../../Cards/CheckoutBooksCard";
-import CartItemsNoData from "../../EmptyData/CartItemsNoData";
 import NoData from "../../EmptyData/noData";
 
 // Mock data for cart items
@@ -39,17 +37,32 @@ const mockCartItems = [
 
 const ShoppingCart = ({ isCartOpen, setIsCartOpen }) => {
   const [cartItems, setCartItems] = useState(mockCartItems);
-  const [quantity, setQuantity] = useState(1);
-  const toggleCart = () => setIsCartOpen(!isCartOpen);
   const navigate = useNavigate();
+
+  const toggleCart = () => setIsCartOpen((prev) => !prev);
+
+  useEffect(() => {
+    const handleEsc = (e) => e.key === "Escape" && setIsCartOpen(false);
+    window.addEventListener("keydown", handleEsc);
+
+    if (isCartOpen) document.body.style.overflow = "hidden";
+    else document.body.style.overflow = "auto";
+
+    return () => {
+      window.removeEventListener("keydown", handleEsc);
+      document.body.style.overflow = "auto";
+    };
+  }, [isCartOpen, setIsCartOpen]);
+
   const removeItem = (id) => {
-    setCartItems(cartItems.filter((item) => item.id !== id));
+    setCartItems((prev) => prev.filter((item) => item.id !== id));
   };
 
   const updateQuantity = (id, newQuantity) => {
     if (newQuantity < 1) return;
-    setCartItems(
-      cartItems.map((item) =>
+
+    setCartItems((prev) =>
+      prev.map((item) =>
         item.id === id ? { ...item, quantity: newQuantity } : item
       )
     );
@@ -63,21 +76,19 @@ const ShoppingCart = ({ isCartOpen, setIsCartOpen }) => {
 
   return (
     <div className="relative">
-      {/* Cart Slide-out Panel */}
       <AnimatePresence>
         {isCartOpen && (
           <motion.div
-            initial={{ opacity: 0, x: "100%" }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: "100%" }}
-            transition={{ type: "tween", ease: "easeInOut" }}
-            className="fixed inset-0 z-50 overflow-hidden"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50"
+            onClick={toggleCart}
           >
-            <div
-              className="absolute inset-0 bg-black bg-opacity-35"
-              onClick={toggleCart}
-            />
+            {/* Backdrop */}
+            <div className="absolute inset-0 bg-black/40" />
 
+            {/* Panel Wrapper */}
             <div className="absolute inset-y-0 right-0 flex max-w-full">
               <motion.div
                 initial={{ x: "100%" }}
@@ -85,50 +96,68 @@ const ShoppingCart = ({ isCartOpen, setIsCartOpen }) => {
                 exit={{ x: "100%" }}
                 transition={{ type: "tween", ease: "easeInOut" }}
                 className="relative w-screen max-w-md"
+                onClick={(e) => e.stopPropagation()}
               >
                 <div className="flex flex-col h-full bg-white bg-[url('https://images.rawpixel.com/image_800/czNmcy1wcml2YXRlL3Jhd3BpeGVsX2ltYWdlcy93ZWJzaXRlX2NvbnRlbnQvbHIvcm00MjgtMDAxOWIuanBn.jpg')] bg-cover bg-top shadow-xl">
+                  {/* Header + Items */}
                   <div className="flex-1 pt-6 pb-2 pl-4 pr-2 overflow-y-auto sm:px-6">
+                    {/* Header */}
                     <div className="flex h-[2.5rem] bg-[#F8F5F0] border-r-2 border-red-600 px-3 rounded-3xl items-center justify-between">
-                      <h2 className="text-xl font-medium text-gray-900">
-                        Shopping cart
+                      <h2 className="text-lg font-medium text-gray-900">
+                        Shopping Cart
                       </h2>
-                      <button
-                        onClick={toggleCart}
-                        className="flex items-center justify-center h-10 text-red-700 rounded-full w-7 hover:text-gray-500"
-                      >
-                        <FaArrowRightLong size={20} />
-                      </button>
+                      <div className="flex items-center gap-4">
+                        <p
+                          className="
+    flex items-center justify-center
+    min-w-[22px] h-[22px] px-1.5
+    text-[11px] font-bold
+    text-white
+    bg-gradient-to-tr from-[#5C4C49] to-[#D3BD9D]
+    rounded-full
+    shadow-md
+    ring-2 ring-white
+  "
+                        >
+                          {totalItems}
+                        </p>
+
+                        <button
+                          onClick={toggleCart}
+                          className="flex items-center justify-center gap-4 h-10 text-red-700 rounded-full w-7 hover:text-gray-500"
+                          aria-label="Close cart"
+                        >
+                          <FaArrowRightLong size={18} />
+                        </button>
+                      </div>
                     </div>
 
-                    <div className="mt-16">
-                      <div className="flow-root">
-                        <ul className="-my-6 divide-y divide-gray-200">
-                          <AnimatePresence>
-                            {cartItems.length === 0 ? (
-                              <NoData
-                                title="Your cart is empty"
-                                message="Looks like you haven't added anything to your cart yet"
-                                icon="cart"
-                                showAction={true}
-                                actionText="Continue Shopping"
-                                actionLink="/nextChapter/books"
-                                onActionClick={toggleCart}
-                              />
-                            ) : (
-                              <div className="pb-4 space-y-5">
-                                <CheckoutBooksCard
-                                  items={cartItems}
-                                  updateQuantity={updateQuantity}
-                                  removeItem={removeItem}
-                                />
-                              </div>
-                            )}
-                          </AnimatePresence>
+
+                    {/* Items */}
+                    <div className="mt-6">
+                      {cartItems.length === 0 ? (
+                        <NoData
+                          title="Your cart is empty"
+                          message="Looks like you haven't added anything yet."
+                          icon="cart"
+                          showAction={true}
+                          actionText="Continue Shopping"
+                          actionLink="/nextChapter/books"
+                          onActionClick={toggleCart}
+                        />
+                      ) : (
+                        <ul className="space-y-5">
+                          <CheckoutBooksCard
+                            items={cartItems}
+                            updateQuantity={updateQuantity}
+                            removeItem={removeItem}
+                          />
                         </ul>
-                      </div>
+                      )}
                     </div>
                   </div>
 
+                  {/* Footer */}
                   {cartItems.length > 0 && (
                     <motion.div
                       initial={{ opacity: 0 }}
@@ -139,14 +168,15 @@ const ShoppingCart = ({ isCartOpen, setIsCartOpen }) => {
                         <p>Subtotal</p>
                         <p>${subtotal.toFixed(2)}</p>
                       </div>
-                      <p className="mt-0.5 text-sm text-gray-500">
+
+                      <p className="mt-1 text-sm text-gray-500">
                         Shipping and taxes calculated at checkout.
                       </p>
+
                       <div className="mt-6">
-                        <motion.button
+                        <motion.div
                           whileHover={{ scale: 1.02 }}
                           whileTap={{ scale: 0.98 }}
-                          className="w-full"
                         >
                           <Button
                             onClick={() => {
@@ -156,13 +186,13 @@ const ShoppingCart = ({ isCartOpen, setIsCartOpen }) => {
                             type="button"
                             variant="primary"
                             className="w-full"
-                            //onClick={handleCheckout}
                           >
                             Checkout
                           </Button>
-                        </motion.button>
+                        </motion.div>
                       </div>
-                      <div className="flex justify-center mt-6 text-sm text-center text-gray-500">
+
+                      <div className="flex justify-center mt-6 text-sm text-gray-500">
                         <p>
                           or{" "}
                           <button
@@ -170,8 +200,7 @@ const ShoppingCart = ({ isCartOpen, setIsCartOpen }) => {
                             onClick={toggleCart}
                             className="font-medium text-[#5C4C49] hover:text-indigo-500"
                           >
-                            Continue Shopping
-                            <span aria-hidden="true"> &rarr;</span>
+                            Continue Shopping →
                           </button>
                         </p>
                       </div>

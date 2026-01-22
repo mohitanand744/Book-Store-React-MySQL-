@@ -10,6 +10,7 @@ import MobileMenu from "./MobileMenu";
 import useAuth from "../../../Hooks/useAuth";
 import { useUser } from "../../../store/Context/UserContext";
 import Spinner from "../../Loaders/Spinner";
+import { useImagePreview } from "../../../store/Context/ImagePreviewContext";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -19,10 +20,12 @@ const Navbar = () => {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const { isAuthenticated, userData } = useAuth();
   const { preview, isUploading, setPreview } = useUser();
+  const { openPreview } = useImagePreview();
+  const [viewImage, setViewImage] = useState(false);
   const navigate = useNavigate();
   console.log(isAuthenticated);
 
-  console.log(pathName);
+  console.log("pathName", pathName);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -49,13 +52,12 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`bg-[#D3BD9D] transition-all z-[999] duration-300  ${
-        isFixed
-          ? animation
-            ? "sticky top-[-8rem] left-0 w-full opacity-80 shadow-xl animate-slideDown"
-            : "sticky opacity-100 top-0 left-0 w-full shadow-xl"
-          : "relative shadow-lg"
-      }`}
+      className={`bg-[#D3BD9D] transition-all z-[999] duration-300  ${isFixed
+        ? animation
+          ? "sticky top-[-8rem] left-0 w-full opacity-80 shadow-xl animate-slideDown"
+          : "sticky opacity-100 top-0 left-0 w-full shadow-xl"
+        : "relative shadow-lg"
+        }`}
     >
       <div className="container px-4 py-3 mx-auto">
         <div className="flex items-center justify-between">
@@ -75,9 +77,8 @@ const Navbar = () => {
             <li>
               <Link
                 to={"/nextChapter"}
-                className={`px-3 py-1 border-[#5C4C49] text-lg font-bold  transition-all ${
-                  pathName === "nextChapter" ? "text-[#5C4C49]" : "text-white"
-                }  hover:scale-105  hover:text-[#5C4C49] duration-200 rounded-xl`}
+                className={`px-3 py-1 border-[#5C4C49] text-lg font-bold  transition-all ${pathName === "nextChapter" ? "text-[#5C4C49]" : "text-white"
+                  }  hover:scale-105  hover:text-[#5C4C49] duration-200 rounded-xl`}
               >
                 Home
               </Link>
@@ -112,11 +113,10 @@ const Navbar = () => {
               <li className="px-3 py-1">
                 <Link
                   to={"/nextChapter/books"}
-                  className={` border-[#5C4C49] text-lg font-bold  transition-all ${
-                    pathName === "nextChapterbooks"
-                      ? "text-[#5C4C49]"
-                      : "text-white"
-                  }  hover:scale-105  hover:text-[#5C4C49] duration-200 rounded-xl`}
+                  className={` border-[#5C4C49] text-lg font-bold  transition-all ${pathName === "nextChapterbooks"
+                    ? "text-[#5C4C49]"
+                    : "text-white"
+                    }  hover:scale-105  hover:text-[#5C4C49] duration-200 rounded-xl`}
                 >
                   Books{" "}
                 </Link>
@@ -147,12 +147,20 @@ const Navbar = () => {
             {isAuthenticated ? (
               <div className="">
                 <Link to="/nextChapter/user/profile">
-                  <div className="w-12 h-12 relative cursor-pointer active:scale-75 transition border-2 bg-[#5C4C49] border-orange-500 rounded-full">
+                  <div
+                    className="w-12 h-12 relative cursor-pointer active:scale-75 transition border-2 bg-[#5C4C49] border-orange-500 rounded-full">
+
                     <img
-                      className="object-cover w-full h-full rounded-full"
                       src={preview}
-                      alt=""
+                      alt="Profile"
+                      className="object-cover w-full h-full rounded-full"
+                      onClick={() => {
+                        if (pathName === "nextChapteruserprofile") {
+                          openPreview(preview, "Profile Image")
+                        }
+                      }}
                     />
+
                     {isUploading && (
                       <div className="absolute inset-0 flex items-center justify-center rounded-full bg-black/40">
                         <Spinner size={20} />
@@ -179,6 +187,8 @@ const Navbar = () => {
                 </Button>
               </>
             )}
+
+
 
             {/* Mobile Hamburger */}
             <div className="lg:hidden">

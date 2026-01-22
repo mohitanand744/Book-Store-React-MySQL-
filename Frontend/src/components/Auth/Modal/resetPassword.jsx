@@ -11,7 +11,7 @@ import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect } from "react";
 import { forgotPassword, resetPassword } from "../../../utils/apis/authApi";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 
 const ResetPasswordModal = ({
   showReset,

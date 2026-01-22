@@ -16,7 +16,16 @@ export const getTrackingItem = async (itemsId, trackingId) => {
     `/orders/track/${itemsId}/${trackingId}`,
     {
       withCredentials: true,
-    }
+    },
+  );
+  return response.data;
+};
+
+export const addToWishlist = async (bookId) => {
+  const response = await axiosInstance.post(
+    "/wishlist/add-to-wishlist",
+    { bookId },
+    { withCredentials: true },
   );
   return response.data;
 };

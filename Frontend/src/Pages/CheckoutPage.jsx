@@ -14,6 +14,7 @@ import CheckoutBooksCard from "../components/Cards/CheckoutBooksCard";
 import CartItemsNoData from "../components/EmptyData/CartItemsNoData";
 import Input from "../components/Inputs/Input";
 import { Link } from "react-router-dom";
+import BackButton from "../components/Buttons/BackButton";
 
 const CheckoutPage = () => {
   const mockCartItems = [
@@ -90,16 +91,8 @@ const CheckoutPage = () => {
       className="min-h-screen bg-[#F5F1ED]"
     >
       <div className="container px-4 py-12 mx-auto sm:px-6 lg:px-8">
+        <BackButton label="Continue Shopping" to={"/nextChapter/books"} />
         <div className="flex items-center mb-8">
-          <Link to={"/nextChapter/books"}>
-            <motion.button
-              whileTap={{ scale: 0.95 }}
-              className="flex items-center group font-semibold text-[#5C4C49] hover:text-[#3a302e]"
-            >
-              <FiArrowLeft className="mr-2 transition-transform group-hover:scale-150" />
-              Continue Shopping
-            </motion.button>
-          </Link>
           <div className="flex items-center mx-auto">
             <FiShoppingBag className="mr-2 text-2xl text-[#5C4C49]" />
             <h1 className="text-2xl font-bold text-[#5C4C49]">Your Cart</h1>

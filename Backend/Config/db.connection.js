@@ -129,6 +129,21 @@ async function createTables() {
 
   `);
 
+    await pool.query(`
+    CREATE TABLE IF NOT EXISTS wishlists (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  user_id INT NOT NULL,
+  book_id INT NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+  UNIQUE KEY unique_user_book (user_id, book_id),
+
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+  FOREIGN KEY (book_id) REFERENCES books(id) ON DELETE CASCADE
+);
+
+  `);
+
     console.info(
       "✅ Database initialization complete: Scanned and created tables."
     );
