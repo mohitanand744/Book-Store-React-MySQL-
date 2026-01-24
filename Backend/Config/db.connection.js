@@ -92,7 +92,7 @@ async function createTables() {
       CREATE TABLE IF NOT EXISTS book_images (
         IMAGE_ID INT AUTO_INCREMENT PRIMARY KEY,
         BOOK_ID INT,
-        IMAGE_URL VARCHAR(500),
+        IMAGE_URL JSON,
         FOREIGN KEY (BOOK_ID) REFERENCES books(ID)
           ON DELETE CASCADE ON UPDATE CASCADE
       );
