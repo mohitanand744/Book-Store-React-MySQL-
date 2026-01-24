@@ -2,6 +2,7 @@ exports.formatBook = (item) => ({
   book_id: item.ID,
   title: item.TITLE,
   description: item.DESCRIPTION,
+  isLiked: item.isLiked,
   author: {
     author_id: item.AUTHOR_ID,
     author_name: item.AUTHOR,

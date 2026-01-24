@@ -6,6 +6,17 @@ const getSingleBook = async (id) => {
   const response = await axiosInstance.get(`/api/books/${id}`);
 
   console.log(response);
+
+  return response.data;
 };
 
-export { getSingleBook };
+const getAllBooks = async () => {
+  const response = await axiosInstance.get(`/books`, {
+    withCredentials: true,
+  });
+
+  console.log(response);
+  return response.data;
+};
+
+export { getSingleBook, getAllBooks };

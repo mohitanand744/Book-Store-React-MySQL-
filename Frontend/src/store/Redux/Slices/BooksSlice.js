@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { axiosInstance } from "../../../services/api";
+import { getAllBooks } from "../../../utils/apis/booksApi";
 
 const initialState = {
   books: [],
@@ -11,22 +11,21 @@ export const fetchAllBooks = createAsyncThunk(
   "fetchAllBooks",
   async (_, thunkAPI) => {
     try {
-      const responce = await axiosInstance.get("/books", {
-        requiresAuth: false,
-      });
+      const response = await getAllBooks();
 
-      return responce.data;
+      return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(
-        error.response?.data?.message || "Failed to fetch books"
+        error.response?.data?.message || "Failed to fetch books",
       );
     }
-  }
+  },
 );
 
 const bookSlice = createSlice({
   name: "books",
   initialState,
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(fetchAllBooks.pending, (state) => {
@@ -35,7 +34,7 @@ const bookSlice = createSlice({
       })
       .addCase(fetchAllBooks.fulfilled, (state, action) => {
         state.loading = false;
-        state.books = action?.payload?.data;
+        state.books = action?.payload;
       })
       .addCase(fetchAllBooks.rejected, (state, action) => {
         state.loading = false;

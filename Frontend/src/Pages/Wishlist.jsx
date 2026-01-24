@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   FiHeart,
@@ -13,6 +13,9 @@ import BookCard from "../components/Cards/BookCard";
 import Banners from "./../components/Banners/Banners";
 import SearchBooks from "../components/SearchBars/SearchBooks";
 import BackButton from "../components/Buttons/BackButton";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllWishlists } from "../store/Redux/Slices/wishlistSlice";
+import BooksLoader from "../components/Loaders/BooksLoader";
 
 const Wishlist = () => {
   const [books, setBooks] = useState([
@@ -50,26 +53,14 @@ const Wishlist = () => {
       rating: 4.7,
     },
   ]);
+  const dispatch = useDispatch();
+  const { loading, wishlists } = useSelector((state) => state.wishlists);
 
-  const [searchQuery, setSearchQuery] = useState("");
+  useEffect(() => {
+    dispatch(getAllWishlists());
+  }, [dispatch]);
 
-  const removeBook = (id) => {
-    setBooks(books.filter((book) => book.id !== id));
-  };
-
-  const toggleLike = (id) => {
-    setBooks(
-      books.map((book) =>
-        book.id === id ? { ...book, liked: !book.liked } : book
-      )
-    );
-  };
-
-  const filteredBooks = books.filter(
-    (book) =>
-      book.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      book.author.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  console.log("wishlists", wishlists);
 
   return (
     <motion.div
@@ -140,10 +131,10 @@ const Wishlist = () => {
               {/* Count with gradient text */}
               <div className="relative">
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#5C4C49] to-[#D3BD9D] font-bold text-lg">
-                  {mockBooks.length}
+                  {wishlists?.data.length}
                 </span>
                 <span className="text-[#5C4C49]/80 ml-1">
-                  {mockBooks.length === 1 ? "book" : "books"} saved
+                  {wishlists?.data.length === 1 ? "book" : "books"} saved
                 </span>
 
                 {/* Subtle pulse effect */}
@@ -166,10 +157,12 @@ const Wishlist = () => {
           </motion.div>
         </div>
 
+        <div className="Loader">{loading && <BooksLoader />}</div>
+
         {/* Book List */}
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
           <AnimatePresence>
-            {mockBooks?.map((book) => (
+            {wishlists?.data.map((book) => (
               <motion.div
                 key={book.id}
                 layout
@@ -187,7 +180,7 @@ const Wishlist = () => {
         </div>
 
         {/* Empty State */}
-        {mockBooks.length === 0 && (
+        {wishlists?.data.length === 0 && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}

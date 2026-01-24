@@ -1,10 +1,15 @@
 const { findUserById } = require("../Models/userModel");
-const { findBookById } = require("./bookService");
-const db = require("../Config/db.connection");
+const { getBookById } = require("./bookService");
+const {
+  findWishlistEntry,
+  updateWishlistStatus,
+  insertWishlist,
+  getWishlistBooksByUserId,
+} = require("../Models/wishlistModel");
+const { formatBook } = require("../utils/formatter");
 
 const addToWishlistService = async (userId, bookId) => {
   try {
-    // 1. Input validation
     if (!userId || !bookId) {
       return {
         success: false,
@@ -13,7 +18,6 @@ const addToWishlistService = async (userId, bookId) => {
       };
     }
 
-    // 2. Check user exists
     const userExists = await findUserById(userId);
     if (!userExists) {
       return {
@@ -23,8 +27,7 @@ const addToWishlistService = async (userId, bookId) => {
       };
     }
 
-    // 3. Check book exists
-    const bookExists = await findBookById(bookId);
+    const bookExists = await getBookById(bookId);
     if (!bookExists) {
       return {
         success: false,
@@ -33,21 +36,13 @@ const addToWishlistService = async (userId, bookId) => {
       };
     }
 
-    // 4. Check existing entry
-    const [existingEntries] = await db.query(
-      "SELECT id, status FROM wishlists WHERE user_id = ? AND book_id = ?",
-      [userId, bookId],
-    );
+    const existingEntries = await findWishlistEntry(userId, bookId);
 
     if (existingEntries.length > 0) {
-      // Toggle status (ACTIVE/INACTIVE)
       const entry = existingEntries[0];
       const newStatus = entry.status === "ACTIVE" ? "INACTIVE" : "ACTIVE";
 
-      await db.query("UPDATE wishlists SET status = ? WHERE id = ?", [
-        newStatus,
-        entry.id,
-      ]);
+      await updateWishlistStatus(entry.id, newStatus);
 
       return {
         success: true,
@@ -61,11 +56,7 @@ const addToWishlistService = async (userId, bookId) => {
       };
     }
 
-    // 5. Insert new entry
-    const [result] = await db.query(
-      "INSERT INTO wishlists (user_id, book_id, status, created_at) VALUES (?, ?, 'ACTIVE', NOW())",
-      [userId, bookId],
-    );
+    const result = await insertWishlist(userId, bookId);
 
     return {
       success: true,
@@ -77,7 +68,6 @@ const addToWishlistService = async (userId, bookId) => {
   } catch (err) {
     console.error("Error in wishlist operation:", err);
 
-    // Handle specific error cases
     if (err.code === "ER_DUP_ENTRY") {
       return {
         success: false,
@@ -103,4 +93,28 @@ const addToWishlistService = async (userId, bookId) => {
   }
 };
 
-module.exports = { addToWishlistService };
+const getWishlistService = async (userId) => {
+  try {
+    if (!userId) {
+      return { success: false, message: "User ID required" };
+    }
+
+    const userExists = await findUserById(userId);
+    if (!userExists) {
+      return { success: false, message: "User not found" };
+    }
+
+    const [wishlist] = await getWishlistBooksByUserId(userId);
+
+    return {
+      success: true,
+      count: wishlist.length,
+      data: wishlist.map(formatBook),
+    };
+  } catch (err) {
+    console.error("Wishlist Service Error:", err);
+    return { success: false, message: "Failed to fetch wishlist" };
+  }
+};
+
+module.exports = { addToWishlistService, getWishlistService };

@@ -6,25 +6,45 @@ import Ratings from "../RatingsReviews/Ratings";
 import { useLocation, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
-import { useDispatch } from "react-redux";
-import { toggleWishlist } from "../../store/Redux/Slices/wishlistSlice";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getAllWishlists,
+  toggleWishlist,
+} from "../../store/Redux/Slices/wishlistSlice";
+import { useEffect } from "react";
+import { useRef } from "react";
 
 const BookCard = ({ book }) => {
   const navigate = useNavigate();
   const path = useLocation().pathname;
   const dispatch = useDispatch();
-  const [isLiked, setIsLiked] = useState(
-    path === "/nextChapter/wishlist" ? true : false,
-  );
+  const [isLiked, setIsLiked] = useState(false);
+  const { loading } = useSelector((state) => state.wishlists);
+  const debounceRef = useRef(null);
 
-  const handleLike = () => {
-    const newLikeStatus = !isLiked;
-    setIsLiked(newLikeStatus);
+  const handleLike = (bookId) => {
+    setIsLiked((prev) => {
+      toast.success(
+        !prev
+          ? `${book.title.slice(0, 20)} added to favorites`
+          : `${book.title.slice(0, 20)} removed from favorites`,
+      );
+      return !prev;
+    });
 
-    if (newLikeStatus) {
-      toast.success(`${book.title.slice(0, 20)}... added to favorites!`);
+    if (debounceRef.current) {
+      clearTimeout(debounceRef.current);
     }
+
+    debounceRef.current = setTimeout(async () => {
+      await dispatch(toggleWishlist(bookId));
+      dispatch(getAllWishlists());
+    }, 600);
   };
+
+  useEffect(() => {
+    setIsLiked(book.isLiked ? true : false);
+  }, [book.isLiked]);
 
   return (
     <div
@@ -93,7 +113,9 @@ const BookCard = ({ book }) => {
             <motion.div
               whileTap={{ scale: 0.8 }}
               whileHover={{ scale: 1.1 }}
-              onClick={handleLike}
+              onClick={() => {
+                if (!loading) handleLike(book.book_id);
+              }}
               className="cursor-pointer"
             >
               <motion.div
@@ -104,7 +126,6 @@ const BookCard = ({ book }) => {
                 transition={{ duration: 0.5 }}
               >
                 <FaHeart
-                  onClick={() => dispatch(toggleWishlist("5"))}
                   className={`${isLiked ? "text-red-500" : "text-[#E9D2AF]"}`}
                 />
               </motion.div>
@@ -123,17 +144,30 @@ const BookCard = ({ book }) => {
                     transition={{ duration: 0.8 }}
                     className="absolute text-red-400 pointer-events-none"
                   >
-                    <FaHeart onClick={() => dispatch(toggleWishlist("8"))} />
+                    <FaHeart />
                   </motion.div>
                   <motion.div
                     initial={{ scale: 0, opacity: 1 }}
                     animate={{
                       scale: [0, 1.2],
                       opacity: [1, 0],
-                      y: -20,
+                      y: -36,
                       x: 5,
                     }}
                     transition={{ duration: 0.6, delay: 0.2 }}
+                    className="absolute text-red-400 pointer-events-none"
+                  >
+                    <FaHeart />
+                  </motion.div>
+                  <motion.div
+                    initial={{ scale: 0, opacity: 1 }}
+                    animate={{
+                      scale: [0, 0.8],
+                      opacity: [1, 0],
+                      y: -40,
+                      x: 5,
+                    }}
+                    transition={{ duration: 0.2, delay: 0.4 }}
                     className="absolute text-red-400 pointer-events-none"
                   >
                     <FaHeart />

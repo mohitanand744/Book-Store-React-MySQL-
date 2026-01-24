@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { addToWishlist } from "../../../utils/apis/ordersApi";
+import { addToWishlist , getWishlist} from "../../../utils/apis/ordersApi";
 
 export const toggleWishlist = createAsyncThunk(
   "toggleWishlist",
@@ -10,6 +10,20 @@ export const toggleWishlist = createAsyncThunk(
     } catch (error) {
       return rejectWithValue(
         error.response?.data || "Failed to toggle wishlist",
+      );
+    }
+  },
+);
+
+export const getAllWishlists = createAsyncThunk(
+  "getAllWishlists",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await getWishlist();
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data || "Failed to get wishlists",
       );
     }
   },
@@ -38,7 +52,19 @@ const wishlistSlice = createSlice({
       .addCase(toggleWishlist.rejected, (state, action) => {
         state.loading = false;
         state.error = action?.payload;
-      });
+      }).addCase(getAllWishlists.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getAllWishlists.fulfilled, (state, action) => {
+        state.loading = false;
+        state.wishlists = action?.payload;
+        state.error = null;
+      })
+      .addCase(getAllWishlists.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action?.payload;
+      })
   },
 });
 

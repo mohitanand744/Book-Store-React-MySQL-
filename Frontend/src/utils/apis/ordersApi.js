@@ -29,3 +29,10 @@ export const addToWishlist = async (bookId) => {
   );
   return response.data;
 };
+
+export const getWishlist = async () => {
+  const response = await axiosInstance.get("/wishlist/get-wishlist", {
+    withCredentials: true,
+  });
+  return response.data;
+};

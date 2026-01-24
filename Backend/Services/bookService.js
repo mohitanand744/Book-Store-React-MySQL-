@@ -1,42 +1,82 @@
-// services/bookService.js
+const BookModel = require("../models/bookModel");
 const db = require("../Config/db.connection");
 
-const BASE_QUERY = `
-  SELECT 
-    B.ID, B.TITLE, B.DESCRIPTION, B.AUTHOR, B.BOOK_PRICE, B.CATEGORY,
-    A.AUTHOR_DESCRIPTION, A.AUTHOR_ID, A.AUTHOR_IMAGE_URL, A.AUTHOR_RATING,
-    BI.IMAGE_URL 
-  FROM books B 
-  LEFT JOIN book_images BI ON B.ID = BI.BOOK_ID 
-  LEFT JOIN author_details A ON B.AUTHOR = A.AUTHOR_NAME
-`;
+const getAllBooks = (userId) => {
+  return BookModel.findAllBooks(userId);
+};
 
-exports.findAllBooks = () => db.query(BASE_QUERY);
+const getBookById = (id) => {
+  return BookModel.findBookById(id);
+};
 
-exports.findBookById = (id) => db.query(`${BASE_QUERY} WHERE B.ID = ?`, [id]);
+const createBookWithImages = async (bookData, images) => {
+  const { title, description, author, price, category } = bookData;
 
-exports.deleteBook = (id) => db.query("DELETE FROM books WHERE id = ?", [id]);
-
-exports.updateBook = (title, author, description, price, id) =>
-  db.query(
-    "UPDATE books SET title = ?, author = ?, description = ?, book_price = ? WHERE id = ?",
-    [title, author, description, price, id]
+  const [result] = await BookModel.insertBook(
+    title,
+    description,
+    author,
+    price,
+    category,
   );
 
-exports.updateImages = (id, images) =>
-  db.query("UPDATE book_images SET image_url = ? WHERE book_id = ?", [
-    JSON.stringify(images),
-    id,
-  ]);
+  const bookId = result.insertId;
 
-exports.insertBook = (title, description, author, price, category) =>
-  db.query(
-    "INSERT INTO BOOKS (TITLE, DESCRIPTION, AUTHOR, BOOK_PRICE, CATEGORY) VALUES (?, ?, ?, ?, ?)",
-    [title, description, author, price, category]
-  );
+  if (images?.length) {
+    await BookModel.insertImages(bookId, images);
+  }
 
-exports.insertImages = (bookId, images) =>
-  db.query("INSERT INTO BOOK_IMAGES (BOOK_ID, IMAGE_URL) VALUES (?, ?)", [
-    bookId,
-    JSON.stringify(images),
-  ]);
+  return bookId;
+};
+
+const deleteBook = async (id) => {
+  const [result] = await BookModel.deleteBookById(id);
+  return result.affectedRows > 0;
+};
+
+const updateBookWithImages = async (id, bookData, images) => {
+  const connection = await db.getConnection();
+
+  try {
+    await connection.beginTransaction();
+
+    const [bookResult] = await connection.query(
+      "UPDATE books SET title=?, author=?, description=?, book_price=? WHERE id=?",
+      [
+        bookData.title,
+        bookData.author,
+        bookData.description,
+        bookData.price,
+        id,
+      ],
+    );
+
+    if (!bookResult.affectedRows) {
+      await connection.rollback();
+      return false;
+    }
+
+    if (images?.length) {
+      await connection.query(
+        "UPDATE book_images SET image_url=? WHERE book_id=?",
+        [JSON.stringify(images), id],
+      );
+    }
+
+    await connection.commit();
+    return true;
+  } catch (err) {
+    await connection.rollback();
+    throw err;
+  } finally {
+    connection.release();
+  }
+};
+
+module.exports = {
+  getAllBooks,
+  getBookById,
+  createBookWithImages,
+  deleteBook,
+  updateBookWithImages,
+};
