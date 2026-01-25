@@ -98,6 +98,8 @@ import { uploadProfilePic as uploadProfilePicApi } from "../utils/apis/authApi";
 import { useUser } from "../store/Context/UserContext";
 import Spinner from "../components/Loaders/Spinner";
 import { useImagePreview } from "../store/Context/ImagePreviewContext";
+import { validateToken } from "../store/Redux/Slices/authSlice";
+import { useDispatch } from "react-redux";
 
 const UserProfile = () => {
   const [isEditOpen, setIsEditOpen] = useState(false);
@@ -110,6 +112,7 @@ const UserProfile = () => {
   const { openPreview } = useImagePreview();
   const fileInputRef = useRef(null);
   const { preview, setPreview, isUploading, setIsUploading } = useUser();
+  const dispatch = useDispatch();
 
   const uploadProfilePic = async (file) => {
     setIsUploading(true);
@@ -127,7 +130,7 @@ const UserProfile = () => {
     } catch (error) {
       console.error("Upload error:", error);
       toast.error(
-        error.response?.data?.message || "Failed to upload profile picture"
+        error.response?.data?.message || "Failed to upload profile picture",
       );
       setPreview(user.profilePic);
       setIsUploading(false);
@@ -165,6 +168,10 @@ const UserProfile = () => {
       }
     }
   }, [userData]);
+
+  useEffect(() => {
+    dispatch(validateToken());
+  }, [dispatch]);
 
   const handleEdit = () => {
     setEditData({ ...user });
@@ -260,7 +267,7 @@ const UserProfile = () => {
                 <img
                   src={preview}
                   alt="Profile"
-                  className="w-full cursor-pointer h-full border-4 border-orange-500 rounded-full shadow-lg"
+                  className="w-full h-full border-4 border-orange-500 rounded-full shadow-lg cursor-pointer"
                   onClick={() => openPreview(preview, "Profile Image")}
                 />
 
@@ -404,10 +411,11 @@ const UserProfile = () => {
             <div className="hidden md:flex border-b border-[#D3BD9D]">
               <motion.button
                 onClick={() => setActiveTab("activity")}
-                className={`px-4 py-2 text-nowrap text-[16px] relative ${activeTab === "activity"
-                  ? "text-[#5C4C49] opacity-100 font-bold"
-                  : "text-[#5C4C49] opacity-70 font-medium"
-                  }`}
+                className={`px-4 py-2 text-nowrap text-[16px] relative ${
+                  activeTab === "activity"
+                    ? "text-[#5C4C49] opacity-100 font-bold"
+                    : "text-[#5C4C49] opacity-70 font-medium"
+                }`}
               >
                 Recent Activity
                 {activeTab === "activity" && (
@@ -420,10 +428,11 @@ const UserProfile = () => {
 
               <motion.button
                 onClick={() => setActiveTab("orders")}
-                className={`px-4 py-2 text-nowrap text-[16px] relative ${activeTab === "orders"
-                  ? "text-[#5C4C49] opacity-100 font-bold"
-                  : "text-[#5C4C49] opacity-70 font-medium"
-                  }`}
+                className={`px-4 py-2 text-nowrap text-[16px] relative ${
+                  activeTab === "orders"
+                    ? "text-[#5C4C49] opacity-100 font-bold"
+                    : "text-[#5C4C49] opacity-70 font-medium"
+                }`}
               >
                 Recent Orders
                 {activeTab === "orders" && (
@@ -436,10 +445,11 @@ const UserProfile = () => {
 
               <motion.button
                 onClick={() => setActiveTab("wishlist")}
-                className={`px-4 py-2 text-nowrap text-[16px] relative ${activeTab === "wishlist"
-                  ? "text-[#5C4C49] opacity-100 font-bold"
-                  : "text-[#5C4C49] opacity-70 font-medium"
-                  }`}
+                className={`px-4 py-2 text-nowrap text-[16px] relative ${
+                  activeTab === "wishlist"
+                    ? "text-[#5C4C49] opacity-100 font-bold"
+                    : "text-[#5C4C49] opacity-70 font-medium"
+                }`}
               >
                 Wishlist Preview
                 {activeTab === "wishlist" && (
@@ -455,10 +465,11 @@ const UserProfile = () => {
             <div className="bg-white rounded-3xl border-t border-[#D3BD9D] md:hidden flex justify-around py-2 z-50">
               <motion.button
                 onClick={() => setActiveTab("activity")}
-                className={`flex flex-col items-center p-2 w-full relative ${activeTab === "activity"
-                  ? "text-[#5C4C49]"
-                  : "text-[#5C4C49] opacity-70"
-                  }`}
+                className={`flex flex-col items-center p-2 w-full relative ${
+                  activeTab === "activity"
+                    ? "text-[#5C4C49]"
+                    : "text-[#5C4C49] opacity-70"
+                }`}
                 whileTap={{ scale: 0.95 }}
               >
                 <FaHistory className="w-5 h-5" />
@@ -473,10 +484,11 @@ const UserProfile = () => {
 
               <motion.button
                 onClick={() => setActiveTab("orders")}
-                className={`flex flex-col items-center p-2 w-full relative ${activeTab === "orders"
-                  ? "text-[#5C4C49]"
-                  : "text-[#5C4C49] opacity-70"
-                  }`}
+                className={`flex flex-col items-center p-2 w-full relative ${
+                  activeTab === "orders"
+                    ? "text-[#5C4C49]"
+                    : "text-[#5C4C49] opacity-70"
+                }`}
                 whileTap={{ scale: 0.95 }}
               >
                 <FaShoppingBag className="w-5 h-5" />
@@ -491,10 +503,11 @@ const UserProfile = () => {
 
               <motion.button
                 onClick={() => setActiveTab("wishlist")}
-                className={`flex flex-col items-center p-2 w-full relative ${activeTab === "wishlist"
-                  ? "text-[#5C4C49]"
-                  : "text-[#5C4C49] opacity-70"
-                  }`}
+                className={`flex flex-col items-center p-2 w-full relative ${
+                  activeTab === "wishlist"
+                    ? "text-[#5C4C49]"
+                    : "text-[#5C4C49] opacity-70"
+                }`}
                 whileTap={{ scale: 0.95 }}
               >
                 <FaHeart className="w-5 h-5" />
@@ -539,7 +552,7 @@ const UserProfile = () => {
                       showAction={true}
                       actionText="Browse Books"
                       actionLink="/nextChapter/books"
-                    //onActionClick={toggleCart}
+                      //onActionClick={toggleCart}
                     />
                   )}
                 </>
@@ -570,7 +583,7 @@ const UserProfile = () => {
                         showAction={true}
                         actionText="Explore More"
                         actionLink="/nextChapter/books"
-                      //onActionClick={toggleCart}
+                        //onActionClick={toggleCart}
                       />
                     </div>
                   )}
@@ -803,12 +816,13 @@ const ActivityItem = ({
         />
         {status && (
           <span
-            className={`absolute top-2 right-2 px-2 py-1 rounded-full text-xs font-medium ${status === "Delivered"
-              ? "bg-green-100 text-green-800"
-              : status === "Shipped"
-                ? "bg-blue-100 text-blue-800"
-                : "bg-yellow-100 text-yellow-800"
-              }`}
+            className={`absolute top-2 right-2 px-2 py-1 rounded-full text-xs font-medium ${
+              status === "Delivered"
+                ? "bg-green-100 text-green-800"
+                : status === "Shipped"
+                  ? "bg-blue-100 text-blue-800"
+                  : "bg-yellow-100 text-yellow-800"
+            }`}
           >
             {status}
           </span>

@@ -1,12 +1,13 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { addToWishlist , getWishlist} from "../../../utils/apis/ordersApi";
+import { addToWishlist, getWishlist } from "../../../utils/apis/ordersApi";
 
 export const toggleWishlist = createAsyncThunk(
   "toggleWishlist",
   async (bookId, { rejectWithValue }) => {
     try {
       const response = await addToWishlist(bookId);
-      return response.data;
+
+      return response;
     } catch (error) {
       return rejectWithValue(
         error.response?.data || "Failed to toggle wishlist",
@@ -22,15 +23,14 @@ export const getAllWishlists = createAsyncThunk(
       const response = await getWishlist();
       return response.data;
     } catch (error) {
-      return rejectWithValue(
-        error.response?.data || "Failed to get wishlists",
-      );
+      return rejectWithValue(error.response?.data || "Failed to get wishlists");
     }
   },
 );
 
 const initialState = {
   wishlists: null,
+  messageData: null,
   loading: false,
   error: null,
 };
@@ -44,15 +44,19 @@ const wishlistSlice = createSlice({
       .addCase(toggleWishlist.pending, (state) => {
         state.loading = true;
         state.error = null;
+        state.messageData = null;
       })
       .addCase(toggleWishlist.fulfilled, (state, action) => {
         state.loading = false;
         state.error = null;
+        state.messageData = action?.payload;
       })
       .addCase(toggleWishlist.rejected, (state, action) => {
         state.loading = false;
         state.error = action?.payload;
-      }).addCase(getAllWishlists.pending, (state) => {
+        state.messageData = null;
+      })
+      .addCase(getAllWishlists.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
@@ -64,7 +68,7 @@ const wishlistSlice = createSlice({
       .addCase(getAllWishlists.rejected, (state, action) => {
         state.loading = false;
         state.error = action?.payload;
-      })
+      });
   },
 });
 

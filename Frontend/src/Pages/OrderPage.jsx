@@ -23,6 +23,7 @@ import { useEffect } from "react";
 import { useLoader } from "../Hooks/useLoader";
 import BooksLoader from "../components/Loaders/BooksLoader";
 import BackButton from "../components/Buttons/BackButton";
+import NoData from "../components/EmptyData/noData";
 
 const statusConfig = {
   PLACED: {
@@ -264,7 +265,7 @@ const OrdersPage = () => {
                                     .catch((error) => {
                                       console.error(
                                         "Failed to copy to clipboard:",
-                                        error
+                                        error,
                                       );
                                     });
                                 }}
@@ -370,12 +371,12 @@ const OrdersPage = () => {
                                             <span className="text-gray-600 ">
                                               <span className="pr-3">
                                                 {getDeliveryLabel(
-                                                  item?.item_status
+                                                  item?.item_status,
                                                 )}
                                               </span>
                                               {order?.expected_delivery &&
                                                 new Date(
-                                                  order.expected_delivery
+                                                  order.expected_delivery,
                                                 ).toLocaleDateString("en-GB", {
                                                   day: "2-digit",
                                                   month: "long",
@@ -388,7 +389,7 @@ const OrdersPage = () => {
                                           <button
                                             onClick={() =>
                                               navigate(
-                                                `/nextChapter/tracking/${item?.order_item_id}/${item?.tracking_id}`
+                                                `/nextChapter/tracking/${item?.order_item_id}/${item?.tracking_id}`,
                                               )
                                             }
                                             className="px-3 py-1 text-xs bg-[#D3BD9D] hover:bg-[#5C4C49] text-[#5C4C49] hover:text-white rounded-full transition-colors"
@@ -422,6 +423,19 @@ const OrdersPage = () => {
                   </motion.div>
                 );
               })
+            )}
+
+            {orders.length === 0 && (
+              <>
+                <NoData
+                  title="No Orders Found"
+                  message="You have not placed any orders yet."
+                  icon="cart"
+                  showAction={true}
+                  actionText="Explore More"
+                  actionLink="/nextChapter/books"
+                />
+              </>
             )}
           </div>
         </div>

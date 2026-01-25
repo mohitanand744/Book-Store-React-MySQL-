@@ -19,6 +19,8 @@ exports.formatBook = (item) => ({
 exports.formatUser = (rows) => {
   const user = rows[0];
 
+  console.log("User-", user);
+
   console.log("userrrrrrrrrrrrrrr", user);
 
   const date = new Date(user?.created_at);
@@ -26,6 +28,7 @@ exports.formatUser = (rows) => {
     month: "long",
     year: "numeric",
   });
+  console.log("wishlist_count", user.wishlist_count);
 
   return {
     name: `${user?.first_name} ${user?.last_name}`,
@@ -38,7 +41,7 @@ exports.formatUser = (rows) => {
     address: [],
     phone: user?.phone || null,
     orders: user?.orders_count || 0,
-    wishlist: 0,
+    wishlist: user?.wishlist_count || 0,
     favoriteGenres: ["Fantasy", "Mystery", "Science Fiction"],
     readingPreferences: {
       format: "Paperback",

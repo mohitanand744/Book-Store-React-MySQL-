@@ -3,30 +3,22 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 
 const NoData = ({
-  // Content props
   title = "No data found",
   message = "Looks like there's nothing to display at the moment",
 
-  // Icon props
   icon = "default", // 'default', 'search', 'user', 'heart', 'warning', 'custom'
   customIcon = null,
 
-  // Action props
   showAction = false,
   actionText = "Explore More",
   actionLink = "/",
   onActionClick,
 
-  // Style props
   className = "",
   titleClassName = "",
   messageClassName = "",
   iconClassName = "",
-
-  // Animation props
   animateIcon = true,
-
-  // Additional content
   children,
 }) => {
   // Icon configurations
@@ -146,7 +138,7 @@ const NoData = ({
       className={`flex flex-col items-center justify-center max-w-md p-8 mx-auto rounded-xl ${className}`}
     >
       <motion.div
-        className="flex items-center justify-center w-24 h-24 border-2 border-[#D3BD9D] rounded-full"
+        className="flex items-center mb-5 justify-center w-24 h-24 border-2 border-[#D3BD9D] rounded-full"
         animate={
           animateIcon
             ? {

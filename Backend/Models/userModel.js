@@ -30,7 +30,7 @@ const createUser = async (userData) => {
       emailVerified,
       termsAccepted,
       picture,
-    ]
+    ],
   );
 
   return result;
@@ -38,15 +38,26 @@ const createUser = async (userData) => {
 
 // Find user by email
 const findUserByEmail = async (email) => {
-  const [rows] = await db.execute(`SELECT 
-      u.*,
-      COUNT(o.id) AS orders_count
-    FROM users u
-    LEFT JOIN orders o ON u.id = o.user_id
-    WHERE u.email = ?
-    GROUP BY u.id`, [
-    email,
-  ]);
+  const [rows] = await db.execute(
+    `SELECT 
+  u.*,
+  IFNULL(o.orders_count, 0) AS orders_count,
+  IFNULL(w.wishlist_count, 0) AS wishlist_count
+FROM users u
+LEFT JOIN (
+  SELECT user_id, COUNT(*) AS orders_count
+  FROM orders
+  GROUP BY user_id
+) o ON u.id = o.user_id
+LEFT JOIN (
+  SELECT user_id, COUNT(*) AS wishlist_count
+  FROM wishlists WHERE status = 'ACTIVE'
+  GROUP BY user_id
+) w ON u.id = w.user_id
+WHERE u.email = ?;
+`,
+    [email],
+  );
 
   return rows.length ? rows[0] : null;
 };
@@ -81,12 +92,21 @@ const updateEmailVerified = async (email) => {
 
 const findUserById = async (userId) => {
   const query = `SELECT 
-      u.*,
-      COUNT(o.id) AS orders_count
-    FROM users u
-    LEFT JOIN orders o ON u.id = o.user_id
-    WHERE u.id = ?
-    GROUP BY u.id`;
+  u.*,
+  IFNULL(o.orders_count, 0) AS orders_count,
+  IFNULL(w.wishlist_count, 0) AS wishlist_count
+FROM users u
+LEFT JOIN (
+  SELECT user_id, COUNT(*) AS orders_count
+  FROM orders
+  GROUP BY user_id
+) o ON u.id = o.user_id
+LEFT JOIN (
+  SELECT user_id, COUNT(*) AS wishlist_count
+  FROM wishlists WHERE status = 'ACTIVE'
+  GROUP BY user_id
+) w ON u.id = w.user_id
+WHERE u.id = ?;`;
   const [rows] = await db.query(query, [userId]);
   return rows[0] || null;
 };

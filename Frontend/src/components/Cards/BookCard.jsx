@@ -13,32 +13,47 @@ import {
 } from "../../store/Redux/Slices/wishlistSlice";
 import { useEffect } from "react";
 import { useRef } from "react";
+import useAuth from "../../Hooks/useAuth";
 
 const BookCard = ({ book }) => {
   const navigate = useNavigate();
-  const path = useLocation().pathname;
+  const path = useLocation().pathname.replaceAll("/", "");
   const dispatch = useDispatch();
   const [isLiked, setIsLiked] = useState(false);
   const { loading } = useSelector((state) => state.wishlists);
   const debounceRef = useRef(null);
+  const { isAuthenticated, userData } = useAuth();
+  const toastRef = useRef(null);
 
   const handleLike = (bookId) => {
-    setIsLiked((prev) => {
-      toast.success(
-        !prev
-          ? `${book.title.slice(0, 20)} added to favorites`
-          : `${book.title.slice(0, 20)} removed from favorites`,
-      );
-      return !prev;
-    });
+    if (!isAuthenticated) {
+      toast.error("Please login to add to wishlist");
+      return;
+    }
 
-    if (debounceRef.current) {
-      clearTimeout(debounceRef.current);
+    const previousLikedState = isLiked;
+
+    setIsLiked(!previousLikedState);
+
+    if (!toastRef.current) {
+      toastRef.current = toast.loading("Updating wishlist...");
     }
 
     debounceRef.current = setTimeout(async () => {
-      await dispatch(toggleWishlist(bookId));
-      dispatch(getAllWishlists());
+      try {
+        const res = await dispatch(toggleWishlist(bookId)).unwrap();
+
+        setIsLiked(res?.message?.includes("removed") ? false : true);
+        toast.success(res?.message, { id: toastRef.current });
+        toastRef.current = null;
+
+        if (path === "nextChapterwishlist") {
+          dispatch(getAllWishlists());
+        }
+      } catch (err) {
+        setIsLiked(previousLikedState);
+        toast.error(err?.message || "Wishlist update failed");
+      }
     }, 600);
   };
 
@@ -66,8 +81,8 @@ const BookCard = ({ book }) => {
           />
         </div>
 
-        <div className="absolute left-0  text-sm z-[9999] transition-all duration-300 scale-0 group-hover:translate-y-0 group-hover:scale-100 group-hover:translate-x-0 rotate-45 group-hover:rotate-0 translate-x-[-6rem] translate-y-[-10rem]  font-medium bg-[#5C4C49] p-4 rounded-3xl  profilePOPup">
-          <div className="relative mx-auto mb-2 border border-white h-44 w-44 rounded-3xl">
+        <div className="absolute left-0 w-[20rem] text-sm z-[9999] transition-all duration-300 scale-0 group-hover:translate-y-0 group-hover:scale-100 group-hover:translate-x-0 rotate-45 group-hover:rotate-0 translate-x-[-6rem] translate-y-[-10rem]  font-medium bg-[#5C4C49] p-4 rounded-3xl">
+          <div className="relative mx-auto mb-2 border-[4px] border-white h-44 w-44 rounded-3xl">
             <img
               src={
                 book.author?.author_image ||
@@ -114,7 +129,7 @@ const BookCard = ({ book }) => {
               whileTap={{ scale: 0.8 }}
               whileHover={{ scale: 1.1 }}
               onClick={() => {
-                if (!loading) handleLike(book.book_id);
+                if (!loading) handleLike(book.book_id, userData?.userId);
               }}
               className="cursor-pointer"
             >

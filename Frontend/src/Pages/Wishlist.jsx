@@ -1,58 +1,16 @@
-import React, { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import {
-  FiHeart,
-  FiX,
-  FiShoppingBag,
-  FiSearch,
-  FiChevronRight,
-} from "react-icons/fi";
-import { FaHeart, FaBookOpen } from "react-icons/fa";
-import { mockBooks } from "../../Data/mockData";
+import { FiHeart, FiChevronRight } from "react-icons/fi";
 import BookCard from "../components/Cards/BookCard";
 import Banners from "./../components/Banners/Banners";
 import SearchBooks from "../components/SearchBars/SearchBooks";
 import BackButton from "../components/Buttons/BackButton";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllWishlists } from "../store/Redux/Slices/wishlistSlice";
-import BooksLoader from "../components/Loaders/BooksLoader";
+import NoData from "./../components/EmptyData/noData";
+import { BookSvg } from "../components/SVGs/SVGs";
 
 const Wishlist = () => {
-  const [books, setBooks] = useState([
-    {
-      id: "1",
-      title: "The Silent Grove",
-      author: "Martha Wells",
-      price: 24.99,
-      coverImage:
-        "https://images.unsplash.com/photo-1544947950-fa07a98d237f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
-      liked: true,
-      genre: "Fantasy",
-      rating: 4.5,
-    },
-    {
-      id: "2",
-      title: "Architecture of Tomorrow",
-      author: "James Clear",
-      price: 29.99,
-      coverImage:
-        "https://images.unsplash.com/photo-1589998059171-988d887df646?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
-      liked: true,
-      genre: "Non-Fiction",
-      rating: 4.2,
-    },
-    {
-      id: "3",
-      title: "Desert Storms",
-      author: "Elena Ferrante",
-      price: 19.99,
-      coverImage:
-        "https://images.unsplash.com/photo-1531346878377-a5be20888e57?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
-      liked: true,
-      genre: "Adventure",
-      rating: 4.7,
-    },
-  ]);
   const dispatch = useDispatch();
   const { loading, wishlists } = useSelector((state) => state.wishlists);
 
@@ -111,21 +69,7 @@ const Wishlist = () => {
                   repeatType: "reverse",
                 }}
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="text-[#5C4C49]"
-                >
-                  <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
-                  <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
-                </svg>
+                <BookSvg />
               </motion.div>
 
               {/* Count with gradient text */}
@@ -157,23 +101,20 @@ const Wishlist = () => {
           </motion.div>
         </div>
 
-        <div className="Loader">{loading && <BooksLoader />}</div>
-
         {/* Book List */}
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
           <AnimatePresence>
             {wishlists?.data.map((book) => (
               <motion.div
-                key={book.id}
+                key={book.book_id} // ✅ important
                 layout
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.9 }}
                 transition={{ duration: 0.3 }}
                 whileHover={{ y: -10 }}
-                className=""
               >
-                <BookCard book={book} key={book.book_id} />
+                <BookCard book={book} />
               </motion.div>
             ))}
           </AnimatePresence>
@@ -181,25 +122,16 @@ const Wishlist = () => {
 
         {/* Empty State */}
         {wishlists?.data.length === 0 && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.4 }}
-            className="py-16 text-center"
-          >
-            <div className="mx-auto w-24 h-24 bg-[#D3BD9D] rounded-full flex items-center justify-center mb-6">
-              <FiHeart className="text-4xl text-[#5C4C49]" />
-            </div>
-            <h3 className="text-xl font-medium text-[#5C4C49] mb-2">
-              Your wishlist is empty
-            </h3>
-            <p className="text-[#5C4C49]/80 mb-6">
-              Start saving your favorite books!
-            </p>
-            <button className="bg-[#5C4C49] text-[#FFE6C1] px-6 py-3 rounded-lg hover:bg-[#5C4C49]/90 transition-colors flex items-center mx-auto">
-              Browse Books <FiChevronRight className="ml-2" />
-            </button>
-          </motion.div>
+          <>
+            <NoData
+              title=" Your wishlist is empty"
+              message="Start saving your favorite books."
+              icon="heart"
+              showAction={true}
+              actionText="Browse Books"
+              actionLink="/nextChapter/books"
+            />
+          </>
         )}
       </div>
     </motion.div>

@@ -9,15 +9,28 @@ import ReviewsContainer from "../components/ScrollingContainer/ReviewsContainer"
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAllBooks } from "../store/Redux/Slices/BooksSlice";
 import ShowErrors from "../components/Errors/ShowErrors";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import BooksLoader from "../components/Loaders/BooksLoader";
 import Button from "../components/Buttons/Button";
 import { mockBooks } from "../../Data/mockData";
 import { useLoader } from "../Hooks/useLoader";
+import { toast } from "sonner";
 
 const Home = () => {
   const { loading } = useLoader();
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
 
+  useEffect(() => {
+    const provider = searchParams.get("loginProvider");
+
+    if (provider === "google") {
+      toast.success("Successfully logged in with Google");
+
+      // remove query params from URL
+      navigate(window.location.pathname, { replace: true });
+    }
+  }, []);
   /*   const dispatch = useDispatch();
   const { books, error, loading } = useSelector((state) => state.books);
 
