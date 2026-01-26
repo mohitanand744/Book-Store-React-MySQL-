@@ -56,7 +56,7 @@ const categories = [
   {
     name: "Poetry",
     image:
-      "https://cdn-ildgkkj.nitrocdn.com/rBhnaTyHFGWoXxWQcwVrqmFYMpYOqqHG/assets/images/optimized/rev-ea79285/thewritelife.com/wp-content/uploads/2023/06/best-poetry-books_pexels-thought-catalog-904616-1024x683.jpg",
+      "https://piv-prod.s3.ca-central-1.amazonaws.com/public/styles/focal_point_2000x800/public/2020-team-regionals-1400x500_0.jpg.webp?VersionId=ps7pcESVPE_cWG37HlHr9xn0gxcI9Hfu&itok=rwnsT1UV",
   },
   {
     name: "Adventure",
