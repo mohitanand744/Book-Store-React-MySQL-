@@ -73,7 +73,7 @@ const Home = () => {
       <div className="mx-auto w-[97%]">
         <div className="mb-14">
           <h1 className="relative mx-auto my-5 text-2xl font-semibold text-center w-fit md:text-4xl ">
-            Deal of the day <CountdownTimer />
+            Deal of the day <CountdownTimer   />
           </h1>
 
           {loading ? (

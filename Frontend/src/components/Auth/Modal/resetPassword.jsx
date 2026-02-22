@@ -53,7 +53,7 @@ const ResetPasswordModal = ({
         emailValue,
         data.newPassword,
         data.confirmPassword,
-        resetToken
+        resetToken,
       );
 
       if (response?.success) {
@@ -65,7 +65,7 @@ const ResetPasswordModal = ({
     } catch (error) {
       toast.error(
         error.response?.data?.message ||
-          "Something went wrong. Please try again later."
+          "Something went wrong. Please try again later.",
       );
 
       setShowReset(false);
@@ -102,7 +102,7 @@ const ResetPasswordModal = ({
       setEmailResent(false);
       toast.error(
         error.response?.data?.message ||
-          "Something went wrong. Please try again later."
+          "Something went wrong. Please try again later.",
       );
     }
 
@@ -215,8 +215,8 @@ const ResetPasswordModal = ({
               {countdown > 0
                 ? `Resend in ${countdown}s`
                 : isResending
-                ? "Sending..."
-                : "Resend Reset Link"}
+                  ? "Sending..."
+                  : "Resend Reset Link"}
             </Button>
             {warningMsg && (
               <CancelModalWarning
@@ -341,27 +341,25 @@ export default ResetPasswordModal;
 
 const CancelModalWarning = ({ confirmClose, setWarningMsg }) => {
   return (
-    <div className="absolute top-[-10rem] left-0 flex items-center justify-center w-full h-full bg-black bg-opacity-50">
-      <div className="p-4 bg-white rounded-lg shadow-lg">
+    <div className="absolute top-[-10rem] left-0 flex items-center justify-center w-full h-full bg-black bg-opacity-40">
+      <div className="w-full max-w-md p-6 bg-white border-t-[5px] border-b-[5px] border-yellow-500 shadow-lg rounded-xl">
         <h2 className="mb-2 text-xl text-[#5E4C37] font-bold">
-          Password Reset
+          Leave Password Reset?
         </h2>
-        <p className="text-gray-600">
-          <b className="text-yellow-500">Warning</b>: If you cancel the reset
-          process, you'll need to use the reset link sent to your email.
-          Remember, the reset link is valid for only 10 minutes. Are you sure
-          you want to cancel?
+
+        <p className="leading-relaxed text-gray-600">
+          You're currently in the middle of resetting your password. If you exit
+          now, you can always continue using the reset link sent to your email.
+          Please note that the link will remain valid for 10 minutes.
         </p>
-        <div className="flex items-center gap-4 mt-4">
-          <Button variant="primary" className="" onClick={confirmClose}>
-            Confirm
+
+        <div className="flex items-center justify-end gap-4 mt-6">
+          <Button variant="outline" onClick={() => setWarningMsg(false)}>
+            Stay Here
           </Button>
-          <Button
-            variant="outline"
-            className="hover:bg-red-800 hover:text-white"
-            onClick={() => setWarningMsg(false)}
-          >
-            Cancel
+
+          <Button variant="primary" onClick={confirmClose}>
+            Exit Reset
           </Button>
         </div>
       </div>

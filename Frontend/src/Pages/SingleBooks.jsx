@@ -378,7 +378,7 @@ const SingleBooks = () => {
                       <div className="flex-1">
                         {[5, 4, 3, 2, 1].map((star) => {
                           const count = reviews.filter(
-                            (r) => r.rating === star
+                            (r) => r.rating === star,
                           ).length;
                           const percentage = (count / reviews.length) * 100;
                           return (

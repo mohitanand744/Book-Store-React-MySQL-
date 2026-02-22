@@ -18,7 +18,7 @@ const randomFromArray = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
 const randomDateBetween = (start, end) => {
   return new Date(
-    start.getTime() + Math.random() * (end.getTime() - start.getTime())
+    start.getTime() + Math.random() * (end.getTime() - start.getTime()),
   );
 };
 
@@ -75,7 +75,19 @@ const seedOrders = async () => {
 
     // Fetch existing users & books
     const [users] = await db.query(`SELECT id FROM users`);
-    const [books] = await db.query(`SELECT id, book_price FROM books`);
+    const [books] = await db.query(`
+  SELECT 
+    b.id, 
+    b.book_price,
+    (
+      SELECT bi.image_url 
+      FROM book_images bi 
+      WHERE bi.book_id = b.id 
+      ORDER BY bi.image_id ASC 
+      LIMIT 1
+    ) AS cover_image
+  FROM books b
+`);
 
     if (!users.length || !books.length) {
       throw new Error("Users or Books table is empty");
@@ -91,7 +103,7 @@ const seedOrders = async () => {
 
       const expectedDelivery = randomDateBetween(
         new Date(createdAt),
-        new Date(createdAt.getTime() + 7 * 24 * 60 * 60 * 1000)
+        new Date(createdAt.getTime() + 7 * 24 * 60 * 60 * 1000),
       );
 
       const orderNumber = generateOrderNumber();
@@ -119,7 +131,7 @@ const seedOrders = async () => {
           orderStatus,
           expectedDelivery,
           address,
-        ]
+        ],
       );
 
       const orderId = orderResult.insertId;
@@ -164,7 +176,7 @@ const seedOrders = async () => {
             arrivingDate,
             trackingId,
             discounts[Math.floor(Math.random() * discounts.length)],
-          ]
+          ],
         );
       }
 
