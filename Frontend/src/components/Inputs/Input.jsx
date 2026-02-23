@@ -26,7 +26,7 @@ const Input = (
     as: Component = "input", // Default to 'input' if not specified
     ...props
   },
-  ref
+  ref,
 ) => {
   const [showPassword, setShowPassword] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -114,11 +114,25 @@ const Input = (
           </div>
         )}
         {error && (
-          <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-            <ExclamationCircleIcon
-              className="w-5 h-5 text-red-500"
-              aria-hidden="true"
-            />
+          <div className="absolute inset-y-0 right-0 flex items-center gap-1 pr-3 pointer-events-none">
+            {type === "password" ? (
+              <button
+                type="button"
+                onClick={() => setShowPassword((prev) => !prev)}
+                className="focus:outline-none pointer-events-auto text-[#5e4c37a2]"
+              >
+                {showPassword ? (
+                  <EyeSlashIcon className="w-5 h-5" />
+                ) : (
+                  <EyeIcon className="w-5 h-5" />
+                )}
+              </button>
+            ) : (
+              <ExclamationCircleIcon
+                className="w-5 h-5 text-red-500"
+                aria-hidden="true"
+              />
+            )}
           </div>
         )}
       </div>
