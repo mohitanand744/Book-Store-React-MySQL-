@@ -268,7 +268,7 @@ exports.verifyResetToken = async (token) => {
       };
     }
 
-    return { valid: true, id: decoded.id };
+    return { valid: true, id: decoded.id, email: decoded.email };
   } catch (err) {
     if (err.name === "TokenExpiredError") {
       return {

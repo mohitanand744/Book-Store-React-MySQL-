@@ -163,7 +163,7 @@ const verifyResetTokenController = async (req, res, next) => {
 
     const result = await verifyResetToken(token);
     if (result.valid) {
-      return successResponse(res, 200);
+      return successResponse(res, 200, "", { email: result.email });
     }
 
     errorResponse(res, 400, result?.message);
@@ -212,7 +212,7 @@ const getGoogleLoginPage = (req, res, next) => {
     res.cookie("google_code_verifier", codeVerifier, cookieConfig);
 
     console.log(
-      `${process.env.BACKEND_BASE_URL}/api/${process.env.API_VERSION}/auth/google/callback`
+      `${process.env.BACKEND_BASE_URL}/api/${process.env.API_VERSION}/auth/google/callback`,
     );
 
     res.redirect(url.toString());
@@ -286,7 +286,7 @@ const getGoogleCallBack = async (req, res, next) => {
       200,
       "Logged in with Google",
       {},
-      `${process.env.FRONTEND_URL}/nextChapter/?loginProvider=google`
+      `${process.env.FRONTEND_URL}/nextChapter/?loginProvider=google`,
     );
   } catch (err) {
     const status = err.status || 500;

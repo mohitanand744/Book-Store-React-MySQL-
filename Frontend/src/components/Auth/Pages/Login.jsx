@@ -33,8 +33,8 @@ const Login = () => {
   const [showForgot, setShowForgot] = useState(false);
   const [showResetModal, setShowResetModal] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
-  const [resetToken, setResetToken] = useState(() =>
-    localStorage.getItem("resetToken")
+  const [resetToken, setResetToken] = useState(
+    () => localStorage.getItem("resetToken") || false,
   );
   const [verificationStatus, setVerificationStatus] = useState("");
   const [countdown, setCountdown] = useState(0);
@@ -43,6 +43,13 @@ const Login = () => {
   const passwordValue = watch("password");
   const location = useLocation();
   const [verificationEmail, setVerificationEmail] = useState(null);
+  const [forgotPasswordEmail, setForgotPasswordEmail] = useState(
+    null || localStorage.getItem("forgotPasswordEmail"),
+  );
+  const [
+    afterExitingUserResettingPasswordPopup,
+    setAfterExitingUserResettingPasswordPopupPopup,
+  ] = useState(false);
   const dispatch = useDispatch();
 
   console.log("isAuth", isAuthenticated);
@@ -54,6 +61,7 @@ const Login = () => {
       if (response?.success) {
         setShowResetModal(true);
         setLinkSent(false);
+        setForgotPasswordEmail(response?.data?.email);
       }
     } catch (error) {
       setShowResetModal(false);
@@ -75,7 +83,10 @@ const Login = () => {
     if (token) {
       localStorage.setItem("resetToken", token);
       setResetToken(token);
-      navigate("/", { replace: true });
+      setAfterExitingUserResettingPasswordPopupPopup(
+        isAuthenticated ? true : false,
+      );
+
       return;
     }
 
@@ -92,13 +103,16 @@ const Login = () => {
       navigate("/", { replace: true });
       return;
     }
-  }, [location, navigate]);
+  }, [location, navigate, isAuthenticated]);
 
   useEffect(() => {
     if (resetToken) {
       handleResetTokenVerification();
+      navigate("/", { replace: true });
+    } else if (!resetToken && isAuthenticated) {
+      navigate("/nextChapter", { replace: true });
     }
-  }, [resetToken]);
+  }, [resetToken, navigate, isAuthenticated]);
 
   useEffect(() => {
     if (verificationStatus === "alreadyVerified") {
@@ -121,12 +135,6 @@ const Login = () => {
     }
   }, [setValue]);
 
-  useEffect(() => {
-    if (isAuthenticated) {
-      navigate("/nextChapter", { replace: true });
-    }
-  }, [isAuthenticated, navigate]);
-
   const onSubmit = async (data) => {
     try {
       setVerificationEmail(data.email);
@@ -148,7 +156,7 @@ const Login = () => {
             JSON.stringify({
               email: data.email,
               password: data.password,
-            })
+            }),
           );
         } else {
           localStorage.removeItem("loginData");
@@ -179,7 +187,7 @@ const Login = () => {
       } else {
         toast.error(
           error.response?.data?.message ||
-            "Something went wrong. Please try again later."
+            "Something went wrong. Please try again later.",
         );
       }
     }
@@ -452,10 +460,20 @@ const Login = () => {
         showReset={showResetModal}
         setShowReset={setShowResetModal}
         resetToken={resetToken}
+        setResetToken={setResetToken}
         email={emailValue}
         emailVerified={linkSent}
         countdown={countdown}
+        setLinkSent={setLinkSent}
         setCountdown={setCountdown}
+        isAuthenticated={isAuthenticated}
+        forgotPasswordEmail={forgotPasswordEmail}
+        afterExitingUserResettingPasswordPopup={
+          afterExitingUserResettingPasswordPopup
+        }
+        setAfterExitingUserResettingPasswordPopupPopup={
+          setAfterExitingUserResettingPasswordPopupPopup
+        }
       />
 
       <EmailVerificationStatus

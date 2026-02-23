@@ -12,6 +12,9 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useEffect } from "react";
 import { forgotPassword, resetPassword } from "../../../utils/apis/authApi";
 import { toast } from "sonner";
+import useAuth from "../../../Hooks/useAuth";
+import { use } from "react";
+import { useNavigate } from "react-router-dom";
 
 const ResetPasswordModal = ({
   showReset,
@@ -21,6 +24,12 @@ const ResetPasswordModal = ({
   resetToken,
   countdown,
   setCountdown,
+  isAuthenticated,
+  forgotPasswordEmail,
+  setLinkSent,
+  setResetToken,
+  afterExitingUserResettingPasswordPopup,
+  setAfterExitingUserResettingPasswordPopupPopup,
 }) => {
   const {
     register,
@@ -36,10 +45,10 @@ const ResetPasswordModal = ({
   const [emailResent, setEmailResent] = useState(false);
   const [isResending, setIsResending] = useState(false);
   const [warningMsg, setWarningMsg] = useState(false);
+  const navigate = useNavigate();
   const newPassword = watch("newPassword");
   const emailValue = watch("email");
-
-  const forgotPasswordEmail = localStorage.getItem("forgotPasswordEmail");
+  const { userData } = useAuth();
 
   useEffect(() => {
     if (forgotPasswordEmail) {
@@ -59,7 +68,7 @@ const ResetPasswordModal = ({
       if (response?.success) {
         setShowReset(false);
         toast.success(response?.message);
-
+        navigate(isAuthenticated ? "/nextChapter" : "/");
         localStorage.removeItem("resetToken");
       }
     } catch (error) {
@@ -232,6 +241,60 @@ const ResetPasswordModal = ({
               Cancel
             </Button>
           </div>
+        </div>
+      </Modal>
+    );
+  }
+
+  if (isAuthenticated && afterExitingUserResettingPasswordPopup) {
+    return (
+      <Modal isOpen={showReset} onClose={handleClose}>
+        <h2 className="text-xl text-center font-bold text-[#5E4C37] mb-1">
+          Account Confirmation
+        </h2>
+        <p className="mb-7 text-sm text-center text-[#5E4C37]">
+          Please confirm your account before resetting your password.
+        </p>
+
+        <div className="space-y-3 text-[#5E4C37]">
+          <p>You are currently logged in as:</p>
+
+          <p className="font-semibold text-[#5E4C37] bg-gray-100 px-3 py-2 rounded-md">
+            {userData?.email}
+          </p>
+
+          <p>You are resetting password for:</p>
+
+          <p className="font-semibold text-[#5E4C37] bg-gray-100 px-3 py-2 rounded-md">
+            {forgotPasswordEmail}
+          </p>
+
+          <p className="mt-2 text-sm text-[#5E4C37]">
+            If you continue, the password for the second account will be
+            updated. You will remain logged in to your current account.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-2 gap-4 mt-6">
+          <Button
+            variant="primary"
+            onClick={() => {
+              setAfterExitingUserResettingPasswordPopupPopup("");
+            }}
+          >
+            Continue
+          </Button>
+
+          <Button
+            variant="outline"
+            className="hover:bg-red-800 hover:text-white"
+            onClick={() => {
+              navigate("/nextChapter");
+              confirmClose();
+            }}
+          >
+            Cancel
+          </Button>
         </div>
       </Modal>
     );
