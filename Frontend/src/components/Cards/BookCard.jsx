@@ -22,7 +22,7 @@ const BookCard = ({ book }) => {
   const [isLiked, setIsLiked] = useState(false);
   const { loading } = useSelector((state) => state.wishlists);
   const debounceRef = useRef(null);
-  const { isAuthenticated, userData } = useAuth();
+  const { isAuthenticated, userData, getUserUpdatedDetails } = useAuth();
   const toastRef = useRef(null);
 
   const handleLike = (bookId) => {
@@ -34,6 +34,10 @@ const BookCard = ({ book }) => {
     const previousLikedState = isLiked;
 
     setIsLiked(!previousLikedState);
+
+    if (debounceRef.current) {
+      clearTimeout(debounceRef.current);
+    }
 
     if (!toastRef.current) {
       toastRef.current = toast.loading("Updating wishlist...");
@@ -50,6 +54,8 @@ const BookCard = ({ book }) => {
         if (path === "nextChapterwishlist") {
           dispatch(getAllWishlists());
         }
+
+        await getUserUpdatedDetails();
       } catch (err) {
         setIsLiked(previousLikedState);
         toast.error(err?.message || "Wishlist update failed");

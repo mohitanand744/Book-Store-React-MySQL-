@@ -267,7 +267,7 @@ const UserProfile = () => {
                 <img
                   src={preview}
                   alt="Profile"
-                  className="w-full h-full border-4 border-orange-500 rounded-full shadow-lg cursor-pointer"
+                  className="object-cover w-full h-full border-4 border-orange-500 rounded-full shadow-lg cursor-pointer"
                   onClick={() => openPreview(preview, "Profile Image")}
                 />
 
