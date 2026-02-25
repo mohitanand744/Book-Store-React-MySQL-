@@ -35,7 +35,7 @@ const CustomSelect = ({
         className={`w-full px-4 py-3 rounded-lg border bg-white flex items-center justify-between ${
           error
             ? "border-red-500 focus:ring-red-500"
-            : "border-[#5C4C49] focus:ring-[#8a7053]"
+            : "border-gray-300 focus:ring-[#8a7053] focus:border-[#8a7053]"
         } shadow-sm focus:outline-none focus:ring-2 ${className}`}
         onClick={() => setIsOpen(!isOpen)}
         whileTap={{ scale: 0.98 }}
@@ -77,10 +77,10 @@ const CustomSelect = ({
             {options.map((option) => (
               <motion.li
                 key={option.value}
-                className={`px-4 py-2 rounded-2xl cursor-pointer ${
+                className={`px-4 py-2 transition-all duration-500 rounded-2xl cursor-pointer ${
                   value === option.value
                     ? "bg-[#8a7053] text-white"
-                    : "hover:bg-gray-100"
+                    : "hover:bg-[#8a7053]/20"
                 }`}
                 whileHover={{ y: -1 }}
                 onClick={() => {

@@ -43,6 +43,8 @@ const BookCard = ({ book }) => {
       toastRef.current = toast.loading("Updating wishlist...");
     }
 
+    console.log("toastContainer", toastRef);
+
     debounceRef.current = setTimeout(async () => {
       try {
         const res = await dispatch(toggleWishlist(bookId)).unwrap();
@@ -51,11 +53,11 @@ const BookCard = ({ book }) => {
         toast.success(res?.message, { id: toastRef.current });
         toastRef.current = null;
 
+        await getUserUpdatedDetails();
+
         if (path === "nextChapterwishlist") {
           dispatch(getAllWishlists());
         }
-
-        await getUserUpdatedDetails();
       } catch (err) {
         setIsLiked(previousLikedState);
         toast.error(err?.message || "Wishlist update failed");

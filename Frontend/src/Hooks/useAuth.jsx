@@ -20,10 +20,14 @@ const useAuth = () => {
     dispatch(loginSuccess({ user: userData, token }));
   };
 
-  const logoutStatusSuccess = (logoutReason) => {
-    navigate("/nextChapter");
-    dispatch(logoutThunk(logoutReason));
-    toast.success("Logout successful!");
+  const logoutStatusSuccess = async (logoutReason) => {
+    try {
+      navigate("/nextChapter");
+      await dispatch(logoutThunk(logoutReason)).unwrap();
+      toast.success("Logout successful!");
+    } catch (error) {
+      toast.error("Logout failed!");
+    }
   };
 
   const setUpdateUserData = (userData) => {
@@ -31,9 +35,12 @@ const useAuth = () => {
   };
 
   const getUserUpdatedDetails = async () => {
-    console.log("nnnnnnnnnnnnnnnnnnnnnnnnn");
-
-    dispatch(validateToken());
+    try {
+      const userData = await dispatch(validateToken()).unwrap();
+      console.log("Token valid:", userData);
+    } catch (err) {
+      console.log("Token validation failed:", err);
+    }
   };
 
   return {

@@ -204,6 +204,8 @@ const UserProfile = () => {
     }, 200);
   };
 
+  console.log("UserData", userData);
+
   return (
     <div className="min-h-screen relative bg-[#F5F1ED] px-4 py-8">
       <motion.div
@@ -495,7 +497,7 @@ const UserProfile = () => {
                 <span className="mt-1 text-xs">Orders</span>
                 {activeTab === "orders" && (
                   <motion.div
-                    className="absolute top-0 left-6 right-6 h-0.5 bg-[#5C4C49]"
+                    className="absolute top-0 left-0 right-0 h-0.5 bg-[#5C4C49]"
                     layoutId="mobileUnderline"
                   />
                 )}

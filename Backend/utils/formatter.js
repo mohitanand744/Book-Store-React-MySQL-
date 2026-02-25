@@ -43,12 +43,8 @@ exports.formatUser = (rows) => {
     orders: user?.orders_count || 0,
     wishlist: user?.wishlist_count || 0,
     favoriteGenres: ["Fantasy", "Mystery", "Science Fiction"],
-    readingPreferences: {
-      format: "Paperback",
-      language: "English",
-      notification: "Weekly",
-    },
     recentOrders: [],
     recentWishlist: [],
+    recentActivity: [],
   };
 };

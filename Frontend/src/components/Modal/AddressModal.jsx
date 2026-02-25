@@ -1,76 +1,54 @@
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import {
-  EnvelopeIcon,
   PlusIcon,
   MapPinIcon,
   HomeIcon,
   BuildingOfficeIcon,
-  HeartIcon,
+  BuildingStorefrontIcon,
+  PencilSquareIcon,
+  TrashIcon,
 } from "@heroicons/react/24/outline";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Input from "../Inputs/Input";
 import Button from "../Buttons/Button";
 import Modal from "./ModalContainer";
+import Checkbox from "../Inputs/Checkbox";
+import { toast } from "sonner";
 
 const AddressModal = ({ showAddress, setShowAddress }) => {
   const [activeTab, setActiveTab] = useState("select");
   const [selectedAddress, setSelectedAddress] = useState(null);
+  const [addresses, setAddresses] = useState([]);
+  const [editAddress, setEditAddress] = useState(null);
 
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors, isSubmitting },
     reset,
-    setValue,
   } = useForm();
 
-  const savedAddresses = [
-    {
-      id: 1,
-      name: "Home",
-      address: "123 Main Street, Apt 4B",
-      city: "New York",
-      state: "NY",
-      zipCode: "10001",
-      isDefault: true,
-      icon: <HomeIcon className="w-5 h-5" />,
-      color: "bg-blue-500",
-    },
-    {
-      id: 2,
-      name: "Work",
-      address: "456 Business Ave, Floor 12",
-      city: "New York",
-      state: "NY",
-      zipCode: "10002",
-      isDefault: false,
-      icon: <BuildingOfficeIcon className="w-5 h-5" />,
-      color: "bg-green-500",
-    },
-    {
-      id: 3,
-      name: "Parents House",
-      address: "789 Family Lane",
-      city: "Brooklyn",
-      state: "NY",
-      zipCode: "11201",
-      isDefault: false,
-      icon: <HeartIcon className="w-5 h-5" />,
-      color: "bg-pink-500",
-    },
-  ];
+  useEffect(() => {
+    const stored = localStorage.getItem("addresses");
+    if (stored) {
+      setAddresses(JSON.parse(stored));
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("addresses", JSON.stringify(addresses));
+  }, [addresses]);
+
+  const addressTypeIcons = {
+    Home: HomeIcon,
+    Work: BuildingOfficeIcon,
+    Other: BuildingStorefrontIcon,
+  };
 
   const handleAddressSelect = (address) => {
     setSelectedAddress(address.id);
-  };
-
-  const onSubmit = async (data) => {
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    console.log("Address data:", data);
-    reset();
-    setShowAddress(false);
-    setActiveTab("select");
   };
 
   const handleAddNewAddress = () => {
@@ -84,432 +62,290 @@ const AddressModal = ({ showAddress, setShowAddress }) => {
     reset();
   };
 
-  const modalVariants = {
-    hidden: {
-      opacity: 0,
-      scale: 0.8,
-      y: 20,
-    },
-    visible: {
-      opacity: 1,
-      scale: 1,
-      y: 0,
-      transition: {
-        type: "spring",
-        damping: 25,
-        stiffness: 300,
-        duration: 0.3,
-      },
-    },
-    exit: {
-      opacity: 0,
-      scale: 0.8,
-      y: -20,
-      transition: {
-        duration: 0.2,
-      },
-    },
+  const onSubmit = async (data) => {
+    await new Promise((resolve) => setTimeout(resolve, 500));
+
+    const newAddress = {
+      id: Date.now(),
+      type: data.type,
+      address: data.address,
+      city: data.city,
+      state: data.state,
+      zipCode: data.zipCode,
+      isDefault: data.isDefault || false,
+      color: "bg-[#5c4c49]",
+    };
+
+    setAddresses((prev) => {
+      let updated = [...prev];
+
+      // If new address is default, remove default from others
+      if (newAddress.isDefault) {
+        updated = updated.map((addr) => ({
+          ...addr,
+          isDefault: false,
+        }));
+      }
+
+      return [...updated, newAddress];
+    });
+
+    toast.success("Address added successfully!");
+
+    reset();
+    setActiveTab("select");
   };
 
-  const tabVariants = {
-    hidden: { opacity: 0, x: 20 },
-    visible: {
-      opacity: 1,
-      x: 0,
-      transition: {
-        type: "spring",
-        stiffness: 300,
-        damping: 30,
-      },
-    },
-    exit: {
-      opacity: 0,
-      x: -20,
-      transition: {
-        duration: 0.2,
-      },
-    },
-  };
+  const handleEditAddress = (address) => {
+    setActiveTab("add");
+    setEditAddress(address);
 
-  const addressCardVariants = {
-    hidden: { opacity: 0, y: 10 },
-    visible: (i) => ({
-      opacity: 1,
-      y: 0,
-      transition: {
-        delay: i * 0.1,
-        type: "spring",
-        stiffness: 400,
-        damping: 25,
-      },
-    }),
-    hover: {
-      scale: 1.02,
-      y: -2,
-      boxShadow:
-        "0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)",
-      transition: {
-        type: "spring",
-        stiffness: 400,
-        damping: 25,
-      },
-    },
-    tap: {
-      scale: 0.98,
-    },
-  };
-
-  const getAddressIcon = (addressName) => {
-    const address = savedAddresses.find((addr) => addr.name === addressName);
-    return address?.icon || <MapPinIcon className="w-5 h-5" />;
+    reset({
+      type: address.type,
+      address: address.address,
+      city: address.city,
+      state: address.state,
+      zipCode: address.zipCode,
+      isDefault: address.isDefault,
+    });
   };
 
   return (
     <Modal isOpen={showAddress} onClose={() => setShowAddress(false)}>
       <motion.div
-        variants={modalVariants}
-        initial="hidden"
-        animate="visible"
-        exit="exit"
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0 }}
         className="w-full max-w-md mx-auto"
       >
         <div className="mb-6 text-center">
-          <motion.h2
-            className="mb-2 text-2xl font-bold text-gray-900"
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-          >
-            Delivery Address
-          </motion.h2>
-          <motion.p
-            className="text-sm text-gray-600"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.2 }}
-          >
+          <h2 className="text-2xl font-bold">Delivery Address</h2>
+          <p className="text-sm text-gray-600">
             Choose where you want your order delivered
-          </motion.p>
+          </p>
         </div>
 
-        {/* Enhanced Tabs */}
-        <motion.div
-          className="flex p-1 mb-8 bg-gray-100 rounded-2xl"
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-        >
+        {/* Tabs */}
+        <div className="flex mb-6 border-b border-[#5c4c49]/40">
           {["select", "add"].map((tab) => (
-            <motion.button
+            <button
               key={tab}
-              className={`flex-1 py-3 px-4 text-center font-semibold rounded-xl transition-all ${
-                activeTab === tab
-                  ? "bg-white text-gray-900 shadow-sm"
-                  : "text-gray-600 hover:text-gray-900"
-              }`}
               onClick={() => setActiveTab(tab)}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
+              className="relative flex-1 py-3 font-medium text-center transition-colors duration-300"
             >
-              {tab === "select" ? "Saved Addresses" : "Add New"}
-            </motion.button>
+              <span
+                className={
+                  activeTab === tab
+                    ? "text-[#5c4c49]"
+                    : "text-gray-600 hover:text-[#5c4c49]"
+                }
+              >
+                {tab === "select" ? "Saved Addresses" : "Add New"}
+              </span>
+
+              {activeTab === tab && (
+                <motion.div
+                  layoutId="AddressTabUnderline"
+                  className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#5c4c49]"
+                  transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                ></motion.div>
+              )}
+            </button>
           ))}
-        </motion.div>
+        </div>
 
         <AnimatePresence mode="wait">
           {activeTab === "select" ? (
             <motion.div
               key="select"
-              variants={tabVariants}
-              initial="hidden"
-              animate="visible"
-              exit="exit"
-              className="space-y-4"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="space-y-4 "
             >
-              {/* Saved Addresses List */}
-              <motion.div
-                className="p-2 space-y-3 overflow-y-auto max-h-60"
-                initial="hidden"
-                animate="visible"
-              >
-                {savedAddresses.map((address, index) => (
-                  <motion.div
-                    key={address.id}
-                    custom={index}
-                    variants={addressCardVariants}
-                    initial="hidden"
-                    animate="visible"
-                    whileHover="hover"
-                    whileTap="tap"
-                    className={`p-4 border-2 rounded-2xl cursor-pointer transition-all backdrop-blur-sm ${
-                      selectedAddress === address.id
-                        ? "border-blue-500 bg-blue-50/50 shadow-md"
-                        : "border-gray-200 bg-white/80 hover:border-blue-300"
-                    }`}
-                    onClick={() => handleAddressSelect(address)}
-                  >
-                    <div className="flex items-start gap-3">
-                      <motion.div
-                        className={`p-2 rounded-lg ${address.color} text-white`}
-                        whileHover={{ scale: 1.1, rotate: 5 }}
-                      >
-                        {address.icon}
-                      </motion.div>
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2 mb-1">
-                          <span className="font-semibold text-gray-900 truncate">
-                            {address.name}
-                          </span>
-                          {address.isDefault && (
-                            <motion.span
-                              className="px-2 py-1 text-xs font-medium text-blue-800 bg-blue-100 rounded-full"
-                              initial={{ scale: 0 }}
-                              animate={{ scale: 1 }}
-                              transition={{
-                                type: "spring",
-                                delay: index * 0.1 + 0.2,
-                              }}
-                            >
-                              Default
-                            </motion.span>
-                          )}
-                        </div>
-                        <p className="text-sm leading-relaxed text-gray-600">
-                          {address.address}
-                        </p>
-                        <p className="text-sm text-gray-500">
-                          {address.city}, {address.state} {address.zipCode}
-                        </p>
-                      </div>
-                      <motion.div
-                        className={`w-6 h-6 rounded-full border-2 flex items-center justify-center ${
+              {/* Empty State */}
+              {addresses.length === 0 ? (
+                <div className="py-10 text-center text-gray-500">
+                  <MapPinIcon className="w-10 h-10 text-[#5c4c49] mx-auto mb-3 " />
+                  <p className="font-semibold">No Address Found</p>
+                  <p className="text-sm">Please add a new address</p>
+                </div>
+              ) : (
+                <div className="h-[240px] space-y-2 overflow-y-auto p-3">
+                  {addresses.map((address) => {
+                    const Icon = addressTypeIcons[address.type] || HomeIcon;
+
+                    return (
+                      <div
+                        key={address.id}
+                        onClick={() => handleAddressSelect(address)}
+                        className={`p-4  rounded-xl cursor-pointer  hover:scale-105 transition-all duration-300 ease-linear ${
                           selectedAddress === address.id
-                            ? "border-blue-500 bg-blue-500"
-                            : "border-gray-300 bg-white"
+                            ? "border-t-[4px] border-b-[4px] border-[#fff]"
+                            : " border-b border-t border-[#5c4c4955]"
                         }`}
-                        whileHover={{ scale: 1.1 }}
-                        whileTap={{ scale: 0.9 }}
                       >
-                        {selectedAddress === address.id && (
-                          <motion.svg
-                            initial={{ scale: 0 }}
-                            animate={{ scale: 1 }}
-                            className="w-3 h-3 text-white"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
+                        <div className="relative flex items-start gap-3">
+                          <PencilSquareIcon
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleEditAddress(address);
+                            }}
+                            className="w-5 active:scale-75 hover:scale-105 transition-all duration-200 ease-linear h-5 absolute top-0 right-0 cursor-pointer text-[#5c4c49]"
+                          />
+                          <TrashIcon className="absolute bottom-0 right-0 w-5 h-5 text-red-600 transition-all duration-200 ease-linear cursor-pointer active:scale-75 hover:scale-105" />
+
+                          <div
+                            className={`p-2 rounded-lg ${address.color} text-white`}
                           >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={3}
-                              d="M5 13l4 4L19 7"
-                            />
-                          </motion.svg>
-                        )}
-                      </motion.div>
-                    </div>
-                  </motion.div>
-                ))}
-              </motion.div>
+                            <Icon className="w-5 h-5" />
+                          </div>
 
-              {/* Add New Address Button */}
-              <motion.button
+                          <div className="flex-1">
+                            <div className="flex items-center gap-2">
+                              <span className="font-semibold">
+                                {address.type}
+                              </span>
+                              {address.isDefault && (
+                                <span className="px-2 py-1 text-xs bg-gray-200 rounded-full">
+                                  Default
+                                </span>
+                              )}
+                            </div>
+                            <p className="text-sm text-gray-600">
+                              {address.address}
+                            </p>
+                            <p className="text-sm text-gray-500">
+                              {address.city}, {address.state} {address.zipCode}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+
+              {/* Add New Button */}
+              <button
                 onClick={handleAddNewAddress}
-                className="flex items-center justify-center w-full gap-3 p-4 text-gray-600 transition-all border-2 border-gray-300 border-dashed rounded-2xl hover:border-blue-400 hover:bg-blue-50/30 hover:text-gray-900 group"
-                whileHover={{
-                  scale: 1.02,
-                  borderColor: "#60A5FA",
-                  backgroundColor: "rgba(219, 234, 254, 0.3)",
-                }}
-                whileTap={{ scale: 0.98 }}
+                className="flex items-center justify-center w-full gap-2 p-3 mt-3 border-2 border-dashed rounded-xl"
               >
-                <motion.div
-                  className="p-2 text-gray-500 bg-gray-100 rounded-full group-hover:bg-blue-100 group-hover:text-blue-500"
-                  whileHover={{ rotate: 90 }}
-                  transition={{ type: "spring", stiffness: 300 }}
-                >
-                  <PlusIcon className="w-5 h-5" />
-                </motion.div>
-                <span className="font-medium">Add New Address</span>
-              </motion.button>
+                <PlusIcon className="w-5 h-5" />
+                Add New Address
+              </button>
 
-              {/* Action Buttons */}
-              <motion.div
-                className="flex gap-3 pt-6"
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4 }}
-              >
+              {/* Actions */}
+              <div className="flex gap-3 pt-4">
                 <Button
                   variant="outline"
                   className="flex-1"
                   onClick={() => setShowAddress(false)}
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
                 >
                   Cancel
                 </Button>
-                <motion.div
+                <Button
+                  variant="primary"
                   className="flex-1"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
+                  disabled={!selectedAddress}
+                  onClick={() => {
+                    const selected = addresses.find(
+                      (addr) => addr.id === selectedAddress,
+                    );
+                    console.log("Selected Address:", selected);
+                    setShowAddress(false);
+                  }}
                 >
-                  <Button
-                    variant="primary"
-                    className="w-full"
-                    disabled={!selectedAddress}
-                    onClick={() => {
-                      const address = savedAddresses.find(
-                        (addr) => addr.id === selectedAddress
-                      );
-                      console.log("Selected address:", address);
-                      setShowAddress(false);
-                    }}
-                  >
-                    Use This Address
-                  </Button>
-                </motion.div>
-              </motion.div>
+                  Use This Address
+                </Button>
+              </div>
             </motion.div>
           ) : (
             <motion.form
               key="add"
-              variants={tabVariants}
-              initial="hidden"
-              animate="visible"
-              exit="exit"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
               onSubmit={handleSubmit(onSubmit)}
               className="space-y-4"
             >
-              <motion.div
-                className="space-y-4"
-                initial="hidden"
-                animate="visible"
-                variants={{
-                  visible: {
-                    transition: {
-                      staggerChildren: 0.1,
-                    },
+              <Controller
+                name="type"
+                control={control}
+                rules={{ required: "Address type is required" }}
+                render={({ field }) => (
+                  <Input
+                    label="Address Type"
+                    as="select"
+                    options={[
+                      { value: "Home", label: "Home" },
+                      { value: "Work", label: "Work" },
+                      { value: "Other", label: "Other" },
+                    ]}
+                    selectedValue={field.value}
+                    onChange={field.onChange}
+                    error={errors.type?.message}
+                  />
+                )}
+              />
+
+              <Input
+                label="Street Address"
+                {...register("address", {
+                  required: "Street address is required",
+                })}
+                error={errors.address?.message}
+              />
+
+              <div className="grid grid-cols-2 gap-3">
+                <Input
+                  label="City"
+                  {...register("city", { required: "City is required" })}
+                  error={errors.city?.message}
+                />
+
+                <Input
+                  label="State"
+                  {...register("state", { required: "State is required" })}
+                  error={errors.state?.message}
+                />
+              </div>
+
+              <Input
+                label="ZIP Code"
+                {...register("zipCode", {
+                  required: "ZIP code is required",
+                  pattern: {
+                    value: /^[1-9][0-9]{5}$/,
+                    message: "Invalid ZIP code format",
                   },
-                }}
-              >
-                <motion.div variants={addressCardVariants}>
-                  <Input
-                    label="Address Name"
-                    type="text"
-                    placeholder="e.g., Home, Work, Office"
-                    icon={<MapPinIcon className="w-5 h-5 text-gray-400" />}
-                    error={errors.name?.message}
-                    {...register("name", {
-                      required: "Address name is required",
-                    })}
-                    className="h-[50px] rounded-xl"
-                  />
-                </motion.div>
+                })}
+                error={errors.zipCode?.message}
+              />
 
-                <motion.div variants={addressCardVariants}>
-                  <Input
-                    label="Street Address"
-                    type="text"
-                    placeholder="Enter your street address"
-                    error={errors.address?.message}
-                    {...register("address", {
-                      required: "Street address is required",
-                    })}
-                    className="h-[50px] rounded-xl"
-                  />
-                </motion.div>
+              <Checkbox
+                id="defaultAddress"
+                label="Set as default address"
+                {...register("isDefault")}
+              />
 
-                <motion.div
-                  className="grid grid-cols-2 gap-4"
-                  variants={addressCardVariants}
-                >
-                  <Input
-                    label="City"
-                    type="text"
-                    placeholder="City"
-                    error={errors.city?.message}
-                    {...register("city", {
-                      required: "City is required",
-                    })}
-                    className="h-[50px] rounded-xl"
-                  />
-
-                  <Input
-                    label="State"
-                    type="text"
-                    placeholder="State"
-                    error={errors.state?.message}
-                    {...register("state", {
-                      required: "State is required",
-                    })}
-                    className="h-[50px] rounded-xl"
-                  />
-                </motion.div>
-
-                <motion.div variants={addressCardVariants}>
-                  <Input
-                    label="ZIP Code"
-                    type="text"
-                    placeholder="ZIP Code"
-                    error={errors.zipCode?.message}
-                    {...register("zipCode", {
-                      required: "ZIP code is required",
-                      pattern: {
-                        value: /^[1-9][0-9]{5}$/,
-                        message: "Invalid ZIP code format",
-                      },
-                    })}
-                    className="h-[50px] rounded-xl"
-                  />
-                </motion.div>
-
-                <motion.div
-                  className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl"
-                  variants={addressCardVariants}
-                >
-                  <motion.input
-                    type="checkbox"
-                    id="defaultAddress"
-                    {...register("isDefault")}
-                    className="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
-                    whileTap={{ scale: 0.9 }}
-                  />
-                  <label
-                    htmlFor="defaultAddress"
-                    className="text-sm font-medium text-gray-700 cursor-pointer"
-                  >
-                    Set as default address
-                  </label>
-                </motion.div>
-              </motion.div>
-
-              <motion.div
-                className="grid grid-cols-2 gap-4 pt-6"
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.5 }}
-              >
+              <div className="grid grid-cols-2 gap-3 pt-4">
                 <Button
                   type="button"
                   variant="outline"
                   onClick={handleBackToSelection}
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
                 >
                   Back
                 </Button>
+
                 <Button
                   type="submit"
                   variant="primary"
                   isLoading={isSubmitting}
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
                 >
-                  Save Address
+                  {editAddress ? "Update Address" : "Add Address"}
                 </Button>
-              </motion.div>
+              </div>
             </motion.form>
           )}
         </AnimatePresence>

@@ -2,7 +2,7 @@ import React from "react";
 
 const Checkbox = (
   { id, label, checked, onChange, className = "", error, ...props },
-  ref
+  ref,
 ) => {
   return (
     <div className="flex flex-col gap-1">
@@ -16,10 +16,13 @@ const Checkbox = (
           id={id}
           checked={checked}
           onChange={onChange}
-          className={`w-4 h-4 md:w-5 md:h-5 text-blue-600 bg-gray-200 rounded-md appearance-none checked:after:content-['✓'] checked:after:text-white flex justify-center items-center checked:bg-[#D3BD9D] ${className}`}
+          className={`w-4 h-4 border-2 md:w-5 md:h-5 bg-gray-300 rounded-md appearance-none checked:after:content-['✓'] checked:after:text-white flex justify-center items-center checked:bg-[#D3BD9D] ${className}`}
           {...props}
         />
-        <label htmlFor={id} className="ml-2 text-gray-700 cursor-pointer">
+        <label
+          htmlFor={id}
+          className="ml-2 text-sm font-semibold text-gray-700 cursor-pointer"
+        >
           {label}
         </label>
       </div>
