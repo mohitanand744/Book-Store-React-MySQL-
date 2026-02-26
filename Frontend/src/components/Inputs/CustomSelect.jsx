@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const CustomSelect = ({
@@ -12,7 +12,6 @@ const CustomSelect = ({
   const [isOpen, setIsOpen] = useState(false);
   const selectRef = useRef(null);
 
-  // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (selectRef.current && !selectRef.current.contains(event.target)) {
@@ -28,11 +27,19 @@ const CustomSelect = ({
 
   const selectedOption = options.find((option) => option.value === value);
 
+  useEffect(() => {
+    if (!selectedOption && error) {
+      setIsOpen(true);
+    } else if (selectedOption) {
+      setIsOpen(false);
+    }
+  }, [error, options]);
+
   return (
     <div className="relative w-full" ref={selectRef}>
       <motion.button
         type="button"
-        className={`w-full px-4 py-3 rounded-lg border bg-white flex items-center justify-between ${
+        className={`w-full h-[42px] px-4 py-3 rounded-lg border bg-white flex items-center justify-between ${
           error
             ? "border-red-500 focus:ring-red-500"
             : "border-gray-300 focus:ring-[#8a7053] focus:border-[#8a7053]"
@@ -45,29 +52,31 @@ const CustomSelect = ({
         <span className={!value ? "text-gray-400" : ""}>
           {selectedOption?.label || placeholder}
         </span>
-        <motion.div
-          animate={{ rotate: isOpen ? 180 : 0 }}
-          transition={{ duration: 0.3 }}
-        >
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
+        {!error && (
+          <motion.div
+            animate={{ rotate: isOpen ? 180 : 0 }}
+            transition={{ duration: 0.3 }}
           >
-            <polyline points="6 9 12 15 18 9"></polyline>
-          </svg>
-        </motion.div>
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </motion.div>
+        )}
       </motion.button>
 
       <AnimatePresence>
         {isOpen && (
           <motion.ul
-            className="absolute z-[999] w-full p-2 mt-1 overflow-auto bg-white border border-gray-200 rounded-lg shadow-lg max-h-60"
+            className={`absolute z-[999] ${error ? "border-red-500" : "border-gray-200"} w-full p-2 mt-1 overflow-auto bg-white border-b-[3px] border-t-[3px]  rounded-lg shadow-lg max-h-60`}
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
@@ -77,10 +86,10 @@ const CustomSelect = ({
             {options.map((option) => (
               <motion.li
                 key={option.value}
-                className={`px-4 py-2 transition-all duration-500 rounded-2xl cursor-pointer ${
+                className={`px-4 py-2 border-b-2 transition-all duration-500 rounded-2xl cursor-pointer shadow-md ${
                   value === option.value
-                    ? "bg-[#8a7053] text-white"
-                    : "hover:bg-[#8a7053]/20"
+                    ? "bg-[#5C4C49] text-white"
+                    : "hover:bg-[#5C4C49]/5"
                 }`}
                 whileHover={{ y: -1 }}
                 onClick={() => {

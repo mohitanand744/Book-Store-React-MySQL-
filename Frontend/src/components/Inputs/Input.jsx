@@ -52,6 +52,7 @@ const Input = (
       <div className="relative w-full">
         {Component === "select" ? (
           <CustomSelect
+            ref={ref}
             options={options}
             value={selectedValue}
             onChange={onChange}

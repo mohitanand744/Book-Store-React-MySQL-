@@ -1,4 +1,4 @@
-import { Controller, useForm } from "react-hook-form";
+import { Controller, set, useForm } from "react-hook-form";
 import {
   PlusIcon,
   MapPinIcon,
@@ -28,7 +28,9 @@ const AddressModal = ({ showAddress, setShowAddress }) => {
     control,
     formState: { errors, isSubmitting },
     reset,
-  } = useForm();
+  } = useForm({
+    shouldFocusError: true,
+  });
 
   useEffect(() => {
     const stored = localStorage.getItem("addresses");
@@ -53,46 +55,90 @@ const AddressModal = ({ showAddress, setShowAddress }) => {
 
   const handleAddNewAddress = () => {
     setActiveTab("add");
-    reset();
+    reset({
+      type: "",
+      address: "",
+      city: "",
+      state: "",
+      zipCode: "",
+      isDefault: false,
+    });
     setSelectedAddress(null);
   };
 
   const handleBackToSelection = () => {
+    console.log("Starting...");
+
+    reset({
+      type: "",
+      address: "",
+      city: "",
+      state: "",
+      zipCode: "",
+      isDefault: false,
+    });
+    setEditAddress(null);
     setActiveTab("select");
-    reset();
   };
 
   const onSubmit = async (data) => {
-    await new Promise((resolve) => setTimeout(resolve, 500));
+    if (editAddress) {
+      setAddresses((prev) =>
+        prev.map((addr) =>
+          addr.id === editAddress.id
+            ? {
+                ...addr,
+                type: data.type,
+                address: data.address,
+                city: data.city,
+                state: data.state,
+                zipCode: data.zipCode,
+                isDefault: data.isDefault || false,
+              }
+            : data.isDefault
+              ? { ...addr, isDefault: false }
+              : addr,
+        ),
+      );
 
-    const newAddress = {
-      id: Date.now(),
-      type: data.type,
-      address: data.address,
-      city: data.city,
-      state: data.state,
-      zipCode: data.zipCode,
-      isDefault: data.isDefault || false,
-      color: "bg-[#5c4c49]",
-    };
+      toast.success("Address updated successfully!");
+      setEditAddress(null);
+    } else {
+      const newAddress = {
+        id: Date.now(),
+        type: data.type,
+        address: data.address,
+        city: data.city,
+        state: data.state,
+        zipCode: data.zipCode,
+        isDefault: data.isDefault || false,
+        color: "bg-[#5c4c49]",
+      };
 
-    setAddresses((prev) => {
-      let updated = [...prev];
+      setAddresses((prev) => {
+        let updated = [...prev];
 
-      // If new address is default, remove default from others
-      if (newAddress.isDefault) {
-        updated = updated.map((addr) => ({
-          ...addr,
-          isDefault: false,
-        }));
-      }
+        if (newAddress.isDefault) {
+          updated = updated.map((addr) => ({
+            ...addr,
+            isDefault: false,
+          }));
+        }
 
-      return [...updated, newAddress];
+        return [...updated, newAddress];
+      });
+
+      toast.success("Address added successfully!");
+    }
+
+    reset({
+      type: "",
+      address: "",
+      city: "",
+      state: "",
+      zipCode: "",
+      isDefault: false,
     });
-
-    toast.success("Address added successfully!");
-
-    reset();
     setActiveTab("select");
   };
 
@@ -130,7 +176,20 @@ const AddressModal = ({ showAddress, setShowAddress }) => {
           {["select", "add"].map((tab) => (
             <button
               key={tab}
-              onClick={() => setActiveTab(tab)}
+              onClick={() => {
+                setActiveTab(tab);
+                if (tab === "select") {
+                  setEditAddress(null);
+                  reset({
+                    type: "",
+                    address: "",
+                    city: "",
+                    state: "",
+                    zipCode: "",
+                    isDefault: false,
+                  });
+                }
+              }}
               className="relative flex-1 py-3 font-medium text-center transition-colors duration-300"
             >
               <span
@@ -164,7 +223,7 @@ const AddressModal = ({ showAddress, setShowAddress }) => {
               className="space-y-4 "
             >
               {/* Empty State */}
-              {addresses.length === 0 ? (
+              {addresses?.length === 0 ? (
                 <div className="py-10 text-center text-gray-500">
                   <MapPinIcon className="w-10 h-10 text-[#5c4c49] mx-auto mb-3 " />
                   <p className="font-semibold">No Address Found</p>
@@ -172,7 +231,7 @@ const AddressModal = ({ showAddress, setShowAddress }) => {
                 </div>
               ) : (
                 <div className="h-[240px] space-y-2 overflow-y-auto p-3">
-                  {addresses.map((address) => {
+                  {addresses?.map((address) => {
                     const Icon = addressTypeIcons[address.type] || HomeIcon;
 
                     return (
@@ -269,34 +328,38 @@ const AddressModal = ({ showAddress, setShowAddress }) => {
               onSubmit={handleSubmit(onSubmit)}
               className="space-y-4"
             >
-              <Controller
-                name="type"
-                control={control}
-                rules={{ required: "Address type is required" }}
-                render={({ field }) => (
-                  <Input
-                    label="Address Type"
-                    as="select"
-                    options={[
-                      { value: "Home", label: "Home" },
-                      { value: "Work", label: "Work" },
-                      { value: "Other", label: "Other" },
-                    ]}
-                    selectedValue={field.value}
-                    onChange={field.onChange}
-                    error={errors.type?.message}
-                  />
-                )}
-              />
-
-              <Input
-                label="Street Address"
-                {...register("address", {
-                  required: "Street address is required",
-                })}
-                error={errors.address?.message}
-              />
-
+              <div className="grid grid-cols-2 gap-3">
+                <Controller
+                  name="type"
+                  control={control}
+                  rules={{ required: "Address type is required" }}
+                  render={({ field }) => (
+                    <Input
+                      label="Address Type"
+                      as="select"
+                      options={[
+                        { value: "Home", label: "Home" },
+                        { value: "Work", label: "Work" },
+                        { value: "Other", label: "Other" },
+                      ]}
+                      selectedValue={field.value}
+                      onChange={field.onChange}
+                      error={errors.type?.message}
+                    />
+                  )}
+                />
+                <Input
+                  label="ZIP Code"
+                  {...register("zipCode", {
+                    required: "ZIP code is required",
+                    pattern: {
+                      value: /^[1-9][0-9]{5}$/,
+                      message: "Invalid ZIP code format",
+                    },
+                  })}
+                  error={errors.zipCode?.message}
+                />
+              </div>
               <div className="grid grid-cols-2 gap-3">
                 <Input
                   label="City"
@@ -312,15 +375,12 @@ const AddressModal = ({ showAddress, setShowAddress }) => {
               </div>
 
               <Input
-                label="ZIP Code"
-                {...register("zipCode", {
-                  required: "ZIP code is required",
-                  pattern: {
-                    value: /^[1-9][0-9]{5}$/,
-                    message: "Invalid ZIP code format",
-                  },
+                as="textarea"
+                label="Street Address"
+                {...register("address", {
+                  required: "Street address is required",
                 })}
-                error={errors.zipCode?.message}
+                error={errors.address?.message}
               />
 
               <Checkbox
