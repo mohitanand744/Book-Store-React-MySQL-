@@ -1,9 +1,17 @@
 import React from "react";
 
-const BooksLoader = () => {
+const BooksLoader = ({
+  height = "40rem",
+  imgWidth = "20",
+  imgHeight = "20",
+}) => {
   return (
-    <center className="min-h-[40rem] mt-5">
-      <img className="w-20 h-20" src="/images/loading.gif" alt="" />
+    <center className={`min-h-[${height}] mt-5`}>
+      <img
+        className={`w-${imgWidth} h-${imgHeight}`}
+        src="/images/loading.gif"
+        alt=""
+      />
     </center>
   );
 };

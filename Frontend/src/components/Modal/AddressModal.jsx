@@ -21,8 +21,9 @@ import {
   getAddresses,
   addAddress,
   updateAddress,
-  deleteAddress as deleteAddressApi,
 } from "../../utils/apis/address";
+import { useLoader } from "../../Hooks/useLoader";
+import BooksLoader from "../Loaders/BooksLoader";
 
 const AddressModal = ({ showAddress, setShowAddress }) => {
   const [activeTab, setActiveTab] = useState("select");
@@ -30,6 +31,8 @@ const AddressModal = ({ showAddress, setShowAddress }) => {
   const [addresses, setAddresses] = useState([]);
   const [editAddressData, setEditAddressData] = useState(null);
   const [confirmationData, setConfirmationData] = useState(null);
+  const [addressToDelete, setAddressToDelete] = useState(null);
+  const { loading } = useLoader();
 
   const [dbStates, setDbStates] = useState([]);
 
@@ -118,6 +121,31 @@ const AddressModal = ({ showAddress, setShowAddress }) => {
     });
   };
 
+  const handleDeleteClick = (e, id) => {
+    e.stopPropagation();
+    setAddressToDelete(id);
+  };
+
+  const confirmDelete = async () => {
+    if (!addressToDelete) return;
+    try {
+      const res = await deleteAddressApi(addressToDelete);
+      if (res.success) {
+        toast.success("Address deleted successfully!");
+        if (selectedAddress === addressToDelete) {
+          setSelectedAddress(null);
+        }
+        await fetchData();
+      } else {
+        toast.error(res.message || "Failed to delete address");
+      }
+    } catch (error) {
+      toast.error("An error occurred while deleting the address");
+    } finally {
+      setAddressToDelete(null);
+    }
+  };
+
   const getCitiesStatesWithPin = async (pinCode) => {
     try {
       const res = await getStatesCites(pinCode);
@@ -193,12 +221,11 @@ const AddressModal = ({ showAddress, setShowAddress }) => {
       setConfirmationData({
         ...data,
         correctCity: res.correctCity,
-        correctState: res.correctState
+        correctState: res.correctState,
       });
       return;
     }
 
-    // If it matches exactly
     submitAddressData(data);
   };
 
@@ -217,13 +244,12 @@ const AddressModal = ({ showAddress, setShowAddress }) => {
   }, [UserPinCode, activeTab]);
 
   return (
-
     <Modal isOpen={showAddress} onClose={() => setShowAddress(false)}>
       <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0 }}
-        className="w-full max-w-md mx-auto"
+        className="relative w-full max-w-md mx-auto"
       >
         <div className="mb-6 text-center">
           <h2 className="text-2xl font-bold">Delivery Address</h2>
@@ -231,6 +257,11 @@ const AddressModal = ({ showAddress, setShowAddress }) => {
             Choose where you want your order delivered
           </p>
         </div>
+        {loading && (
+          <div className="absolute top-[-2rem] right-[-1rem]">
+            <BooksLoader height="0rem" imgHeight="10" imgWidth="10" />
+          </div>
+        )}
 
         <div className="flex mb-6 border-b border-[#5c4c49]/40">
           {["select", "add"].map((tab) => (
@@ -310,7 +341,7 @@ const AddressModal = ({ showAddress, setShowAddress }) => {
                             className="w-5 active:scale-75 hover:scale-105 transition-all duration-200 ease-linear h-5 absolute top-0 right-0 cursor-pointer text-[#5c4c49]"
                           />
                           <TrashIcon
-                            onClick={(e) => handleDelete(e, address.id)}
+                            onClick={(e) => handleDeleteClick(e, address.id)}
                             className="absolute bottom-0 right-0 w-5 h-5 text-red-600 transition-all duration-200 ease-linear cursor-pointer active:scale-75 hover:scale-105"
                           />
 
@@ -349,24 +380,38 @@ const AddressModal = ({ showAddress, setShowAddress }) => {
               <div className="flex gap-3 pt-4">
                 <Button
                   variant="outline"
-                  className="flex-1"
+                  className="flex-1 text-sm"
                   onClick={() => setShowAddress(false)}
                 >
                   Cancel
                 </Button>
                 <Button
                   variant="primary"
-                  className="flex-1"
+                  className="flex-1 text-sm"
                   disabled={!selectedAddress}
-                  onClick={() => {
+                  onClick={async () => {
                     const selected = addresses.find(
                       (addr) => addr.id === selectedAddress,
                     );
-                    console.log("Selected Address:", selected);
+
+                    if (selected && !selected.isDefault) {
+                      try {
+                        const updatedData = { ...selected, isDefault: true };
+                        const res = await updateAddress(selected.id, updatedData);
+                        if (res.success) {
+                          toast.success("Default address updated successfully!");
+                          await fetchData();
+                        } else {
+                          toast.error(res.message || "Failed to set default address");
+                        }
+                      } catch (error) {
+                        toast.error("Error setting default address");
+                      }
+                    }
                     setShowAddress(false);
                   }}
                 >
-                  Use This Address
+                  Set as Default Address
                 </Button>
               </div>
             </motion.div>
@@ -435,7 +480,10 @@ const AddressModal = ({ showAddress, setShowAddress }) => {
                     <Input
                       label="State"
                       as="select"
-                      options={dbStates.map(s => ({ value: s.name, label: s.name }))}
+                      options={dbStates.map((s) => ({
+                        value: s.name,
+                        label: s.name,
+                      }))}
                       selectedValue={field.value}
                       onChange={field.onChange}
                       error={errors.state?.message}
@@ -483,7 +531,6 @@ const AddressModal = ({ showAddress, setShowAddress }) => {
         </AnimatePresence>
       </motion.div>
 
-
       <AnimatePresence>
         {confirmationData && (
           <motion.div
@@ -498,14 +545,22 @@ const AddressModal = ({ showAddress, setShowAddress }) => {
               exit={{ scale: 0.9, opacity: 0 }}
               className="w-full max-w-sm p-6 bg-white shadow-xl rounded-xl"
             >
-              <h3 className="mb-2 text-xl font-bold text-[#5c4c49]">Incorrect address</h3>
+              <h3 className="mb-2 text-xl font-bold text-[#5c4c49]">
+                Incorrect address
+              </h3>
               <p className="mb-4 text-sm text-gray-600">
-                The entered address is incorrect. Please select any of the suggested address.
+                The entered address is incorrect. Please select any of the
+                suggested address.
               </p>
 
               <div className="p-3 mb-6 bg-gray-50 border border-[#5c4c49]/20 rounded-lg">
                 <p className="text-sm text-gray-800 break-words">
-                  {confirmationData.address}, <span className="text-red-500 line-through decoration-red-500">{confirmationData.city} {confirmationData.state}</span> {confirmationData.correctCity}, {confirmationData.correctState} — {confirmationData.pinCode}
+                  {confirmationData.address},{" "}
+                  <span className="text-red-500 line-through decoration-red-500">
+                    {confirmationData.city} {confirmationData.state}
+                  </span>{" "}
+                  {confirmationData.correctCity},{" "}
+                  {confirmationData.correctState} — {confirmationData.pinCode}
                 </p>
               </div>
 
@@ -514,7 +569,6 @@ const AddressModal = ({ showAddress, setShowAddress }) => {
                   variant="primary"
                   className="flex-1"
                   onClick={() => {
-
                     setValue("city", confirmationData.correctCity);
                     setValue("state", confirmationData.correctState);
                     clearErrors(["city", "state"]);
@@ -522,7 +576,7 @@ const AddressModal = ({ showAddress, setShowAddress }) => {
                     submitAddressData({
                       ...confirmationData,
                       city: confirmationData.correctCity,
-                      state: confirmationData.correctState
+                      state: confirmationData.correctState,
                     });
                     setConfirmationData(null);
                   }}
@@ -535,6 +589,51 @@ const AddressModal = ({ showAddress, setShowAddress }) => {
                   onClick={() => setConfirmationData(null)}
                 >
                   CANCEL
+                </Button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {addressToDelete && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="absolute inset-0 z-50 flex items-center justify-center p-4 bg-black/60 rounded-xl"
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="w-full max-w-sm p-6 bg-white shadow-xl rounded-xl"
+            >
+              <h3 className="mb-2 text-xl font-bold text-[#5c4c49]">
+                Delete Address
+              </h3>
+
+              <div className="p-3 mb-6 bg-gray-50 border border-[#5c4c49]/20 rounded-lg">
+                <p className="text-sm text-gray-800">
+                  Are you sure you want to delete this address? This action cannot be undone.
+                </p>
+              </div>
+
+              <div className="flex gap-3">
+                <Button
+                  variant="primary"
+                  className="flex-1"
+                  onClick={confirmDelete}
+                >
+                  Delete
+                </Button>
+                <Button
+                  variant="outline"
+                  className="flex-1"
+                  onClick={() => setAddressToDelete(null)}
+                >
+                  Cancel
                 </Button>
               </div>
             </motion.div>
