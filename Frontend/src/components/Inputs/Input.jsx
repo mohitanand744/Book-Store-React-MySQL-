@@ -58,18 +58,19 @@ const Input = (
             onChange={onChange}
             error={error}
             className={className}
-            placeholder="Choose an option"
+            placeholder={placeholder}
           />
         ) : Component === "textarea" ? (
           <textarea
             ref={ref}
             className={`w-full px-4 py-2 rounded-lg border ${
               error
-                ? "border-red-500 focus:ring-red-500 focus:border-red-500"
+                ? "border-red-500 placeholder:text-red-500 focus:ring-red-500 focus:border-red-500"
                 : "border-gray-300 focus:ring-[#8a7053] focus:border-[#8a7053]"
             } shadow-sm focus:outline-none focus:ring-2 ${className}`}
             value={value}
             onChange={onChange}
+            placeholder={placeholder}
             {...props}
           />
         ) : (
@@ -78,9 +79,9 @@ const Input = (
             type={inputType}
             className={`w-full px-4 py-2 rounded-lg border ${
               error
-                ? "border-red-500 focus:ring-red-500 focus:border-red-500"
+                ? "border-red-500 placeholder:text-red-500 focus:ring-red-500 focus:border-red-500"
                 : "border-gray-300 focus:ring-[#8a7053] focus:border-[#8a7053]"
-            } shadow-sm focus:outline-none focus:ring-2 ${className}`}
+            } shadow-sm  focus:outline-none focus:ring-2 ${className}`}
             placeholder={placeholder}
             value={value}
             onChange={onChange}
@@ -129,15 +130,17 @@ const Input = (
                 )}
               </button>
             ) : (
-              <ExclamationCircleIcon
-                className="w-5 h-5 text-red-500"
-                aria-hidden="true"
-              />
+              Component !== "select" && (
+                <ExclamationCircleIcon
+                  className="w-5 h-5 text-red-500"
+                  aria-hidden="true"
+                />
+              )
             )}
           </div>
         )}
       </div>
-      {error && (
+      {Component !== "select" && error && (
         <p className="mt-1 text-sm text-red-600" id="input-error">
           {error}
         </p>

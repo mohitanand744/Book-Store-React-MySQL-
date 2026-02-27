@@ -11,7 +11,7 @@ const NoData = ({
 
   showAction = false,
   actionText = "Explore More",
-  actionLink = "/",
+  actionLink = null,
   onActionClick,
 
   className = "",
@@ -27,7 +27,7 @@ const NoData = ({
 
     const iconProps = {
       xmlns: "http://www.w3.org/2000/svg",
-      className: `w-16 h-16 text-[#D3BD9D] ${iconClassName}`,
+      className: `w-16 h-16 text-[#5C4C49] ${iconClassName}`,
       fill: "none",
       viewBox: "0 0 24 24",
       stroke: "currentColor",
@@ -115,7 +115,7 @@ const NoData = ({
       <button
         type="button"
         onClick={onActionClick}
-        className="font-medium text-[#5C4C49] hover:text-indigo-500 transition-colors duration-200"
+        className="font-medium text-[#5C4C49] hover:text-[#ffe9c7] transition-colors duration-200"
       >
         {actionText}
         <span aria-hidden="true"> &rarr;</span>
@@ -138,7 +138,7 @@ const NoData = ({
       className={`flex flex-col items-center justify-center max-w-md p-8 mx-auto rounded-xl ${className}`}
     >
       <motion.div
-        className="flex items-center mb-5 justify-center w-24 h-24 border-2 border-[#D3BD9D] rounded-full"
+        className="flex items-center mb-3 justify-center w-24 h-24 border-2 border-[#D3BD9D] rounded-full"
         animate={
           animateIcon
             ? {

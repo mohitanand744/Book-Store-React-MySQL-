@@ -15,7 +15,7 @@ async function initDB() {
     });
 
     await tempConnection.query(
-      `CREATE DATABASE IF NOT EXISTS \`${process.env.MYSQL_DATABASE}\`;`
+      `CREATE DATABASE IF NOT EXISTS \`${process.env.MYSQL_DATABASE}\`;`,
     );
     console.log(`🎉 Database "${process.env.MYSQL_DATABASE}" is ready.`);
 
@@ -144,8 +144,33 @@ async function createTables() {
 
   `);
 
+    await pool.query(`
+    CREATE TABLE IF NOT EXISTS addresses (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    address_type VARCHAR(50) NOT NULL,
+    pin_code VARCHAR(6) NOT NULL,
+    city VARCHAR(100) NOT NULL,
+    state VARCHAR(100) NOT NULL,
+    street_address TEXT NOT NULL,
+    is_default BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+    `);
+
+    await pool.query(`
+    CREATE TABLE IF NOT EXISTS states (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    code VARCHAR(10) NOT NULL UNIQUE,
+    country VARCHAR(100) DEFAULT 'India',
+    is_active BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+); `);
+
     console.info(
-      "✅ Database initialization complete: Scanned and created tables."
+      "✅ Database initialization complete: Scanned and created tables.",
     );
   } catch (err) {
     console.error("❌ Error creating tables:", err.message);

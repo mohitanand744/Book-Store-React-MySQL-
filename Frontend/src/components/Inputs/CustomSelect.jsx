@@ -1,14 +1,18 @@
 import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { ExclamationCircleIcon } from "@heroicons/react/24/outline";
 
-const CustomSelect = ({
-  options,
-  value,
-  onChange,
-  error,
-  className,
-  placeholder = "Select an option",
-}) => {
+const CustomSelect = (
+  {
+    options,
+    value,
+    onChange,
+    error,
+    className,
+    placeholder = "Select an option",
+  },
+  ref,
+) => {
   const [isOpen, setIsOpen] = useState(false);
   const selectRef = useRef(null);
 
@@ -27,35 +31,30 @@ const CustomSelect = ({
 
   const selectedOption = options.find((option) => option.value === value);
 
-  useEffect(() => {
-    if (!selectedOption && error) {
-      setIsOpen(true);
-    } else if (selectedOption) {
-      setIsOpen(false);
-    }
-  }, [error, options]);
-
   return (
     <div className="relative w-full" ref={selectRef}>
       <motion.button
+        ref={ref}
         type="button"
-        className={`w-full h-[42px] px-4 py-3 rounded-lg border bg-white flex items-center justify-between ${
-          error
-            ? "border-red-500 focus:ring-red-500"
-            : "border-gray-300 focus:ring-[#8a7053] focus:border-[#8a7053]"
-        } shadow-sm focus:outline-none focus:ring-2 ${className}`}
+        className={`w-full h-[42px] px-4 py-3 relative rounded-lg border bg-white flex items-center justify-between ${error
+          ? "border-red-500 focus:ring-red-500"
+          : "border-gray-300 focus:ring-[#8a7053] focus:border-[#8a7053]"
+          } shadow-sm focus:outline-none focus:ring-2 ${className}`}
         onClick={() => setIsOpen(!isOpen)}
         whileTap={{ scale: 0.98 }}
         aria-haspopup="listbox"
         aria-expanded={isOpen}
       >
-        <span className={!value ? "text-gray-400" : ""}>
+        <span
+          className={`block truncate ${error ? "text-red-500" : selectedOption?.label ? "" : "text-[#9CA3AF]"}`}
+        >
           {selectedOption?.label || placeholder}
         </span>
         {!error && (
           <motion.div
             animate={{ rotate: isOpen ? 180 : 0 }}
             transition={{ duration: 0.3 }}
+            className=""
           >
             <svg
               width="16"
@@ -71,7 +70,20 @@ const CustomSelect = ({
             </svg>
           </motion.div>
         )}
+
+        {error && (
+          <ExclamationCircleIcon
+            className="w-5 h-5 text-red-500"
+            aria-hidden="true"
+          />
+        )}
       </motion.button>
+
+      {error && (
+        <p className="mt-1 text-sm text-red-600" id="input-error">
+          {error}
+        </p>
+      )}
 
       <AnimatePresence>
         {isOpen && (
@@ -86,11 +98,10 @@ const CustomSelect = ({
             {options.map((option) => (
               <motion.li
                 key={option.value}
-                className={`px-4 py-2 border-b-2 transition-all duration-500 rounded-2xl cursor-pointer shadow-md ${
-                  value === option.value
-                    ? "bg-[#5C4C49] text-white"
-                    : "hover:bg-[#5C4C49]/5"
-                }`}
+                className={`px-4 py-2 border-b-2 transition-all duration-500 rounded-2xl relative cursor-pointer shadow-lg ${value === option.value
+                  ? "border-b-[3px] border-[#5C4C49]/50"
+                  : "hover:bg-[#5C4C49]/5 border-[#5C4C49]/30"
+                  }`}
                 whileHover={{ y: -1 }}
                 onClick={() => {
                   onChange(option.value);
@@ -100,6 +111,12 @@ const CustomSelect = ({
                 aria-selected={value === option.value}
               >
                 {option.label}
+
+                {value === option.value && (
+                  <span className="w-4 text-[12.4px] text-white h-4 absolute top-4 right-3 bg-[#5C4C49]/80 flex justify-center items-center rounded-full">
+                    ✓
+                  </span>
+                )}
               </motion.li>
             ))}
           </motion.ul>
@@ -109,4 +126,4 @@ const CustomSelect = ({
   );
 };
 
-export default CustomSelect;
+export default React.forwardRef(CustomSelect);

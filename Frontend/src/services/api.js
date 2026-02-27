@@ -4,7 +4,7 @@ import axios from "axios";
 import { useLoader } from "../Hooks/useLoader";
 import attachInterceptors from "../Helper/attachInterceptors";
 
-const BASE_URL = "http://localhost:3001/api/v1";
+const BASE_URL = "http://localhost:3002/api/v1";
 
 const axiosInstance = axios.create({
   baseURL: BASE_URL,
