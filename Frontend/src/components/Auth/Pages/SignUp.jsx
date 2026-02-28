@@ -60,7 +60,7 @@ const SignUp = () => {
       console.error("Error signing up:", error);
       toast.error(
         error.response?.data?.message ||
-        "Something went wrong. Please try again later."
+        "Something went wrong. Please try again later.",
       );
       reset();
       navigate("/");
@@ -301,7 +301,7 @@ const SignUp = () => {
                       className="flex items-center justify-center w-full"
                       onClick={() =>
                       (window.location.href =
-                        "http://localhost:3002/api/v1/auth/google")
+                        `${import.meta.env.VITE_API_BASE_URL}/${import.meta.env.VITE_API_VERSION}/auth/google`)
                       }
                     >
                       <motion.img

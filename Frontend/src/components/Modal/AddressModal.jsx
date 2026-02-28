@@ -21,6 +21,7 @@ import {
   getAddresses,
   addAddress,
   updateAddress,
+  deleteAddress,
 } from "../../utils/apis/address";
 import { useLoader } from "../../Hooks/useLoader";
 import BooksLoader from "../Loaders/BooksLoader";
@@ -129,7 +130,7 @@ const AddressModal = ({ showAddress, setShowAddress }) => {
   const confirmDelete = async () => {
     if (!addressToDelete) return;
     try {
-      const res = await deleteAddressApi(addressToDelete);
+      const res = await deleteAddress(addressToDelete);
       if (res.success) {
         toast.success("Address deleted successfully!");
         if (selectedAddress === addressToDelete) {
@@ -327,10 +328,11 @@ const AddressModal = ({ showAddress, setShowAddress }) => {
                       <div
                         key={address.id}
                         onClick={() => handleAddressSelect(address)}
-                        className={`p-4  rounded-xl cursor-pointer  hover:scale-105 transition-all duration-300 ease-linear ${selectedAddress === address.id
-                          ? "border-t-[4px] border-b-[4px] border-[#fff]"
-                          : " border-b border-t border-[#5c4c4955]"
-                          }`}
+                        className={`p-4  rounded-xl cursor-pointer  hover:scale-105 transition-all duration-300 ease-linear ${
+                          selectedAddress === address.id
+                            ? "border-t-[4px] border-b-[4px] border-[#fff]"
+                            : " border-b border-t border-[#5c4c4955]"
+                        }`}
                       >
                         <div className="relative flex items-start gap-3">
                           <PencilSquareIcon
@@ -397,12 +399,19 @@ const AddressModal = ({ showAddress, setShowAddress }) => {
                     if (selected && !selected.isDefault) {
                       try {
                         const updatedData = { ...selected, isDefault: true };
-                        const res = await updateAddress(selected.id, updatedData);
+                        const res = await updateAddress(
+                          selected.id,
+                          updatedData,
+                        );
                         if (res.success) {
-                          toast.success("Default address updated successfully!");
+                          toast.success(
+                            "Default address updated successfully!",
+                          );
                           await fetchData();
                         } else {
-                          toast.error(res.message || "Failed to set default address");
+                          toast.error(
+                            res.message || "Failed to set default address",
+                          );
                         }
                       } catch (error) {
                         toast.error("Error setting default address");
@@ -616,7 +625,8 @@ const AddressModal = ({ showAddress, setShowAddress }) => {
 
               <div className="p-3 mb-6 bg-gray-50 border border-[#5c4c49]/20 rounded-lg">
                 <p className="text-sm text-gray-800">
-                  Are you sure you want to delete this address? This action cannot be undone.
+                  Are you sure you want to delete this address? This action
+                  cannot be undone.
                 </p>
               </div>
 
