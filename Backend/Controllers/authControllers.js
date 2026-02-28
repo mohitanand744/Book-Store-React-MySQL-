@@ -303,6 +303,7 @@ const getUserProfile = async (req, res, next) => {
     if (!user) {
       return errorResponse(res, 400, "User not found");
     }
+    console.log("User - ", user);
 
     const userDetails = formatUser([user]);
 

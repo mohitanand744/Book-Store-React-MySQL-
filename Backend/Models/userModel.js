@@ -94,7 +94,9 @@ const findUserById = async (userId) => {
   const query = `SELECT 
   u.*,
   IFNULL(o.orders_count, 0) AS orders_count,
-  IFNULL(w.wishlist_count, 0) AS wishlist_count
+  IFNULL(w.wishlist_count, 0) AS wishlist_count,
+  a.street_address AS default_address,
+  a.pin_code, a.city, a.state
 FROM users u
 LEFT JOIN (
   SELECT user_id, COUNT(*) AS orders_count
@@ -106,6 +108,7 @@ LEFT JOIN (
   FROM wishlists WHERE status = 'ACTIVE'
   GROUP BY user_id
 ) w ON u.id = w.user_id
+ LEFT JOIN addresses a ON u.id = a.user_id AND a.is_default = 1
 WHERE u.id = ?;`;
   const [rows] = await db.query(query, [userId]);
   return rows[0] || null;

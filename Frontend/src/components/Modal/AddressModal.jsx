@@ -26,7 +26,12 @@ import {
 import { useLoader } from "../../Hooks/useLoader";
 import BooksLoader from "../Loaders/BooksLoader";
 
-const AddressModal = ({ showAddress, setShowAddress }) => {
+const AddressModal = ({
+  showAddress,
+  setShowAddress,
+  dbStates,
+  setDbStates,
+}) => {
   const [activeTab, setActiveTab] = useState("select");
   const [selectedAddress, setSelectedAddress] = useState(null);
   const [addresses, setAddresses] = useState([]);
@@ -34,8 +39,6 @@ const AddressModal = ({ showAddress, setShowAddress }) => {
   const [confirmationData, setConfirmationData] = useState(null);
   const [addressToDelete, setAddressToDelete] = useState(null);
   const { loading } = useLoader();
-
-  const [dbStates, setDbStates] = useState([]);
 
   const {
     register,
@@ -55,22 +58,30 @@ const AddressModal = ({ showAddress, setShowAddress }) => {
 
   const fetchData = async () => {
     try {
-      const [addrRes, statesRes] = await Promise.all([
-        getAddresses(),
-        getStatesFromDB(),
-      ]);
+      const addrRes = await getAddresses();
       if (addrRes?.success) setAddresses(addrRes.data || []);
-      if (statesRes?.success) setDbStates(statesRes.data || []);
     } catch (error) {
       toast.error("Failed to load address data");
     }
   };
 
-  useEffect(() => {
-    if (showAddress) {
-      fetchData();
+  const fetchStates = async () => {
+    try {
+      const statesRes = await getStatesFromDB();
+      if (statesRes?.success) setDbStates(statesRes.data || []);
+    } catch (error) {
+      toast.error("Failed to load states data");
     }
-  }, [showAddress]);
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    if (dbStates.length > 0) return;
+    fetchStates();
+  }, []);
 
   const addressTypeIcons = {
     Home: HomeIcon,
@@ -417,6 +428,7 @@ const AddressModal = ({ showAddress, setShowAddress }) => {
                         toast.error("Error setting default address");
                       }
                     }
+
                     setShowAddress(false);
                   }}
                 >

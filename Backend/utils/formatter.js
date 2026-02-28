@@ -38,7 +38,12 @@ exports.formatUser = (rows) => {
       user?.profile_pic ||
       "https://img.freepik.com/premium-vector/human-icon_970584-3.jpg?semt=ais_hybrid&w=740&q=80",
     joinDate: formattedDate || null,
-    address: [],
+    default_address: {
+      address: user?.default_address || null,
+      city: user?.city || null,
+      state: user?.state || null,
+      pinCode: user?.pin_code || null,
+    },
     phone: user?.phone || null,
     orders: user?.orders_count || 0,
     wishlist: user?.wishlist_count || 0,

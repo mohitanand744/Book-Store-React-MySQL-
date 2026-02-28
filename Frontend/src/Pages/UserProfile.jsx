@@ -27,7 +27,6 @@ import {
 import useAuth from "../Hooks/useAuth";
 import NoData from "../components/EmptyData/noData";
 import AddressModal from "../components/Modal/AddressModal";
-import { getAddresses } from "../utils/apis/address";
 
 // Mock user data with additional details
 const mockUser = {
@@ -108,14 +107,19 @@ const UserProfile = () => {
   const [editData, setEditData] = useState({ ...mockUser });
   const [activeTab, setActiveTab] = useState("activity");
   const navigate = useNavigate();
-  const { logoutStatusSuccess, userData, setUpdateUserData } = useAuth();
+  const [dbStates, setDbStates] = useState([]);
+  const {
+    logoutStatusSuccess,
+    userData,
+    setUpdateUserData,
+    getUserUpdatedDetails,
+  } = useAuth();
   const [user, setUser] = useState(userData);
   const [showAddressModal, setShowAddressModal] = useState(false);
   const { openPreview } = useImagePreview();
   const fileInputRef = useRef(null);
   const { preview, setPreview, isUploading, setIsUploading } = useUser();
-  const dispatch = useDispatch();
-  const [defaultAddress, setDefaultAddress] = useState("Loading...");
+  const [defaultAddress, setDefaultAddress] = useState("No Address Selected");
 
   const uploadProfilePic = async (file) => {
     setIsUploading(true);
@@ -173,35 +177,18 @@ const UserProfile = () => {
   }, [userData]);
 
   useEffect(() => {
-    dispatch(validateToken());
-  }, [dispatch]);
-
-  const fetchUserAddress = async () => {
-    try {
-      const res = await getAddresses();
-      if (res?.success && res.data?.length > 0) {
-        const defaultAddr =
-          res.data.find((addr) => addr.isDefault) || res.data[0];
-        if (defaultAddr) {
-          setDefaultAddress(
-            `${defaultAddr.address}, ${defaultAddr.city}, ${defaultAddr.state} - ${defaultAddr.pinCode}`,
-          );
-        } else {
-          setDefaultAddress("No Address Added");
-        }
-      } else {
-        setDefaultAddress("No Address Added");
-      }
-    } catch (error) {
-      setDefaultAddress("Failed to load address");
-    }
-  };
-
-  useEffect(() => {
-    if (!showAddressModal) {
-      fetchUserAddress();
+    if (showAddressModal === false) {
+      getUserUpdatedDetails();
     }
   }, [showAddressModal]);
+
+  useEffect(() => {
+    if (userData) {
+      setDefaultAddress(
+        `${userData?.default_address.address}, ${userData?.default_address.city}, ${userData?.default_address.state}, ${userData?.default_address.pinCode}`,
+      );
+    }
+  }, [userData.default_address]);
 
   const handleEdit = () => {
     setEditData({ ...user });
@@ -791,10 +778,14 @@ const UserProfile = () => {
         )}
       </AnimatePresence>
 
-      <AddressModal
-        showAddress={showAddressModal}
-        setShowAddress={setShowAddressModal}
-      />
+      {showAddressModal && (
+        <AddressModal
+          showAddress={showAddressModal}
+          setShowAddress={setShowAddressModal}
+          dbStates={dbStates}
+          setDbStates={setDbStates}
+        />
+      )}
     </div>
   );
 };
