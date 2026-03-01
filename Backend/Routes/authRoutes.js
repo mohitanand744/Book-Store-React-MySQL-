@@ -27,9 +27,14 @@ const router = express.Router();
 
 router.post("/register", signupValidation, signup);
 router.post("/login", loginValidation, login);
-router.post("/logout", verifyToken, logout);
+router.post("/logout", logout);
 
-router.post("/profile-pic", verifyToken, upload.single("profilePic"), uploadProfilePic);
+router.post(
+  "/profile-pic",
+  verifyToken,
+  upload.single("profilePic"),
+  uploadProfilePic,
+);
 
 router.route("/google").get(getGoogleLoginPage);
 router.route("/google/callback").get(getGoogleCallBack);
@@ -38,12 +43,12 @@ router.post("/forgot-password", forgotPasswordValidation, forgotPassword);
 router.post(
   "/verify-reset-token/",
   verifyTokenValidation,
-  verifyResetTokenController
+  verifyResetTokenController,
 );
 router.post(
   "/reset-password",
   resetPasswordValidation,
-  resetPasswordController
+  resetPasswordController,
 );
 router.get("/verify-email/", verifyTokenValidation, verifyEmailTokenController);
 router.get("/me", verifyToken, getUserProfile);

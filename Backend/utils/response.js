@@ -4,7 +4,7 @@ function successResponse(
   statusCode,
   message,
   data = {},
-  redirectUrl = null
+  redirectUrl = null,
 ) {
   if (redirectUrl) {
     return res.redirect(redirectUrl);
@@ -23,9 +23,9 @@ function errorResponse(
   statusCode,
   message,
   error = null,
-  redirectUrl = null
+  redirectUrl = null,
 ) {
-  console.log(`Error Details: ${error}` || message || `${statusCode} Error`);
+  console.log(`Error Details: ${message}`, `${statusCode} Error`);
 
   if (redirectUrl) {
     return res.redirect(redirectUrl);

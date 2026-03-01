@@ -1,8 +1,9 @@
+
 const attachInterceptors = (
   axiosInst,
-  { showLoader, hideLoader, updateProgress }
+  { showLoader, hideLoader, updateProgress, logoutStatusSuccess },
 ) => {
-  axiosInst.interceptors.request.use(
+  const reqInterceptor = axiosInst.interceptors.request.use(
     (config) => {
       console.log("Loader Start");
       showLoader();
@@ -10,14 +11,14 @@ const attachInterceptors = (
       // Track progress if available
       config.onUploadProgress = (progressEvent) => {
         const percentCompleted = Math.round(
-          (progressEvent.loaded * 100) / progressEvent.total
+          (progressEvent.loaded * 100) / progressEvent.total,
         );
         updateProgress(percentCompleted);
       };
 
       config.onDownloadProgress = (progressEvent) => {
         const percentCompleted = Math.round(
-          (progressEvent.loaded * 100) / progressEvent.total
+          (progressEvent.loaded * 100) / progressEvent.total,
         );
         updateProgress(percentCompleted);
       };
@@ -27,11 +28,11 @@ const attachInterceptors = (
     (error) => {
       hideLoader();
       return Promise.reject(error);
-    }
+    },
   );
 
   // Response interceptor
-  axiosInst.interceptors.response.use(
+  const resInterceptor = axiosInst.interceptors.response.use(
     (response) => {
       hideLoader();
       return response;
@@ -45,13 +46,15 @@ const attachInterceptors = (
         console.log("ERR-->", err);
 
         if (err?.name === "TokenExpiredError") {
-          toast.error("Session expired. Please login again.");
+          logoutStatusSuccess("Session expired. Please login again.");
         }
       }
 
       return Promise.reject(error);
-    }
+    },
   );
+
+  return { reqInterceptor, resInterceptor };
 };
 
 export default attachInterceptors;

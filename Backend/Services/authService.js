@@ -31,7 +31,7 @@ const { isCloudinaryUrl, uploadFromUrl } = require("../utils/cloudinaryUpload");
 
 exports.registerUser = async (
   { first_name, last_name, email, password, terms_accepted },
-  res
+  res,
 ) => {
   const existingUser = await findUserByEmail(email);
 
@@ -120,7 +120,7 @@ exports.loginUser = async ({ email, password, res }) => {
   const token = generateJWT(
     { id: user.id, email: user.email },
     process.env.JWT_SECRET,
-    `${USER_TOKEN_EXPIRES_IN}h`
+    `${USER_TOKEN_EXPIRES_IN}h`,
   );
 
   console.log("loginUserrrrrrrrr", user);
@@ -196,7 +196,7 @@ async function sendEmailVerificationLinkServices(email) {
     const emailVerificationToken = generateJWT(
       { id: user.id, email: user.email, email_verified: user.email_verified },
       process.env.JWT_SECRET_EMAIL_VERIFY,
-      `${EMAIL_VERIFICATION_TOKEN_EXPIRES_IN}m`
+      `${EMAIL_VERIFICATION_TOKEN_EXPIRES_IN}m`,
     );
 
     const emailVerificationLink = `${process.env.BACKEND_BASE_URL}/api/${process.env.API_VERSION}/auth/verify-email/?token=${emailVerificationToken}&email=${email}`;
@@ -206,7 +206,7 @@ async function sendEmailVerificationLinkServices(email) {
     await sendEmailVerificationLink(
       email,
       emailVerificationLink,
-      user.first_name
+      user.first_name,
     );
 
     return true;
@@ -235,7 +235,7 @@ exports.sendResetPasswordLink = async (email) => {
     const resetToken = generateJWT(
       { id: user.id, email: user.email },
       process.env.JWT_SECRET_RESET,
-      `${RESET_TOKEN_EXPIRES_IN}m`
+      `${RESET_TOKEN_EXPIRES_IN}m`,
     );
     await saveResetToken(email, resetToken);
 
@@ -345,7 +345,7 @@ exports.handleSocialLogin = async ({
   if (existingByProvider) {
     if (picture && !isCloudinaryUrl(existingByProvider.profile_pic)) {
       const { url = picture, public_id } = await uploadFromUrl(
-        picture.replace(/=s\d+-c$/, "")
+        picture.replace(/=s\d+-c$/, ""),
       );
 
       await updateUserPicture(existingByProvider.id, url);
@@ -357,7 +357,7 @@ exports.handleSocialLogin = async ({
     const token = generateJWT(
       { id: userDetails.userId, email: userDetails.email },
       process.env.JWT_SECRET,
-      `${USER_TOKEN_EXPIRES_IN}h`
+      `${USER_TOKEN_EXPIRES_IN}h`,
     );
 
     return {
@@ -380,7 +380,7 @@ exports.handleSocialLogin = async ({
 
           if (picture && !isCloudinaryUrl(existingByEmail.profile_pic)) {
             const { url = picture, public_id } = await uploadFromUrl(
-              picture.replace(/=s\d+-c$/, "")
+              picture.replace(/=s\d+-c$/, ""),
             );
 
             await updateUserPicture(existingByEmail.id, url);
@@ -394,7 +394,7 @@ exports.handleSocialLogin = async ({
           const token = generateJWT(
             { id: updatedUser.userId, email: updatedUser.email },
             process.env.JWT_SECRET,
-            `${USER_TOKEN_EXPIRES_IN}h`
+            `${USER_TOKEN_EXPIRES_IN}h`,
           );
           return {
             success: true,
@@ -418,7 +418,7 @@ exports.handleSocialLogin = async ({
 
           if (picture && !isCloudinaryUrl(existingByEmail.profile_pic)) {
             const { url = picture, public_id } = await uploadFromUrl(
-              picture.replace(/=s\d+-c$/, "")
+              picture.replace(/=s\d+-c$/, ""),
             );
 
             await updateUserPicture(existingByEmail.id, url);
@@ -432,7 +432,7 @@ exports.handleSocialLogin = async ({
           const token = generateJWT(
             { id: updatedUser.userId, email: updatedUser.email },
             process.env.JWT_SECRET,
-            `${USER_TOKEN_EXPIRES_IN}h`
+            `${USER_TOKEN_EXPIRES_IN}h`,
           );
           return {
             success: true,
@@ -468,7 +468,7 @@ exports.handleSocialLogin = async ({
   const newUser = await findUserById(newUserId);
 
   const { url = picture, public_id } = await uploadFromUrl(
-    picture.replace(/=s\d+-c$/, "")
+    picture.replace(/=s\d+-c$/, ""),
   );
 
   await updateUserPicture(newUserId, url);
@@ -477,7 +477,7 @@ exports.handleSocialLogin = async ({
   const token = generateJWT(
     { id: newUser.id, email: newUser.email },
     process.env.JWT_SECRET,
-    `${USER_TOKEN_EXPIRES_IN}h`
+    `${USER_TOKEN_EXPIRES_IN}h`,
   );
 
   const user = formatUser([newUser]);

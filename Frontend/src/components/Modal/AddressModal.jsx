@@ -77,11 +77,11 @@ const AddressModal = ({
   useEffect(() => {
     fetchData();
   }, []);
-
   useEffect(() => {
-    if (dbStates.length > 0) return;
-    fetchStates();
-  }, []);
+    if (dbStates.length === 0 && activeTab === "add") {
+      fetchStates();
+    }
+  }, [dbStates, activeTab]);
 
   const addressTypeIcons = {
     Home: HomeIcon,

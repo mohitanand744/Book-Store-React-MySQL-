@@ -947,7 +947,7 @@ const ModernProfileDetail = ({
             <Button
               type="button"
               onClick={() => setShowAddressModal(true)}
-              className="bg-[#5C4C49] h-7 text-[#E8D9C5] text-nowrap rounded-[7px] text-xs font-medium flex items-center"
+              className="bg-[#5C4C49] ms-4 h-7 text-[#E8D9C5] text-nowrap rounded-[7px] text-xs font-medium flex items-center"
             >
               Select Address
             </Button>

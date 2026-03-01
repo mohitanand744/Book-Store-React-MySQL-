@@ -3,8 +3,10 @@ import { useEffect } from "react";
 import axios from "axios";
 import { useLoader } from "../Hooks/useLoader";
 import attachInterceptors from "../Helper/attachInterceptors";
+import useAuth from "../Hooks/useAuth";
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:3001/api";
+const API_BASE =
+  import.meta.env.VITE_API_BASE_URL || "http://localhost:3001/api";
 const API_VERSION = import.meta.env.VITE_API_VERSION || "v1";
 const BASE_URL = `${API_BASE}/${API_VERSION}`;
 
@@ -24,19 +26,30 @@ const axiosInstanceFormData = axios.create({
 
 export const useAxiosLoader = () => {
   const { showLoader, hideLoader, updateProgress } = useLoader();
+  const { logoutStatusSuccess } = useAuth();
 
   useEffect(() => {
-    attachInterceptors(axiosInstance, {
+    const defaultInterceptors = attachInterceptors(axiosInstance, {
       showLoader,
       hideLoader,
       updateProgress,
+      logoutStatusSuccess,
     });
 
-    attachInterceptors(axiosInstanceFormData, {
+    const formDataInterceptors = attachInterceptors(axiosInstanceFormData, {
       showLoader,
       hideLoader,
       updateProgress,
+      logoutStatusSuccess,
     });
+
+    return () => {
+      axiosInstance.interceptors.request.eject(defaultInterceptors.reqInterceptor);
+      axiosInstance.interceptors.response.eject(defaultInterceptors.resInterceptor);
+
+      axiosInstanceFormData.interceptors.request.eject(formDataInterceptors.reqInterceptor);
+      axiosInstanceFormData.interceptors.response.eject(formDataInterceptors.resInterceptor);
+    };
   }, []);
 };
 
