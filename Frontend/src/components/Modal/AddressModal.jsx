@@ -491,6 +491,9 @@ const AddressModal = ({
                   })}
                   error={errors.city?.message}
                   placeholder="Enter City"
+                  onInput={(e) => {
+                    e.target.value = e.target.value.replace(/[^a-zA-Z\s]/g, "");
+                  }}
                 />
 
                 <Controller
@@ -522,6 +525,12 @@ const AddressModal = ({
                 })}
                 error={errors.address?.message}
                 placeholder="Enter Street Address"
+                onInput={(e) => {
+                  e.target.value = e.target.value.replace(
+                    /[^a-zA-Z0-9\s,.\-/#]/g,
+                    "",
+                  );
+                }}
               />
 
               <Checkbox

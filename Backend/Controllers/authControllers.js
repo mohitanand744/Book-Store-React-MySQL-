@@ -7,6 +7,7 @@ const {
   verifyResetToken,
   verifyEmailToken,
   handleSocialLogin,
+  updateUserDetailsService,
 } = require("../Services/authService");
 const { successResponse, errorResponse } = require("../utils/response");
 const handleDbError = require("../utils/handleDbError");
@@ -34,7 +35,7 @@ const signup = async (req, res, next) => {
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
-      return errorResponse(res, 400, "Validation failed", errors.array()[0]);
+      return errorResponse(res, 400, "Validation failed", errors.array());
     }
 
     const userData = req.body;
@@ -57,7 +58,7 @@ const login = async (req, res, next) => {
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
-      return errorResponse(res, 400, "Validation failed", errors.array()[0]);
+      return errorResponse(res, 400, "Validation failed", errors.array());
     }
 
     const { email, password } = req.body;
@@ -91,6 +92,8 @@ const login = async (req, res, next) => {
 
 // LOGOUT
 const logout = (_, res) => {
+  console.log("Logout Starts");
+
   res.clearCookie("token", {
     httpOnly: true,
     secure: false,
@@ -101,6 +104,8 @@ const logout = (_, res) => {
   res.clearCookie("google_oauth_state", { path: "/", sameSite: "lax" });
   res.clearCookie("google_code_verifier", { path: "/", sameSite: "lax" });
 
+  console.log("Logout successfully");
+
   successResponse(res, 200, "Logout successful");
 };
 
@@ -110,7 +115,7 @@ const forgotPassword = async (req, res, next) => {
     const error = validationResult(req);
 
     if (!error.isEmpty()) {
-      return errorResponse(res, 400, "Validation failed", error.array()[0]);
+      return errorResponse(res, 400, "Validation failed", error.array());
     }
 
     const { email } = req.body;
@@ -179,7 +184,7 @@ const resetPasswordController = async (req, res, next) => {
     const error = validationResult(req);
 
     if (!error.isEmpty()) {
-      return errorResponse(res, 400, "Validation failed", error.array()[0]);
+      return errorResponse(res, 400, "Validation failed", error.array());
     }
 
     const { email, newPassword, resetToken } = req.body;
@@ -351,6 +356,44 @@ const uploadProfilePic = async (req, res, next) => {
   }
 };
 
+const updateUserDetailsController = async (req, res, next) => {
+  console.log("uuuuuuuuuuuuuu");
+
+  try {
+    const userId = req.userId;
+    const error = validationResult(req);
+
+    if (!error.isEmpty()) {
+      return errorResponse(res, 400, "Validation failed", error.array());
+    }
+    const { firstName, lastName, phone, favoriteGenres } = req.body;
+
+    if (!userId) {
+      return errorResponse(res, 401, "User not found");
+    }
+
+    if (!firstName || !lastName || !phone) {
+      return errorResponse(res, 400, "Missing required fields");
+    }
+
+    const result = await updateUserDetailsService(
+      userId,
+      firstName,
+      lastName,
+      phone,
+      favoriteGenres,
+    );
+
+    if (result.success) {
+      successResponse(res, 200, result.message);
+    } else {
+      errorResponse(res, 400, result.message);
+    }
+  } catch (error) {
+    handleDbError(error, res, next);
+  }
+};
+
 module.exports = {
   signup,
   login,
@@ -363,4 +406,5 @@ module.exports = {
   getGoogleCallBack,
   logout,
   uploadProfilePic,
+  updateUserDetailsController,
 };

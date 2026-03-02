@@ -14,7 +14,11 @@ export const signup = async (userData) => {
 
 export const logout = async () => {
   const response = await axiosInstance.post(
-    "/auth/logout"
+    "/auth/logout",
+    {},
+    {
+      withCredentials: true,
+    },
   );
 
   return response.data;

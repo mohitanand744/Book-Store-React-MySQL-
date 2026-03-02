@@ -47,7 +47,7 @@ exports.signupValidation = [
     .withMessage("Password must be at least 8 characters long")
     .matches(passwordRegex)
     .withMessage(
-      "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character"
+      "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character",
     )
     .isLength({ max: 128 })
     .withMessage("Password must not exceed 128 characters"),
@@ -102,7 +102,7 @@ exports.resetPasswordValidation = [
     .withMessage("Password must be 8–128 characters long")
     .matches(passwordRegex)
     .withMessage(
-      "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character"
+      "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character",
     ),
 
   check("confirmPassword")
@@ -142,6 +142,38 @@ exports.verifyTokenValidation = [
     .withMessage("Token is required")
     .isLength({ min: 1 })
     .withMessage("Token is required"),
+];
+
+exports.userUpdatedDataValidation = [
+  check("firstName")
+    .notEmpty()
+    .withMessage("First name is required")
+    .isLength({ min: 2, max: 50 })
+    .withMessage("First name must be between 2 and 50 characters")
+    .trim()
+    .escape(),
+
+  check("lastName")
+    .notEmpty()
+    .withMessage("Last name is required")
+    .isLength({ min: 2, max: 50 })
+    .withMessage("Last name must be between 2 and 50 characters")
+    .trim()
+    .escape(),
+
+  check("phone")
+    .notEmpty()
+    .withMessage("Phone number is required")
+    .isNumeric()
+    .withMessage("Phone must contain only digits")
+    .isLength({ min: 10, max: 10 })
+    .withMessage("Phone must be 10 digits")
+    .trim()
+    .escape(),
+
+  check("favoriteGenres")
+    .isArray()
+    .withMessage("Favorite genres must be an array"),
 ];
 
 // Optional: Add a comprehensive email validation middleware

@@ -343,6 +343,7 @@ const UserProfile = () => {
                   label="Phone"
                   value={user?.phone}
                   delay={0.5}
+                  isCopyable
                 />
                 <ModernProfileDetail
                   icon={<FaRegAddressCard className="text-[#5C4C49] text-lg" />}
@@ -903,7 +904,7 @@ const ModernProfileDetail = ({
       </p>
       <div className="z-20 flex items-center justify-between w-full mt-1">
         <p className="text-[#5C4C49] text-xs sm:text-sm md:text-md font-medium">
-          {value || <span className="text-slate-400 ">Not Provided Yet</span>}
+          {value || <span className="text-gray-500 ">N/A</span>}
         </p>
 
         {isCopyable && (
@@ -927,16 +928,6 @@ const ModernProfileDetail = ({
           </motion.button>
         )}
 
-        {label === "Phone" && (
-          <motion.div
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-            className="text-[#e8d9c5] p-1 rounded-full bg-[#5C4C49]"
-            title="Add phone number"
-          >
-            <PlusCircleIcon className="w-6 h-6" />
-          </motion.div>
-        )}
         {label === "Address" && (
           <motion.div
             whileHover={{ scale: 1.1 }}

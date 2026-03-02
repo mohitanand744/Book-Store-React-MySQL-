@@ -60,7 +60,7 @@ const SignUp = () => {
       console.error("Error signing up:", error);
       toast.error(
         error.response?.data?.message ||
-        "Something went wrong. Please try again later.",
+          "Something went wrong. Please try again later.",
       );
       reset();
       navigate("/");
@@ -300,8 +300,7 @@ const SignUp = () => {
                       variant="outline"
                       className="flex items-center justify-center w-full"
                       onClick={() =>
-                      (window.location.href =
-                        `${import.meta.env.VITE_API_BASE_URL}/${import.meta.env.VITE_API_VERSION}/auth/google`)
+                        (window.location.href = `${import.meta.env.VITE_API_BASE_URL}/${import.meta.env.VITE_API_VERSION}/auth/google`)
                       }
                     >
                       <motion.img
@@ -388,7 +387,8 @@ const SignUp = () => {
             className="mt-4 text-center"
           >
             <p className="text-xs bg-[#a2a2a27f] px-3 py-1 rounded-full text-gray-50">
-              &copy; 2023 NextChapter. All rights reserved.
+              <b>&copy; {new Date().getFullYear()} NextChapter.</b> All rights
+              reserved.
             </p>
           </motion.div>
         </motion.div>

@@ -42,7 +42,9 @@ const findUserByEmail = async (email) => {
     `SELECT 
   u.*,
   IFNULL(o.orders_count, 0) AS orders_count,
-  IFNULL(w.wishlist_count, 0) AS wishlist_count
+  IFNULL(w.wishlist_count, 0) AS wishlist_count,
+  a.street_address AS default_address,
+  a.pin_code, a.city, a.state
 FROM users u
 LEFT JOIN (
   SELECT user_id, COUNT(*) AS orders_count
@@ -54,6 +56,7 @@ LEFT JOIN (
   FROM wishlists WHERE status = 'ACTIVE'
   GROUP BY user_id
 ) w ON u.id = w.user_id
+ LEFT JOIN addresses a ON u.id = a.user_id AND a.is_default = 1
 WHERE u.email = ?;
 `,
     [email],
@@ -139,6 +142,27 @@ const updateUserPicturePublicId = async (userId, public_id) => {
   await db.query(query, [public_id, userId]);
 };
 
+const updateUserDetails = async (
+  userId,
+  phone,
+  firstName,
+  lastName,
+  favoriteGenres,
+) => {
+  console.log("favoriteGenres", favoriteGenres);
+
+  const query = `UPDATE users SET phone_number = ?, first_name = ?, last_name = ?, favorite_genres = ? WHERE id = ?;`;
+  const [rows] = await db.query(query, [
+    phone,
+    firstName,
+    lastName,
+    JSON.stringify(favoriteGenres),
+    userId,
+  ]);
+
+  return rows;
+};
+
 module.exports = {
   createUser,
   findUserByEmail,
@@ -152,4 +176,5 @@ module.exports = {
   updateUserProvider,
   updateUserPicture,
   updateUserPicturePublicId,
+  updateUserDetails,
 };

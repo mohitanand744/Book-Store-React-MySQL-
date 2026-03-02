@@ -13,6 +13,7 @@ const {
   getGoogleCallBack,
   logout,
   uploadProfilePic,
+  updateUserDetailsController,
 } = require("../Controllers/authControllers");
 const {
   signupValidation,
@@ -20,6 +21,7 @@ const {
   forgotPasswordValidation,
   resetPasswordValidation,
   verifyTokenValidation,
+  userUpdatedDataValidation,
 } = require("../Validators/authValidator");
 const verifyToken = require("../Middleware/verifyToken");
 
@@ -52,5 +54,11 @@ router.post(
 );
 router.get("/verify-email/", verifyTokenValidation, verifyEmailTokenController);
 router.get("/me", verifyToken, getUserProfile);
+router.put(
+  "/profile-update",
+  verifyToken,
+  userUpdatedDataValidation,
+  updateUserDetailsController,
+);
 
 module.exports = router;
