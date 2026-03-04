@@ -94,17 +94,13 @@ const mockUser = {
   ],
 };
 
-import { uploadProfilePic as uploadProfilePicApi } from "../utils/apis/authApi";
+import { uploadProfilePic as uploadProfilePicApi } from "../utils/apis/authApis";
 import { useUser } from "../store/Context/UserContext";
 import Spinner from "../components/Loaders/Spinner";
 import { useImagePreview } from "../store/Context/ImagePreviewContext";
-import { validateToken } from "../store/Redux/Slices/authSlice";
-import { useDispatch } from "react-redux";
-import { PhoneIcon, PlusCircleIcon } from "@heroicons/react/24/outline";
+import ProfileUpdateModal from "../components/Modal/ProfileUpdateModal";
 
 const UserProfile = () => {
-  const [isEditOpen, setIsEditOpen] = useState(false);
-  const [editData, setEditData] = useState({ ...mockUser });
   const [activeTab, setActiveTab] = useState("activity");
   const navigate = useNavigate();
   const [dbStates, setDbStates] = useState([]);
@@ -116,6 +112,7 @@ const UserProfile = () => {
   } = useAuth();
   const [user, setUser] = useState(userData);
   const [showAddressModal, setShowAddressModal] = useState(false);
+  const [showProfileUpdateModal, setShowProfileUpdateModal] = useState(false);
   const { openPreview } = useImagePreview();
   const fileInputRef = useRef(null);
   const { preview, setPreview, isUploading, setIsUploading } = useUser();
@@ -183,27 +180,12 @@ const UserProfile = () => {
   }, [showAddressModal]);
 
   useEffect(() => {
-    if (userData) {
+    if (userData?.default_address?.address) {
       setDefaultAddress(
         `${userData?.default_address.address}, ${userData?.default_address.city}, ${userData?.default_address.state}, ${userData?.default_address.pinCode}`,
       );
     }
   }, [userData.default_address]);
-
-  const handleEdit = () => {
-    setEditData({ ...user });
-    setIsEditOpen(true);
-  };
-
-  const handleSave = () => {
-    setUser(editData);
-    setIsEditOpen(false);
-  };
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setEditData((prev) => ({ ...prev, [name]: value }));
-  };
 
   const navigateToOrders = () => {
     navigate("/nextChapter/orders");
@@ -341,7 +323,8 @@ const UserProfile = () => {
                 <ModernProfileDetail
                   icon={<FiPhone className="text-[#5C4C49] text-lg" />}
                   label="Phone"
-                  value={user?.phone}
+                  value={user?.phone || "Not provided"}
+                  notProvided={!user?.phone}
                   delay={0.5}
                   isCopyable
                 />
@@ -349,13 +332,18 @@ const UserProfile = () => {
                   icon={<FaRegAddressCard className="text-[#5C4C49] text-lg" />}
                   label="Address"
                   value={defaultAddress}
+                  notProvided={!user?.default_address?.address}
                   setShowAddressModal={setShowAddressModal}
                   delay={0.6}
                 />
                 <ModernProfileDetail
                   icon={<FaRegHeart className="text-[#5C4C49] text-lg" />}
                   label="Favorite Genres"
-                  value={user?.favoriteGenres?.join(", ")}
+                  value={
+                    user?.favoriteGenres?.join(", ") ||
+                    "Select your favorite genres"
+                  }
+                  notProvided={!user?.favoriteGenres?.length}
                   delay={0.7}
                 />
               </div>
@@ -365,16 +353,22 @@ const UserProfile = () => {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.2 }}
-                  onClick={handleEdit}
                   className="flex-1"
                 >
                   {/* Edit Button */}
                   <Button
-                    className="flex items-center w-full justify-center px-4 text-nowrap py-2 bg-[#5C4C49] text-[#E8D9C5] rounded-lg shadow-md"
+                    className="flex relative items-center w-full justify-center px-4 text-nowrap py-2 bg-[#5C4C49] text-[#E8D9C5] rounded-lg shadow-md"
                     type="button"
+                    onClick={() => setShowProfileUpdateModal(true)}
                   >
-                    <PencilSvg />
-                    Edit Profile
+                    {user?.isComplete
+                      ? "Update Profile"
+                      : "Complete Your Profile"}
+                    {!user?.isComplete && (
+                      <span className="absolute top-[-10px] left-[-10px] w-8 h-8 bg-[#5C4C49] border-2 border-orange-500 rounded-full flex items-center justify-center text-xs">
+                        {user?.percentage}%
+                      </span>
+                    )}
                   </Button>
                 </motion.div>
 
@@ -659,134 +653,19 @@ const UserProfile = () => {
         </div>
       </motion.div>
 
-      {/* Edit Modal */}
-      <AnimatePresence>
-        {isEditOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50"
-          >
-            <motion.div
-              initial={{ scale: 0.9, y: 20 }}
-              animate={{ scale: 1, y: 0 }}
-              exit={{ scale: 0.9, y: 20 }}
-              className="bg-[#E8D9C5] rounded-xl shadow-xl w-full max-w-md p-6"
-            >
-              <h2 className="text-2xl font-bold text-[#5C4C49] mb-4">
-                Edit Profile
-              </h2>
+      <AddressModal
+        key="addressModal"
+        showAddress={showAddressModal}
+        setShowAddress={setShowAddressModal}
+        dbStates={dbStates}
+        setDbStates={setDbStates}
+      />
 
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-[#5C4C49] mb-1">
-                    Name
-                  </label>
-                  <input
-                    type="text"
-                    name="name"
-                    value={editData.name}
-                    onChange={handleChange}
-                    className="w-full p-2 border border-[#D3BD9D] rounded bg-white focus:ring-2 focus:ring-[#5C4C49] focus:border-transparent"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-[#5C4C49] mb-1">
-                    Email
-                  </label>
-                  <input
-                    type="email"
-                    name="email"
-                    value={editData.email}
-                    onChange={handleChange}
-                    className="w-full p-2 border border-[#D3BD9D] rounded bg-white focus:ring-2 focus:ring-[#5C4C49] focus:border-transparent"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-[#5C4C49] mb-1">
-                    Phone
-                  </label>
-                  <input
-                    type="tel"
-                    name="phone"
-                    value={editData.phone}
-                    onChange={handleChange}
-                    className="w-full p-2 border border-[#D3BD9D] rounded bg-white focus:ring-2 focus:ring-[#5C4C49] focus:border-transparent"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-[#5C4C49] mb-1">
-                    Address
-                  </label>
-                  <textarea
-                    name="address"
-                    value={editData.address}
-                    onChange={handleChange}
-                    className="w-full p-2 border border-[#D3BD9D] rounded bg-white focus:ring-2 focus:ring-[#5C4C49] focus:border-transparent"
-                    rows="3"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-[#5C4C49] mb-1">
-                    Favorite Genres
-                  </label>
-                  <input
-                    type="text"
-                    name="favoriteGenres"
-                    value={editData.favoriteGenres.join(", ")}
-                    onChange={(e) => {
-                      const genres = e.target.value
-                        .split(",")
-                        .map((g) => g.trim());
-                      setEditData((prev) => ({
-                        ...prev,
-                        favoriteGenres: genres,
-                      }));
-                    }}
-                    className="w-full p-2 border border-[#D3BD9D] rounded bg-white focus:ring-2 focus:ring-[#5C4C49] focus:border-transparent"
-                  />
-                  <p className="text-xs text-[#5C4C49] opacity-70 mt-1">
-                    Separate genres with commas
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex justify-end mt-6 space-x-3">
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => setIsEditOpen(false)}
-                  className="px-4 py-2 border border-[#5C4C49] text-[#5C4C49] rounded-lg"
-                >
-                  Cancel
-                </motion.button>
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={handleSave}
-                  className="px-4 py-2 bg-[#5C4C49] text-[#E8D9C5] rounded-lg"
-                >
-                  Save Changes
-                </motion.button>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {showAddressModal && (
-        <AddressModal
-          showAddress={showAddressModal}
-          setShowAddress={setShowAddressModal}
-          dbStates={dbStates}
-          setDbStates={setDbStates}
-        />
-      )}
+      <ProfileUpdateModal
+        key="profileModal"
+        setShowProfileUpdateModal={setShowProfileUpdateModal}
+        showProfileUpdateModal={showProfileUpdateModal}
+      />
     </div>
   );
 };
@@ -890,6 +769,7 @@ const ModernProfileDetail = ({
   setShowAddressModal,
   delay,
   isCopyable,
+  notProvided,
 }) => (
   <motion.div
     initial={{ opacity: 0, x: -10 }}
@@ -903,8 +783,10 @@ const ModernProfileDetail = ({
         {label}
       </p>
       <div className="z-20 flex items-center justify-between w-full mt-1">
-        <p className="text-[#5C4C49] text-xs sm:text-sm md:text-md font-medium">
-          {value || <span className="text-gray-500 ">N/A</span>}
+        <p
+          className={` ${notProvided ? "text-[#d4b17d]" : "text-[#5C4C49]"}  text-xs sm:text-sm md:text-md font-medium`}
+        >
+          {value}
         </p>
 
         {isCopyable && (
@@ -912,6 +794,11 @@ const ModernProfileDetail = ({
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             onClick={() => {
+              if (notProvided) {
+                toast.error("Please Update Your Profile");
+                return;
+              }
+
               navigator.clipboard
                 .writeText(value)
                 .then(() => {

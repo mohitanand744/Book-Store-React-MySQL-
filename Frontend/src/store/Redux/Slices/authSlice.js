@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { logout, getUserDetails } from "../../../utils/apis/authApi";
+import { logout, getUserDetails } from "../../../utils/apis/authApis";
 
 // ---------------------- VALIDATE TOKEN ---------------------- //
 export const validateToken = createAsyncThunk(
@@ -15,7 +15,7 @@ export const validateToken = createAsyncThunk(
     } catch {
       return rejectWithValue("Token invalid");
     }
-  }
+  },
 );
 
 // ---------------------- LOGOUT ---------------------- //
@@ -28,7 +28,7 @@ export const logoutThunk = createAsyncThunk(
     } catch (error) {
       return rejectWithValue(error.response?.data || "Logout failed");
     }
-  }
+  },
 );
 
 // ---------------------- INITIAL STATE ---------------------- //

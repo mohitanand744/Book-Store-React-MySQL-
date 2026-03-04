@@ -8,13 +8,12 @@ import Input from "./../../Inputs/Input";
 import Checkbox from "../../Inputs/Checkbox";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import ForgotPasswordModal from "../Modal/ForgotPassword";
-import { login, verifyResetToken } from "../../../utils/apis/authApi";
+import { login, verifyResetToken } from "../../../utils/apis/authApis";
 import { toast } from "sonner";
 import useAuth from "../../../Hooks/useAuth";
 import ResetPasswordModal from "../Modal/resetPassword";
 import EmailVerificationStatus from "../Modal/EmailVerificationStatus";
 import { useDispatch } from "react-redux";
-import { validateToken } from "../../../store/Redux/Slices/authSlice";
 
 const Login = () => {
   const {

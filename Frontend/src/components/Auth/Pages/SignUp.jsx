@@ -12,7 +12,7 @@ import Input from "./../../Inputs/Input";
 import Checkbox from "../../Inputs/Checkbox";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { signup } from "../../../utils/apis/authApi";
+import { signup } from "../../../utils/apis/authApis";
 import { validateToken } from "../../../store/Redux/Slices/authSlice";
 import useAuth from "../../../Hooks/useAuth";
 import { useDispatch } from "react-redux";

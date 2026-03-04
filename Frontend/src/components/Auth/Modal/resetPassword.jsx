@@ -10,7 +10,7 @@ import Button from "../../Buttons/Button";
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect } from "react";
-import { forgotPassword, resetPassword } from "../../../utils/apis/authApi";
+import { forgotPassword, resetPassword } from "../../../utils/apis/authApis";
 import { toast } from "sonner";
 import useAuth from "../../../Hooks/useAuth";
 import { use } from "react";

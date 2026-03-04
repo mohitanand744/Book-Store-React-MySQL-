@@ -72,3 +72,10 @@ export const uploadProfilePic = async (formData) => {
   );
   return response.data;
 };
+
+export const updateProfile = async (data) => {
+  const response = await axiosInstance.put("/auth/profile-update", data, {
+    withCredentials: true,
+  });
+  return response.data;
+};

@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { getAllBooks } from "../../../utils/apis/booksApi";
+import { getAllBooks } from "../../../utils/apis/booksApis";
 
 const initialState = {
   books: [],

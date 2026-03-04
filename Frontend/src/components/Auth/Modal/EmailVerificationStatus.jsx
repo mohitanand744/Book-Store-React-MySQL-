@@ -2,8 +2,9 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
 import Modal from "../../Modal/ModalContainer";
 import Button from "../../Buttons/Button";
-import { login } from "../../../utils/apis/authApi";
+import { login } from "../../../utils/apis/authApis";
 import Login from "./../Pages/Login";
+import ModelsHeading from "../../Headings/ModelsHeading";
 
 const EmailVerificationStatus = ({
   status,
@@ -174,16 +175,11 @@ const EmailVerificationStatus = ({
               />
             </motion.svg>
           </motion.div>
-          <h2 className="mb-3 text-2xl font-bold text-center text-[#5E4C37]">
-            Verification Failed
-          </h2>
-          <p className="mb-4 text-sm text-center text-[#5E4C37]">
-            The{" "}
-            <b className="text-red-500">
-              verification link is invalid or has expired
-            </b>
-            . Please request a new verification email <b>({email})</b>.
-          </p>
+
+          <ModelsHeading
+            heading="Verification Failed"
+            subHeading={`The verification link is invalid or has expired. Please request a new verification email <b>(${email})</b>`}
+          />
 
           <AnimatePresence>
             {emailResent && (
@@ -214,8 +210,8 @@ const EmailVerificationStatus = ({
             {countdown > 0
               ? `Resend in ${countdown}s`
               : isResending
-              ? "Sending..."
-              : "Resend Verification"}
+                ? "Sending..."
+                : "Resend Verification"}
           </Button>
 
           <Button
@@ -276,14 +272,13 @@ const EmailVerificationStatus = ({
               />
             </motion.svg>
           </motion.div>
-          <h2 className="mb-3 text-2xl font-bold text-center text-[#5E4C37]">
-            Complete Your Verification
-          </h2>
-          <p className="mb-4 text-sm text-center text-[#5E4C37]">
-            We've sent a <b>verification link</b> to your email <b>{email}</b>.
+
+          <ModelsHeading
+            heading="Complete Your Verification"
+            subHeading={`We've sent a <b>verification link</b> to your email <b>${email}</b>.
             Please check your inbox and click the link to verify your email
-            address.
-          </p>
+            address.`}
+          />
 
           <AnimatePresence>
             {emailResent && (
@@ -314,8 +309,8 @@ const EmailVerificationStatus = ({
             {countdown > 0
               ? `Resend in ${countdown}s`
               : isResending
-              ? "Sending..."
-              : "Resend Verification"}
+                ? "Sending..."
+                : "Resend Verification"}
           </Button>
           <Button
             variant="outline"

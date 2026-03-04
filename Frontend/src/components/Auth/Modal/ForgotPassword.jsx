@@ -4,8 +4,9 @@ import { EnvelopeIcon } from "@heroicons/react/24/outline";
 import Modal from "../../Modal/ModalContainer";
 import Button from "../../Buttons/Button";
 import { useEffect, useState } from "react";
-import { forgotPassword } from "../../../utils/apis/authApi";
+import { forgotPassword } from "../../../utils/apis/authApis";
 import { toast } from "sonner";
+import ModelsHeading from "../../Headings/ModelsHeading";
 
 const ForgotPasswordModal = ({
   showForgot,
@@ -46,7 +47,7 @@ const ForgotPasswordModal = ({
 
       toast.error(
         error.response?.data?.message ||
-          "Something went wrong. Please try again later."
+          "Something went wrong. Please try again later.",
       );
     }
     reset();
@@ -58,12 +59,10 @@ const ForgotPasswordModal = ({
   return (
     <Modal isOpen={showForgot} onClose={() => setShowForgot(false)}>
       <div className="w-full">
-        <h2 className="mb-1 text-2xl font-bold text-center text-[#5E4C37]">
-          Forgot Password
-        </h2>
-        <p className="mb-4 text-sm text-center text-[#5E4C37]">
-          Enter your email address to receive a reset link.
-        </p>
+        <ModelsHeading
+          heading="Reset Password"
+          subHeading=" Enter your email address to receive a reset link."
+        />
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <Input

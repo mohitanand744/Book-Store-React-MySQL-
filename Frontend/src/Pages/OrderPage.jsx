@@ -18,7 +18,7 @@ import { CopyIcon } from "../components/SVGs/SVGs";
 import { toast } from "sonner";
 import Banners from "../components/Banners/Banners";
 import { useNavigate } from "react-router-dom";
-import { getAllOrders } from "../utils/apis/ordersApi";
+import { getAllOrders } from "../utils/apis/ordersApis";
 import { useEffect } from "react";
 import { useLoader } from "../Hooks/useLoader";
 import BooksLoader from "../components/Loaders/BooksLoader";

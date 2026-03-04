@@ -9,7 +9,7 @@ import {
   FaClock,
   FaTruck,
 } from "react-icons/fa";
-import { getTrackingItem } from "../utils/apis/ordersApi";
+import { getTrackingItem } from "../utils/apis/ordersApis";
 import { useEffect } from "react";
 import { useState } from "react";
 import { useLoader } from "../Hooks/useLoader";
@@ -127,7 +127,7 @@ const TrackingPage = () => {
   </div>;
 
   const activeStep = steps.findIndex(
-    (step) => step.key === itemTrackingData?.item_status
+    (step) => step.key === itemTrackingData?.item_status,
   );
 
   console.log("Active Steps :", activeStep);
@@ -154,8 +154,8 @@ const TrackingPage = () => {
                     {itemTrackingData.item_status === "DELIVERED"
                       ? "Arrived"
                       : itemTrackingData.item_status === "SHIPPED"
-                      ? "We have shipped your order"
-                      : "On its way"}
+                        ? "We have shipped your order"
+                        : "On its way"}
                   </h1>
 
                   <p className="opacity-80">
@@ -171,7 +171,7 @@ const TrackingPage = () => {
                         <span className="font-semibold">
                           {itemTrackingData.expected_delivery &&
                             new Date(
-                              itemTrackingData.expected_delivery
+                              itemTrackingData.expected_delivery,
                             ).toLocaleDateString("en-GB", {
                               day: "2-digit",
                               month: "long",
@@ -378,7 +378,7 @@ const TrackingPage = () => {
                       <span className="font-medium">
                         {itemTrackingData.order_created_at &&
                           new Date(
-                            itemTrackingData.order_created_at
+                            itemTrackingData.order_created_at,
                           ).toLocaleDateString()}
                       </span>
                     </div>

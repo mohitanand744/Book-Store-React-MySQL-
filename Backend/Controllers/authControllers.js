@@ -27,7 +27,10 @@ const { formatUser } = require("../utils/formatter");
 const { uploadFromUrl } = require("../utils/cloudinaryUpload");
 const { uploadFromBuffer } = require("../utils/cloudinaryUpload");
 const { updateProfilePic } = require("../Services/authService");
-const { deleteFromCloudinary } = require("../Helper/methods");
+const {
+  deleteFromCloudinary,
+  profileCompletionDetails,
+} = require("../Helper/methods");
 
 // SIGNUP
 const signup = async (req, res, next) => {
@@ -312,7 +315,10 @@ const getUserProfile = async (req, res, next) => {
 
     const userDetails = formatUser([user]);
 
-    successResponse(res, 200, "", userDetails);
+    const { isComplete, percentage } =
+      await profileCompletionDetails(userDetails);
+
+    successResponse(res, 200, "", { ...userDetails, isComplete, percentage });
   } catch (error) {
     console.log(error);
     handleDbError(error, res, next);

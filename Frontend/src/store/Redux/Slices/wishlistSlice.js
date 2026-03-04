@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { addToWishlist, getWishlist } from "../../../utils/apis/ordersApi";
+import { addToWishlist, getWishlist } from "../../../utils/apis/ordersApis";
 
 export const toggleWishlist = createAsyncThunk(
   "toggleWishlist",

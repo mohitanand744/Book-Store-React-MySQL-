@@ -22,7 +22,7 @@ import {
   addAddress,
   updateAddress,
   deleteAddress,
-} from "../../utils/apis/address";
+} from "../../utils/apis/addressApis";
 import { useLoader } from "../../Hooks/useLoader";
 import BooksLoader from "../Loaders/BooksLoader";
 
@@ -75,8 +75,9 @@ const AddressModal = ({
   };
 
   useEffect(() => {
+    if (!showAddress) return;
     fetchData();
-  }, []);
+  }, [showAddress]);
   useEffect(() => {
     if (dbStates.length === 0 && activeTab === "add") {
       fetchStates();
