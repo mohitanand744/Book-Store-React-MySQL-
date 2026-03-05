@@ -21,13 +21,10 @@ const useAuth = () => {
   };
 
   const logoutStatusSuccess = async (logoutReason) => {
-    console.log("ggggggggggggggggggggggggggggggggg");
-
     try {
-      navigate("/nextChapter");
-      console.log("ttttttttttttttttttttttttttttttt");
-
       await dispatch(logoutThunk(logoutReason)).unwrap();
+
+      navigate("/nextChapter");
       toast.success("Logout successful!", {
         description: logoutReason,
         id: "logout-toast",

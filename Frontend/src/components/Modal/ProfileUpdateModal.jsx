@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import Modal from "./ModalContainer";
 import { useForm } from "react-hook-form";
+import ModelsHeading from "../Headings/ModelsHeading";
 
 const ProfileUpdateModal = ({
   showProfileUpdateModal,
   setShowProfileUpdateModal,
+  type = "complete",
 }) => {
   const {
     register,
@@ -23,7 +25,16 @@ const ProfileUpdateModal = ({
       isOpen={showProfileUpdateModal}
       onClose={() => setShowProfileUpdateModal(false)}
     >
-      <div>ProfileUpdateModal</div>
+      <ModelsHeading
+        heading={
+          type === "complete" ? "Complete Your Profile" : "Update Your Profile"
+        }
+        subHeading={
+          type === "complete"
+            ? "Please complete your profile"
+            : "Update your profile information"
+        }
+      />
     </Modal>
   );
 };

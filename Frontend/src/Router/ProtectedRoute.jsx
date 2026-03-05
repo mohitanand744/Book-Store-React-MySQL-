@@ -11,7 +11,7 @@ const ProtectedRoute = ({ children }) => {
   if (isAuthenticating) return null;
 
   useEffect(() => {
-    if (!isAuthenticated && logoutReason !== "Session expired. Please login again.") {
+    if (!isAuthenticated && logoutReason !== "") {
       toast.error("You must be logged in to access this page.", { id: "auth-toast" });
     }
   }, [isAuthenticated, logoutReason]);

@@ -53,10 +53,12 @@ const BookCard = ({ book }) => {
         toast.success(res?.message, { id: toastRef.current });
         toastRef.current = null;
 
-        await getUserUpdatedDetails();
+
 
         if (path === "nextChapterwishlist") {
           dispatch(getAllWishlists());
+        } else {
+          await getUserUpdatedDetails();
         }
       } catch (err) {
         setIsLiked(previousLikedState);

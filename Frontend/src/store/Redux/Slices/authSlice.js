@@ -39,7 +39,7 @@ const getInitialState = () => {
     isAuthenticated: false,
     loading: true,
     error: null,
-    logoutReason: null,
+    logoutReason: "",
     isAuthenticating: false,
   };
 };
@@ -61,7 +61,7 @@ const authSlice = createSlice({
       state.userData = null;
       state.isAuthenticated = false;
       state.loading = false;
-      state.logoutReason = action.payload || null;
+      state.logoutReason = action.payload || "";
       state.error = null;
     },
 
@@ -112,7 +112,7 @@ const authSlice = createSlice({
         state.token = null;
         state.isAuthenticated = false;
         state.loading = false;
-        state.logoutReason = action.payload || null;
+        state.logoutReason = action.payload || "";
       })
       .addCase(logoutThunk.rejected, (state, action) => {
         state.loading = false;

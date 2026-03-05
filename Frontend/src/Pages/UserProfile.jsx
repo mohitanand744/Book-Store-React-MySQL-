@@ -22,7 +22,6 @@ import {
   DecorativeHeader,
   EyesSvg,
   HearthSvg,
-  PencilSvg,
 } from "../components/SVGs/SVGs";
 import useAuth from "../Hooks/useAuth";
 import NoData from "../components/EmptyData/noData";
@@ -99,6 +98,7 @@ import { useUser } from "../store/Context/UserContext";
 import Spinner from "../components/Loaders/Spinner";
 import { useImagePreview } from "../store/Context/ImagePreviewContext";
 import ProfileUpdateModal from "../components/Modal/ProfileUpdateModal";
+import Modal from "../components/Modal/ModalContainer";
 
 const UserProfile = () => {
   const [activeTab, setActiveTab] = useState("activity");
@@ -113,6 +113,7 @@ const UserProfile = () => {
   const [user, setUser] = useState(userData);
   const [showAddressModal, setShowAddressModal] = useState(false);
   const [showProfileUpdateModal, setShowProfileUpdateModal] = useState(false);
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
   const { openPreview } = useImagePreview();
   const fileInputRef = useRef(null);
   const { preview, setPreview, isUploading, setIsUploading } = useUser();
@@ -195,12 +196,13 @@ const UserProfile = () => {
     navigate("/nextChapter/wishlist");
   };
 
-  const handleLogout = async () => {
-    navigate("/nextChapter");
+  const handleLogout = () => {
+    setShowLogoutModal(true);
+  };
 
-    setTimeout(() => {
-      logoutStatusSuccess();
-    }, 200);
+  const handleConfirmLogout = async () => {
+    setShowLogoutModal(false);
+    logoutStatusSuccess();
   };
 
   console.log("UserData", userData);
@@ -654,7 +656,6 @@ const UserProfile = () => {
       </motion.div>
 
       <AddressModal
-        key="addressModal"
         showAddress={showAddressModal}
         setShowAddress={setShowAddressModal}
         dbStates={dbStates}
@@ -662,10 +663,42 @@ const UserProfile = () => {
       />
 
       <ProfileUpdateModal
-        key="profileModal"
         setShowProfileUpdateModal={setShowProfileUpdateModal}
         showProfileUpdateModal={showProfileUpdateModal}
       />
+
+      {/* Logout Confirmation Modal */}
+      <Modal isOpen={showLogoutModal} onClose={() => setShowLogoutModal(false)}>
+        <div className="text-center">
+          <div className="flex justify-center mb-4">
+            <div className="bg-[#7e362a]/10 p-4 rounded-full">
+              <RiLogoutCircleLine className="text-4xl text-[#7e362a]" />
+            </div>
+          </div>
+          <h2 className="text-2xl font-bold text-[#5C4C49] mb-2">
+            Confirm Logout
+          </h2>
+          <p className="text-[#5C4C49]/80 mb-8">
+            Are you sure you want to log out of your account?
+          </p>
+          <div className="flex gap-4">
+            <Button
+              onClick={() => setShowLogoutModal(false)}
+              className="flex-1 px-4 py-2 border-2 border-[#5C4C49] text-[#5C4C49] rounded-lg font-medium hover:bg-[#5C4C49]/5 transition-colors"
+              type="button"
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={handleConfirmLogout}
+              className="flex-1 px-4 py-2 bg-[#7e362a] text-[#E8D9C5] rounded-lg font-medium hover:bg-[#7e362a]/90 transition-colors shadow-md"
+              type="button"
+            >
+              Logout
+            </Button>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 };
