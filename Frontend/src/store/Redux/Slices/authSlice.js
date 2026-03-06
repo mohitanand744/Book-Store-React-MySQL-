@@ -21,7 +21,7 @@ export const validateToken = createAsyncThunk(
 // ---------------------- LOGOUT ---------------------- //
 export const logoutThunk = createAsyncThunk(
   "auth/logout",
-  async (logoutReason, { dispatch, rejectWithValue }) => {
+  async (logoutReason, { rejectWithValue }) => {
     try {
       await logout();
       return logoutReason;
@@ -35,7 +35,6 @@ export const logoutThunk = createAsyncThunk(
 const getInitialState = () => {
   return {
     userData: null,
-    token: null,
     isAuthenticated: false,
     loading: true,
     error: null,
@@ -51,9 +50,9 @@ const authSlice = createSlice({
   reducers: {
     loginSuccess: (state, action) => {
       state.userData = action.payload.user;
-      state.token = action.payload.token;
       state.isAuthenticated = true;
       state.loading = false;
+      state.logoutReason = "";
       state.error = null;
     },
 
@@ -95,6 +94,8 @@ const authSlice = createSlice({
       .addCase(validateToken.rejected, (state, action) => {
         state.isAuthenticating = false;
 
+        console.log(action);
+
         if (action.payload === "Token invalid") {
           state.isAuthenticated = false;
           state.userData = null;
@@ -109,7 +110,6 @@ const authSlice = createSlice({
       })
       .addCase(logoutThunk.fulfilled, (state, action) => {
         state.userData = null;
-        state.token = null;
         state.isAuthenticated = false;
         state.loading = false;
         state.logoutReason = action.payload || "";

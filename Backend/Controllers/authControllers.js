@@ -87,6 +87,8 @@ const login = async (req, res, next) => {
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     });
 
+    delete result.token;
+
     successResponse(res, 200, "Login successful", result);
   } catch (error) {
     handleDbError(error, res, next);

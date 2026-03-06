@@ -143,9 +143,9 @@ const Login = () => {
       });
 
       if (response?.success) {
-        const { token, user } = response.data;
+        const { user } = response.data;
 
-        loginStatusSuccess(user, token);
+        loginStatusSuccess(user);
         await getUserUpdatedDetails();
         toast.success("Login successful!");
 

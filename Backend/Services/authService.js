@@ -29,6 +29,7 @@ const {
 } = require("../Config/constants");
 const generateJWT = require("../utils/Token/generateJWT");
 const { isCloudinaryUrl, uploadFromUrl } = require("../utils/cloudinaryUpload");
+const { profileCompletionDetails } = require("../Helper/methods");
 
 exports.registerUser = async (
   { first_name, last_name, email, password, terms_accepted },
@@ -128,11 +129,13 @@ exports.loginUser = async ({ email, password, res }) => {
 
   const userDetails = formatUser([user]);
 
+  const { isComplete, percentage } =
+    await profileCompletionDetails(userDetails);
   console.log("2loginUserrrrrrrrr", userDetails);
 
   return {
     token,
-    user: userDetails,
+    user: { ...userDetails, isComplete, percentage },
   };
 };
 

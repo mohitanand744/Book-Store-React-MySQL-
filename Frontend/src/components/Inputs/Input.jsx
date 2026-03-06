@@ -63,7 +63,7 @@ const Input = (
         ) : Component === "textarea" ? (
           <textarea
             ref={ref}
-            className={`w-full px-4 py-2 rounded-lg border ${
+            className={`w-full truncate px-4 py-2 rounded-lg border ${
               error
                 ? "border-red-500 placeholder:text-red-500 focus:ring-red-500 focus:border-red-500"
                 : "border-gray-300 focus:ring-[#8a7053] focus:border-[#8a7053]"
@@ -77,7 +77,7 @@ const Input = (
           <input
             ref={ref}
             type={inputType}
-            className={`w-full px-4 py-2 rounded-lg border ${
+            className={`w-full truncate  px-4 py-2 rounded-lg border ${
               error
                 ? "border-red-500 placeholder:text-red-500 focus:ring-red-500 focus:border-red-500"
                 : "border-gray-300 focus:ring-[#8a7053] focus:border-[#8a7053]"

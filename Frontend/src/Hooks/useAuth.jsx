@@ -14,10 +14,8 @@ const useAuth = () => {
   const auth = useSelector((state) => state.auth);
   const navigate = useNavigate();
 
-  const loginStatusSuccess = (userData, token) => {
-    console.log("tttttttttttt", token);
-
-    dispatch(loginSuccess({ user: userData, token }));
+  const loginStatusSuccess = (userData) => {
+    dispatch(loginSuccess({ user: userData }));
   };
 
   const logoutStatusSuccess = async (logoutReason) => {
@@ -41,6 +39,7 @@ const useAuth = () => {
   };
 
   const getUserUpdatedDetails = async () => {
+    console.log("Validating token...");
     try {
       const userData = await dispatch(validateToken()).unwrap();
       console.log("Token valid:", userData);
@@ -51,7 +50,6 @@ const useAuth = () => {
 
   return {
     userData: auth.userData,
-    token: auth.token,
     isAuthenticated: auth.isAuthenticated,
     loginStatusSuccess,
     logoutStatusSuccess,

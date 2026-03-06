@@ -25,6 +25,7 @@ import {
 } from "../../utils/apis/addressApis";
 import { useLoader } from "../../Hooks/useLoader";
 import BooksLoader from "../Loaders/BooksLoader";
+import ModelsHeading from "../Headings/ModelsHeading";
 
 const AddressModal = ({
   showAddress,
@@ -264,12 +265,10 @@ const AddressModal = ({
         exit={{ opacity: 0 }}
         className="relative w-full max-w-md mx-auto"
       >
-        <div className="mb-6 text-center">
-          <h2 className="text-2xl font-bold">Delivery Address</h2>
-          <p className="text-sm text-gray-600">
-            Choose where you want your order delivered
-          </p>
-        </div>
+        <ModelsHeading
+          heading={"Delivery Address"}
+          subHeading={"Choose where you want your order delivered"}
+        />
         {loading && (
           <div className="absolute top-[-2rem] right-[-1rem]">
             <BooksLoader height="0rem" imgHeight="10" imgWidth="10" />
