@@ -75,11 +75,7 @@ exports.loginValidation = [
       return true;
     }),
 
-  check("password")
-    .notEmpty()
-    .withMessage("Password is required")
-    .isLength({ min: 1 })
-    .withMessage("Password is required"),
+  check("password").notEmpty().withMessage("Password is required"),
 ];
 
 exports.forgotPasswordValidation = [
@@ -142,38 +138,6 @@ exports.verifyTokenValidation = [
     .withMessage("Token is required")
     .isLength({ min: 1 })
     .withMessage("Token is required"),
-];
-
-exports.userUpdatedDataValidation = [
-  check("firstName")
-    .notEmpty()
-    .withMessage("First name is required")
-    .isLength({ min: 2, max: 50 })
-    .withMessage("First name must be between 2 and 50 characters")
-    .trim()
-    .escape(),
-
-  check("lastName")
-    .notEmpty()
-    .withMessage("Last name is required")
-    .isLength({ min: 2, max: 50 })
-    .withMessage("Last name must be between 2 and 50 characters")
-    .trim()
-    .escape(),
-
-  check("phone")
-    .notEmpty()
-    .withMessage("Phone number is required")
-    .isNumeric()
-    .withMessage("Phone must contain only digits")
-    .isLength({ min: 10, max: 10 })
-    .withMessage("Phone must be 10 digits")
-    .trim()
-    .escape(),
-
-  check("favoriteGenres")
-    .isArray()
-    .withMessage("Favorite genres must be an array"),
 ];
 
 // Optional: Add a comprehensive email validation middleware

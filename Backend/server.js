@@ -8,6 +8,8 @@ const orderRoutes = require("./Routes/orderRoutes");
 const cookieParser = require("cookie-parser");
 const wishlistRouters = require("./Routes/wishlistRoutes");
 const addressRoutes = require("./Routes/addressRoutes");
+const userRoutes = require("./Routes/userRoutes");
+const categoryRoutes = require("./Routes/categoryRoutes");
 
 app.use(
   cors({
@@ -21,6 +23,8 @@ app.use(express.json());
 
 app.use(`/api/${process.env.API_VERSION}/books`, bookRoutes);
 app.use(`/api/${process.env.API_VERSION}/auth`, authRoutes);
+app.use(`/api/${process.env.API_VERSION}/user`, userRoutes);
+app.use(`/api/${process.env.API_VERSION}/categories`, categoryRoutes);
 app.use(`/api/${process.env.API_VERSION}/orders`, orderRoutes);
 app.use(`/api/${process.env.API_VERSION}/wishlist`, wishlistRouters);
 app.use(`/api/${process.env.API_VERSION}/address`, addressRoutes);
@@ -28,8 +32,8 @@ app.use(`/api/${process.env.API_VERSION}/address`, addressRoutes);
 app.listen(process.env.PORT || 5000, () => {
   console.log(
     "🚀 Server is running on PORT " +
-    process.env.PORT +
-    " | API Version: " +
-    process.env.API_VERSION,
+      process.env.PORT +
+      " | API Version: " +
+      process.env.API_VERSION,
   );
 });

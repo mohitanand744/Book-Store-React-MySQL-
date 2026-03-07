@@ -1,10 +1,8 @@
 const express = require("express");
 
-const upload = require("../Middleware/multer");
 const {
   signup,
   login,
-  getUserProfile,
   forgotPassword,
   resetPasswordController,
   verifyResetTokenController,
@@ -12,8 +10,6 @@ const {
   getGoogleLoginPage,
   getGoogleCallBack,
   logout,
-  uploadProfilePic,
-  updateUserDetailsController,
 } = require("../Controllers/authControllers");
 const {
   signupValidation,
@@ -21,22 +17,13 @@ const {
   forgotPasswordValidation,
   resetPasswordValidation,
   verifyTokenValidation,
-  userUpdatedDataValidation,
 } = require("../Validators/authValidator");
-const verifyToken = require("../Middleware/verifyToken");
 
 const router = express.Router();
 
 router.post("/register", signupValidation, signup);
 router.post("/login", loginValidation, login);
 router.post("/logout", logout);
-
-router.post(
-  "/profile-pic",
-  verifyToken,
-  upload.single("profilePic"),
-  uploadProfilePic,
-);
 
 router.route("/google").get(getGoogleLoginPage);
 router.route("/google/callback").get(getGoogleCallBack);
@@ -53,12 +40,5 @@ router.post(
   resetPasswordController,
 );
 router.get("/verify-email/", verifyTokenValidation, verifyEmailTokenController);
-router.get("/me", verifyToken, getUserProfile);
-router.put(
-  "/profile-update",
-  verifyToken,
-  userUpdatedDataValidation,
-  updateUserDetailsController,
-);
 
 module.exports = router;

@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Modal from "./ModalContainer";
 import { Controller, useForm } from "react-hook-form";
 import ModelsHeading from "../Headings/ModelsHeading";
 import { motion } from "framer-motion";
 import Input from "../Inputs/Input";
 import Button from "../Buttons/Button";
+import { getAllCategories } from "../../utils/apis/categoryApis";
 
 const ProfileUpdateModal = ({
   showProfileUpdateModal,
@@ -22,6 +23,27 @@ const ProfileUpdateModal = ({
     setError,
     clearErrors,
   } = useForm();
+  const [categoriesList, setCategoriesList] = useState([]);
+
+  const getAllCategoriesLists = async () => {
+    try {
+      const response = await getAllCategories();
+
+      if (response?.success) {
+        setCategoriesList(response?.data?.categories);
+      }
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (showProfileUpdateModal) {
+      getAllCategoriesLists();
+    }
+  }, [showProfileUpdateModal]);
+
+  console.log("categoriesList", categoriesList);
 
   return (
     <Modal
@@ -75,11 +97,10 @@ const ProfileUpdateModal = ({
               <Input
                 label="Favorite Genres Type"
                 as="select"
-                options={[
-                  { value: "Home", label: "Home" },
-                  { value: "Work", label: "Work" },
-                  { value: "Other", label: "Other" },
-                ]}
+                options={categoriesList?.map((cat) => ({
+                  value: cat.id,
+                  label: cat.name,
+                }))}
                 selectedValue={field.value}
                 onChange={field.onChange}
                 error={errors.type?.message}

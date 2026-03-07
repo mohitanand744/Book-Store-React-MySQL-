@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { logout, getUserDetails } from "../../../utils/apis/authApis";
+import { logout } from "../../../utils/apis/authApis";
+import { getUserDetails } from "../../../utils/apis/userApis";
 
 // ---------------------- VALIDATE TOKEN ---------------------- //
 export const validateToken = createAsyncThunk(

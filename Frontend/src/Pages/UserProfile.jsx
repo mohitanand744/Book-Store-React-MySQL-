@@ -26,6 +26,12 @@ import {
 import useAuth from "../Hooks/useAuth";
 import NoData from "../components/EmptyData/noData";
 import AddressModal from "../components/Modal/AddressModal";
+import { uploadProfilePic as uploadProfilePicApi } from "../utils/apis/userApis";
+import { useUser } from "../store/Context/UserContext";
+import Spinner from "../components/Loaders/Spinner";
+import { useImagePreview } from "../store/Context/ImagePreviewContext";
+import ProfileUpdateModal from "../components/Modal/ProfileUpdateModal";
+import Modal from "../components/Modal/ModalContainer";
 
 // Mock user data with additional details
 const mockUser = {
@@ -92,13 +98,6 @@ const mockUser = {
     },
   ],
 };
-
-import { uploadProfilePic as uploadProfilePicApi } from "../utils/apis/authApis";
-import { useUser } from "../store/Context/UserContext";
-import Spinner from "../components/Loaders/Spinner";
-import { useImagePreview } from "../store/Context/ImagePreviewContext";
-import ProfileUpdateModal from "../components/Modal/ProfileUpdateModal";
-import Modal from "../components/Modal/ModalContainer";
 
 const UserProfile = () => {
   const [activeTab, setActiveTab] = useState("activity");

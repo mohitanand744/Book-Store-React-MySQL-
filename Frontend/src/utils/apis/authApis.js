@@ -52,30 +52,3 @@ export const resetPassword = async (
   });
   return response.data;
 };
-
-export const getUserDetails = async () => {
-  console.log("llllllllllllllllllllllllll");
-
-  const response = await axiosInstance.get("/auth/me", {
-    withCredentials: true,
-  });
-  return response.data;
-};
-
-export const uploadProfilePic = async (formData) => {
-  const response = await axiosInstanceFormData.post(
-    "/auth/profile-pic",
-    formData,
-    {
-      withCredentials: true,
-    },
-  );
-  return response.data;
-};
-
-export const updateProfile = async (data) => {
-  const response = await axiosInstance.put("/auth/profile-update", data, {
-    withCredentials: true,
-  });
-  return response.data;
-};

@@ -126,7 +126,6 @@ async function createTables() {
   status ENUM('PROCESSING', 'SHIPPED', 'DELIVERED') DEFAULT 'PROCESSING',
   FOREIGN KEY (order_id) REFERENCES orders(id)
 );
-
   `);
 
     await pool.query(`
@@ -141,7 +140,6 @@ async function createTables() {
   FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
   FOREIGN KEY (book_id) REFERENCES books(id) ON DELETE CASCADE
 );
-
   `);
 
     await pool.query(`

@@ -1,5 +1,4 @@
 const db = require("../Config/db.connection");
-const { formatUser } = require("../utils/formatter");
 
 // Create new user
 const createUser = async (userData) => {
@@ -62,7 +61,7 @@ WHERE u.email = ?;
     [email],
   );
 
-  return rows.length ? rows[0] : null;
+  return rows[0] || null;
 };
 
 // Get all users
@@ -114,7 +113,7 @@ LEFT JOIN (
  LEFT JOIN addresses a ON u.id = a.user_id AND a.is_default = 1
 WHERE u.id = ?;`;
   const [rows] = await db.query(query, [userId]);
-  return rows[0] || null;
+  return rows.length > 0 ? rows[0] : null;
 };
 
 const findUserByProvider = async (provider, providerId) => {
