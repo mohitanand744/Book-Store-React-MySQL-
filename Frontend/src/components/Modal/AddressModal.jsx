@@ -199,8 +199,6 @@ const AddressModal = ({
         const res = await updateAddress(editAddressData.id, dataToSubmit);
         if (res.success) {
           toast.success("Address updated successfully!");
-        } else {
-          toast.error(res.message || "Failed to update address");
         }
       } else {
         const res = await addAddress(dataToSubmit);

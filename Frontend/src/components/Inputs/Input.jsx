@@ -23,6 +23,7 @@ const Input = (
     selectedValue,
     preventCopyPaste = false,
     options,
+    multiple = false,
     as: Component = "input", // Default to 'input' if not specified
     ...props
   },
@@ -59,6 +60,7 @@ const Input = (
             error={error}
             className={className}
             placeholder={placeholder}
+            multiple={multiple}
           />
         ) : Component === "textarea" ? (
           <textarea
@@ -111,7 +113,9 @@ const Input = (
                 )}
               </button>
             ) : icon ? (
-              <div className="pl-3 pointer-events-none">{icon}</div>
+              <div className="pl-3 text-[#5e4c37a2] pointer-events-none">
+                {icon}
+              </div>
             ) : null}
           </div>
         )}

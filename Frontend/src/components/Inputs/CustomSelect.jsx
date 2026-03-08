@@ -10,6 +10,7 @@ const CustomSelect = (
     error,
     className,
     placeholder = "Select an option",
+    multiple = false,
   },
   ref,
 ) => {
@@ -29,27 +30,35 @@ const CustomSelect = (
     };
   }, []);
 
-  const selectedOption = options.find((option) => option.value === value);
+  const selectedOption = multiple
+    ? options.filter((option) => value.includes(option.value))
+    : options.find((option) => option.value === value);
+
+  console.log("selectedOption", selectedOption);
 
   return (
     <div className="relative w-full" ref={selectRef}>
       <motion.button
         ref={ref}
         type="button"
-        className={`w-full h-[42px] px-4 py-3 relative rounded-lg border bg-white flex items-center justify-between ${error
-          ? "border-red-500 focus:ring-red-500"
-          : "border-gray-300 focus:ring-[#8a7053] focus:border-[#8a7053]"
-          } shadow-sm focus:outline-none focus:ring-2 ${className}`}
+        className={`w-full h-[42px] px-4 py-3 relative rounded-lg border bg-white flex items-center justify-between ${
+          error
+            ? "border-red-500 focus:ring-red-500"
+            : "border-gray-300 focus:ring-[#8a7053] focus:border-[#8a7053]"
+        } shadow-sm focus:outline-none focus:ring-2 ${className}`}
         onClick={() => setIsOpen(!isOpen)}
         whileTap={{ scale: 0.98 }}
         aria-haspopup="listbox"
         aria-expanded={isOpen}
       >
         <span
-          className={`block truncate ${error ? "text-red-500" : selectedOption?.label ? "" : "text-[#9CA3AF]"}`}
+          className={`block truncate ${error ? "text-red-500" : selectedOption ? "text-[#8a7053]" : "text-[#9CA3AF]"}`}
         >
-          {selectedOption?.label || placeholder}
+          {multiple
+            ? `${selectedOption?.length} selected`
+            : selectedOption?.label || placeholder}
         </span>
+
         {!error && (
           <motion.div
             animate={{ rotate: isOpen ? 180 : 0 }}
@@ -98,22 +107,31 @@ const CustomSelect = (
             {options.map((option) => (
               <motion.li
                 key={option.value}
-                className={`px-4 py-2 border-b-2 transition-all duration-500 rounded-2xl relative cursor-pointer shadow-lg ${value === option.value
-                  ? "border-b-[3px] border-[#5C4C49]/50"
-                  : "hover:bg-[#5C4C49]/5 border-[#5C4C49]/30"
-                  }`}
+                className={`px-4 py-2 border-b-2 transition-all duration-500 rounded-2xl relative cursor-pointer shadow-lg ${
+                  value === option.value
+                    ? "border-b-[3px] border-[#5C4C49]/50"
+                    : "hover:bg-[#5C4C49]/5 border-[#5C4C49]/30"
+                }`}
                 whileHover={{ y: -1 }}
                 onClick={() => {
-                  onChange(option.value);
-                  setIsOpen(false);
+                  if (multiple) {
+                    if (value.includes(option.value)) {
+                      onChange(value.filter((val) => val !== option.value));
+                    } else {
+                      onChange([...value, option.value]);
+                    }
+                  } else {
+                    onChange(option.value);
+                    setIsOpen(false);
+                  }
                 }}
                 role="option"
                 aria-selected={value === option.value}
               >
-                {option.label}
+                <span className="text-nowrap">{option.label}</span>
 
-                {value === option.value && (
-                  <span className="w-4 text-[12.4px] text-white h-4 absolute top-4 right-3 bg-[#5C4C49]/80 flex justify-center items-center rounded-full">
+                {(value === option.value || value.includes(option.value)) && (
+                  <span className="w-4 text-[12.4px] text-white h-4 absolute top-4 right-1 bg-[#5C4C49]/80 flex justify-center items-center rounded-full">
                     ✓
                   </span>
                 )}

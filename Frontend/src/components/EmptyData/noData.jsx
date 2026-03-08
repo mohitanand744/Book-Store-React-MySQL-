@@ -15,7 +15,7 @@ const NoData = ({
   onActionClick,
 
   className = "",
-  titleClassName = "",
+  titleClassName = "text-xl",
   messageClassName = "",
   iconClassName = "",
   animateIcon = true,
@@ -135,10 +135,10 @@ const NoData = ({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, ease: "easeOut" }}
-      className={`flex flex-col items-center justify-center max-w-md p-8 mx-auto rounded-xl ${className}`}
+      className={`flex flex-col items-center justify-center max-w-md p-5 mx-auto rounded-xl ${className}`}
     >
       <motion.div
-        className="flex items-center mb-3 justify-center w-24 h-24 border-2 border-[#D3BD9D] rounded-full"
+        className="flex items-center mb-3 justify-center w-16 h-16 border-2 border-[#D3BD9D] rounded-full"
         animate={
           animateIcon
             ? {
@@ -158,7 +158,7 @@ const NoData = ({
       </motion.div>
 
       <motion.h3
-        className={`mb-2 text-xl font-semibold text-gray-800 ${titleClassName}`}
+        className={`mb-1 font-semibold text-[#5C4C49] ${titleClassName}`}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.2 }}
@@ -167,7 +167,7 @@ const NoData = ({
       </motion.h3>
 
       <motion.p
-        className={`mb-6 text-center text-gray-500 ${messageClassName}`}
+        className={`mb-6 text-center text-[#5C4C49]/75 ${messageClassName}`}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.3 }}

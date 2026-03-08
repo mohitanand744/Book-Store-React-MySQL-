@@ -11,13 +11,14 @@ const ProtectedRoute = ({ children }) => {
   if (isAuthenticating) return null;
 
   useEffect(() => {
-    if (!isAuthenticated && logoutReason !== "") {
-      toast.error("You must be logged in to access this page.", { id: "auth-toast" });
+    if (!isAuthenticated && logoutReason === "") {
+      toast.error("You must be logged in to access this page.", {
+        id: "auth-toast",
+      });
     }
   }, [isAuthenticated, logoutReason]);
 
-  if (!isAuthenticated)
-    return <Navigate to="/nextChapter" replace />;
+  if (!isAuthenticated) return <Navigate to="/nextChapter" replace />;
   return children;
 };
 

@@ -24,7 +24,10 @@ const useAuth = () => {
 
       navigate("/nextChapter");
       toast.success("Logout successful!", {
-        description: logoutReason,
+        description:
+          logoutReason === "TokenExpiredError"
+            ? "Your session has expired. Please log in again."
+            : "",
         id: "logout-toast",
       });
     } catch (error) {

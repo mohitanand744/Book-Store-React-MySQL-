@@ -177,7 +177,7 @@ const UserProfile = () => {
     if (showAddressModal === false) {
       getUserUpdatedDetails();
     }
-  }, [showAddressModal]);
+  }, [showAddressModal, showProfileUpdateModal]);
 
   useEffect(() => {
     if (userData?.default_address?.address) {
@@ -664,6 +664,7 @@ const UserProfile = () => {
       <ProfileUpdateModal
         setShowProfileUpdateModal={setShowProfileUpdateModal}
         showProfileUpdateModal={showProfileUpdateModal}
+        user={user}
       />
 
       {/* Logout Confirmation Modal */}

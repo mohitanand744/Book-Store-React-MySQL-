@@ -46,7 +46,7 @@ const attachInterceptors = (
         console.log("ERR-->", err);
 
         if (err?.name === "TokenExpiredError") {
-          logoutStatusSuccess("Session expired. Please login again.");
+          logoutStatusSuccess("TokenExpiredError");
         }
       }
 

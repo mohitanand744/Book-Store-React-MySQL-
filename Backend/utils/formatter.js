@@ -48,7 +48,7 @@ exports.formatUser = (rows) => {
     gender: user?.gender || null,
     orders: user?.orders_count || 0,
     wishlist: user?.wishlist_count || 0,
-    favoriteGenres: user?.favorite_genres || null,
+    favoriteGenres: user?.favorite_genres || [],
     recentOrders: [],
     recentWishlist: [],
     recentActivity: [],
