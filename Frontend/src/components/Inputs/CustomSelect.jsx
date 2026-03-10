@@ -108,7 +108,7 @@ const CustomSelect = (
               <motion.li
                 key={option.value}
                 className={`px-4 py-2 border-b-2 transition-all duration-500 rounded-2xl relative cursor-pointer shadow-lg ${
-                  value === option.value
+                  value === option.value || value.includes(option.value)
                     ? "border-b-[3px] border-[#5C4C49]/50"
                     : "hover:bg-[#5C4C49]/5 border-[#5C4C49]/30"
                 }`}

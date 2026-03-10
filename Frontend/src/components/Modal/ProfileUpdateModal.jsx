@@ -60,7 +60,7 @@ const ProfileUpdateModal = ({
       firstName: firstName,
       lastName: lastName,
       phone: user?.phone,
-      favoriteGenres: user?.favoriteGenres || [],
+      favoriteGenres: user?.favoriteGenres?.map((genre) => genre.id) || [],
     });
   }, [user, showProfileUpdateModal]);
 
@@ -72,6 +72,7 @@ const ProfileUpdateModal = ({
         phone: data.phone,
         favoriteGenres: data.favoriteGenres,
       };
+      console.log("CatePaylo", payload);
 
       const result = await updateProfile(payload);
 

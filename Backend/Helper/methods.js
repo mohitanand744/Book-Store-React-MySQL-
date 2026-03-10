@@ -1,4 +1,5 @@
 const cloudinary = require("../Config/cloudinary");
+const { formatUser } = require("../utils/formatter");
 
 const deleteFromCloudinary = async (public_id) => {
   if (!public_id) return;
@@ -7,16 +8,18 @@ const deleteFromCloudinary = async (public_id) => {
 };
 
 const profileCompletionDetails = async (userData) => {
+  const userDetails = formatUser(userData);
+
   const fields = [
-    userData?.name,
-    userData?.email,
-    userData?.phone,
-    userData?.gender,
-    userData?.favoriteGenres,
-    userData?.default_address.address,
-    userData?.default_address.city,
-    userData?.default_address.state,
-    userData?.default_address.pinCode,
+    userDetails?.name,
+    userDetails?.email,
+    userDetails?.phone,
+    userDetails?.gender,
+    userDetails?.favoriteGenres,
+    userDetails?.default_address.address,
+    userDetails?.default_address.city,
+    userDetails?.default_address.state,
+    userDetails?.default_address.pinCode,
   ];
 
   const missingFields = fields.filter((field) => !field);

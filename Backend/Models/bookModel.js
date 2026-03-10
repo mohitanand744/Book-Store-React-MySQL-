@@ -3,22 +3,39 @@ const db = require("../Config/db.connection");
 
 const BASE_QUERY = `
   SELECT 
-    B.ID, B.TITLE, B.DESCRIPTION, B.AUTHOR, B.BOOK_PRICE, B.CATEGORY,
-    A.AUTHOR_DESCRIPTION, A.AUTHOR_ID, A.AUTHOR_IMAGE_URL, A.AUTHOR_RATING,
+    B.ID,
+    B.TITLE,
+    B.DESCRIPTION,
+    B.AUTHOR,
+    B.BOOK_PRICE,
+    C.name AS category_name,
+    A.AUTHOR_DESCRIPTION,
+    A.AUTHOR_ID,
+    A.AUTHOR_IMAGE_URL,
+    A.AUTHOR_RATING,
     BI.IMAGE_URL,
+
     CASE 
       WHEN W.id IS NULL THEN false
       ELSE true
     END AS isLiked
-  FROM books B 
-  LEFT JOIN book_images BI ON B.ID = BI.BOOK_ID 
-  LEFT JOIN author_details A ON B.AUTHOR = A.AUTHOR_NAME
-  LEFT JOIN wishlists W 
-    ON W.book_id = B.ID 
-   AND W.user_id = ?
-   AND W.status = 'ACTIVE'
-`;
 
+  FROM books B
+
+  LEFT JOIN book_images BI 
+    ON B.ID = BI.BOOK_ID 
+
+  LEFT JOIN author_details A 
+    ON B.AUTHOR = A.AUTHOR_NAME
+
+  LEFT JOIN categories C 
+    ON B.category_id = C.id
+
+  LEFT JOIN wishlists W 
+    ON W.book_id = B.ID
+    AND W.user_id = ?
+    AND W.status = 'ACTIVE'
+`;
 
 const findAllBooks = (userId = null) => {
   console.log("User Id", userId);

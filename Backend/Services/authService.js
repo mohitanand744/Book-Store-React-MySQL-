@@ -28,6 +28,7 @@ const {
 const generateJWT = require("../utils/Token/generateJWT");
 const { isCloudinaryUrl, uploadFromUrl } = require("../utils/cloudinaryUpload");
 const { profileCompletionDetails } = require("../Helper/methods");
+const { getUserCategories } = require("../Models/categoryModel");
 
 exports.registerUser = async (
   { first_name, last_name, email, password, terms_accepted },
@@ -73,8 +74,6 @@ exports.registerUser = async (
 
 exports.loginUser = async ({ email, password, res }) => {
   const user = await findUserByEmail(email);
-
-  console.log("loginUserrrrrrrrr", user);
 
   if (!user) {
     return {
@@ -125,15 +124,20 @@ exports.loginUser = async ({ email, password, res }) => {
 
   console.log("loginUserrrrrrrrr", user);
 
-  const userDetails = formatUser([user]);
+  const { isComplete, percentage } = await profileCompletionDetails(user);
 
-  const { isComplete, percentage } =
-    await profileCompletionDetails(userDetails);
-  console.log("2loginUserrrrrrrrr", userDetails);
+  const categories = await getUserCategories(user?.id);
+
+  const userDetails = formatUser({
+    ...user,
+    isComplete,
+    percentage,
+    categories,
+  });
 
   return {
     token,
-    user: { ...userDetails, isComplete, percentage },
+    user: userDetails,
   };
 };
 

@@ -15,6 +15,7 @@ const { uploadFromBuffer } = require("../utils/cloudinaryUpload");
 const handleDbError = require("../utils/handleDbError");
 const { errorResponse, successResponse } = require("../utils/response");
 const { formatUser } = require("../utils/formatter");
+const { getUserCategories } = require("../Models/categoryModel");
 
 const uploadProfilePic = async (req, res, next) => {
   try {
@@ -98,14 +99,19 @@ const getUserProfile = async (req, res, next) => {
     if (!user) {
       return errorResponse(res, 400, "User not found");
     }
-    console.log("User - ", user);
 
-    const userDetails = formatUser([user]);
+    const { isComplete, percentage } = await profileCompletionDetails(user);
 
-    const { isComplete, percentage } =
-      await profileCompletionDetails(userDetails);
+    const categories = await getUserCategories(req.userId);
 
-    successResponse(res, 200, "", { ...userDetails, isComplete, percentage });
+    const userDetails = formatUser({
+      ...user,
+      isComplete,
+      percentage,
+      categories,
+    });
+
+    successResponse(res, 200, "", userDetails);
   } catch (error) {
     console.log(error);
     handleDbError(error, res, next);

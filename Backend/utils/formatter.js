@@ -11,14 +11,12 @@ exports.formatBook = (item) => ({
     author_rating: item.AUTHOR_RATING,
   },
   book_price: item.BOOK_PRICE,
-  category: item.CATEGORY,
+  category: item.category_name,
   images: item.IMAGE_URL,
 });
 
 // userFormatter.js
-exports.formatUser = (rows) => {
-  const user = rows[0];
-
+exports.formatUser = (user) => {
   console.log("User-", user);
 
   console.log("userrrrrrrrrrrrrrr", user);
@@ -45,12 +43,14 @@ exports.formatUser = (rows) => {
       pinCode: user?.pin_code || null,
     },
     phone: user?.phone_number || null,
-    gender: user?.gender || null,
+    gender: user?.gender || "female",
     orders: user?.orders_count || 0,
     wishlist: user?.wishlist_count || 0,
-    favoriteGenres: user?.favorite_genres || [],
+    favoriteGenres: user?.categories || [],
     recentOrders: [],
     recentWishlist: [],
     recentActivity: [],
+    isComplete: user?.isComplete || false,
+    percentage: user?.percentage || 0,
   };
 };

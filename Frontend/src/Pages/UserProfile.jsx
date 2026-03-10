@@ -341,7 +341,7 @@ const UserProfile = () => {
                   icon={<FaRegHeart className="text-[#5C4C49] text-lg" />}
                   label="Favorite Genres"
                   value={
-                    user?.favoriteGenres?.join(", ") ||
+                    user?.favoriteGenres?.map((genre) => genre.name) ||
                     "Select your favorite genres"
                   }
                   notProvided={!user?.favoriteGenres?.length}
@@ -811,16 +811,44 @@ const ModernProfileDetail = ({
     className="flex items-start gap-3 p-3 bg-white/50 rounded-lg backdrop-blur-sm border border-[#5C4C49]/10"
   >
     <span className="text-xl text-[#5C4C49]">{icon}</span>
-    <div className="flex-1">
+    <div className="flex-1 overflow-hidden">
       <p className="text-xs font-medium text-[#5C4C49]/70 uppercase tracking-wider">
         {label}
       </p>
-      <div className="z-20 flex items-center justify-between w-full mt-1">
-        <p
-          className={` ${notProvided ? "text-[#d4b17d]" : "text-[#5C4C49]"}  text-xs sm:text-sm md:text-md font-medium`}
+      <div className="z-20 flex items-center justify-between w-full mt-1 overflow-hidden">
+        <div
+          className={` ${notProvided ? "text-[#d4b17d]" : "text-[#5C4C49]"}  text-xs overflow-hidden sm:text-sm md:text-md font-medium`}
         >
-          {value}
-        </p>
+          {Array.isArray(value) ? (
+            <div className="flex gap-2 mt-3">
+              {value.map((item, index) => (
+                <span
+                  key={index}
+                  className="
+        px-4 py-1.5
+        rounded-full
+        text-sm
+        font-semibold
+        border
+        border-[#5C4C49]
+        text-[#E8D9C5]
+        bg-gradient-to-r
+        from-[#5C4C49]/80
+        to-[#5C4C49]/60
+        shadow-md
+        hover:shadow-lg
+        hover:scale-105
+        transition-all duration-200 text-nowrap
+      "
+                >
+                  {item}
+                </span>
+              ))}
+            </div>
+          ) : (
+            value
+          )}
+        </div>
 
         {isCopyable && (
           <motion.button

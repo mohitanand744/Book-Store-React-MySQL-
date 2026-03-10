@@ -53,8 +53,6 @@ const BookCard = ({ book }) => {
         toast.success(res?.message, { id: toastRef.current });
         toastRef.current = null;
 
-
-
         if (path === "nextChapterwishlist") {
           dispatch(getAllWishlists());
         } else {
@@ -62,7 +60,10 @@ const BookCard = ({ book }) => {
         }
       } catch (err) {
         setIsLiked(previousLikedState);
-        toast.error(err?.message || "Wishlist update failed");
+        toast.error(err?.message || "Wishlist update failed", {
+          id: toastRef.current,
+        });
+        toastRef.current = null;
       }
     }, 600);
   };
