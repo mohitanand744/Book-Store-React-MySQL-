@@ -32,6 +32,10 @@ import Spinner from "../components/Loaders/Spinner";
 import { useImagePreview } from "../store/Context/ImagePreviewContext";
 import ProfileUpdateModal from "../components/Modal/ProfileUpdateModal";
 import Modal from "../components/Modal/ModalContainer";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Autoplay, FreeMode } from "swiper/modules";
+import "swiper/css";
+import SwiperNavButtons from "../components/Buttons/SwiperNavButtons";
 
 // Mock user data with additional details
 const mockUser = {
@@ -425,11 +429,10 @@ const UserProfile = () => {
             <div className="hidden md:flex border-b border-[#D3BD9D]">
               <motion.button
                 onClick={() => setActiveTab("activity")}
-                className={`px-4 py-2 text-nowrap text-[16px] relative ${
-                  activeTab === "activity"
-                    ? "text-[#5C4C49] opacity-100 font-bold"
-                    : "text-[#5C4C49] opacity-70 font-medium"
-                }`}
+                className={`px-4 py-2 text-nowrap text-[16px] relative ${activeTab === "activity"
+                  ? "text-[#5C4C49] opacity-100 font-bold"
+                  : "text-[#5C4C49] opacity-70 font-medium"
+                  }`}
               >
                 Recent Activity
                 {activeTab === "activity" && (
@@ -442,11 +445,10 @@ const UserProfile = () => {
 
               <motion.button
                 onClick={() => setActiveTab("orders")}
-                className={`px-4 py-2 text-nowrap text-[16px] relative ${
-                  activeTab === "orders"
-                    ? "text-[#5C4C49] opacity-100 font-bold"
-                    : "text-[#5C4C49] opacity-70 font-medium"
-                }`}
+                className={`px-4 py-2 text-nowrap text-[16px] relative ${activeTab === "orders"
+                  ? "text-[#5C4C49] opacity-100 font-bold"
+                  : "text-[#5C4C49] opacity-70 font-medium"
+                  }`}
               >
                 Recent Orders
                 {activeTab === "orders" && (
@@ -459,11 +461,10 @@ const UserProfile = () => {
 
               <motion.button
                 onClick={() => setActiveTab("wishlist")}
-                className={`px-4 py-2 text-nowrap text-[16px] relative ${
-                  activeTab === "wishlist"
-                    ? "text-[#5C4C49] opacity-100 font-bold"
-                    : "text-[#5C4C49] opacity-70 font-medium"
-                }`}
+                className={`px-4 py-2 text-nowrap text-[16px] relative ${activeTab === "wishlist"
+                  ? "text-[#5C4C49] opacity-100 font-bold"
+                  : "text-[#5C4C49] opacity-70 font-medium"
+                  }`}
               >
                 Wishlist Preview
                 {activeTab === "wishlist" && (
@@ -479,11 +480,10 @@ const UserProfile = () => {
             <div className="bg-white rounded-3xl border-t border-[#D3BD9D] md:hidden flex justify-around py-2 z-50">
               <motion.button
                 onClick={() => setActiveTab("activity")}
-                className={`flex flex-col items-center p-2 w-full relative ${
-                  activeTab === "activity"
-                    ? "text-[#5C4C49]"
-                    : "text-[#5C4C49] opacity-70"
-                }`}
+                className={`flex flex-col items-center p-2 w-full relative ${activeTab === "activity"
+                  ? "text-[#5C4C49]"
+                  : "text-[#5C4C49] opacity-70"
+                  }`}
                 whileTap={{ scale: 0.95 }}
               >
                 <FaHistory className="w-5 h-5" />
@@ -498,11 +498,10 @@ const UserProfile = () => {
 
               <motion.button
                 onClick={() => setActiveTab("orders")}
-                className={`flex flex-col items-center p-2 w-full relative ${
-                  activeTab === "orders"
-                    ? "text-[#5C4C49]"
-                    : "text-[#5C4C49] opacity-70"
-                }`}
+                className={`flex flex-col items-center p-2 w-full relative ${activeTab === "orders"
+                  ? "text-[#5C4C49]"
+                  : "text-[#5C4C49] opacity-70"
+                  }`}
                 whileTap={{ scale: 0.95 }}
               >
                 <FaShoppingBag className="w-5 h-5" />
@@ -517,11 +516,10 @@ const UserProfile = () => {
 
               <motion.button
                 onClick={() => setActiveTab("wishlist")}
-                className={`flex flex-col items-center p-2 w-full relative ${
-                  activeTab === "wishlist"
-                    ? "text-[#5C4C49]"
-                    : "text-[#5C4C49] opacity-70"
-                }`}
+                className={`flex flex-col items-center p-2 w-full relative ${activeTab === "wishlist"
+                  ? "text-[#5C4C49]"
+                  : "text-[#5C4C49] opacity-70"
+                  }`}
                 whileTap={{ scale: 0.95 }}
               >
                 <FaHeart className="w-5 h-5" />
@@ -566,7 +564,7 @@ const UserProfile = () => {
                       showAction={true}
                       actionText="Browse Books"
                       actionLink="/nextChapter/books"
-                      //onActionClick={toggleCart}
+                    //onActionClick={toggleCart}
                     />
                   )}
                 </>
@@ -597,7 +595,7 @@ const UserProfile = () => {
                         showAction={true}
                         actionText="Explore More"
                         actionLink="/nextChapter/books"
-                        //onActionClick={toggleCart}
+                      //onActionClick={toggleCart}
                       />
                     </div>
                   )}
@@ -751,13 +749,12 @@ const ActivityItem = ({
         />
         {status && (
           <span
-            className={`absolute top-2 right-2 px-2 py-1 rounded-full text-xs font-medium ${
-              status === "Delivered"
-                ? "bg-green-100 text-green-800"
-                : status === "Shipped"
-                  ? "bg-blue-100 text-blue-800"
-                  : "bg-yellow-100 text-yellow-800"
-            }`}
+            className={`absolute top-2 right-2 px-2 py-1 rounded-full text-xs font-medium ${status === "Delivered"
+              ? "bg-green-100 text-green-800"
+              : status === "Shipped"
+                ? "bg-blue-100 text-blue-800"
+                : "bg-yellow-100 text-yellow-800"
+              }`}
           >
             {status}
           </span>
@@ -803,96 +800,109 @@ const ModernProfileDetail = ({
   delay,
   isCopyable,
   notProvided,
-}) => (
-  <motion.div
-    initial={{ opacity: 0, x: -10 }}
-    animate={{ opacity: 1, x: 0 }}
-    transition={{ delay }}
-    className="flex items-start gap-3 p-3 bg-white/50 rounded-lg backdrop-blur-sm border border-[#5C4C49]/10"
-  >
-    <span className="text-xl text-[#5C4C49]">{icon}</span>
-    <div className="flex-1 overflow-hidden">
-      <p className="text-xs font-medium text-[#5C4C49]/70 uppercase tracking-wider">
-        {label}
-      </p>
-      <div className="z-20 flex items-center justify-between w-full mt-1 overflow-hidden">
-        <div
-          className={` ${notProvided ? "text-[#d4b17d]" : "text-[#5C4C49]"}  text-xs overflow-hidden sm:text-sm md:text-md font-medium`}
-        >
-          {Array.isArray(value) ? (
-            <div className="flex gap-2 mt-3">
-              {value.map((item, index) => (
-                <span
-                  key={index}
-                  className="
-        px-4 py-1.5
-        rounded-full
-        text-sm
-        font-semibold
-        border
-        border-[#5C4C49]
-        text-[#E8D9C5]
-        bg-gradient-to-r
-        from-[#5C4C49]/80
-        to-[#5C4C49]/60
-        shadow-md
-        hover:shadow-lg
-        hover:scale-105
-        transition-all duration-200 text-nowrap
-      "
-                >
-                  {item}
-                </span>
-              ))}
-            </div>
-          ) : (
-            value
+}) => {
+  const swiperRef = useRef(null);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, x: -10 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ delay }}
+      className="flex items-start gap-3 p-3 bg-white/50 rounded-lg backdrop-blur-sm border border-[#5C4C49]/10"
+    >
+      <span className="text-xl text-[#5C4C49] flex-shrink-0">{icon}</span>
+
+      <div className="flex-1 min-w-0">
+        <div className="flex items-center justify-between w-full">
+          <p className="text-xs font-medium text-[#5C4C49]/70 uppercase tracking-wider">
+            {label}
+          </p>
+          {Array.isArray(value) && (
+            <SwiperNavButtons
+              swiperRef={swiperRef}
+              className="!relative !w-auto !h-auto justify-end gap-2"
+              position={{}}
+              prevButtonClass="!w-7 !h-7 shadow-sm flex items-center justify-center scale-90"
+              nextButtonClass="!w-7 !h-7 shadow-sm flex items-center justify-center scale-90"
+            />
           )}
         </div>
 
-        {isCopyable && (
-          <motion.button
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-            onClick={() => {
-              if (notProvided) {
-                toast.error("Please Update Your Profile");
-                return;
-              }
+        <div className="flex items-center flex-1 gap-2 mt-1 min-w-0">
+          {/* VALUE */}
+          <div className="w-full min-w-0">
+            {Array.isArray(value) ? (
+              <div className="relative w-full mt-2">
+                <Swiper
+                  modules={[Navigation, FreeMode]}
+                  slidesPerView="auto"
+                  spaceBetween={10}
+                  freeMode={true}
+                  onSwiper={(swiper) => {
+                    swiperRef.current = swiper;
+                  }}
+                  className="w-full"
+                >
+                  {value.map((item, index) => (
+                    <SwiperSlide key={index} className="!w-auto">
+                      <span
+                        className="px-4 py-1.5
+                    rounded-full
+                    text-sm
+                    font-semibold
+                    border
+                    border-[#5C4C49]
+                    text-[#E8D9C5]
+                    bg-gradient-to-r
+                    from-[#5C4C49]/80
+                    to-[#5C4C49]/60
+                    shadow-md
+                    whitespace-nowrap" >
+                        {item}
+                      </span>
+                    </SwiperSlide>
+                  ))}
+                </Swiper>
+              </div>
+            ) : (
+              <span
+                className={notProvided ? "text-[#d4b17d]" : "text-[#5C4C49]"}
+              >
+                {value}
+              </span>
+            )}
+          </div>
 
-              navigator.clipboard
-                .writeText(value)
-                .then(() => {
-                  toast.success("Copied to clipboard!");
-                })
-                .catch((error) => {
-                  console.error("Failed to copy to clipboard:", error);
-                });
-            }}
-            className="text-[#e8d9c5]  w-[32px] h-[32px] flex items-center justify-center p-1 rounded-full bg-[#5C4C49]"
-            title="Copy to clipboard"
-          >
-            <CopyIcon />
-          </motion.button>
-        )}
+          {/* COPY */}
+          {isCopyable && (
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              onClick={() => {
+                if (notProvided) {
+                  toast.error("Please Update Your Profile");
+                  return;
+                }
+                navigator.clipboard.writeText(value);
+                toast.success("Copied");
+              }}
+              className="text-[#e8d9c5] w-[32px] h-[32px] flex items-center justify-center rounded-full bg-[#5C4C49]"
+            >
+              <CopyIcon />
+            </motion.button>
+          )}
 
-        {label === "Address" && (
-          <motion.div
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-            className="text-[#5C4C49]/50 hover:text-[#5C4C49] transition-colors"
-            title="Select address"
-          >
+          {/* ADDRESS */}
+          {label === "Address" && (
             <Button
-              type="button"
               onClick={() => setShowAddressModal(true)}
-              className="bg-[#5C4C49] ms-4 h-7 text-[#E8D9C5] text-nowrap rounded-[7px] text-xs font-medium flex items-center"
+              className="bg-[#5C4C49] text-nowrap text-[#E8D9C5] text-xs"
             >
               Select Address
             </Button>
-          </motion.div>
-        )}
+          )}
+        </div>
       </div>
-    </div>
-  </motion.div>
-);
+    </motion.div>
+  );
+};
