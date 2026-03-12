@@ -36,6 +36,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Autoplay, FreeMode } from "swiper/modules";
 import "swiper/css";
 import SwiperNavButtons from "../components/Buttons/SwiperNavButtons";
+import { EllipsisHorizontalIcon } from "@heroicons/react/24/outline";
 
 // Mock user data with additional details
 const mockUser = {
@@ -837,7 +838,7 @@ const ModernProfileDetail = ({
 
         <div className="flex items-center flex-1 min-w-0 gap-2 mt-1">
           {/* VALUE */}
-          <div className="w-full min-w-0">
+          <div className="flex-1 min-w-0">
             {Array.isArray(value) ? (
               <div className="relative ml-[-0.8rem] w-full mt-2">
                 <Swiper
@@ -901,12 +902,12 @@ const ModernProfileDetail = ({
 
           {/* ADDRESS */}
           {label === "Address" && (
-            <Button
+            <div
               onClick={() => setShowAddressModal(true)}
-              className="bg-[#5C4C49] text-nowrap text-[#E8D9C5] text-xs"
+              className="text-[#e8d9c5] w-[32px] cursor-pointer h-[32px] flex items-center justify-center rounded-full bg-[#5C4C49]"
             >
-              Select Address
-            </Button>
+              <EllipsisHorizontalIcon className="w-6 h-6" />
+            </div>
           )}
         </div>
       </div>
