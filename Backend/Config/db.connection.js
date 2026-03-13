@@ -30,6 +30,7 @@ async function initDB() {
       waitForConnections: true,
       connectionLimit: 10,
       queueLimit: 0,
+      multipleStatements: true,
     });
 
     const connection = await pool.getConnection();
