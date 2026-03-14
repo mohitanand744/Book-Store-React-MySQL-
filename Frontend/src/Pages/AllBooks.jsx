@@ -4,7 +4,7 @@ import BookCard from "../components/Cards/BookCard";
 import { fetchAllBooks } from "../store/Redux/Slices/BooksSlice";
 import BooksLoader from "../components/Loaders/BooksLoader";
 import ShowErrors from "../components/Errors/ShowErrors";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import BookListingFilter from "../components/BookListingFilter";
 import CategorySlider from "../components/ScrollingContainer/CategorySlider";
 import NoData from "../components/EmptyData/noData";
@@ -129,11 +129,7 @@ const AllBooks = () => {
 
       <CategorySlider filters={filters} setFilters={setFilters} />
 
-      {loading && !filters.cursor ? (
-        <BooksLoader />
-      ) : error ? (
-        <ShowErrors text={error || "Sorry we are Unable Fetch Books"} />
-      ) : books?.length === 0 ? (
+      {books?.length === 0 ? (
         <div className="my-20">
           <NoData
             title="No Books Found"
@@ -179,29 +175,36 @@ const AllBooks = () => {
             </motion.div>
 
             {/* Pagination Sentinel */}
-            <div ref={sentinelRef} className="h-10 w-full flex justify-center items-center mt-5">
-              {loading && <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#5c4c49]"></div>}
+            <div
+              ref={sentinelRef}
+              className="flex items-center justify-center w-full h-10 mt-5"
+            >
+              {loading && (
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#5c4c49]"></div>
+              )}
             </div>
           </div>
         </div>
       )}
 
-      {showFilters && (
-        <motion.div
-          initial={{ opacity: 0, x: 100 }}
-          animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0, x: 100 }}
-          transition={{ type: "spring", stiffness: 300, damping: 30 }}
-          className="fixed top-[3.6rem] right-[1.6rem] z-[9999]"
-        >
-          <BookListingFilter
-            filters={filters}
-            setFilters={setFilters}
-            openCategory={openCategory}
-            setOpenCategory={setOpenCategory}
-          />
-        </motion.div>
-      )}
+      <AnimatePresence>
+        {showFilters && (
+          <motion.div
+            initial={{ x: 200, scale: 0.5 }}
+            animate={{ x: 0, scale: 1 }}
+            exit={{ x: 300, scale: 0 }}
+            transition={{ type: "spring", stiffness: 300, damping: 40 }}
+            className="fixed top-[3.6rem] right-[1.6rem] z-[9999]"
+          >
+            <BookListingFilter
+              filters={filters}
+              setFilters={setFilters}
+              openCategory={openCategory}
+              setOpenCategory={setOpenCategory}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

@@ -9,8 +9,7 @@ import { getAllCategories } from "../../utils/apis/categoryApis";
 const categories = [
   {
     name: "Fiction",
-    image:
-      "https://m.media-amazon.com/images/I/71P+4DslKmL._SL1500_.jpg",
+    image: "https://m.media-amazon.com/images/I/71P+4DslKmL._SL1500_.jpg",
   },
   {
     name: "Non-Fiction",
@@ -81,14 +80,12 @@ const categories = [
   },
   {
     name: "story",
-    image:
-      "https://m.media-amazon.com/images/I/81y4kJnEzbL._SL1500_.jpg",
+    image: "https://m.media-amazon.com/images/I/81y4kJnEzbL._SL1500_.jpg",
   },
 ];
 
 const CategorySlider = ({ filters, setFilters }) => {
   const [categoriesList, setCategoriesList] = useState([]);
-
 
   const getAllCategoriesLists = async () => {
     try {
@@ -116,7 +113,6 @@ const CategorySlider = ({ filters, setFilters }) => {
 
   console.log(categoriesList);
 
-
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -124,7 +120,7 @@ const CategorySlider = ({ filters, setFilters }) => {
       transition={{ duration: 0.5 }}
       className="px-4 py-6 md:px-6"
     >
-      <div className="container px-4 mx-auto">
+      <div className="container relative px-4 mx-auto">
         <h2 className="text-lg font-semibold text-[#5c4c49] mb-4 md:text-xl">
           Browse by Category
         </h2>
@@ -145,10 +141,11 @@ const CategorySlider = ({ filters, setFilters }) => {
               <motion.div
                 whileHover={{ y: -5 }}
                 onClick={() => handleCategoryClick(category.name)}
-                className={`relative w-32 h-40 overflow-hidden rounded-xl cursor-pointer group md:w-36 md:h-44 transition-all duration-300 ${filters.category === category.name
-                  ? "border-2 border-white  shadow-[0_0_30px_rgba(92,76,73,1)]"
-                  : ""
-                  }`}
+                className={`relative w-32 h-40 overflow-hidden rounded-xl cursor-pointer group md:w-36 md:h-44 transition-all duration-300 ${
+                  filters.category === category.name
+                    ? "border-2 border-white  shadow-[0_0_30px_rgba(92,76,73,1)]"
+                    : ""
+                }`}
                 style={{
                   transformStyle: "preserve-3d",
                 }}
@@ -177,12 +174,18 @@ const CategorySlider = ({ filters, setFilters }) => {
                 )}
 
                 <img
-                  src={categories?.some(cat => cat.name === category.name) ? categories.find(cat => cat.name === category.name)?.image : ""}
+                  src={
+                    categories?.some((cat) => cat.name === category.name)
+                      ? categories.find((cat) => cat.name === category.name)
+                          ?.image
+                      : ""
+                  }
                   alt={category.name}
-                  className={`object-cover w-full h-full transition-all duration-300 ${filters.category === category.name
-                    ? "scale-105 brightness-100"
-                    : "brightness-90 group-hover:brightness-75"
-                    }`}
+                  className={`object-cover w-full h-full transition-all duration-300 ${
+                    filters.category === category.name
+                      ? "scale-105 brightness-100"
+                      : "brightness-90 group-hover:brightness-75"
+                  }`}
                   style={{
                     transform:
                       filters.category === category.name
@@ -192,16 +195,18 @@ const CategorySlider = ({ filters, setFilters }) => {
                 />
 
                 <div
-                  className={`absolute inset-0 flex items-end p-3 transition-all duration-300 ${filters.category === category.name
-                    ? "bg-gradient-to-t from-black/90 via-transparent to-transparent"
-                    : "bg-gradient-to-t from-black/70 via-transparent to-transparent"
-                    }`}
+                  className={`absolute inset-0 flex items-end p-3 transition-all duration-300 ${
+                    filters.category === category.name
+                      ? "bg-gradient-to-t from-black/90 via-transparent to-transparent"
+                      : "bg-gradient-to-t from-black/70 via-transparent to-transparent"
+                  }`}
                 >
                   <motion.span
-                    className={`text-sm font-medium ${filters.category === category.name
-                      ? "text-white font-bold tracking-wide"
-                      : "text-white"
-                      } md:text-base`}
+                    className={`text-sm font-medium ${
+                      filters.category === category.name
+                        ? "text-white font-bold tracking-wide"
+                        : "text-white"
+                    } md:text-base`}
                     initial={{ opacity: 0.9 }}
                     whileHover={{ opacity: 1 }}
                   >
@@ -258,10 +263,10 @@ const CategorySlider = ({ filters, setFilters }) => {
               },
             }}
             exit={{ opacity: 0, y: -10, scale: 0.9 }}
-            className="flex justify-center mt-4"
+            className="md:absolute top-[-20px] left-[14rem] flex justify-center mt-4"
           >
             <motion.div
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#fff5e4] border border-[#e8d9c5] shadow-sm"
+              className="inline-flex items-center gap-2 px-2 py-1 rounded-full bg-[#fff5e4] border border-[#e8d9c5] shadow-sm"
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.98 }}
             >
@@ -274,13 +279,15 @@ const CategorySlider = ({ filters, setFilters }) => {
                 className="w-2 h-2 bg-[#5c4c49] rounded-full"
               />
 
-              <motion.p className="text-sm font-medium text-[#5c4c49]">
+              <motion.p className="text-xs font-medium text-[#5c4c49]">
                 Viewing:{" "}
                 <span className="ml-1 font-bold">{filters.category}</span>
               </motion.p>
 
               <motion.button
-                onClick={() => setFilters((prev) => ({ ...prev, category: "" }))}
+                onClick={() =>
+                  setFilters((prev) => ({ ...prev, category: "" }))
+                }
                 whileHover={{ backgroundColor: "#f0e6d6" }}
                 className="p-1 rounded-full"
               >

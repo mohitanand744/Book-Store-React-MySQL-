@@ -44,18 +44,7 @@ exports.getBooks = async (req, res, next) => {
     );
     if (!result.success) return notFound(res);
 
-    const formattedBooks = result?.data.map((item) => {
-
-      let images = item.IMAGE_URL;
-      if (typeof images === "string") {
-        try {
-          images = JSON.parse(images);
-        } catch (e) {
-          images = [images];
-        }
-      }
-      return formatBook({ ...item, IMAGE_URL: images });
-    });
+    const formattedBooks = result.data.map(formatBook);
 
     successResponse(res, 200, "Books fetched successfully", {
       data: formattedBooks,

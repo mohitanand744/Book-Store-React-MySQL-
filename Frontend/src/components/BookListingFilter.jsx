@@ -3,8 +3,12 @@ import DualRangeSlider from "../components/Inputs/DualRangeSlider";
 import Checkbox from "../components/Inputs/Checkbox";
 import { motion } from "framer-motion";
 
-const BookListingFilter = ({ openCategory, setOpenCategory, filters, setFilters }) => {
-
+const BookListingFilter = ({
+  openCategory,
+  setOpenCategory,
+  filters,
+  setFilters,
+}) => {
   const handleDiscountChange = (discountValue) => {
     setFilters((prev) => ({
       ...prev,
@@ -21,9 +25,6 @@ const BookListingFilter = ({ openCategory, setOpenCategory, filters, setFilters 
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: -20, scale: 0.1 }}
-      animate={{ opacity: 1, y: 0, scale: 1 }}
-      transition={{ duration: 0.3 }}
       className={`hideScroll  overflow-y-scroll border bg-white z-[9999] sm:w-[20rem] overflow-hidden duration-300 mt-32 ease-in-out shadow-xl border-gray-200 rounded-3xl`}
     >
       {/* Price Filter Section */}
@@ -62,9 +63,7 @@ const BookListingFilter = ({ openCategory, setOpenCategory, filters, setFilters 
 
         <motion.ul
           initial={{ height: 0 }}
-          animate={{
-            height: openCategory.DiscountFilter ? "12rem" : "0rem",
-          }}
+          animate={{ height: openCategory.DiscountFilter ? "auto" : 0 }}
           transition={{ duration: 0.3 }}
           className="space-y-2 overflow-hidden"
         >
@@ -111,7 +110,6 @@ const BookListingFilter = ({ openCategory, setOpenCategory, filters, setFilters 
         </motion.ul>
       </div>
 
-      {/* Language Filter Section */}
       <div className="p-5 border-b-2 border-gray-200 shadow-lg rounded-3xl">
         <div
           onClick={(e) => {
