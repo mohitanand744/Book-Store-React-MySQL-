@@ -135,16 +135,16 @@ const NoData = ({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, ease: "easeOut" }}
-      className={`flex flex-col items-center justify-center max-w-md p-5 mx-auto rounded-xl ${className}`}
+      className={`flex flex-col border bg-[#D3BD9D]/20 border-[#D3BD9D] mx-3 shadow-inner shadow-[#D3BD9D]  items-center justify-center max-w-md p-5 rounded-xl ${className}`}
     >
       <motion.div
         className="flex items-center mb-3 justify-center w-16 h-16 border-2 border-[#D3BD9D] rounded-full"
         animate={
           animateIcon
             ? {
-              scale: [1, 1.1, 1],
-              rotate: [0, 5, -5, 0],
-            }
+                scale: [1, 1.1, 1],
+                rotate: [0, 5, -5, 0],
+              }
             : {}
         }
         transition={{
