@@ -37,10 +37,91 @@ const BASE_QUERY = `
     AND W.status = 'ACTIVE'
 `;
 
-const findAllBooks = (userId = null) => {
-  console.log("User Id", userId);
+const findAllBooks = async ({
+  userId = null,
+  limit = 10,
+  cursor,
+  category,
+  minPrice,
+  maxPrice,
+  discount,
+  language,
+  search,
+}) => {
+  limit = Math.min(Number(limit), 20);
 
-  return db.query(BASE_QUERY, [userId]);
+  let query = BASE_QUERY;
+
+  let where = [];
+  let params = [userId];
+
+  if (cursor) {
+    where.push("B.ID < ?");
+    params.push(cursor);
+  }
+
+  if (category) {
+    where.push("C.name = ?");
+    params.push(category);
+  }
+
+  if (minPrice) {
+    where.push("B.BOOK_PRICE >= ?");
+    params.push(minPrice);
+  }
+
+  if (maxPrice) {
+    where.push("B.BOOK_PRICE <= ?");
+    params.push(maxPrice);
+  }
+
+  if (discount) {
+    if (discount.includes("-")) {
+      const [minD, maxD] = discount.split("-").map(Number);
+      if (!isNaN(minD) && !isNaN(maxD)) {
+        where.push("B.DISCOUNT BETWEEN ? AND ?");
+        params.push(minD, maxD);
+      }
+    } else {
+      where.push("B.DISCOUNT >= ?");
+      params.push(Number(discount));
+    }
+  }
+
+  if (language) {
+    where.push("B.LANGUAGE = ?");
+    params.push(language);
+  }
+
+  if (search) {
+    where.push("(B.TITLE LIKE ? OR A.AUTHOR_NAME LIKE ?)");
+    params.push(`%${search}%`, `%${search}%`);
+  }
+
+  if (where.length > 0) {
+    query += " WHERE " + where.join(" AND ");
+  }
+
+  query += `
+    ORDER BY B.ID DESC
+    LIMIT ?
+  `;
+
+  params.push(limit);
+
+  const [rows] = await db.query(query, params);
+
+  let nextCursor = null;
+
+  if (rows.length > 0) {
+    nextCursor = rows[rows.length - 1].ID;
+  }
+
+  return {
+    data: rows,
+    nextCursor,
+    hasMore: rows.length === limit,
+  };
 };
 
 const findBookById = (id, userId = null) => {

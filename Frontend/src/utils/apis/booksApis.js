@@ -10,8 +10,9 @@ const getSingleBook = async (id) => {
   return response.data;
 };
 
-const getAllBooks = async () => {
+const getAllBooks = async (params) => {
   const response = await axiosInstance.get(`/books`, {
+    params,
     withCredentials: true,
   });
 

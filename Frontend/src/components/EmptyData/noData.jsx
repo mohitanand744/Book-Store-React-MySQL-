@@ -27,7 +27,7 @@ const NoData = ({
 
     const iconProps = {
       xmlns: "http://www.w3.org/2000/svg",
-      className: `w-16 h-16 text-[#5C4C49] ${iconClassName}`,
+      className: `w-14 h-14 text-[#5C4C49] ${iconClassName}`,
       fill: "none",
       viewBox: "0 0 24 24",
       stroke: "currentColor",
@@ -142,9 +142,9 @@ const NoData = ({
         animate={
           animateIcon
             ? {
-                scale: [1, 1.1, 1],
-                rotate: [0, 5, -5, 0],
-              }
+              scale: [1, 1.1, 1],
+              rotate: [0, 5, -5, 0],
+            }
             : {}
         }
         transition={{

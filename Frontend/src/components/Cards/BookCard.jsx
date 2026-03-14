@@ -132,10 +132,9 @@ const BookCard = ({ book }) => {
       <div className="px-4 text-xl">
         <div className="text-xl">
           <div className="flex items-center justify-between">
-            <h2 className="text-lg font-semibold md:text-xl">
-              {book.title.slice(0, 20)}...
+            <h2 className="mr-2 text-lg font-semibold truncate md:text-xl">
+              {book?.title}
             </h2>
-
             <motion.div
               whileTap={{ scale: 0.8 }}
               whileHover={{ scale: 1.1 }}
@@ -209,7 +208,7 @@ const BookCard = ({ book }) => {
         </p>
 
         <div className="flex gap-4 mt-3 text-sm md:text-lg">
-          <p className="font-medium text-gray-500 line-through">
+          <p className="font-medium text-gray-300 line-through">
             ₹ {Number(book.book_price) * 2}
           </p>
 

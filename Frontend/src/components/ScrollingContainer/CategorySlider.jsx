@@ -1,11 +1,17 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, FreeMode } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/free-mode";
+import { getAllCategories } from "../../utils/apis/categoryApis";
 
 const categories = [
+  {
+    name: "Fiction",
+    image:
+      "https://m.media-amazon.com/images/I/71P+4DslKmL._SL1500_.jpg",
+  },
   {
     name: "Non-Fiction",
     image:
@@ -73,18 +79,43 @@ const categories = [
     image:
       "https://m.media-amazon.com/images/I/91tQgWThRxS._UF1000,1000_QL80_.jpg",
   },
+  {
+    name: "story",
+    image:
+      "https://m.media-amazon.com/images/I/81y4kJnEzbL._SL1500_.jpg",
+  },
 ];
 
-const CategorySlider = () => {
-  const [selectedCategory, setSelectedCategory] = useState(null);
+const CategorySlider = ({ filters, setFilters }) => {
+  const [categoriesList, setCategoriesList] = useState([]);
 
-  const handleCategoryClick = (categoryName) => {
-    if (selectedCategory === categoryName) {
-      setSelectedCategory(null); // Deselect if clicking the same category
-    } else {
-      setSelectedCategory(categoryName); // Select new category
+
+  const getAllCategoriesLists = async () => {
+    try {
+      const response = await getAllCategories();
+
+      if (response?.success) {
+        setCategoriesList(response?.data?.categories);
+      }
+    } catch (error) {
+      console.error("Error fetching categories:", error);
     }
   };
+
+  useEffect(() => {
+    getAllCategoriesLists();
+  }, []);
+
+  const handleCategoryClick = (categoryName) => {
+    if (filters.category === categoryName) {
+      setFilters((prev) => ({ ...prev, category: "" }));
+    } else {
+      setFilters((prev) => ({ ...prev, category: categoryName }));
+    }
+  };
+
+  console.log(categoriesList);
+
 
   return (
     <motion.div
@@ -109,22 +140,21 @@ const CategorySlider = () => {
           modules={[FreeMode, Autoplay]}
           className="!py-2"
         >
-          {categories.map((category, index) => (
+          {categoriesList.map((category, index) => (
             <SwiperSlide key={index} className="!w-auto">
               <motion.div
                 whileHover={{ y: -5 }}
                 onClick={() => handleCategoryClick(category.name)}
-                className={`relative w-32 h-40 overflow-hidden rounded-xl cursor-pointer group md:w-36 md:h-44 transition-all duration-300 ${
-                  selectedCategory === category.name
-                    ? "border-2 border-white  shadow-[0_0_30px_rgba(92,76,73,1)]"
-                    : ""
-                }`}
+                className={`relative w-32 h-40 overflow-hidden rounded-xl cursor-pointer group md:w-36 md:h-44 transition-all duration-300 ${filters.category === category.name
+                  ? "border-2 border-white  shadow-[0_0_30px_rgba(92,76,73,1)]"
+                  : ""
+                  }`}
                 style={{
                   transformStyle: "preserve-3d",
                 }}
               >
                 {/* Modern selection indicator - animated border */}
-                {selectedCategory === category.name && (
+                {filters.category === category.name && (
                   <motion.div
                     className="absolute inset-0 pointer-events-none rounded-xl"
                     style={{
@@ -136,9 +166,8 @@ const CategorySlider = () => {
                     transition={{ duration: 0.3 }}
                   />
                 )}
-
                 {/* Glow effect */}
-                {selectedCategory === category.name && (
+                {filters.category === category.name && (
                   <motion.div
                     className="absolute inset-0 bg-[#5c4c49] opacity-20 blur-md rounded-xl"
                     initial={{ opacity: 0 }}
@@ -148,34 +177,31 @@ const CategorySlider = () => {
                 )}
 
                 <img
-                  src={category.image}
+                  src={categories?.some(cat => cat.name === category.name) ? categories.find(cat => cat.name === category.name)?.image : ""}
                   alt={category.name}
-                  className={`object-cover w-full h-full transition-all duration-300 ${
-                    selectedCategory === category.name
-                      ? "scale-105 brightness-100"
-                      : "brightness-90 group-hover:brightness-75"
-                  }`}
+                  className={`object-cover w-full h-full transition-all duration-300 ${filters.category === category.name
+                    ? "scale-105 brightness-100"
+                    : "brightness-90 group-hover:brightness-75"
+                    }`}
                   style={{
                     transform:
-                      selectedCategory === category.name
+                      filters.category === category.name
                         ? "translateZ(10px)"
                         : "translateZ(0)",
                   }}
                 />
 
                 <div
-                  className={`absolute inset-0 flex items-end p-3 transition-all duration-300 ${
-                    selectedCategory === category.name
-                      ? "bg-gradient-to-t from-black/90 via-transparent to-transparent"
-                      : "bg-gradient-to-t from-black/70 via-transparent to-transparent"
-                  }`}
+                  className={`absolute inset-0 flex items-end p-3 transition-all duration-300 ${filters.category === category.name
+                    ? "bg-gradient-to-t from-black/90 via-transparent to-transparent"
+                    : "bg-gradient-to-t from-black/70 via-transparent to-transparent"
+                    }`}
                 >
                   <motion.span
-                    className={`text-sm font-medium ${
-                      selectedCategory === category.name
-                        ? "text-white font-bold tracking-wide"
-                        : "text-white"
-                    } md:text-base`}
+                    className={`text-sm font-medium ${filters.category === category.name
+                      ? "text-white font-bold tracking-wide"
+                      : "text-white"
+                      } md:text-base`}
                     initial={{ opacity: 0.9 }}
                     whileHover={{ opacity: 1 }}
                   >
@@ -184,7 +210,7 @@ const CategorySlider = () => {
                 </div>
 
                 {/* Modern selection indicator - corner accents */}
-                {selectedCategory === category.name && (
+                {filters.category === category.name && (
                   <>
                     <motion.div
                       className="absolute w-3 h-3 border-t-2 border-l-2 border-white top-2 left-2"
@@ -218,7 +244,7 @@ const CategorySlider = () => {
         </Swiper>
 
         {/* Selected category indicator (optional) */}
-        {selectedCategory && (
+        {filters.category && (
           <motion.div
             initial={{ opacity: 0, y: 20, scale: 0.95 }}
             animate={{
@@ -250,11 +276,11 @@ const CategorySlider = () => {
 
               <motion.p className="text-sm font-medium text-[#5c4c49]">
                 Viewing:{" "}
-                <span className="ml-1 font-bold">{selectedCategory}</span>
+                <span className="ml-1 font-bold">{filters.category}</span>
               </motion.p>
 
               <motion.button
-                onClick={() => setSelectedCategory(null)}
+                onClick={() => setFilters((prev) => ({ ...prev, category: "" }))}
                 whileHover={{ backgroundColor: "#f0e6d6" }}
                 className="p-1 rounded-full"
               >

@@ -3,17 +3,19 @@ import { getAllBooks } from "../../../utils/apis/booksApis";
 
 const initialState = {
   books: [],
+  nextCursor: null,
+  hasMore: false,
   loading: false,
   error: null,
 };
 
 export const fetchAllBooks = createAsyncThunk(
   "fetchAllBooks",
-  async (_, thunkAPI) => {
+  async (filters, thunkAPI) => {
     try {
-      const response = await getAllBooks();
+      const response = await getAllBooks(filters);
 
-      return response.data;
+      return response.data; // This is result object from backend
     } catch (error) {
       return thunkAPI.rejectWithValue(
         error.response?.data?.message || "Failed to fetch books",
@@ -34,7 +36,18 @@ const bookSlice = createSlice({
       })
       .addCase(fetchAllBooks.fulfilled, (state, action) => {
         state.loading = false;
-        state.books = action?.payload;
+        const { data, nextCursor, hasMore } = action.payload;
+
+        // If it's a pagination fetch (cursor exists in args), append data
+        if (action.meta.arg.cursor) {
+          state.books = [...state.books, ...data];
+        } else {
+          // Fresh fetch
+          state.books = data;
+        }
+
+        state.nextCursor = nextCursor;
+        state.hasMore = hasMore;
       })
       .addCase(fetchAllBooks.rejected, (state, action) => {
         state.loading = false;

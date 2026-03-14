@@ -1,8 +1,39 @@
 const BookModel = require("../models/bookModel");
 const db = require("../Config/db.connection");
 
-const getAllBooks = (userId) => {
-  return BookModel.findAllBooks(userId);
+const getAllBooks = async (
+  userId = null,
+  limit,
+  cursor,
+  category,
+  minPrice,
+  maxPrice,
+  discount,
+  language,
+  search,
+) => {
+  try {
+    const result = await BookModel.findAllBooks({
+      userId,
+      limit,
+      cursor,
+      category,
+      minPrice,
+      maxPrice,
+      discount,
+      language,
+      search,
+    });
+
+    return {
+      success: true,
+      ...result,
+    };
+  } catch (err) {
+    console.log(err);
+
+    throw err;
+  }
 };
 
 const getBookById = (id) => {

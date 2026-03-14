@@ -2,14 +2,22 @@ import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Slider from "@mui/material/Slider";
 
-function DualRangeSlider({ setOpenCategory, PriceFilter }) {
-  const [value, setValue] = React.useState([1500, 4000]); // Initial range values
+function DualRangeSlider({ setOpenCategory, PriceFilter, filters, setFilters }) {
+  const [value, setValue] = React.useState([filters.minPrice, filters.maxPrice]); // Initial range values
   const min = 0; // Minimum value for price filter
   const max = 10000; // Maximum value for price filter
 
   const handleChange = (event, newValue) => {
     event.stopPropagation();
     setValue(newValue);
+  };
+
+  const handleChangeCommitted = (event, newValue) => {
+    setFilters((prev) => ({
+      ...prev,
+      minPrice: newValue[0],
+      maxPrice: newValue[1],
+    }));
   };
 
   const [open, setOpen] = useState(false);
@@ -52,10 +60,11 @@ function DualRangeSlider({ setOpenCategory, PriceFilter }) {
             getAriaLabel={() => "Price range"}
             value={value}
             onChange={handleChange}
+            onChangeCommitted={handleChangeCommitted}
             valueLabelDisplay="auto"
             min={min} // Minimum price
             max={max} // Maximum price
-            step={500} // Step size for the slider
+            step={100} // Step size for the slider
             sx={{
               "& .MuiSlider-thumb": {
                 color: "#D3BD9D",
@@ -73,7 +82,7 @@ function DualRangeSlider({ setOpenCategory, PriceFilter }) {
           />
         </div>
         {/* Display Selected Range */}
-        <h1 className="-mt-10">
+        <h1 className="-mt-10 text-xs">
           <b>Selected Range</b>: ₹{value[0]} - ₹{value[1]}
         </h1>
       </div>

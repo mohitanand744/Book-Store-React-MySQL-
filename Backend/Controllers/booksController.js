@@ -20,15 +20,48 @@ const notFound = (res, msg = "Book not found") => errorResponse(res, 404, msg);
 // ==========================
 exports.getBooks = async (req, res, next) => {
   try {
-    const [rows] = await BookService.getAllBooks(req?.userId);
-    if (!rows.length) return notFound(res);
+    const {
+      limit,
+      cursor,
+      category,
+      minPrice,
+      maxPrice,
+      discount,
+      language,
+      search,
+    } = req.query;
 
-    successResponse(
-      res,
-      200,
-      "Books fetched successfully",
-      rows.map(formatBook),
+    const result = await BookService.getAllBooks(
+      req?.userId,
+      limit,
+      cursor,
+      category,
+      minPrice,
+      maxPrice,
+      discount,
+      language,
+      search,
     );
+    if (!result.success) return notFound(res);
+
+    const formattedBooks = result?.data.map((item) => {
+
+      let images = item.IMAGE_URL;
+      if (typeof images === "string") {
+        try {
+          images = JSON.parse(images);
+        } catch (e) {
+          images = [images];
+        }
+      }
+      return formatBook({ ...item, IMAGE_URL: images });
+    });
+
+    successResponse(res, 200, "Books fetched successfully", {
+      data: formattedBooks,
+      nextCursor: result.nextCursor,
+      hasMore: result.hasMore,
+    });
   } catch (err) {
     handleError(res, err, next);
   }
