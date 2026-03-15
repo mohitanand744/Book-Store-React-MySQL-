@@ -115,10 +115,13 @@ const NoData = ({
       <button
         type="button"
         onClick={onActionClick}
-        className="font-medium text-[#5C4C49] hover:text-[#ffe9c7] transition-colors duration-200"
+        className="font-medium flex items-center gap-1 text-[#5C4C49] hover:text-[#c2ac8d] transition-colors duration-200"
       >
-        {actionText}
-        <span aria-hidden="true"> &rarr;</span>
+        <span> {actionText}</span>
+        <span aria-hidden="true" className="text-xl ">
+          {" "}
+          &rarr;
+        </span>
       </button>
     );
 
@@ -135,7 +138,7 @@ const NoData = ({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, ease: "easeOut" }}
-      className={`flex flex-col border bg-[#D3BD9D]/20 border-[#D3BD9D] mx-3 shadow-inner shadow-[#D3BD9D]  items-center justify-center max-w-md p-5 rounded-xl ${className}`}
+      className={`flex flex-col border bg-[#D3BD9D]/20 border-[#D3BD9D] mx-auto  shadow-inner shadow-[#D3BD9D]  items-center justify-center max-w-md p-5 rounded-xl ${className}`}
     >
       <motion.div
         className="flex items-center mb-3 justify-center w-16 h-16 border-2 border-[#D3BD9D] rounded-full"

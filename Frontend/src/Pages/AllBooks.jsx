@@ -12,6 +12,19 @@ import NoData from "../components/EmptyData/noData";
 import { useLocation, useNavigate } from "react-router-dom";
 import useDebounce from "../Hooks/useDebounce";
 
+const defaultFilters = {
+  limit: 10,
+  cursor: "",
+  category: "",
+  minPrice: 0,
+  maxPrice: 10000,
+  discount: "",
+  language: "",
+  search: "",
+};
+import { useMemo } from "react";
+import { TrashIcon, XCircleIcon } from "@heroicons/react/24/outline";
+
 const AllBooks = () => {
   const dispatch = useDispatch();
   const location = useLocation();
@@ -27,7 +40,7 @@ const AllBooks = () => {
 
   const [showFilters, setShowFilters] = useState(false);
   const [filters, setFilters] = useState({
-    limit: 10,
+    limit: 8,
     cursor: "",
     category: "",
     minPrice: 0,
@@ -49,8 +62,7 @@ const AllBooks = () => {
     setFilters((prev) => ({ ...prev, search: urlSearch, cursor: "" }));
   }, [location.search]);
 
-  const { limit, category, minPrice, maxPrice, discount, language, search } =
-    filters;
+  const { category, minPrice, maxPrice, discount, language, search } = filters;
   useEffect(() => {
     setFilters((prev) => ({ ...prev, cursor: "" }));
   }, [category, minPrice, maxPrice, discount, language, search]);
@@ -96,6 +108,15 @@ const AllBooks = () => {
     return () => obs.disconnect();
   }, [hasMore, nextCursor, loading]);
 
+  const appliedFiltersCount = useMemo(() => {
+    const ignoreKeys = ["limit", "cursor"];
+
+    return Object.keys(filters).filter(
+      (key) =>
+        !ignoreKeys.includes(key) && filters[key] !== defaultFilters[key],
+    ).length;
+  }, [filters]);
+
   console.log(books);
 
   return (
@@ -113,6 +134,22 @@ const AllBooks = () => {
           </h1>
 
           <div className="flex items-center gap-2">
+            {appliedFiltersCount > 0 && (
+              <div className="flex items-center gap-2 px-3 py-1 rounded-lg bg-[#E8D9C5]/50 border border-[#5C4C49]/20 w-fit">
+                <span className="text-[#5C4C49] font-medium">Filters:</span>
+
+                <span className="px-2 py-0.5 text-xs font-semibold rounded-full bg-[#5C4C49] text-white">
+                  {appliedFiltersCount}
+                </span>
+
+                <span className="bg-red-600/20 rounded-xl">
+                  <XCircleIcon
+                    onClick={() => setFilters(defaultFilters)}
+                    className="bottom-0 right-0 w-5 h-5 text-red-600 transition-all duration-200 ease-linear cursor-pointer active:scale-75 hover:scale-105"
+                  />
+                </span>
+              </div>
+            )}
             <motion.img
               onClick={(e) => {
                 e.stopPropagation();
@@ -180,7 +217,9 @@ const AllBooks = () => {
               className="flex items-center justify-center w-full h-10 mt-5"
             >
               {loading && (
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#5c4c49]"></div>
+                <div className="flex items-center justify-center">
+                  <BooksLoader />
+                </div>
               )}
             </div>
           </div>

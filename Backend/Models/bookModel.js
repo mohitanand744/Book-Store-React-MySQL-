@@ -39,7 +39,7 @@ const BASE_QUERY = `
 
 const findAllBooks = async ({
   userId = null,
-  limit = 10,
+  limit = 8,
   cursor,
   category,
   minPrice,

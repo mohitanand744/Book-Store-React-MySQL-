@@ -23,11 +23,13 @@ const Home = () => {
 
   useEffect(() => {
     const provider = searchParams.get("loginProvider");
+    const isNewUser = searchParams.get("isNewUser");
 
-    if (provider === "google") {
+    if (provider === "google" && isNewUser === "true") {
+      toast.success("Successfully signed up with Google");
+      navigate(window.location.pathname, { replace: true });
+    } else if (provider === "google" && isNewUser === "false") {
       toast.success("Successfully logged in with Google");
-
-      // remove query params from URL
       navigate(window.location.pathname, { replace: true });
     }
   }, []);

@@ -841,21 +841,22 @@ const ModernProfileDetail = ({
           <div className="flex-1 min-w-0">
             {Array.isArray(value) ? (
               <div className="relative ml-[-0.8rem] w-full mt-2">
-                <Swiper
-                  modules={[Navigation, FreeMode, Autoplay]}
-                  slidesPerView="auto"
-                  spaceBetween={11}
-                  autoplay={{ delay: 1000, disableOnInteraction: false }}
-                  freeMode={true}
-                  onSwiper={(swiper) => {
-                    swiperRef.current = swiper;
-                  }}
-                  className="w-full "
-                >
-                  {value.map((item, index) => (
-                    <SwiperSlide key={index} className="!w-auto">
-                      <span
-                        className="px-4 py-1.5
+                {value.length > 0 ? (
+                  <Swiper
+                    modules={[Navigation, FreeMode, Autoplay]}
+                    slidesPerView="auto"
+                    spaceBetween={11}
+                    autoplay={{ delay: 1000, disableOnInteraction: false }}
+                    freeMode={true}
+                    onSwiper={(swiper) => {
+                      swiperRef.current = swiper;
+                    }}
+                    className="w-full "
+                  >
+                    {value.map((item, index) => (
+                      <SwiperSlide key={index} className="!w-auto">
+                        <span
+                          className="px-4 py-1.5
                     rounded-full
                     text-sm
                     font-semibold
@@ -865,12 +866,15 @@ const ModernProfileDetail = ({
                     to-[#5C4C49]/60
                     shadow-md
                     whitespace-nowrap"
-                      >
-                        {item}
-                      </span>
-                    </SwiperSlide>
-                  ))}
-                </Swiper>
+                        >
+                          {item}
+                        </span>
+                      </SwiperSlide>
+                    ))}
+                  </Swiper>
+                ) : (
+                  <span className="text-[#d4b17d]">Not Provided</span>
+                )}
               </div>
             ) : (
               <span

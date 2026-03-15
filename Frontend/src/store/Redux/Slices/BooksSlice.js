@@ -15,7 +15,7 @@ export const fetchAllBooks = createAsyncThunk(
     try {
       const response = await getAllBooks(filters);
 
-      return response.data; // This is result object from backend
+      return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(
         error.response?.data?.message || "Failed to fetch books",
@@ -38,11 +38,9 @@ const bookSlice = createSlice({
         state.loading = false;
         const { data, nextCursor, hasMore } = action.payload;
 
-        // If it's a pagination fetch (cursor exists in args), append data
         if (action.meta.arg.cursor) {
           state.books = [...state.books, ...data];
         } else {
-          // Fresh fetch
           state.books = data;
         }
 

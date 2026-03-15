@@ -282,7 +282,7 @@ const getGoogleCallBack = async (req, res, next) => {
       200,
       "Logged in with Google",
       {},
-      `${process.env.FRONTEND_URL}/nextChapter/?loginProvider=google`,
+      `${process.env.FRONTEND_URL}/nextChapter/?${result.isNewUser ? "isNewUser=true" : ""}&loginProvider=google`,
     );
   } catch (err) {
     const status = err.status || 500;
