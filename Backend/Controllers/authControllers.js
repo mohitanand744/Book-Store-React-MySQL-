@@ -277,13 +277,21 @@ const getGoogleCallBack = async (req, res, next) => {
       maxAge: 1000 * 60 * 60 * 24,
     });
 
-    return successResponse(
-      res,
-      200,
-      "Logged in with Google",
-      {},
-      `${process.env.FRONTEND_URL}/nextChapter/?${result.isNewUser ? "isNewUser=true" : ""}&loginProvider=google`,
-    );
+    const params = new URLSearchParams();
+
+    if (result.isNewUser) {
+      params.append("isNewUser", "true");
+    }
+
+    if (result.accountLinked) {
+      params.append("accountLinked", "true");
+    }
+
+    params.append("loginProvider", "google");
+
+    const redirectUrl = `${process.env.FRONTEND_URL}/nextChapter/?${params.toString()}`;
+
+    return successResponse(res, 200, "Logged in with Google", {}, redirectUrl);
   } catch (err) {
     const status = err.status || 500;
     const msg = err.message || "Social login failed";

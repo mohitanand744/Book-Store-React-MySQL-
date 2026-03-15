@@ -23,13 +23,19 @@ const Home = () => {
 
   useEffect(() => {
     const provider = searchParams.get("loginProvider");
-    const isNewUser = searchParams.get("isNewUser");
+    const isNewUser = searchParams.get("isNewUser") === "true";
+    const accountLinked = searchParams.get("accountLinked") === "true";
 
-    if (provider === "google" && isNewUser === "true") {
-      toast.success("Successfully signed up with Google");
-      navigate(window.location.pathname, { replace: true });
-    } else if (provider === "google" && isNewUser === "false") {
-      toast.success("Successfully logged in with Google");
+    if (provider === "google") {
+      let message = "Successfully logged in with Google";
+      if (isNewUser) {
+        message = "Successfully signed up with Google";
+      } else if (accountLinked) {
+        message = "Your Google account has been successfully linked.";
+      }
+
+      toast.success(message);
+
       navigate(window.location.pathname, { replace: true });
     }
   }, []);

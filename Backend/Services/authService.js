@@ -355,7 +355,7 @@ exports.handleSocialLogin = async ({
       await updateUserPicturePublicId(existingByProvider.id, public_id);
     }
 
-    const userDetails = formatUser([existingByProvider]);
+    const userDetails = formatUser(existingByProvider);
 
     const token = generateJWT(
       { id: userDetails.userId, email: userDetails.email },
@@ -392,7 +392,7 @@ exports.handleSocialLogin = async ({
 
           const User = await findUserById(existingByEmail.id);
 
-          const updatedUser = formatUser([User]);
+          const updatedUser = formatUser(User);
 
           const token = generateJWT(
             { id: updatedUser.userId, email: updatedUser.email },
@@ -405,6 +405,7 @@ exports.handleSocialLogin = async ({
             token,
             isNewUser: false,
             linked: true,
+            accountLinked: true,
             provider: updatedUser.provider,
           };
         } else {
@@ -430,7 +431,7 @@ exports.handleSocialLogin = async ({
 
           const User = await findUserById(existingByEmail.id);
 
-          const updatedUser = formatUser([User]);
+          const updatedUser = formatUser(User);
 
           const token = generateJWT(
             { id: updatedUser.userId, email: updatedUser.email },
@@ -439,10 +440,11 @@ exports.handleSocialLogin = async ({
           );
           return {
             success: true,
-            user: formatUser([updatedUser]),
+            user: updatedUser,
             token,
             isNewUser: false,
             linked: true,
+            accountLinked: true,
             provider: updatedUser.provider,
           };
         } else {
@@ -483,7 +485,7 @@ exports.handleSocialLogin = async ({
     `${USER_TOKEN_EXPIRES_IN}h`,
   );
 
-  const user = formatUser([newUser]);
+  const user = formatUser(newUser);
 
   return {
     success: true,

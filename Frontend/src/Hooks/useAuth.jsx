@@ -59,6 +59,7 @@ const useAuth = () => {
     setUpdateUserData,
     getUserUpdatedDetails,
     logoutReason: auth.logoutReason,
+    loading: auth.loading,
   };
 };
 

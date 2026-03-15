@@ -29,6 +29,7 @@ const Login = () => {
   const navigate = useNavigate();
   const { loginStatusSuccess, getUserUpdatedDetails, isAuthenticated } =
     useAuth();
+
   const [showForgot, setShowForgot] = useState(false);
   const [showResetModal, setShowResetModal] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
@@ -186,7 +187,7 @@ const Login = () => {
       } else {
         toast.error(
           error.response?.data?.message ||
-            "Something went wrong. Please try again later.",
+          "Something went wrong. Please try again later.",
         );
       }
     }

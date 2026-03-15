@@ -206,6 +206,7 @@ const UserProfile = () => {
 
   const handleConfirmLogout = async () => {
     setShowLogoutModal(false);
+    navigate("/nextChapter");
     logoutStatusSuccess();
   };
 
@@ -430,11 +431,10 @@ const UserProfile = () => {
             <div className="hidden md:flex border-b border-[#D3BD9D]">
               <motion.button
                 onClick={() => setActiveTab("activity")}
-                className={`px-4 py-2 text-nowrap text-[16px] relative ${
-                  activeTab === "activity"
+                className={`px-4 py-2 text-nowrap text-[16px] relative ${activeTab === "activity"
                     ? "text-[#5C4C49] opacity-100 font-bold"
                     : "text-[#5C4C49] opacity-70 font-medium"
-                }`}
+                  }`}
               >
                 Recent Activity
                 {activeTab === "activity" && (
@@ -447,11 +447,10 @@ const UserProfile = () => {
 
               <motion.button
                 onClick={() => setActiveTab("orders")}
-                className={`px-4 py-2 text-nowrap text-[16px] relative ${
-                  activeTab === "orders"
+                className={`px-4 py-2 text-nowrap text-[16px] relative ${activeTab === "orders"
                     ? "text-[#5C4C49] opacity-100 font-bold"
                     : "text-[#5C4C49] opacity-70 font-medium"
-                }`}
+                  }`}
               >
                 Recent Orders
                 {activeTab === "orders" && (
@@ -464,11 +463,10 @@ const UserProfile = () => {
 
               <motion.button
                 onClick={() => setActiveTab("wishlist")}
-                className={`px-4 py-2 text-nowrap text-[16px] relative ${
-                  activeTab === "wishlist"
+                className={`px-4 py-2 text-nowrap text-[16px] relative ${activeTab === "wishlist"
                     ? "text-[#5C4C49] opacity-100 font-bold"
                     : "text-[#5C4C49] opacity-70 font-medium"
-                }`}
+                  }`}
               >
                 Wishlist Preview
                 {activeTab === "wishlist" && (
@@ -484,11 +482,10 @@ const UserProfile = () => {
             <div className="bg-white rounded-3xl border-t border-[#D3BD9D] md:hidden flex justify-around py-2 z-50">
               <motion.button
                 onClick={() => setActiveTab("activity")}
-                className={`flex flex-col items-center p-2 w-full relative ${
-                  activeTab === "activity"
+                className={`flex flex-col items-center p-2 w-full relative ${activeTab === "activity"
                     ? "text-[#5C4C49]"
                     : "text-[#5C4C49] opacity-70"
-                }`}
+                  }`}
                 whileTap={{ scale: 0.95 }}
               >
                 <FaHistory className="w-5 h-5" />
@@ -503,11 +500,10 @@ const UserProfile = () => {
 
               <motion.button
                 onClick={() => setActiveTab("orders")}
-                className={`flex flex-col items-center p-2 w-full relative ${
-                  activeTab === "orders"
+                className={`flex flex-col items-center p-2 w-full relative ${activeTab === "orders"
                     ? "text-[#5C4C49]"
                     : "text-[#5C4C49] opacity-70"
-                }`}
+                  }`}
                 whileTap={{ scale: 0.95 }}
               >
                 <FaShoppingBag className="w-5 h-5" />
@@ -522,11 +518,10 @@ const UserProfile = () => {
 
               <motion.button
                 onClick={() => setActiveTab("wishlist")}
-                className={`flex flex-col items-center p-2 w-full relative ${
-                  activeTab === "wishlist"
+                className={`flex flex-col items-center p-2 w-full relative ${activeTab === "wishlist"
                     ? "text-[#5C4C49]"
                     : "text-[#5C4C49] opacity-70"
-                }`}
+                  }`}
                 whileTap={{ scale: 0.95 }}
               >
                 <FaHeart className="w-5 h-5" />
@@ -571,7 +566,7 @@ const UserProfile = () => {
                       showAction={true}
                       actionText="Browse Books"
                       actionLink="/nextChapter/books"
-                      //onActionClick={toggleCart}
+                    //onActionClick={toggleCart}
                     />
                   )}
                 </>
@@ -602,7 +597,7 @@ const UserProfile = () => {
                         showAction={true}
                         actionText="Explore More"
                         actionLink="/nextChapter/books"
-                        //onActionClick={toggleCart}
+                      //onActionClick={toggleCart}
                       />
                     </div>
                   )}
@@ -756,13 +751,12 @@ const ActivityItem = ({
         />
         {status && (
           <span
-            className={`absolute top-2 right-2 px-2 py-1 rounded-full text-xs font-medium ${
-              status === "Delivered"
+            className={`absolute top-2 right-2 px-2 py-1 rounded-full text-xs font-medium ${status === "Delivered"
                 ? "bg-green-100 text-green-800"
                 : status === "Shipped"
                   ? "bg-blue-100 text-blue-800"
                   : "bg-yellow-100 text-yellow-800"
-            }`}
+              }`}
           >
             {status}
           </span>

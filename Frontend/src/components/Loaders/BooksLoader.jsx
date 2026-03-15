@@ -6,7 +6,7 @@ const BooksLoader = ({
   imgHeight = "20",
 }) => {
   return (
-    <center className={`min-h-[${height}] mt-5`}>
+    <center className={`!min-h-[${height}] mt-5`}>
       <img
         className={`w-${imgWidth} h-${imgHeight}`}
         src="/images/loading.gif"

@@ -40,7 +40,6 @@ const getInitialState = () => {
     loading: true,
     error: null,
     logoutReason: "",
-    isAuthenticating: false,
   };
 };
 
@@ -61,7 +60,7 @@ const authSlice = createSlice({
       state.userData = null;
       state.isAuthenticated = false;
       state.loading = false;
-      state.logoutReason = action.payload || "";
+      state.logoutReason = "";
       state.error = null;
     },
 
@@ -83,19 +82,14 @@ const authSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(validateToken.pending, (state) => {
-        state.isAuthenticating = true;
         state.error = null;
       })
       .addCase(validateToken.fulfilled, (state, action) => {
-        state.isAuthenticating = false;
         state.isAuthenticated = true;
         state.userData = action.payload;
         state.error = null;
       })
       .addCase(validateToken.rejected, (state, action) => {
-        state.isAuthenticating = false;
-
-        console.log(action);
 
         if (action.payload === "Token invalid") {
           state.isAuthenticated = false;
@@ -113,7 +107,7 @@ const authSlice = createSlice({
         state.userData = null;
         state.isAuthenticated = false;
         state.loading = false;
-        state.logoutReason = action.payload || "";
+        state.logoutReason = action.payload || "manual";
       })
       .addCase(logoutThunk.rejected, (state, action) => {
         state.loading = false;

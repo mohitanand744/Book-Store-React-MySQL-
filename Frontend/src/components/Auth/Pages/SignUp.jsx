@@ -26,6 +26,7 @@ const SignUp = () => {
   } = useForm();
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -59,7 +60,7 @@ const SignUp = () => {
       console.error("Error signing up:", error);
       toast.error(
         error.response?.data?.message ||
-          "Something went wrong. Please try again later.",
+        "Something went wrong. Please try again later.",
       );
       reset();
       navigate("/");
