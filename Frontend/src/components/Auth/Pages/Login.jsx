@@ -14,6 +14,10 @@ import useAuth from "../../../Hooks/useAuth";
 import ResetPasswordModal from "../Modal/resetPassword";
 import EmailVerificationStatus from "../Modal/EmailVerificationStatus";
 import { useDispatch } from "react-redux";
+import {
+  emailValidationRules,
+  passwordValidationRules,
+} from "../../../utils/validations/rules";
 
 const Login = () => {
   const {
@@ -24,7 +28,9 @@ const Login = () => {
     setValue,
     watch,
     formState: { errors, isSubmitting },
-  } = useForm();
+  } = useForm({
+    mode: "onTouched",
+  });
 
   const navigate = useNavigate();
   const { loginStatusSuccess, getUserUpdatedDetails, isAuthenticated } =
@@ -187,7 +193,7 @@ const Login = () => {
       } else {
         toast.error(
           error.response?.data?.message ||
-          "Something went wrong. Please try again later.",
+            "Something went wrong. Please try again later.",
         );
       }
     }
@@ -205,9 +211,9 @@ const Login = () => {
           <motion.div
             whileHover={{ scale: 1.01 }}
             transition={{ duration: 0.2 }}
-            className="overflow-hidden bg-[#ffffff7f] backdrop-blur-sm shadow-xl rounded-2xl"
+            className="overflow-hidden bg-[#ffffff7f] backdrop-blur-sm shadow-xl rounded-3xl p-3"
           >
-            <div className="p-8">
+            <div className="p-3">
               <div className="mb-8 text-center">
                 <motion.img
                   initial={{ opacity: 0 }}
@@ -247,13 +253,7 @@ const Login = () => {
                     placeholder="your@email.com"
                     icon={<EnvelopeIcon className="w-5 h-5 text-[#5e4c379f]" />}
                     error={errors.email?.message}
-                    {...register("email", {
-                      required: "Email is required",
-                      pattern: {
-                        value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                        message: "Invalid email address",
-                      },
-                    })}
+                    {...register("email", emailValidationRules)}
                   />
                 </motion.div>
 
@@ -270,13 +270,7 @@ const Login = () => {
                       <LockClosedIcon className="w-5 h-5 text-[#5e4c378f]" />
                     }
                     error={errors.password?.message}
-                    {...register("password", {
-                      required: "Password is required",
-                      minLength: {
-                        value: 8,
-                        message: "Password must be at least 8 characters",
-                      },
-                    })}
+                    {...register("password", passwordValidationRules)}
                   />
                 </motion.div>
 
@@ -334,10 +328,10 @@ const Login = () => {
               >
                 <div className="relative">
                   <div className="absolute inset-0 flex items-center">
-                    <div className="w-full border-t border-gray-600"></div>
+                    <div className="w-full border-t border-[#5E4C37]"></div>
                   </div>
                   <div className="relative flex justify-center text-sm">
-                    <span className="px-3 py-1 bg-white rounded-full text-slate-600">
+                    <span className="px-3 py-1 bg-white rounded-full text-[#5E4C37] font-semibold">
                       Or continue with
                     </span>
                   </div>
@@ -394,13 +388,13 @@ const Login = () => {
                 transition={{ delay: 1 }}
                 className="mt-6 text-center"
               >
-                <p className="text-sm text-[#5e4c37]">
+                <p className="text-xs bg-[rgba(0,0,0,0.36)]  px-3 py-1 rounded-[12px] text-[#e1d5ca]">
                   Don't have an account?{" "}
                   <Link
                     to="/signup"
-                    className="font-medium text-[#5e4c37] hover:text-indigo-500"
+                    className="font-medium text-[#e1d5ca] hover:text-[#e1d5ca]/70 hover:scale-105"
                   >
-                    Sign up
+                    Sign up &rarr;
                   </Link>
                 </p>
               </motion.div>
@@ -410,20 +404,20 @@ const Login = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 1.1 }}
-              className="px-8 py-6 text-center bg-[rgba(252,237,219,0.37)] backdrop-blur-sm  rounded-b-2xl"
+              className="px-6  py-4 text-center bg-[rgba(252,237,219,0.37)] backdrop-blur-sm rounded-3xl"
             >
-              <p className="text-xs text-gray-700">
-                By signing in, you agree to our{" "}
+              <p className="text-xs text-[#5e4c37]">
+                By creating an account, you agree to our{" "}
                 <a
                   href="#"
-                  className="font-medium transition-all duration-200 text-slate-700 hover:text-gray-600 hover:scale-105"
+                  className="font-medium transition-all duration-200 text-[#5e4c37] hover:text-[#5e4c37]/70 hover:scale-105"
                 >
                   Terms of Service
                 </a>{" "}
                 and{" "}
                 <a
                   href="#"
-                  className="font-medium transition-all duration-200 text-slate-700 hover:text-gray-600 hover:scale-105"
+                  className="font-medium transition-all duration-200 text-[#5e4c37] hover:text-[#5e4c37]/70 hover:scale-105"
                 >
                   Privacy Policy
                 </a>

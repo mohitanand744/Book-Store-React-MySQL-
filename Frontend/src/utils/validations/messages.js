@@ -1,0 +1,19 @@
+export const VALIDATION_MESSAGES = {
+  firstNameRequired: "First name is required",
+  lastNameRequired: "Last name is required",
+  emailRequired: "Email is required",
+  passwordRequired: "Password is required",
+  confirmPasswordRequired: "Confirm password is required",
+  OnlyLetters: "Only letters allowed",
+  lessThan30Characters: "Must be less than 30 characters",
+  moreThan2Characters: "Must be at least 2 characters",
+  passwordMinLength: "Password must be at least 8 characters",
+  passwordInvalid:
+    "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character",
+  passwordMismatch: "Password and Confirm Password do not match",
+  lastNameRequired: "Last name is required",
+  invalidName: "Enter valid name",
+  invalidEmail: "Invalid email",
+  invalidPassword: "Must include uppercase, lowercase, number, special char",
+  termsAcceptedRequired: "Please accept terms and conditions",
+};

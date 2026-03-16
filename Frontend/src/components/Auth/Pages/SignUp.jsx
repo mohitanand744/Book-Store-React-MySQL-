@@ -15,6 +15,14 @@ import { toast } from "sonner";
 import { signup } from "../../../utils/apis/authApis";
 import useAuth from "../../../Hooks/useAuth";
 import { useDispatch } from "react-redux";
+import {
+  confirmPasswordValidationRules,
+  emailValidationRules,
+  firstNameValidationRules,
+  lastNameValidationRules,
+  passwordValidationRules,
+} from "../../../utils/validations/rules";
+import { VALIDATION_MESSAGES } from "../../../utils/validations/messages";
 
 const SignUp = () => {
   const {
@@ -23,7 +31,9 @@ const SignUp = () => {
     watch,
     reset,
     formState: { errors, isSubmitting },
-  } = useForm();
+  } = useForm({
+    mode: "onTouched",
+  });
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
 
@@ -60,7 +70,7 @@ const SignUp = () => {
       console.error("Error signing up:", error);
       toast.error(
         error.response?.data?.message ||
-        "Something went wrong. Please try again later.",
+          "Something went wrong. Please try again later.",
       );
       reset();
       navigate("/");
@@ -79,9 +89,9 @@ const SignUp = () => {
           <motion.div
             whileHover={{ scale: 1.01 }}
             transition={{ duration: 0.2 }}
-            className="overflow-hidden bg-[#ffffff7f] backdrop-blur-sm shadow-xl rounded-2xl"
+            className="overflow-hidden bg-[#ffffff7f] backdrop-blur-sm shadow-xl p-3 rounded-3xl"
           >
-            <div className="p-8">
+            <div className="p-3">
               <div className="mb-8 text-center">
                 <motion.img
                   initial={{ opacity: 0 }}
@@ -122,13 +132,7 @@ const SignUp = () => {
                       placeholder="First Name"
                       icon={<UserIcon className="w-5 h-5 text-[#5e4c379f]" />}
                       error={errors.firstName?.message}
-                      {...register("firstName", {
-                        required: "First name is required",
-                        minLength: {
-                          value: 2,
-                          message: "Must be at least 2 characters",
-                        },
-                      })}
+                      {...register("firstName", firstNameValidationRules)}
                     />
                   </motion.div>
 
@@ -143,13 +147,7 @@ const SignUp = () => {
                       placeholder="Last Name"
                       icon={<UserIcon className="w-5 h-5 text-[#5e4c379f]" />}
                       error={errors.lastName?.message}
-                      {...register("lastName", {
-                        required: "Last name is required",
-                        minLength: {
-                          value: 2,
-                          message: "Must be at least 2 characters",
-                        },
-                      })}
+                      {...register("lastName", lastNameValidationRules)}
                     />
                   </motion.div>
                 </div>
@@ -166,13 +164,7 @@ const SignUp = () => {
                     placeholder="your@email.com"
                     icon={<EnvelopeIcon className="w-5 h-5 text-[#5e4c379f]" />}
                     error={errors.email?.message}
-                    {...register("email", {
-                      required: "Email is required",
-                      pattern: {
-                        value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                        message: "Invalid email address",
-                      },
-                    })}
+                    {...register("email", emailValidationRules)}
                   />
                 </motion.div>
 
@@ -185,24 +177,12 @@ const SignUp = () => {
                   <Input
                     label="Password"
                     type="password"
-                    placeholder="••••••••"
+                    placeholder="Enter password"
                     icon={
                       <LockClosedIcon className="w-5 h-5 text-[#5e4c378f]" />
                     }
                     error={errors.password?.message}
-                    {...register("password", {
-                      required: "Password is required",
-                      minLength: {
-                        value: 8,
-                        message: "Password must be at least 8 characters",
-                      },
-                      pattern: {
-                        value:
-                          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-                        message:
-                          "Must include uppercase, lowercase, number, and special character",
-                      },
-                    })}
+                    {...register("password", passwordValidationRules)}
                   />
                 </motion.div>
 
@@ -215,16 +195,15 @@ const SignUp = () => {
                   <Input
                     label="Confirm Password"
                     type="password"
-                    placeholder="••••••••"
+                    placeholder="Repeat password"
                     icon={
                       <LockClosedIcon className="w-5 h-5 text-[#5e4c378f]" />
                     }
                     error={errors.confirmPassword?.message}
-                    {...register("confirmPassword", {
-                      required: "Please confirm your password",
-                      validate: (value) =>
-                        value === watch("password") || "Passwords do not match",
-                    })}
+                    {...register(
+                      "confirmPassword",
+                      confirmPasswordValidationRules,
+                    )}
                     preventCopyPaste={true}
                   />
                 </motion.div>
@@ -238,20 +217,26 @@ const SignUp = () => {
                   <Checkbox
                     id="termsAccepted"
                     label={
-                      <span>
+                      <span className="text-[#5e4c37c2]">
                         I agree to the{" "}
-                        <a href="#" className="text-[#5e4c37] hover:underline">
+                        <a
+                          href="#"
+                          className="text-[#5e4c37] font-semibold hover:underline"
+                        >
                           Terms of Service
                         </a>{" "}
                         and{" "}
-                        <a href="#" className="text-[#5e4c37] hover:underline">
+                        <a
+                          href="#"
+                          className="text-[#5e4c37] font-semibold hover:underline"
+                        >
                           Privacy Policy
                         </a>
                       </span>
                     }
                     error={errors.termsAccepted?.message}
                     {...register("termsAccepted", {
-                      required: "Please accept the terms and conditions",
+                      required: VALIDATION_MESSAGES.termsAcceptedRequired,
                       validate: (value) => value === true || "Please accept",
                     })}
                   />
@@ -342,13 +327,13 @@ const SignUp = () => {
                 transition={{ delay: 1 }}
                 className="mt-6 text-center"
               >
-                <p className="text-sm text-[#5e4c37]">
+                <p className="text-xs bg-[rgba(0,0,0,0.36)]  px-3 py-1 rounded-[12px] text-[#e1d5ca]">
                   Already have an account?{" "}
                   <Link
                     to="/"
-                    className="font-medium text-[#5e4c37] hover:text-indigo-500"
+                    className="font-medium text-[#e1d5ca] hover:text-[#e1d5ca]/70 hover:scale-105"
                   >
-                    Sign in
+                    Sign in &rarr;
                   </Link>
                 </p>
               </motion.div>
@@ -358,20 +343,20 @@ const SignUp = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 1.1 }}
-              className="px-8 py-6 text-center bg-[rgba(252,237,219,0.37)] backdrop-blur-sm rounded-b-2xl"
+              className="px-6 py-4 text-center bg-[rgba(252,237,219,0.37)] backdrop-blur-sm rounded-3xl"
             >
-              <p className="text-xs text-gray-700">
+              <p className="text-xs text-[#5e4c37]">
                 By creating an account, you agree to our{" "}
                 <a
                   href="#"
-                  className="font-medium transition-all duration-200 text-slate-700 hover:text-gray-600 hover:scale-105"
+                  className="font-medium transition-all duration-200 text-[#5e4c37] hover:text-[#5e4c37]/70 hover:scale-105"
                 >
                   Terms of Service
                 </a>{" "}
                 and{" "}
                 <a
                   href="#"
-                  className="font-medium transition-all duration-200 text-slate-700 hover:text-gray-600 hover:scale-105"
+                  className="font-medium transition-all duration-200 text-[#5e4c37] hover:text-[#5e4c37]/70 hover:scale-105"
                 >
                   Privacy Policy
                 </a>

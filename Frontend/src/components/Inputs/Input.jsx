@@ -99,7 +99,7 @@ const Input = (
 
         {/* Custom right icon: show/hide or external icon */}
         {!error && (
-          <div className="absolute inset-y-0 flex items-center right-4">
+          <div className="absolute inset-y-0 bg-[#fff] rounded-r-lg top-[1px] right-[2px] flex items-center justify-center gap-1 p-3 h-[95%]">
             {type === "password" ? (
               <button
                 type="button"
@@ -120,7 +120,7 @@ const Input = (
           </div>
         )}
         {error && (
-          <div className="absolute inset-y-0 right-0 flex items-center gap-1 pr-3 pointer-events-none">
+          <div className="absolute bg-[#fff] rounded-r-lg inset-y-0 top-[1px] right-[2px] flex items-center gap-1 p-3 h-[95%] pointer-events-none">
             {type === "password" ? (
               <button
                 type="button"
