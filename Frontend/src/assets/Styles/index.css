@@ -14,7 +14,8 @@
   margin: 0 auto;
 }
 
-input::placeholder {
+input,
+textarea::placeholder {
   font-size: 13px !important;
 }
 

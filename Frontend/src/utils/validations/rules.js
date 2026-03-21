@@ -35,6 +35,10 @@ export const lastNameValidationRules = {
 
 export const emailValidationRules = {
   required: VALIDATION_MESSAGES.emailRequired,
+  maxLength: {
+    value: 254,
+    message: "Email must be less than 254 characters",
+  },
   pattern: {
     value: EMAIL_REGEX,
     message: VALIDATION_MESSAGES.invalidEmail,
@@ -47,14 +51,22 @@ export const passwordValidationRules = {
     value: 8,
     message: VALIDATION_MESSAGES.passwordMinLength,
   },
+  maxLength: {
+    value: 64,
+    message: "Password must be less than 64 characters",
+  },
   pattern: {
     value: PASSWORD_REGEX,
     message: VALIDATION_MESSAGES.passwordInvalid,
   },
 };
 
-export const confirmPasswordValidationRules = {
+export const confirmPasswordValidation = (getValues) => ({
   required: VALIDATION_MESSAGES.confirmPasswordRequired,
+  maxLength: {
+    value: 64,
+    message: "Confirm password must be less than 64 characters",
+  },
   validate: (value) =>
-    value === watch("password") || VALIDATION_MESSAGES.passwordMismatch,
-};
+    value === getValues("password") || VALIDATION_MESSAGES.passwordMismatch,
+});

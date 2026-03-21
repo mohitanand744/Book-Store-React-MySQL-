@@ -62,6 +62,12 @@ const EmailVerificationStatus = ({
     onClose?.();
   };
 
+  useEffect(() => {
+    if (emailResent) {
+      setStatus("unverified");
+    }
+  }, [emailResent]);
+
   // Success Modal - Email Verified
   const renderSuccessModal = (email) => (
     <Modal isOpen={showModal} onClose={handleClose}>
@@ -148,37 +154,58 @@ const EmailVerificationStatus = ({
             className="flex items-center justify-center w-16 h-16 mx-auto mb-4 bg-red-100 rounded-full"
           >
             <motion.svg
-              initial={{ pathLength: 0, opacity: 0 }}
-              animate={{ pathLength: 1, opacity: 1 }}
-              transition={{
-                delay: 0.3,
-                duration: 0.5,
-                ease: "easeInOut",
-              }}
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.4, ease: "easeInOut" }}
               className="w-10 h-10 text-red-600"
+              viewBox="0 0 52 52"
               fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
+              xmlns="http://www.w3.org/2000/svg"
             >
-              <motion.path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M6 18L18 6M6 6l12 12"
+              {/* Circle */}
+              <motion.circle
+                cx="26"
+                cy="26"
+                r="25"
+                stroke="currentColor"
+                strokeWidth="2"
                 initial={{ pathLength: 0 }}
                 animate={{ pathLength: 1 }}
-                transition={{
-                  delay: 0.5,
-                  duration: 0.4,
-                  ease: "easeInOut",
-                }}
+                transition={{ duration: 0.4, ease: "easeInOut" }}
+              />
+
+              {/* Line 1 */}
+              <motion.path
+                d="M16 16L36 36"
+                stroke="currentColor"
+                strokeWidth="5"
+                strokeLinecap="round"
+                initial={{ pathLength: 0 }}
+                animate={{ pathLength: 1 }}
+                transition={{ delay: 0.3, duration: 0.3 }}
+              />
+
+              {/* Line 2 */}
+              <motion.path
+                d="M36 16L16 36"
+                stroke="currentColor"
+                strokeWidth="5"
+                strokeLinecap="round"
+                initial={{ pathLength: 0 }}
+                animate={{ pathLength: 1 }}
+                transition={{ delay: 0.5, duration: 0.3 }}
               />
             </motion.svg>
           </motion.div>
 
           <ModelsHeading
             heading="Verification Failed"
-            subHeading={`The verification link is invalid or has expired. Please request a new verification email <b>(${email})</b>`}
+            subHeading={
+              <>
+                The verification link is invalid or has expired. Please request
+                a new verification email <b>(${email})</b>
+              </>
+            }
           />
 
           <AnimatePresence>
@@ -241,43 +268,64 @@ const EmailVerificationStatus = ({
               stiffness: 200,
               damping: 15,
             }}
-            className="flex items-center justify-center w-16 h-16 mx-auto mb-4 bg-green-100 rounded-full"
+            className="flex items-center justify-center w-16 h-16 mx-auto mb-4 bg-yellow-100 rounded-full"
           >
             <motion.svg
-              initial={{ pathLength: 0, opacity: 0 }}
-              animate={{ pathLength: 1, opacity: 1 }}
-              transition={{
-                delay: 0.3,
-                duration: 0.5,
-                ease: "easeInOut",
-              }}
-              className="w-10 h-10 text-green-600"
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.4, ease: "easeInOut" }}
+              className="w-12 h-12 text-yellow-500"
               viewBox="0 0 52 52"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
             >
+              {/* Triangle */}
               <motion.path
-                d="M14.1 27.2l7.1 7.2 16.7-16.8"
+                d="M26 6L46 42H6L26 6Z"
                 stroke="currentColor"
-                strokeWidth="7"
-                strokeLinecap="round"
+                strokeWidth="2"
                 strokeLinejoin="round"
                 initial={{ pathLength: 0 }}
                 animate={{ pathLength: 1 }}
-                transition={{
-                  delay: 0.5,
-                  duration: 0.4,
-                  ease: "easeInOut",
-                }}
+                transition={{ duration: 0.4, ease: "easeInOut" }}
+              />
+
+              {/* Exclamation line */}
+              <motion.line
+                x1="26"
+                y1="18"
+                x2="26"
+                y2="30"
+                stroke="currentColor"
+                strokeWidth="4"
+                strokeLinecap="round"
+                initial={{ pathLength: 0 }}
+                animate={{ pathLength: 1 }}
+                transition={{ delay: 0.3, duration: 0.3 }}
+              />
+
+              {/* Dot */}
+              <motion.circle
+                cx="26"
+                cy="36"
+                r="2"
+                fill="currentColor"
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ delay: 0.6, duration: 0.2 }}
               />
             </motion.svg>
           </motion.div>
 
           <ModelsHeading
             heading="Complete Your Verification"
-            subHeading={`We've sent a <b>verification link</b> to your email <b>${email}</b>.
-            Please check your inbox and click the link to verify your email
-            address.`}
+            subHeading={
+              <>
+                We've sent a <b>verification link</b> to your email{" "}
+                <b>{email}</b>. Please check your inbox and click the link to
+                verify your email address.
+              </>
+            }
           />
 
           <AnimatePresence>

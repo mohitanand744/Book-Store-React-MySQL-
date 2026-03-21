@@ -16,7 +16,7 @@ import { signup } from "../../../utils/apis/authApis";
 import useAuth from "../../../Hooks/useAuth";
 import { useDispatch } from "react-redux";
 import {
-  confirmPasswordValidationRules,
+  confirmPasswordValidation,
   emailValidationRules,
   firstNameValidationRules,
   lastNameValidationRules,
@@ -28,8 +28,10 @@ const SignUp = () => {
   const {
     register,
     handleSubmit,
-    watch,
+    getValues,
     reset,
+    trigger,
+    watch,
     formState: { errors, isSubmitting },
   } = useForm({
     mode: "onTouched",
@@ -38,6 +40,14 @@ const SignUp = () => {
   const { isAuthenticated } = useAuth();
 
   const dispatch = useDispatch();
+  const password = watch("password");
+  const confirmPassword = watch("confirmPassword");
+
+  useEffect(() => {
+    if (confirmPassword) {
+      trigger("confirmPassword");
+    }
+  }, [password, confirmPassword, trigger]);
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -202,7 +212,7 @@ const SignUp = () => {
                     error={errors.confirmPassword?.message}
                     {...register(
                       "confirmPassword",
-                      confirmPasswordValidationRules,
+                      confirmPasswordValidation(getValues),
                     )}
                     preventCopyPaste={true}
                   />
@@ -343,20 +353,20 @@ const SignUp = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 1.1 }}
-              className="px-6 py-4 text-center bg-[rgba(252,237,219,0.37)] backdrop-blur-sm rounded-3xl"
+              className="px-2 py-4 text-center bg-[rgba(252,237,219,0.37)] backdrop-blur-sm rounded-3xl"
             >
-              <p className="text-xs text-[#5e4c37]">
+              <p className="text-[11px] text-[#5e4c37]">
                 By creating an account, you agree to our{" "}
                 <a
                   href="#"
-                  className="font-medium transition-all duration-200 text-[#5e4c37] hover:text-[#5e4c37]/70 hover:scale-105"
+                  className="font-medium transition-all text-[12px] duration-200 text-[#5e4c37] hover:text-[#5e4c37]/70 hover:scale-105"
                 >
                   Terms of Service
                 </a>{" "}
                 and{" "}
                 <a
                   href="#"
-                  className="font-medium transition-all duration-200 text-[#5e4c37] hover:text-[#5e4c37]/70 hover:scale-105"
+                  className="font-medium transition-all text-[12px] duration-200 text-[#5e4c37] hover:text-[#5e4c37]/70 hover:scale-105"
                 >
                   Privacy Policy
                 </a>

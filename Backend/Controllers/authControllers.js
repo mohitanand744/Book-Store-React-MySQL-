@@ -35,7 +35,7 @@ const signup = async (req, res, next) => {
       return errorResponse(res, 400, result?.message, result);
     }
 
-    successResponse(res, 201, result?.message, result);
+    successResponse(res, 201, result?.message);
   } catch (error) {
     handleDbError(error, res, next);
   }

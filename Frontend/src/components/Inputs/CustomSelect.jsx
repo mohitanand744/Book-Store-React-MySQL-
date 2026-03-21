@@ -56,7 +56,9 @@ const CustomSelect = (
         >
           {multiple
             ? `${selectedOption?.length} selected`
-            : selectedOption?.label || placeholder}
+            : selectedOption?.label || (
+                <span className="text-[14px]">{placeholder}</span>
+              )}
         </span>
 
         {!error && (
@@ -80,19 +82,19 @@ const CustomSelect = (
           </motion.div>
         )}
 
-        {error && (
+        {/* {error && (
           <ExclamationCircleIcon
             className="w-5 h-5 text-red-500"
             aria-hidden="true"
           />
-        )}
+        )} */}
       </motion.button>
 
-      {error && (
+      {/*  {error && (
         <p className="mt-1 text-sm text-red-600" id="input-error">
           {error}
         </p>
-      )}
+      )} */}
 
       <AnimatePresence>
         {isOpen && (

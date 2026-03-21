@@ -65,21 +65,22 @@ const Input = (
         ) : Component === "textarea" ? (
           <textarea
             ref={ref}
-            className={`w-full truncate px-4 py-2 rounded-lg border ${
+            className={`w-full  truncate px-4 py-2 rounded-lg border ${
               error
                 ? "border-red-500 placeholder:text-red-500 focus:ring-red-500 focus:border-red-500"
                 : "border-gray-300 focus:ring-[#8a7053] focus:border-[#8a7053]"
-            } shadow-sm focus:outline-none focus:ring-2 ${className}`}
+            }  focus:outline-none focus:ring-2 ${className}`}
             value={value}
             onChange={onChange}
             placeholder={placeholder}
+            rows={3}
             {...props}
           />
         ) : (
           <input
             ref={ref}
             type={inputType}
-            className={`w-full truncate  px-4 py-2 rounded-lg border ${
+            className={`w-full h-[42px] pr-[44px] truncate  px-4 py-2 rounded-lg border ${
               error
                 ? "border-red-500 placeholder:text-red-500 focus:ring-red-500 focus:border-red-500"
                 : "border-gray-300 focus:ring-[#8a7053] focus:border-[#8a7053]"
@@ -98,8 +99,10 @@ const Input = (
         )}
 
         {/* Custom right icon: show/hide or external icon */}
-        {!error && (
-          <div className="absolute inset-y-0 bg-[#fff] rounded-r-lg top-[1px] right-[2px] flex items-center justify-center gap-1 p-3 h-[95%]">
+        {!error && icon && (
+          <div
+            className={`absolute right-0 top-[0.6px] h-[40px] flex items-center justify-center pr-3 bg-white rounded-r-lg`}
+          >
             {type === "password" ? (
               <button
                 type="button"
@@ -120,7 +123,9 @@ const Input = (
           </div>
         )}
         {error && (
-          <div className="absolute bg-[#fff] rounded-r-lg inset-y-0 top-[1px] right-[2px] flex items-center gap-1 p-3 h-[95%] pointer-events-none">
+          <div
+            className={`absolute right-0 top-0  ${Component === "textarea" ? "border-t border-r rounded-tr-lg" : "border-y border-r rounded-r-lg"} border-red-600 h-[42px] flex items-center justify-center px-3 bg-white `}
+          >
             {type === "password" ? (
               <button
                 type="button"
@@ -128,23 +133,21 @@ const Input = (
                 className="focus:outline-none pointer-events-auto text-[#5e4c37a2]"
               >
                 {showPassword ? (
-                  <EyeSlashIcon className="w-5 h-5" />
+                  <EyeSlashIcon className="w-5 h-5 text-red-500" />
                 ) : (
-                  <EyeIcon className="w-5 h-5" />
+                  <EyeIcon className="w-5 h-5 text-red-500" />
                 )}
               </button>
             ) : (
-              Component !== "select" && (
-                <ExclamationCircleIcon
-                  className="w-5 h-5 text-red-500"
-                  aria-hidden="true"
-                />
-              )
+              <ExclamationCircleIcon
+                className="w-5 h-5 text-red-500"
+                aria-hidden="true"
+              />
             )}
           </div>
         )}
       </div>
-      {Component !== "select" && error && (
+      {error && (
         <p className="mt-1 text-sm text-red-600" id="input-error">
           {error}
         </p>

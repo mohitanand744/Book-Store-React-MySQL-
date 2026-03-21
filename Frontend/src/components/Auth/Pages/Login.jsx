@@ -153,7 +153,7 @@ const Login = () => {
         const { user } = response.data;
 
         loginStatusSuccess(user);
-        await getUserUpdatedDetails();
+        //await getUserUpdatedDetails();
         toast.success("Login successful!");
 
         if (isChecked) {
@@ -404,20 +404,20 @@ const Login = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 1.1 }}
-              className="px-6  py-4 text-center bg-[rgba(252,237,219,0.37)] backdrop-blur-sm rounded-3xl"
+              className="px-2 py-4 text-center bg-[rgba(252,237,219,0.37)] backdrop-blur-sm rounded-3xl"
             >
-              <p className="text-xs text-[#5e4c37]">
+              <p className="text-[11px] text-[#5e4c37]">
                 By creating an account, you agree to our{" "}
                 <a
                   href="#"
-                  className="font-medium transition-all duration-200 text-[#5e4c37] hover:text-[#5e4c37]/70 hover:scale-105"
+                  className="font-medium transition-all text-[12px] duration-200 text-[#5e4c37] hover:text-[#5e4c37]/70 hover:scale-105"
                 >
                   Terms of Service
                 </a>{" "}
                 and{" "}
                 <a
                   href="#"
-                  className="font-medium transition-all duration-200 text-[#5e4c37] hover:text-[#5e4c37]/70 hover:scale-105"
+                  className="font-medium transition-all text-[12px] duration-200 text-[#5e4c37] hover:text-[#5e4c37]/70 hover:scale-105"
                 >
                   Privacy Policy
                 </a>

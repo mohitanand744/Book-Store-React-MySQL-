@@ -6,6 +6,7 @@ import {
   BuildingStorefrontIcon,
   PencilSquareIcon,
   TrashIcon,
+  MapIcon,
 } from "@heroicons/react/24/outline";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -521,6 +522,7 @@ const AddressModal = ({
                 {...register("address", {
                   required: "Street address is required",
                 })}
+                icon={<MapPinIcon className="w-5 h-5" />}
                 error={errors.address?.message}
                 placeholder="Enter Street Address"
                 onInput={(e) => {
