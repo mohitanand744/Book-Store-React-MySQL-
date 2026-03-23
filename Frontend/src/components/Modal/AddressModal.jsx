@@ -256,6 +256,34 @@ const AddressModal = ({
     fetchCityState();
   }, [UserPinCode, activeTab]);
 
+  const handleSetDefaultAddress = async () => {
+    const selected = addresses.find((addr) => addr.id === selectedAddress);
+
+    if (!selected) return;
+
+    if (selected.isDefault) {
+      setShowAddress(false);
+      return;
+    }
+
+    try {
+      const updatedData = { ...selected, isDefault: true };
+
+      const res = await updateAddress(selected.id, updatedData);
+
+      if (res.success) {
+        toast.success("Default address updated successfully!");
+        await fetchData();
+      } else {
+        toast.error(res.message || "Failed to set default address");
+      }
+    } catch (error) {
+      toast.error("Error setting default address");
+    } finally {
+      setShowAddress(false);
+    }
+  };
+
   return (
     <Modal isOpen={showAddress} onClose={() => setShowAddress(false)}>
       <motion.div
@@ -401,35 +429,7 @@ const AddressModal = ({
                   variant="primary"
                   className="flex-1 text-sm"
                   disabled={!selectedAddress}
-                  onClick={async () => {
-                    const selected = addresses.find(
-                      (addr) => addr.id === selectedAddress,
-                    );
-
-                    if (selected && !selected.isDefault) {
-                      try {
-                        const updatedData = { ...selected, isDefault: true };
-                        const res = await updateAddress(
-                          selected.id,
-                          updatedData,
-                        );
-                        if (res.success) {
-                          toast.success(
-                            "Default address updated successfully!",
-                          );
-                          await fetchData();
-                        } else {
-                          toast.error(
-                            res.message || "Failed to set default address",
-                          );
-                        }
-                      } catch (error) {
-                        toast.error("Error setting default address");
-                      }
-                    }
-
-                    setShowAddress(false);
-                  }}
+                  onClick={handleSetDefaultAddress}
                 >
                   Set as Default Address
                 </Button>
