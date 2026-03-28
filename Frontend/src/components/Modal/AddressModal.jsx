@@ -212,7 +212,10 @@ const AddressModal = ({
       await fetchData();
       handleBackToSelection();
     } catch (error) {
-      toast.error("An error occurred while saving the address");
+      toast.error(
+        error.response?.data?.message ||
+        "An error occurred while saving the address",
+      );
     }
   };
 
@@ -366,11 +369,10 @@ const AddressModal = ({
                       <div
                         key={address.id}
                         onClick={() => handleAddressSelect(address)}
-                        className={`p-4  rounded-xl cursor-pointer  hover:scale-105 transition-all duration-300 ease-linear ${
-                          selectedAddress === address.id
+                        className={`p-4  rounded-xl cursor-pointer  hover:scale-105 transition-all duration-300 ease-linear ${selectedAddress === address.id
                             ? "border-t-[4px] border-b-[4px] border-[#fff]"
                             : " border-b border-t border-[#5c4c4955]"
-                        }`}
+                          }`}
                       >
                         <div className="relative flex items-start gap-3">
                           <PencilSquareIcon
@@ -516,21 +518,40 @@ const AddressModal = ({
                 />
               </div>
 
-              <Input
-                as="textarea"
-                label="Street Address"
-                {...register("address", {
+              <Controller
+                name="address"
+                control={control}
+                rules={{
                   required: "Street address is required",
-                })}
-                icon={<MapPinIcon className="w-5 h-5" />}
-                error={errors.address?.message}
-                placeholder="Enter Street Address"
-                onInput={(e) => {
-                  e.target.value = e.target.value.replace(
-                    /[^a-zA-Z0-9\s,.\-/#]/g,
-                    "",
-                  );
+                  maxLength: {
+                    value: 255,
+                    message: "Street address cannot exceed 255 characters",
+                  },
+                  minLength: {
+                    value: 5,
+                    message: "Street address must be at least 5 characters",
+                  },
                 }}
+                render={({ field }) => (
+                  <Input
+                    as="textarea"
+                    label="Street Address"
+                    icon={<MapPinIcon className="w-5 h-5" />}
+                    error={errors.address?.message}
+                    placeholder="Enter Street Address"
+                    value={field.value}
+                    onChange={field.onChange}
+                    showCounter={true}
+                    maxCount={255}
+                    maxLength={255}
+                    onInput={(e) => {
+                      e.target.value = e.target.value.replace(
+                        /[^a-zA-Z0-9\s,.\-/#]/g,
+                        "",
+                      );
+                    }}
+                  />
+                )}
               />
 
               <Checkbox

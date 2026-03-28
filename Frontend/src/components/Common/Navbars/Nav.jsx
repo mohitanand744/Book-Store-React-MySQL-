@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import MegaMenu from "./MegaMenu";
 import { HiOutlineShoppingCart } from "react-icons/hi2";
 import { IoIosArrowDown } from "react-icons/io";
-import SearchBooks from "../../SearchBars/SearchBooks";
+import Search from "../../SearchBars/Search";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import Button from "../../Buttons/Button";
 import ShoppingCart from "./ShoppingCarts";
@@ -133,7 +133,7 @@ const Navbar = () => {
           </ul>
 
           <div className="flex items-center gap-4">
-            <SearchBooks />
+            <Search />
 
             <div
               onClick={() => setIsCartOpen(!isCartOpen)}

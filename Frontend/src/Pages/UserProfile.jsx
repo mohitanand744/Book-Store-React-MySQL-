@@ -674,6 +674,7 @@ const UserProfile = () => {
         setShowProfileUpdateModal={setShowProfileUpdateModal}
         showProfileUpdateModal={showProfileUpdateModal}
         user={user}
+        type={user?.isComplete ? "update" : "complete"}
       />
 
       {/* Logout Confirmation Modal */}

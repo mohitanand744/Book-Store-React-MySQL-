@@ -147,15 +147,17 @@ const updateUserDetails = async (
   firstName,
   lastName,
   favoriteGenres,
+  gender,
 ) => {
   console.log("favoriteGenres", favoriteGenres);
 
-  const query = `UPDATE users SET phone_number = ?, first_name = ?, last_name = ?, favorite_genres = ? WHERE id = ?;`;
+  const query = `UPDATE users SET phone_number = ?, first_name = ?, last_name = ?, favorite_genres = ?, gender = ? WHERE id = ?;`;
   const [rows] = await db.query(query, [
     phone,
     firstName,
     lastName,
     JSON.stringify(favoriteGenres),
+    gender,
     userId,
   ]);
 

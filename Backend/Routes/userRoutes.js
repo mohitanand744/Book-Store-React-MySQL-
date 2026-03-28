@@ -7,6 +7,7 @@ const {
 } = require("../Controllers/userController");
 const { userUpdatedDataValidation } = require("../Validators/userValidator");
 const upload = require("../Middleware/multer");
+const { validate } = require("../Validators/validate");
 const router = express.Router();
 
 router.get("/me", verifyToken, getUserProfile);
@@ -20,6 +21,7 @@ router.put(
   "/profile-update",
   verifyToken,
   userUpdatedDataValidation,
+  validate,
   updateUserDetailsController,
 );
 

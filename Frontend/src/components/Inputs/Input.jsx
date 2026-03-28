@@ -25,6 +25,8 @@ const Input = (
     options,
     multiple = false,
     as: Component = "input", // Default to 'input' if not specified
+    showCounter = false,
+    maxCount,
     ...props
   },
   ref,
@@ -46,8 +48,18 @@ const Input = (
   return (
     <div className={`mb-4 w-full ${containerClassName}`}>
       {label && (
-        <label className="block text-sm font-medium text-[#5e4c37] mb-1">
-          {label}
+        <label className="flex items-center justify-between text-sm font-medium text-[#5e4c37] mb-1">
+          <span>{label}</span>
+          {showCounter && maxCount && (
+            <span
+              className={`text-[13px] ${(value?.length || 0) > maxCount
+                ? "text-red-500"
+                : "text-[#5e4c37a2] font-normal"
+                }`}
+            >
+              <b>{value?.length || 0}/{maxCount}</b>
+            </span>
+          )}
         </label>
       )}
       <div className="relative w-full">
@@ -65,11 +77,10 @@ const Input = (
         ) : Component === "textarea" ? (
           <textarea
             ref={ref}
-            className={`w-full  truncate px-4 py-2 rounded-lg border ${
-              error
-                ? "border-red-500 placeholder:text-red-500 focus:ring-red-500 focus:border-red-500"
-                : "border-gray-300 focus:ring-[#8a7053] focus:border-[#8a7053]"
-            }  focus:outline-none focus:ring-2 ${className}`}
+            className={`w-full  truncate px-4 py-2 rounded-lg border ${error
+              ? "border-red-500 placeholder:text-red-500 focus:ring-red-500 focus:border-red-500"
+              : "border-gray-300 focus:ring-[#8a7053] focus:border-[#8a7053]"
+              }  focus:outline-none focus:ring-2 ${className}`}
             value={value}
             onChange={onChange}
             placeholder={placeholder}
@@ -80,11 +91,10 @@ const Input = (
           <input
             ref={ref}
             type={inputType}
-            className={`w-full h-[42px] pr-[44px] truncate  px-4 py-2 rounded-lg border ${
-              error
-                ? "border-red-500 placeholder:text-red-500 focus:ring-red-500 focus:border-red-500"
-                : "border-gray-300 focus:ring-[#8a7053] focus:border-[#8a7053]"
-            } shadow-sm  focus:outline-none focus:ring-2 ${className}`}
+            className={`w-full h-[42px] pr-[44px] truncate  px-4 py-2 rounded-lg border ${error
+              ? "border-red-500 placeholder:text-red-500 focus:ring-red-500 focus:border-red-500"
+              : "border-gray-300 focus:ring-[#8a7053] focus:border-[#8a7053]"
+              } shadow-sm  focus:outline-none focus:ring-2 ${className}`}
             placeholder={placeholder}
             value={value}
             onChange={onChange}

@@ -30,4 +30,9 @@ exports.userUpdatedDataValidation = [
   check("favoriteGenres")
     .isArray()
     .withMessage("Favorite genres must be an array"),
+
+  check("gender")
+    .optional()
+    .isIn(["MALE", "FEMALE", "OTHER"])
+    .withMessage("Gender must be MALE, FEMALE, or OTHER"),
 ];

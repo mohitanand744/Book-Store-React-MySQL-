@@ -64,7 +64,7 @@ const updateUserDetailsController = async (req, res, next) => {
     if (!error.isEmpty()) {
       return errorResponse(res, 400, "Validation failed", error.array());
     }
-    const { firstName, lastName, phone, favoriteGenres } = req.body;
+    const { firstName, lastName, phone, favoriteGenres, gender } = req.body;
 
     if (!userId) {
       return errorResponse(res, 401, "User not found");
@@ -80,6 +80,7 @@ const updateUserDetailsController = async (req, res, next) => {
       lastName,
       phone,
       favoriteGenres,
+      gender,
     );
 
     if (result.success) {

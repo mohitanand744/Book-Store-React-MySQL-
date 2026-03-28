@@ -1,9 +1,9 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FiHeart, FiChevronRight } from "react-icons/fi";
 import BookCard from "../components/Cards/BookCard";
 import Banners from "./../components/Banners/Banners";
-import SearchBooks from "../components/SearchBars/SearchBooks";
+import Search from "../components/SearchBars/Search";
 import BackButton from "../components/Buttons/BackButton";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllWishlists } from "../store/Redux/Slices/wishlistSlice";
@@ -13,6 +13,8 @@ import { BookSvg } from "../components/SVGs/SVGs";
 const Wishlist = () => {
   const dispatch = useDispatch();
   const { loading, wishlists } = useSelector((state) => state.wishlists);
+  const [searchTerm, setSearchTerm] = useState("");
+
 
   useEffect(() => {
     dispatch(getAllWishlists());
@@ -46,7 +48,12 @@ const Wishlist = () => {
           >
             <BackButton label="Back to Profile" />
 
-            <SearchBooks styling="flex-1 md:w-[20rem]" />
+            <Search
+              styling="flex-1 md:w-[20rem]"
+              onChange={(val) => setSearchTerm(val)}
+              onSearch={(val) => setSearchTerm(val)}
+            />
+
           </motion.div>
 
           {/* Book Count */}
@@ -104,7 +111,14 @@ const Wishlist = () => {
         {/* Book List */}
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
           <AnimatePresence>
-            {wishlists?.data.map((book) => (
+            {wishlists?.data
+              ?.filter(
+                (book) =>
+                  book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                  book.author.toLowerCase().includes(searchTerm.toLowerCase()),
+              )
+              .map((book) => (
+
               <motion.div
                 key={book.book_id} // ✅ important
                 layout

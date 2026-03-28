@@ -43,7 +43,7 @@ exports.formatUser = (user) => {
       pinCode: user?.pin_code || null,
     },
     phone: user?.phone_number || null,
-    gender: user?.gender || "female",
+    gender: user?.gender || null,
     orders: user?.orders_count || 0,
     wishlist: user?.wishlist_count || 0,
     favoriteGenres: user?.categories || [],

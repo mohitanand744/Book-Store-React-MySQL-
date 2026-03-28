@@ -18,27 +18,40 @@ const {
   resetPasswordValidation,
   verifyTokenValidation,
 } = require("../Validators/authValidator");
+const { validate } = require("../Validators/validate");
 
 const router = express.Router();
 
-router.post("/register", signupValidation, signup);
-router.post("/login", loginValidation, login);
+router.post("/register", signupValidation, validate, signup);
+router.post("/login", loginValidation, validate, login);
 router.post("/logout", logout);
 
 router.route("/google").get(getGoogleLoginPage);
 router.route("/google/callback").get(getGoogleCallBack);
 
-router.post("/forgot-password", forgotPasswordValidation, forgotPassword);
+router.post(
+  "/forgot-password",
+  forgotPasswordValidation,
+  validate,
+  forgotPassword,
+);
 router.post(
   "/verify-reset-token/",
   verifyTokenValidation,
+  validate,
   verifyResetTokenController,
 );
 router.post(
   "/reset-password",
   resetPasswordValidation,
+  validate,
   resetPasswordController,
 );
-router.get("/verify-email/", verifyTokenValidation, verifyEmailTokenController);
+router.get(
+  "/verify-email/",
+  verifyTokenValidation,
+  validate,
+  verifyEmailTokenController,
+);
 
 module.exports = router;

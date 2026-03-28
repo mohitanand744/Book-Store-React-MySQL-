@@ -14,7 +14,9 @@ import {
   FiHash,
   FiXCircle,
 } from "react-icons/fi";
+import Search from "../components/SearchBars/Search";
 import { CopyIcon } from "../components/SVGs/SVGs";
+
 import { toast } from "sonner";
 import Banners from "../components/Banners/Banners";
 import { useNavigate } from "react-router-dom";
@@ -94,6 +96,8 @@ const statusConfigOrderItems = {
 const OrdersPage = () => {
   const [expandedOrder, setExpandedOrder] = useState(null);
   const [orders, setOrders] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+
   const { loading } = useLoader();
   const navigate = useNavigate();
   const toggleOrder = (orderId) => {
@@ -170,11 +174,32 @@ const OrdersPage = () => {
         <div className="container px-4">
           <BackButton label="Back to Profile" />
 
+          <div className="mb-6">
+            <Search
+              styling="w-full md:w-[25rem]"
+              placeholder="Search by Order ID or Book Title..."
+              onChange={(val) => setSearchTerm(val)}
+              onSearch={(val) => setSearchTerm(val)}
+            />
+          </div>
+
+
           <div className="space-y-4">
             {loading ? (
               <BooksLoader />
             ) : (
-              orders?.map((order, i) => {
+              orders
+                ?.filter((order) => {
+                  const query = searchTerm.toLowerCase();
+                  return (
+                    order?.order_number?.toLowerCase().includes(query) ||
+                    order?.order_items?.some((item) =>
+                      item?.title?.toLowerCase().includes(query),
+                    )
+                  );
+                })
+                ?.map((order, i) => {
+
                 const safeOrderStatus =
                   statusConfig[order?.order_status] || statusConfig.PLACED;
 

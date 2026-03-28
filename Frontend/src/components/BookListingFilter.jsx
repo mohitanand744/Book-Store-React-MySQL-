@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import DualRangeSlider from "../components/Inputs/DualRangeSlider";
-import Checkbox from "../components/Inputs/Checkbox";
+import Radio from "../components/Inputs/Radio";
 import { motion } from "framer-motion";
 
 const BookListingFilter = ({
@@ -12,14 +12,14 @@ const BookListingFilter = ({
   const handleDiscountChange = (discountValue) => {
     setFilters((prev) => ({
       ...prev,
-      discount: prev.discount === discountValue ? "" : discountValue,
+      discount: discountValue,
     }));
   };
 
   const handleLanguageChange = (languageValue) => {
     setFilters((prev) => ({
       ...prev,
-      language: prev.language === languageValue ? "" : languageValue,
+      language: languageValue,
     }));
   };
 
@@ -65,10 +65,10 @@ const BookListingFilter = ({
           initial={{ height: 0 }}
           animate={{ height: openCategory.DiscountFilter ? "auto" : 0 }}
           transition={{ duration: 0.3 }}
-          className="space-y-2 overflow-hidden"
+          className="space-y-4 pt-2 overflow-hidden"
         >
           <motion.li whileHover={{ x: 5 }} className="flex items-center">
-            <Checkbox
+            <Radio
               id="all-discounts"
               label="All Discounts"
               checked={filters.discount === ""}
@@ -76,7 +76,7 @@ const BookListingFilter = ({
             />
           </motion.li>
           <motion.li whileHover={{ x: 5 }} className="flex items-center">
-            <Checkbox
+            <Radio
               id="under10"
               label="Up to 10% off"
               checked={filters.discount === "0-10"}
@@ -84,7 +84,7 @@ const BookListingFilter = ({
             />
           </motion.li>
           <motion.li whileHover={{ x: 5 }} className="flex items-center">
-            <Checkbox
+            <Radio
               id="under20"
               label="10-20% off"
               checked={filters.discount === "10-20"}
@@ -92,7 +92,7 @@ const BookListingFilter = ({
             />
           </motion.li>
           <motion.li whileHover={{ x: 5 }} className="flex items-center">
-            <Checkbox
+            <Radio
               id="under30"
               label="20-30% off"
               checked={filters.discount === "20-30"}
@@ -100,7 +100,7 @@ const BookListingFilter = ({
             />
           </motion.li>
           <motion.li whileHover={{ x: 5 }} className="flex items-center">
-            <Checkbox
+            <Radio
               id="over30"
               label="30%+ off"
               checked={filters.discount === "30-100"}
@@ -136,13 +136,13 @@ const BookListingFilter = ({
         <motion.ul
           initial={{ height: 0 }}
           animate={{
-            height: openCategory.LanguageFilter ? "4rem" : "0rem",
+            height: openCategory.LanguageFilter ? "auto" : "0rem",
           }}
           transition={{ duration: 0.3 }}
-          className="space-y-2 overflow-hidden"
+          className="space-y-4 pt-2 overflow-hidden"
         >
           <motion.li whileHover={{ x: 5 }} className="flex items-center">
-            <Checkbox
+            <Radio
               id="Hindi"
               label="Hindi"
               checked={filters.language === "Hindi"}
@@ -150,7 +150,7 @@ const BookListingFilter = ({
             />
           </motion.li>
           <motion.li whileHover={{ x: 5 }} className="flex items-center">
-            <Checkbox
+            <Radio
               id="English"
               label="English"
               checked={filters.language === "English"}

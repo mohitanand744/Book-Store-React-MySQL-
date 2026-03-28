@@ -32,6 +32,7 @@ exports.updateUserDetailsService = async (
   lastName,
   phone,
   favoriteGenres,
+  gender,
 ) => {
   try {
     const user = await findUserById(userId);
@@ -44,6 +45,7 @@ exports.updateUserDetailsService = async (
       firstName,
       lastName,
       favoriteGenres,
+      gender,
     );
 
     if (result.affectedRows > 0) {

@@ -60,6 +60,7 @@ const ProfileUpdateModal = ({
       firstName: firstName,
       lastName: lastName,
       phone: user?.phone,
+      gender: user?.gender,
       favoriteGenres: user?.favoriteGenres?.map((genre) => genre.id) || [],
     });
   }, [user, showProfileUpdateModal]);
@@ -70,6 +71,7 @@ const ProfileUpdateModal = ({
         firstName: data.firstName,
         lastName: data.lastName,
         phone: data.phone,
+        gender: data.gender,
         favoriteGenres: data.favoriteGenres,
       };
       console.log("CatePaylo", payload);
@@ -81,7 +83,7 @@ const ProfileUpdateModal = ({
         setShowProfileUpdateModal(false);
       }
     } catch (error) {
-      toast.error(error.message);
+      toast.error(error.response?.data?.message || error.message);
     }
   };
 
@@ -145,6 +147,26 @@ const ProfileUpdateModal = ({
               placeholder="Enter your phone number"
               error={errors.phone?.message}
               icon={<PhoneIcon className="w-5 h-5 " />}
+            />
+            <Controller
+              name="gender"
+              control={control}
+              rules={{ required: "Gender is required" }}
+              render={({ field }) => (
+                <Input
+                  label="Gender"
+                  as="select"
+                  options={[
+                    { value: "MALE", label: "Male" },
+                    { value: "FEMALE", label: "Female" },
+                    { value: "OTHER", label: "Other" },
+                  ]}
+                  selectedValue={field.value}
+                  onChange={field.onChange}
+                  error={errors.gender?.message}
+                  placeholder="Select Gender"
+                />
+              )}
             />
             <Controller
               name="favoriteGenres"

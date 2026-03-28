@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import HomeBanner from "../components/Banners/HomeBanner";
-import SearchBooks from "../components/SearchBars/SearchBooks";
+import Search from "../components/SearchBars/Search";
 
 import CountdownTimer from "../components/OfferCounter/OfferCounter";
 import ScrollBooks from "../components/ScrollingContainer/ScrollBooks";
@@ -71,7 +71,7 @@ const Home = () => {
   return (
     <div className="">
       <div className="search">
-        <SearchBooks
+        <Search
           styling="w-full block md:hidden"
           inputStylrs="rounded-[0px] py-4"
           iconStyles="top-3 right-3"

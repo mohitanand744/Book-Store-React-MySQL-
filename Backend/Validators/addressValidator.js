@@ -1,6 +1,6 @@
-import { body } from "express-validator";
+const { body } = require("express-validator");
 
-export const createAddressValidator = [
+const createAddressValidator = [
   body("type")
     .notEmpty()
     .isIn(["home", "work", "other"])
@@ -36,7 +36,7 @@ export const createAddressValidator = [
     .withMessage("is_default must be 0 or 1"),
 ];
 
-export const updateAddressValidator = [
+const updateAddressValidator = [
   body("type")
     .optional()
     .isIn(["Home", "Work", "Other"])
@@ -47,11 +47,22 @@ export const updateAddressValidator = [
     .matches(/^[1-9][0-9]{5}$/)
     .withMessage("Invalid pincode"),
 
-  body("city").optional().isLength({ min: 2, max: 100 }),
+  body("city")
+    .optional()
+    .isLength({ min: 2, max: 100 })
+    .withMessage("City must be 2–100 characters"),
 
-  body("state").optional().isLength({ min: 2, max: 100 }),
+  body("state")
+    .optional()
+    .isLength({ min: 2, max: 100 })
+    .withMessage("State must be 2–100 characters"),
 
-  body("address").optional().isLength({ min: 5, max: 255 }),
+  body("address")
+    .optional()
+    .isLength({ min: 5, max: 255 })
+    .withMessage("Street address must be 5–255 characters"),
 
   body("isDefault").optional().isBoolean(),
 ];
+
+module.exports = { createAddressValidator, updateAddressValidator };
