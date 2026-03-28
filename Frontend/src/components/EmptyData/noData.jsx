@@ -161,7 +161,7 @@ const NoData = ({
       </motion.div>
 
       <motion.h3
-        className={`mb-1 font-semibold text-[#5C4C49] ${titleClassName}`}
+        className={`mb-1 text-center font-semibold text-[#5C4C49] ${titleClassName}`}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.2 }}

@@ -3,7 +3,7 @@ const { body } = require("express-validator");
 const createAddressValidator = [
   body("type")
     .notEmpty()
-    .isIn(["home", "work", "other"])
+    .isIn(["Home", "Work", "Other"])
     .withMessage("Invalid address type"),
 
   body("pinCode")
