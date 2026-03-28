@@ -25,6 +25,7 @@ const Login = () => {
     handleSubmit,
     reset,
     setError,
+    clearErrors,
     setValue,
     watch,
     formState: { errors, isSubmitting },
@@ -32,6 +33,74 @@ const Login = () => {
     mode: "onTouched",
   });
 
+  const handleKeyDown = (e, regex, fieldName, fieldLabel, message, maxLength) => {
+    const allowedKeys = [
+      "Backspace",
+      "Tab",
+      "ArrowLeft",
+      "ArrowRight",
+      "Delete",
+      "Enter",
+      "Control",
+      "Alt",
+      "Shift",
+      "Meta",
+    ];
+
+    if (allowedKeys.includes(e.key) || e.ctrlKey || e.metaKey) {
+      return;
+    }
+
+    if (e.key.length === 1) {
+      if (regex && !regex.test(e.key)) {
+        e.preventDefault();
+        setError(fieldName, { type: "manual", message: message || "Invalid character" });
+        return;
+      }
+
+      if (maxLength && e.target.value.length >= maxLength) {
+        e.preventDefault();
+        setError(fieldName, {
+          type: "manual",
+          message: `Maximum ${maxLength} characters allowed for ${fieldLabel}`,
+        });
+        return;
+      }
+    }
+
+    clearErrors(fieldName);
+  };
+
+  const handleInput = (e, regex, maxLength, fieldName, fieldLabel) => {
+    let value = e.target.value;
+    let filteredValue = value;
+
+    if (regex) {
+      filteredValue = value
+        .split("")
+        .filter((char) => regex.test(char))
+        .join("");
+    }
+
+    if (maxLength && filteredValue.length > maxLength) {
+      filteredValue = filteredValue.slice(0, maxLength);
+      setError(fieldName, {
+        type: "manual",
+        message: `Maximum ${maxLength} characters allowed for ${fieldLabel}`,
+      });
+    } else if (value !== filteredValue) {
+      setError(fieldName, {
+        type: "manual",
+        message: "Invalid characters were filtered",
+      });
+    } else {
+      clearErrors(fieldName);
+    }
+
+    if (value !== filteredValue) {
+      e.target.value = filteredValue;
+    }
+  };
   const navigate = useNavigate();
   const { loginStatusSuccess, getUserUpdatedDetails, isAuthenticated } =
     useAuth();
@@ -193,7 +262,7 @@ const Login = () => {
       } else {
         toast.error(
           error.response?.data?.message ||
-            "Something went wrong. Please try again later.",
+          "Something went wrong. Please try again later.",
         );
       }
     }
@@ -254,6 +323,13 @@ const Login = () => {
                     icon={<EnvelopeIcon className="w-5 h-5 text-[#5e4c379f]" />}
                     error={errors.email?.message}
                     {...register("email", emailValidationRules)}
+                    maxLength={emailValidationRules.maxLength.value}
+                    onKeyDown={(e) =>
+                      handleKeyDown(e, /^[a-zA-Z0-9_.+\-@]$/, "email", "Email", "Invalid character for email", emailValidationRules.maxLength.value)
+                    }
+                    onInput={(e) =>
+                      handleInput(e, /^[a-zA-Z0-9_.+\-@]$/, emailValidationRules.maxLength.value, "email", "Email")
+                    }
                   />
                 </motion.div>
 

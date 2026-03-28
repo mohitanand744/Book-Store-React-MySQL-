@@ -1,5 +1,5 @@
 import { VALIDATION_MESSAGES } from "./messages";
-import { EMAIL_REGEX, NAME_REGEX, PASSWORD_REGEX } from "./regex";
+import { EMAIL_REGEX, INDIAN_PHONE_REGEX, NAME_REGEX, PASSWORD_REGEX } from "./regex";
 
 export const firstNameValidationRules = {
   required: VALIDATION_MESSAGES.firstNameRequired,
@@ -70,3 +70,11 @@ export const confirmPasswordValidation = (getValues) => ({
   validate: (value) =>
     value === getValues("password") || VALIDATION_MESSAGES.passwordMismatch,
 });
+
+export const phoneValidationRules = {
+  required: VALIDATION_MESSAGES.phoneRequired,
+  pattern: {
+    value: INDIAN_PHONE_REGEX,
+    message: VALIDATION_MESSAGES.invalidPhone,
+  },
+};

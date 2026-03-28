@@ -1,4 +1,3 @@
-// src/pages/SignUp.jsx
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
@@ -32,10 +31,81 @@ const SignUp = () => {
     reset,
     trigger,
     watch,
+    setError,
+    clearErrors,
     formState: { errors, isSubmitting },
   } = useForm({
     mode: "onTouched",
   });
+
+  const handleKeyDown = (e, regex, fieldName, fieldLabel, message, maxLength) => {
+    const allowedKeys = [
+      "Backspace",
+      "Tab",
+      "ArrowLeft",
+      "ArrowRight",
+      "Delete",
+      "Enter",
+      "Control",
+      "Alt",
+      "Shift",
+      "Meta",
+    ];
+
+    if (allowedKeys.includes(e.key) || e.ctrlKey || e.metaKey) {
+      return;
+    }
+
+    if (e.key.length === 1) {
+      if (regex && !regex.test(e.key)) {
+        e.preventDefault();
+        setError(fieldName, { type: "manual", message: message || "Invalid character" });
+        return;
+      }
+
+      if (maxLength && e.target.value.length >= maxLength) {
+        e.preventDefault();
+        setError(fieldName, {
+          type: "manual",
+          message: `Maximum ${maxLength} characters allowed for ${fieldLabel}`,
+        });
+        return;
+      }
+    }
+
+    clearErrors(fieldName);
+  };
+
+  const handleInput = (e, regex, maxLength, fieldName, fieldLabel) => {
+    let value = e.target.value;
+    let filteredValue = value;
+
+    if (regex) {
+      filteredValue = value
+        .split("")
+        .filter((char) => regex.test(char))
+        .join("");
+    }
+
+    if (maxLength && filteredValue.length > maxLength) {
+      filteredValue = filteredValue.slice(0, maxLength);
+      setError(fieldName, {
+        type: "manual",
+        message: `Maximum ${maxLength} characters allowed for ${fieldLabel}`,
+      });
+    } else if (value !== filteredValue) {
+      setError(fieldName, {
+        type: "manual",
+        message: "Invalid characters were filtered",
+      });
+    } else {
+      clearErrors(fieldName);
+    }
+
+    if (value !== filteredValue) {
+      e.target.value = filteredValue;
+    }
+  };
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
 
@@ -80,7 +150,7 @@ const SignUp = () => {
       console.error("Error signing up:", error);
       toast.error(
         error.response?.data?.message ||
-          "Something went wrong. Please try again later.",
+        "Something went wrong. Please try again later.",
       );
       reset();
       navigate("/");
@@ -143,6 +213,13 @@ const SignUp = () => {
                       icon={<UserIcon className="w-5 h-5 text-[#5e4c379f]" />}
                       error={errors.firstName?.message}
                       {...register("firstName", firstNameValidationRules)}
+                      maxLength={firstNameValidationRules.maxLength.value}
+                      onKeyDown={(e) =>
+                        handleKeyDown(e, /^[A-Za-z\s]$/, "firstName", "First Name", VALIDATION_MESSAGES.OnlyLetters, firstNameValidationRules.maxLength.value)
+                      }
+                      onInput={(e) =>
+                        handleInput(e, /^[A-Za-z\s]$/, firstNameValidationRules.maxLength.value, "firstName", "First Name")
+                      }
                     />
                   </motion.div>
 
@@ -158,6 +235,13 @@ const SignUp = () => {
                       icon={<UserIcon className="w-5 h-5 text-[#5e4c379f]" />}
                       error={errors.lastName?.message}
                       {...register("lastName", lastNameValidationRules)}
+                      maxLength={lastNameValidationRules.maxLength.value}
+                      onKeyDown={(e) =>
+                        handleKeyDown(e, /^[A-Za-z\s]$/, "lastName", "Last Name", VALIDATION_MESSAGES.OnlyLetters, lastNameValidationRules.maxLength.value)
+                      }
+                      onInput={(e) =>
+                        handleInput(e, /^[A-Za-z\s]$/, lastNameValidationRules.maxLength.value, "lastName", "Last Name")
+                      }
                     />
                   </motion.div>
                 </div>
@@ -175,6 +259,13 @@ const SignUp = () => {
                     icon={<EnvelopeIcon className="w-5 h-5 text-[#5e4c379f]" />}
                     error={errors.email?.message}
                     {...register("email", emailValidationRules)}
+                    maxLength={emailValidationRules.maxLength.value}
+                    onKeyDown={(e) =>
+                      handleKeyDown(e, /^[a-zA-Z0-9_.+\-@]$/, "email", "Email", "Invalid character for email", emailValidationRules.maxLength.value)
+                    }
+                    onInput={(e) =>
+                      handleInput(e, /^[a-zA-Z0-9_.+\-@]$/, emailValidationRules.maxLength.value, "email", "Email")
+                    }
                   />
                 </motion.div>
 
@@ -193,6 +284,13 @@ const SignUp = () => {
                     }
                     error={errors.password?.message}
                     {...register("password", passwordValidationRules)}
+                    maxLength={passwordValidationRules.maxLength.value}
+                    onKeyDown={(e) =>
+                      handleKeyDown(e, null, "password", "Password", null, passwordValidationRules.maxLength.value)
+                    }
+                    onInput={(e) =>
+                      handleInput(e, null, passwordValidationRules.maxLength.value, "password", "Password")
+                    }
                   />
                 </motion.div>
 
@@ -214,6 +312,13 @@ const SignUp = () => {
                       "confirmPassword",
                       confirmPasswordValidation(getValues),
                     )}
+                    maxLength={confirmPasswordValidation(getValues).maxLength.value}
+                    onKeyDown={(e) =>
+                      handleKeyDown(e, null, "confirmPassword", "Confirm Password", null, confirmPasswordValidation(getValues).maxLength.value)
+                    }
+                    onInput={(e) =>
+                      handleInput(e, null, confirmPasswordValidation(getValues).maxLength.value, "confirmPassword", "Confirm Password")
+                    }
                     preventCopyPaste={true}
                   />
                 </motion.div>

@@ -13,6 +13,12 @@ import { PhoneIcon, TrashIcon } from "@heroicons/react/24/outline";
 import NoData from "../EmptyData/noData";
 import { updateProfile } from "../../utils/apis/userApis";
 import { toast } from "sonner";
+import {
+  firstNameValidationRules,
+  lastNameValidationRules,
+  phoneValidationRules,
+} from "../../utils/validations/rules";
+import { VALIDATION_MESSAGES } from "../../utils/validations/messages";
 
 const ProfileUpdateModal = ({
   showProfileUpdateModal,
@@ -33,6 +39,75 @@ const ProfileUpdateModal = ({
   } = useForm();
   const [categoriesList, setCategoriesList] = useState([]);
   const { loading } = useLoader();
+
+  const handleKeyDown = (e, regex, fieldName, fieldLabel, message, maxLength) => {
+    const allowedKeys = [
+      "Backspace",
+      "Tab",
+      "ArrowLeft",
+      "ArrowRight",
+      "Delete",
+      "Enter",
+      "Control",
+      "Alt",
+      "Shift",
+      "Meta",
+    ];
+
+    if (allowedKeys.includes(e.key) || e.ctrlKey || e.metaKey) {
+      return;
+    }
+
+    if (e.key.length === 1) {
+      if (regex && !regex.test(e.key)) {
+        e.preventDefault();
+        setError(fieldName, { type: "manual", message: message || "Invalid character" });
+        return;
+      }
+
+      if (maxLength && e.target.value.length >= maxLength) {
+        e.preventDefault();
+        setError(fieldName, {
+          type: "manual",
+          message: `Maximum ${maxLength} characters allowed for ${fieldLabel}`,
+        });
+        return;
+      }
+    }
+
+    clearErrors(fieldName);
+  };
+
+  const handleInput = (e, regex, maxLength, fieldName, fieldLabel) => {
+    let value = e.target.value;
+    let filteredValue = value;
+
+    if (regex) {
+      filteredValue = value
+        .split("")
+        .filter((char) => regex.test(char))
+        .join("");
+    }
+
+    if (maxLength && filteredValue.length > maxLength) {
+      filteredValue = filteredValue.slice(0, maxLength);
+      setError(fieldName, {
+        type: "manual",
+        message: `Maximum ${maxLength} characters allowed for ${fieldLabel}`,
+      });
+    } else if (value !== filteredValue) {
+      setError(fieldName, {
+        type: "manual",
+        message: "Invalid characters were filtered",
+      });
+    } else {
+      clearErrors(fieldName);
+    }
+
+    if (value !== filteredValue) {
+      e.target.value = filteredValue;
+    }
+  };
 
   const getAllCategoriesLists = async () => {
     try {
@@ -126,24 +201,71 @@ const ProfileUpdateModal = ({
             <Input
               label="First Name"
               type="text"
-              {...register("firstName", { required: "First name is required" })}
+              {...register("firstName", firstNameValidationRules)}
               placeholder="First Name"
               error={errors.firstName?.message}
+              maxLength={firstNameValidationRules.maxLength.value}
+              onKeyDown={(e) =>
+                handleKeyDown(e, /^[A-Za-z\s]$/, "firstName", "First Name", VALIDATION_MESSAGES.OnlyLetters, firstNameValidationRules.maxLength.value)
+              }
+              onInput={(e) =>
+                handleInput(e, /^[A-Za-z\s]$/, firstNameValidationRules.maxLength.value, "firstName", "First Name")
+              }
             />
             <Input
               label="Last Name"
               type="text"
-              {...register("lastName", { required: "Last name is required" })}
+              {...register("lastName", lastNameValidationRules)}
               placeholder="Last Name"
               error={errors.lastName?.message}
+              maxLength={lastNameValidationRules.maxLength.value}
+              onKeyDown={(e) =>
+                handleKeyDown(e, /^[A-Za-z\s]$/, "lastName", "Last Name", VALIDATION_MESSAGES.OnlyLetters, lastNameValidationRules.maxLength.value)
+              }
+              onInput={(e) =>
+                handleInput(e, /^[A-Za-z\s]$/, lastNameValidationRules.maxLength.value, "lastName", "Last Name")
+              }
             />
           </div>
 
           <div className="grid grid-cols-1">
             <Input
               label="Phone"
-              type="number"
-              {...register("phone", { required: "Phone number is required" })}
+              type="tel"
+              {...register("phone", phoneValidationRules)}
+              onInput={(e) => {
+                const originalValue = e.target.value;
+                const numericValue = originalValue.replace(/[^0-9]/g, "");
+
+                if (originalValue !== numericValue) {
+                  setError("phone", {
+                    type: "manual",
+                    message: "Only numeric characters are allowed",
+                  });
+                  e.target.value = numericValue;
+                  return;
+                }
+
+                if (numericValue.length > 0 && !/^[6-9]/.test(numericValue)) {
+                  setError("phone", {
+                    type: "manual",
+                    message: "Indian phone numbers must start with 6, 7, 8, or 9",
+                  });
+                  e.target.value = "";
+                  return;
+                }
+
+                if (originalValue.length > 10) {
+                  setError("phone", {
+                    type: "manual",
+                    message: "Phone number cannot exceed 10 digits",
+                  });
+                  e.target.value = originalValue.slice(0, 10);
+                  return;
+                }
+
+                clearErrors("phone");
+              }}
               placeholder="Enter your phone number"
               error={errors.phone?.message}
               icon={<PhoneIcon className="w-5 h-5 " />}

@@ -58,6 +58,75 @@ const AddressModal = ({
 
   const UserPinCode = watch("pinCode");
 
+  const handleKeyDown = (e, regex, fieldName, fieldLabel, message, maxLength) => {
+    const allowedKeys = [
+      "Backspace",
+      "Tab",
+      "ArrowLeft",
+      "ArrowRight",
+      "Delete",
+      "Enter",
+      "Control",
+      "Alt",
+      "Shift",
+      "Meta",
+    ];
+
+    if (allowedKeys.includes(e.key) || e.ctrlKey || e.metaKey) {
+      return;
+    }
+
+    if (e.key.length === 1) {
+      if (regex && !regex.test(e.key)) {
+        e.preventDefault();
+        setError(fieldName, { type: "manual", message: message || "Invalid character" });
+        return;
+      }
+
+      if (maxLength && e.target.value.length >= maxLength) {
+        e.preventDefault();
+        setError(fieldName, {
+          type: "manual",
+          message: `Maximum ${maxLength} characters allowed for ${fieldLabel}`,
+        });
+        return;
+      }
+    }
+
+    clearErrors(fieldName);
+  };
+
+  const handleInput = (e, regex, maxLength, fieldName, fieldLabel) => {
+    let value = e.target.value;
+    let filteredValue = value;
+
+    if (regex) {
+      filteredValue = value
+        .split("")
+        .filter((char) => regex.test(char))
+        .join("");
+    }
+
+    if (maxLength && filteredValue.length > maxLength) {
+      filteredValue = filteredValue.slice(0, maxLength);
+      setError(fieldName, {
+        type: "manual",
+        message: `Maximum ${maxLength} characters allowed for ${fieldLabel}`,
+      });
+    } else if (value !== filteredValue) {
+      setError(fieldName, {
+        type: "manual",
+        message: `Invalid characters were filtered for ${fieldLabel}`,
+      });
+    } else {
+      clearErrors(fieldName);
+    }
+
+    if (value !== filteredValue) {
+      e.target.value = filteredValue;
+    }
+  };
+
   const fetchData = async () => {
     try {
       const addrRes = await getAddresses();
@@ -176,10 +245,9 @@ const AddressModal = ({
 
         return { success: true, correctCity, correctState };
       } else {
-        toast.error("Invalid Pincode. Please enter a valid 6-digit Pincode.");
         setError("pinCode", {
           type: "manual",
-          message: "Invalid Pincode",
+          message: "Invalid Pincode. Please enter a valid 6-digit Pincode.",
         });
         return false;
       }
@@ -370,8 +438,8 @@ const AddressModal = ({
                         key={address.id}
                         onClick={() => handleAddressSelect(address)}
                         className={`p-4  rounded-xl cursor-pointer  hover:scale-105 transition-all duration-300 ease-linear ${selectedAddress === address.id
-                            ? "border-t-[4px] border-b-[4px] border-[#fff]"
-                            : " border-b border-t border-[#5c4c4955]"
+                          ? "border-t-[4px] border-b-[4px] border-[#fff]"
+                          : " border-b border-t border-[#5c4c4955]"
                           }`}
                       >
                         <div className="relative flex items-start gap-3">
@@ -479,9 +547,12 @@ const AddressModal = ({
                   error={errors.pinCode?.message}
                   placeholder="Enter Pin code"
                   maxLength={6}
-                  onInput={(e) => {
-                    e.target.value = e.target.value.replace(/\D/g, "");
-                  }}
+                  onKeyDown={(e) =>
+                    handleKeyDown(e, /^[0-9]$/, "pinCode", "Pin Code", "Only numbers are allowed in Pin Code", 6)
+                  }
+                  onInput={(e) =>
+                    handleInput(e, /^[0-9]$/, 6, "pinCode", "Pin Code")
+                  }
                 />
               </div>
               <div className="grid grid-cols-2 gap-3">
@@ -492,9 +563,12 @@ const AddressModal = ({
                   })}
                   error={errors.city?.message}
                   placeholder="Enter City"
-                  onInput={(e) => {
-                    e.target.value = e.target.value.replace(/[^a-zA-Z\s]/g, "");
-                  }}
+                  onKeyDown={(e) =>
+                    handleKeyDown(e, /^[a-zA-Z\s]$/, "city", "City", "Only letters and spaces are allowed in City", 50)
+                  }
+                  onInput={(e) =>
+                    handleInput(e, /^[a-zA-Z\s]$/, 50, "city", "City")
+                  }
                 />
 
                 <Controller
@@ -544,11 +618,11 @@ const AddressModal = ({
                     showCounter={true}
                     maxCount={255}
                     maxLength={255}
+                    onKeyDown={(e) =>
+                      handleKeyDown(e, /^[a-zA-Z0-9\s,.\-/#]$/, "address", "Street Address", "Invalid character for Street Address", 255)
+                    }
                     onInput={(e) => {
-                      e.target.value = e.target.value.replace(
-                        /[^a-zA-Z0-9\s,.\-/#]/g,
-                        "",
-                      );
+                      handleInput(e, /^[a-zA-Z0-9\s,.\-/#]$/, 255, "address", "Street Address")
                     }}
                   />
                 )}

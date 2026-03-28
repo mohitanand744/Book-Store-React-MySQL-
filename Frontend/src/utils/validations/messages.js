@@ -16,4 +16,6 @@ export const VALIDATION_MESSAGES = {
   invalidEmail: "Invalid email",
   invalidPassword: "Must include uppercase, lowercase, number, special char",
   termsAcceptedRequired: "Please accept terms and conditions",
+  phoneRequired: "Phone number is required",
+  invalidPhone: "Please enter a valid 10-digit Indian phone number (starting with 6-9)",
 };
