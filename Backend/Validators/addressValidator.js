@@ -30,10 +30,7 @@ const createAddressValidator = [
     .isLength({ min: 5, max: 255 })
     .withMessage("Street address must be 5–255 characters"),
 
-  body("isDefault")
-    .optional()
-    .isIn([0, 1])
-    .withMessage("is_default must be 0 or 1"),
+  body("isDefault").optional().isBoolean().withMessage("Invalid isDefault"),
 ];
 
 const updateAddressValidator = [
@@ -62,7 +59,7 @@ const updateAddressValidator = [
     .isLength({ min: 5, max: 255 })
     .withMessage("Street address must be 5–255 characters"),
 
-  body("isDefault").optional().isBoolean(),
+  body("isDefault").optional().isBoolean().withMessage("Invalid isDefault"),
 ];
 
 module.exports = { createAddressValidator, updateAddressValidator };

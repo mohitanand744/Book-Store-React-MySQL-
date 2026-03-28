@@ -15,7 +15,6 @@ const Wishlist = () => {
   const { loading, wishlists } = useSelector((state) => state.wishlists);
   const [searchTerm, setSearchTerm] = useState("");
 
-
   useEffect(() => {
     dispatch(getAllWishlists());
   }, [dispatch]);
@@ -53,7 +52,6 @@ const Wishlist = () => {
               onChange={(val) => setSearchTerm(val)}
               onSearch={(val) => setSearchTerm(val)}
             />
-
           </motion.div>
 
           {/* Book Count */}
@@ -114,23 +112,26 @@ const Wishlist = () => {
             {wishlists?.data
               ?.filter(
                 (book) =>
-                  book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                  book.author.toLowerCase().includes(searchTerm.toLowerCase()),
+                  book?.title
+                    ?.toLowerCase()
+                    .includes(searchTerm.toLowerCase()) ||
+                  book?.author?.author_name
+                    ?.toLowerCase()
+                    .includes(searchTerm.toLowerCase()),
               )
               .map((book) => (
-
-              <motion.div
-                key={book.book_id} // ✅ important
-                layout
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.9 }}
-                transition={{ duration: 0.3 }}
-                whileHover={{ y: -10 }}
-              >
-                <BookCard book={book} />
-              </motion.div>
-            ))}
+                <motion.div
+                  key={book.book_id} // ✅ important
+                  layout
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  transition={{ duration: 0.3 }}
+                  whileHover={{ y: -10 }}
+                >
+                  <BookCard book={book} />
+                </motion.div>
+              ))}
           </AnimatePresence>
         </div>
 
