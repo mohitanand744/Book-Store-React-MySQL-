@@ -70,6 +70,7 @@ const ResetPasswordModal = ({
         toast.success(response?.message);
         navigate(isAuthenticated ? "/nextChapter" : "/");
         localStorage.removeItem("resetToken");
+        setResetToken(false);
       }
     } catch (error) {
       toast.error(
@@ -92,6 +93,7 @@ const ResetPasswordModal = ({
     setEmailResent(false);
     setIsResending(false);
     localStorage.removeItem("resetToken");
+    setResetToken(false);
     localStorage.removeItem("forgotPasswordEmail");
     setWarningMsg(false);
   };
