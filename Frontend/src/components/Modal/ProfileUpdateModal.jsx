@@ -128,16 +128,19 @@ const ProfileUpdateModal = ({
   }, [showProfileUpdateModal]);
 
   useEffect(() => {
-    const firstName = user?.name.split(" ")[0];
-    const lastName = user?.name.split(" ")[1];
+    if (user?.name) {
+      const nameParts = user.name.trim().split(/\s+/);
+      const firstName = nameParts[0];
+      const lastName = nameParts.slice(1).join(" ");
 
-    reset({
-      firstName: firstName,
-      lastName: lastName,
-      phone: user?.phone,
-      gender: user?.gender,
-      favoriteGenres: user?.favoriteGenres?.map((genre) => genre.id) || [],
-    });
+      reset({
+        firstName: firstName,
+        lastName: lastName,
+        phone: user?.phone,
+        gender: user?.gender,
+        favoriteGenres: user?.favoriteGenres?.map((genre) => genre.id) || [],
+      });
+    }
   }, [user, showProfileUpdateModal]);
 
   const onSubmit = async (data) => {
