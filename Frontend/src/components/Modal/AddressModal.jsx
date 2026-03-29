@@ -1,4 +1,4 @@
-import { Controller, useForm } from "react-hook-form";
+import { Controller, set, useForm } from "react-hook-form";
 import {
   MapPinIcon,
   HomeIcon,
@@ -58,7 +58,14 @@ const AddressModal = ({
 
   const UserPinCode = watch("pinCode");
 
-  const handleKeyDown = (e, regex, fieldName, fieldLabel, message, maxLength) => {
+  const handleKeyDown = (
+    e,
+    regex,
+    fieldName,
+    fieldLabel,
+    message,
+    maxLength,
+  ) => {
     const allowedKeys = [
       "Backspace",
       "Tab",
@@ -79,7 +86,10 @@ const AddressModal = ({
     if (e.key.length === 1) {
       if (regex && !regex.test(e.key)) {
         e.preventDefault();
-        setError(fieldName, { type: "manual", message: message || "Invalid character" });
+        setError(fieldName, {
+          type: "manual",
+          message: message || "Invalid character",
+        });
         return;
       }
 
@@ -188,6 +198,7 @@ const AddressModal = ({
       isDefault: false,
     });
     setEditAddressData(null);
+    setSelectedAddress(null);
     setActiveTab("select");
   };
 
@@ -282,7 +293,7 @@ const AddressModal = ({
     } catch (error) {
       toast.error(
         error.response?.data?.message ||
-        "An error occurred while saving the address",
+          "An error occurred while saving the address",
       );
     }
   };
@@ -326,6 +337,12 @@ const AddressModal = ({
     };
     fetchCityState();
   }, [UserPinCode, activeTab]);
+
+  useEffect(() => {
+    if (showAddress === false) {
+      setSelectedAddress(null);
+    }
+  }, [showAddress]);
 
   const handleSetDefaultAddress = async () => {
     const selected = addresses.find((addr) => addr.id === selectedAddress);
@@ -437,10 +454,11 @@ const AddressModal = ({
                       <div
                         key={address.id}
                         onClick={() => handleAddressSelect(address)}
-                        className={`p-4  rounded-xl cursor-pointer  hover:scale-105 transition-all duration-300 ease-linear ${selectedAddress === address.id
-                          ? "border-t-[4px] border-b-[4px] border-[#fff]"
-                          : " border-b border-t border-[#5c4c4955]"
-                          }`}
+                        className={`p-4  rounded-xl cursor-pointer  hover:scale-105 transition-all duration-300 ease-linear ${
+                          selectedAddress === address.id
+                            ? "border-t-[4px] border-b-[4px] border-[#fff]"
+                            : " border-b border-t border-[#5c4c4955]"
+                        }`}
                       >
                         <div className="relative flex items-start gap-3">
                           <PencilSquareIcon
@@ -491,7 +509,10 @@ const AddressModal = ({
                 <Button
                   variant="outline"
                   className="flex-1 text-sm"
-                  onClick={() => setShowAddress(false)}
+                  onClick={() => {
+                    setShowAddress(false);
+                    handleBackToSelection();
+                  }}
                 >
                   Cancel
                 </Button>
@@ -548,7 +569,14 @@ const AddressModal = ({
                   placeholder="Enter Pin code"
                   maxLength={6}
                   onKeyDown={(e) =>
-                    handleKeyDown(e, /^[0-9]$/, "pinCode", "Pin Code", "Only numbers are allowed in Pin Code", 6)
+                    handleKeyDown(
+                      e,
+                      /^[0-9]$/,
+                      "pinCode",
+                      "Pin Code",
+                      "Only numbers are allowed in Pin Code",
+                      6,
+                    )
                   }
                   onInput={(e) =>
                     handleInput(e, /^[0-9]$/, 6, "pinCode", "Pin Code")
@@ -564,7 +592,14 @@ const AddressModal = ({
                   error={errors.city?.message}
                   placeholder="Enter City"
                   onKeyDown={(e) =>
-                    handleKeyDown(e, /^[a-zA-Z\s]$/, "city", "City", "Only letters and spaces are allowed in City", 50)
+                    handleKeyDown(
+                      e,
+                      /^[a-zA-Z\s]$/,
+                      "city",
+                      "City",
+                      "Only letters and spaces are allowed in City",
+                      50,
+                    )
                   }
                   onInput={(e) =>
                     handleInput(e, /^[a-zA-Z\s]$/, 50, "city", "City")
@@ -619,10 +654,23 @@ const AddressModal = ({
                     maxCount={255}
                     maxLength={255}
                     onKeyDown={(e) =>
-                      handleKeyDown(e, /^[a-zA-Z0-9\s,.\-/#]$/, "address", "Street Address", "Invalid character for Street Address", 255)
+                      handleKeyDown(
+                        e,
+                        /^[a-zA-Z0-9\s,.\-/#]$/,
+                        "address",
+                        "Street Address",
+                        "Invalid character for Street Address",
+                        255,
+                      )
                     }
                     onInput={(e) => {
-                      handleInput(e, /^[a-zA-Z0-9\s,.\-/#]$/, 255, "address", "Street Address")
+                      handleInput(
+                        e,
+                        /^[a-zA-Z0-9\s,.\-/#]$/,
+                        255,
+                        "address",
+                        "Street Address",
+                      );
                     }}
                   />
                 )}
