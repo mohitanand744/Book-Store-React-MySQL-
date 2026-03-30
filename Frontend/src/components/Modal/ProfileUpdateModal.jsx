@@ -40,7 +40,14 @@ const ProfileUpdateModal = ({
   const [categoriesList, setCategoriesList] = useState([]);
   const { loading } = useLoader();
 
-  const handleKeyDown = (e, regex, fieldName, fieldLabel, message, maxLength) => {
+  const handleKeyDown = (
+    e,
+    regex,
+    fieldName,
+    fieldLabel,
+    message,
+    maxLength,
+  ) => {
     const allowedKeys = [
       "Backspace",
       "Tab",
@@ -61,7 +68,10 @@ const ProfileUpdateModal = ({
     if (e.key.length === 1) {
       if (regex && !regex.test(e.key)) {
         e.preventDefault();
-        setError(fieldName, { type: "manual", message: message || "Invalid character" });
+        setError(fieldName, {
+          type: "manual",
+          message: message || "Invalid character",
+        });
         return;
       }
 
@@ -209,10 +219,23 @@ const ProfileUpdateModal = ({
               error={errors.firstName?.message}
               maxLength={firstNameValidationRules.maxLength.value}
               onKeyDown={(e) =>
-                handleKeyDown(e, /^[A-Za-z\s]$/, "firstName", "First Name", VALIDATION_MESSAGES.OnlyLetters, firstNameValidationRules.maxLength.value)
+                handleKeyDown(
+                  e,
+                  /^[A-Za-z\s]$/,
+                  "firstName",
+                  "First Name",
+                  VALIDATION_MESSAGES.OnlyLetters,
+                  firstNameValidationRules.maxLength.value,
+                )
               }
               onInput={(e) =>
-                handleInput(e, /^[A-Za-z\s]$/, firstNameValidationRules.maxLength.value, "firstName", "First Name")
+                handleInput(
+                  e,
+                  /^[A-Za-z\s]$/,
+                  firstNameValidationRules.maxLength.value,
+                  "firstName",
+                  "First Name",
+                )
               }
             />
             <Input
@@ -223,10 +246,23 @@ const ProfileUpdateModal = ({
               error={errors.lastName?.message}
               maxLength={lastNameValidationRules.maxLength.value}
               onKeyDown={(e) =>
-                handleKeyDown(e, /^[A-Za-z\s]$/, "lastName", "Last Name", VALIDATION_MESSAGES.OnlyLetters, lastNameValidationRules.maxLength.value)
+                handleKeyDown(
+                  e,
+                  /^[A-Za-z\s]$/,
+                  "lastName",
+                  "Last Name",
+                  VALIDATION_MESSAGES.OnlyLetters,
+                  lastNameValidationRules.maxLength.value,
+                )
               }
               onInput={(e) =>
-                handleInput(e, /^[A-Za-z\s]$/, lastNameValidationRules.maxLength.value, "lastName", "Last Name")
+                handleInput(
+                  e,
+                  /^[A-Za-z\s]$/,
+                  lastNameValidationRules.maxLength.value,
+                  "lastName",
+                  "Last Name",
+                )
               }
             />
           </div>
@@ -236,7 +272,7 @@ const ProfileUpdateModal = ({
               label="Phone"
               type="tel"
               {...register("phone", phoneValidationRules)}
-              onInput={(e) => {
+              onChange={(e) => {
                 const originalValue = e.target.value;
                 const numericValue = originalValue.replace(/[^0-9]/g, "");
 
@@ -252,7 +288,8 @@ const ProfileUpdateModal = ({
                 if (numericValue.length > 0 && !/^[6-9]/.test(numericValue)) {
                   setError("phone", {
                     type: "manual",
-                    message: "Indian phone numbers must start with 6, 7, 8, or 9",
+                    message:
+                      "Indian phone numbers must start with 6, 7, 8, or 9",
                   });
                   e.target.value = "";
                   return;

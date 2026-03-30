@@ -185,12 +185,12 @@ const UserProfile = () => {
   }, [showAddressModal, showProfileUpdateModal]);
 
   useEffect(() => {
-    if (userData?.default_address?.address) {
-      setDefaultAddress(
-        `${userData?.default_address.address}, ${userData?.default_address.city}, ${userData?.default_address.state}, ${userData?.default_address.pinCode}`,
-      );
-    }
-  }, [userData.default_address]);
+    setDefaultAddress(
+      userData?.default_address?.address
+        ? `${userData?.default_address.address.slice(0, 60)}..., ${userData?.default_address.city}, ${userData?.default_address.state}, ${userData?.default_address.pinCode}`
+        : "No Address Selected",
+    );
+  }, [userData.default_address.address]);
 
   const navigateToOrders = () => {
     navigate("/nextChapter/orders");

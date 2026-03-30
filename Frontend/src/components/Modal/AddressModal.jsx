@@ -27,6 +27,7 @@ import {
 import { useLoader } from "../../Hooks/useLoader";
 import BooksLoader from "../Loaders/BooksLoader";
 import ModelsHeading from "../Headings/ModelsHeading";
+import { EyesSvg } from "../SVGs/SVGs";
 
 const AddressModal = ({
   showAddress,
@@ -456,8 +457,8 @@ const AddressModal = ({
                         onClick={() => handleAddressSelect(address)}
                         className={`p-4  rounded-xl cursor-pointer  hover:scale-105 transition-all duration-300 ease-linear ${
                           selectedAddress === address.id
-                            ? "border-t-[4px] border-b-[4px] border-[#fff]"
-                            : " border-b border-t border-[#5c4c4955]"
+                            ? "border-[4px] border-[#fff]"
+                            : "border border-[#5c4c4955]"
                         }`}
                       >
                         <div className="relative flex items-start gap-3">
@@ -468,6 +469,9 @@ const AddressModal = ({
                             }}
                             className="w-5 active:scale-75 hover:scale-105 transition-all duration-200 ease-linear h-5 absolute top-0 right-0 cursor-pointer text-[#5c4c49]"
                           />
+                          <div className="absolute text-[#5c4c49] top-0 w-5 h-5 right-7">
+                            <EyesSvg />
+                          </div>
                           <TrashIcon
                             onClick={(e) => handleDeleteClick(e, address.id)}
                             className="absolute bottom-0 right-0 w-5 h-5 text-red-600 transition-all duration-200 ease-linear cursor-pointer active:scale-75 hover:scale-105"
@@ -485,13 +489,13 @@ const AddressModal = ({
                                 {address.type}
                               </span>
                               {address.isDefault && (
-                                <span className="px-2 py-1 text-xs bg-gray-200 rounded-full">
-                                  Default
+                                <span className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-medium text-green-700 bg-green-100 rounded-full">
+                                  ● <b>Default</b>
                                 </span>
                               )}
                             </div>
-                            <p className="text-sm text-gray-600">
-                              {address.address}
+                            <p className="text-sm text-gray-600 [overflow-wrap:anywhere]">
+                              {address.address.slice(0, 70)} ...
                             </p>
                             <p className="text-sm text-gray-500">
                               {address.city}, {address.state} {address.pinCode}
