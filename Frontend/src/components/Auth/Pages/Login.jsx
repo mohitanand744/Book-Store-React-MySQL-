@@ -18,6 +18,7 @@ import {
   emailValidationRules,
   passwordValidationRules,
 } from "../../../utils/validations/rules";
+import useInputHandlers from "../../../Hooks/useInputHandlers";
 
 const Login = () => {
   const {
@@ -33,74 +34,7 @@ const Login = () => {
     mode: "onTouched",
   });
 
-  const handleKeyDown = (e, regex, fieldName, fieldLabel, message, maxLength) => {
-    const allowedKeys = [
-      "Backspace",
-      "Tab",
-      "ArrowLeft",
-      "ArrowRight",
-      "Delete",
-      "Enter",
-      "Control",
-      "Alt",
-      "Shift",
-      "Meta",
-    ];
-
-    if (allowedKeys.includes(e.key) || e.ctrlKey || e.metaKey) {
-      return;
-    }
-
-    if (e.key.length === 1) {
-      if (regex && !regex.test(e.key)) {
-        e.preventDefault();
-        setError(fieldName, { type: "manual", message: message || "Invalid character" });
-        return;
-      }
-
-      if (maxLength && e.target.value.length >= maxLength) {
-        e.preventDefault();
-        setError(fieldName, {
-          type: "manual",
-          message: `Maximum ${maxLength} characters allowed for ${fieldLabel}`,
-        });
-        return;
-      }
-    }
-
-    clearErrors(fieldName);
-  };
-
-  const handleInput = (e, regex, maxLength, fieldName, fieldLabel) => {
-    let value = e.target.value;
-    let filteredValue = value;
-
-    if (regex) {
-      filteredValue = value
-        .split("")
-        .filter((char) => regex.test(char))
-        .join("");
-    }
-
-    if (maxLength && filteredValue.length > maxLength) {
-      filteredValue = filteredValue.slice(0, maxLength);
-      setError(fieldName, {
-        type: "manual",
-        message: `Maximum ${maxLength} characters allowed for ${fieldLabel}`,
-      });
-    } else if (value !== filteredValue) {
-      setError(fieldName, {
-        type: "manual",
-        message: "Invalid characters were filtered",
-      });
-    } else {
-      clearErrors(fieldName);
-    }
-
-    if (value !== filteredValue) {
-      e.target.value = filteredValue;
-    }
-  };
+  const { handleKeyDown, handleInput } = useInputHandlers(setError, clearErrors);
   const navigate = useNavigate();
   const { loginStatusSuccess, getUserUpdatedDetails, isAuthenticated } =
     useAuth();

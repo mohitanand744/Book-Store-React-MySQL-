@@ -7,6 +7,8 @@ import {
   PencilSquareIcon,
   TrashIcon,
   MapIcon,
+  XMarkIcon,
+  XCircleIcon,
 } from "@heroicons/react/24/outline";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -28,6 +30,7 @@ import { useLoader } from "../../Hooks/useLoader";
 import BooksLoader from "../Loaders/BooksLoader";
 import ModelsHeading from "../Headings/ModelsHeading";
 import { EyesSvg } from "../SVGs/SVGs";
+import useInputHandlers from "../../Hooks/useInputHandlers";
 
 const AddressModal = ({
   showAddress,
@@ -42,7 +45,7 @@ const AddressModal = ({
   const [confirmationData, setConfirmationData] = useState(null);
   const [addressToDelete, setAddressToDelete] = useState(null);
   const { loading } = useLoader();
-
+  const [viewAddressDetails, setViewAddressDetails] = useState(false);
   const {
     register,
     handleSubmit,
@@ -58,85 +61,9 @@ const AddressModal = ({
   });
 
   const UserPinCode = watch("pinCode");
+  const ViewAddressDetailsIcon = viewAddressDetails?.Icon;
 
-  const handleKeyDown = (
-    e,
-    regex,
-    fieldName,
-    fieldLabel,
-    message,
-    maxLength,
-  ) => {
-    const allowedKeys = [
-      "Backspace",
-      "Tab",
-      "ArrowLeft",
-      "ArrowRight",
-      "Delete",
-      "Enter",
-      "Control",
-      "Alt",
-      "Shift",
-      "Meta",
-    ];
-
-    if (allowedKeys.includes(e.key) || e.ctrlKey || e.metaKey) {
-      return;
-    }
-
-    if (e.key.length === 1) {
-      if (regex && !regex.test(e.key)) {
-        e.preventDefault();
-        setError(fieldName, {
-          type: "manual",
-          message: message || "Invalid character",
-        });
-        return;
-      }
-
-      if (maxLength && e.target.value.length >= maxLength) {
-        e.preventDefault();
-        setError(fieldName, {
-          type: "manual",
-          message: `Maximum ${maxLength} characters allowed for ${fieldLabel}`,
-        });
-        return;
-      }
-    }
-
-    clearErrors(fieldName);
-  };
-
-  const handleInput = (e, regex, maxLength, fieldName, fieldLabel) => {
-    let value = e.target.value;
-    let filteredValue = value;
-
-    if (regex) {
-      filteredValue = value
-        .split("")
-        .filter((char) => regex.test(char))
-        .join("");
-    }
-
-    if (maxLength && filteredValue.length > maxLength) {
-      filteredValue = filteredValue.slice(0, maxLength);
-      setError(fieldName, {
-        type: "manual",
-        message: `Maximum ${maxLength} characters allowed for ${fieldLabel}`,
-      });
-    } else if (value !== filteredValue) {
-      setError(fieldName, {
-        type: "manual",
-        message: `Invalid characters were filtered for ${fieldLabel}`,
-      });
-    } else {
-      clearErrors(fieldName);
-    }
-
-    if (value !== filteredValue) {
-      e.target.value = filteredValue;
-    }
-  };
+  const { handleKeyDown, handleInput } = useInputHandlers(setError, clearErrors);
 
   const fetchData = async () => {
     try {
@@ -469,7 +396,12 @@ const AddressModal = ({
                             }}
                             className="w-5 active:scale-75 hover:scale-105 transition-all duration-200 ease-linear h-5 absolute top-0 right-0 cursor-pointer text-[#5c4c49]"
                           />
-                          <div className="absolute text-[#5c4c49] top-0 w-5 h-5 right-7">
+                          <div
+                            onClick={() =>
+                              setViewAddressDetails({ ...address, Icon })
+                            }
+                            className="absolute active:scale-75 hover:scale-105 transition-all duration-200 ease-linear text-[#5c4c49] top-0 w-5 h-5 right-7"
+                          >
                             <EyesSvg />
                           </div>
                           <TrashIcon
@@ -813,6 +745,93 @@ const AddressModal = ({
                 >
                   Cancel
                 </Button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {viewAddressDetails && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="absolute inset-0 z-50 flex items-center justify-center p-4 bg-black/60 rounded-xl"
+            onClick={() => setViewAddressDetails(null)}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="w-full max-w-sm p-6 bg-[#D3BD9D] relative shadow-xl rounded-xl"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Close Button */}
+              <motion.button
+                className="absolute top-1 right-1 text-white/70 hover:text-white bg-black/10 hover:bg-white/20 rounded-xl z-[10000]"
+                onClick={() => setViewAddressDetails(null)}
+                initial={{ scale: 0.5 }}
+                animate={{ scale: 1 }}
+                exit={{ scale: 0.5 }}
+              >
+                <XCircleIcon className="w-7 h-7" />
+              </motion.button>
+
+              <div className="flex items-center gap-2 mb-2">
+                <h3 className="text-xl font-bold text-[#5c4c49]">
+                  Address Details
+                </h3>{" "}
+                <div className="flex items-center">
+                  {viewAddressDetails.isDefault && (
+                    <span className="inline-flex items-center gap-1 px-2 py-1 text-xs font-medium text-green-700 bg-green-200 rounded-full ms-2">
+                      <div className={``}>
+                        <b>●</b>
+                      </div>
+                      <b>Default</b>
+                    </span>
+                  )}
+                  <span className="inline-flex ms-2 items-center gap-1 py-1 px-2  text-xs font-medium text-green-100 bg-[#5c4c49] rounded-full">
+                    <div
+                      className={`rounded-lg ${viewAddressDetails.color} text-white`}
+                    >
+                      <ViewAddressDetailsIcon className="w-4 h-4" />
+                    </div>
+                    <b>{viewAddressDetails.type}</b>
+                  </span>
+                </div>
+              </div>
+
+              <div className="mt-3 space-y-2 text-sm text-gray-700">
+                <div className="flex gap-2 p-2 transition-all duration-200 ease-in-out border-b shadow-lg border-black/10 rounded-b-xl hover:scale-105">
+                  <span className="font-medium text-[#5c4c49] min-w-[110px]">
+                    Street Address:
+                  </span>
+                  <span className="break-words">
+                    {viewAddressDetails.address}
+                  </span>
+                </div>
+
+                <div className="flex gap-2 p-2 transition-all duration-200 ease-in-out border-b shadow-lg border-black/10 rounded-b-xl hover:scale-105">
+                  <span className="font-medium text-[#5c4c49] min-w-[110px]">
+                    City:
+                  </span>
+                  <span>{viewAddressDetails.city}</span>
+                </div>
+
+                <div className="flex gap-2 p-2 transition-all duration-200 ease-in-out border-b shadow-lg border-black/10 rounded-b-xl hover:scale-105">
+                  <span className="font-medium text-[#5c4c49] min-w-[110px]">
+                    State:
+                  </span>
+                  <span>{viewAddressDetails.state}</span>
+                </div>
+
+                <div className="flex gap-2 p-2 transition-all duration-200 ease-in-out border-b shadow-lg border-black/10 rounded-b-xl hover:scale-105">
+                  <span className="font-medium text-[#5c4c49] min-w-[110px]">
+                    PIN:
+                  </span>
+                  <span>{viewAddressDetails.pinCode}</span>
+                </div>
               </div>
             </motion.div>
           </motion.div>

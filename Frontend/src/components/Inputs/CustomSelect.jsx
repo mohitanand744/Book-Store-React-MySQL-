@@ -4,8 +4,6 @@ import { ExclamationCircleIcon } from "@heroicons/react/24/outline";
 import Search from "../SearchBars/Search";
 import NoData from "../EmptyData/noData";
 
-
-
 const CustomSelect = (
   {
     options,
@@ -21,7 +19,6 @@ const CustomSelect = (
   const [isOpen, setIsOpen] = useState(false);
   const [filterQuery, setFilterQuery] = useState("");
   const selectRef = useRef(null);
-
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -47,10 +44,11 @@ const CustomSelect = (
       <motion.button
         ref={ref}
         type="button"
-        className={`w-full h-[42px] px-4 py-3 relative rounded-lg border bg-white flex items-center justify-between ${error
-          ? "border-red-500 focus:ring-red-500"
-          : "border-gray-300 focus:ring-[#8a7053] focus:border-[#8a7053]"
-          } shadow-sm focus:outline-none focus:ring-2 ${className}`}
+        className={`w-full h-[42px] px-4 py-3 relative rounded-lg border bg-white flex items-center justify-between ${
+          error
+            ? "border-red-500 focus:ring-red-500"
+            : "border-gray-300 focus:ring-[#8a7053] focus:border-[#8a7053]"
+        } shadow-sm focus:outline-none focus:ring-2 ${className}`}
         onClick={() => setIsOpen(!isOpen)}
         whileTap={{ scale: 0.98 }}
         aria-haspopup="listbox"
@@ -62,8 +60,8 @@ const CustomSelect = (
           {multiple
             ? `${selectedOption?.length} selected`
             : selectedOption?.label || (
-              <span className="text-[14px]">{placeholder}</span>
-            )}
+                <span className="text-[14px]">{placeholder}</span>
+              )}
         </span>
 
         {!error && (
@@ -112,7 +110,7 @@ const CustomSelect = (
             role="listbox"
           >
             {options.length > 8 && (
-              <div className=" pb-2 mb-2 border-b">
+              <div className="pb-2 mb-2 border-b ">
                 <Search
                   styling="w-full !block"
                   iconStyles="top-1 right-1"
@@ -132,6 +130,7 @@ const CustomSelect = (
                   <div className="p-4">
                     <NoData
                       title="No results found"
+                      icon="search"
                       message="Try a different term"
                       showAction={false}
                       className="!p-4 !max-w-full shadow-none border-none bg-transparent"
@@ -146,20 +145,23 @@ const CustomSelect = (
               return filteredOptions.map((option) => (
                 <motion.li
                   key={option.value}
-                  className={`px-4 py-2 border-b-2 transition-all duration-500 rounded-2xl relative cursor-pointer shadow-lg ${multiple
-                    ? value?.includes(option.value)
-                      ? "border-b-[3px] border-[#5C4C49]/50"
-                      : "hover:bg-[#5C4C49]/5 border-[#5C4C49]/30"
-                    : value === option.value
-                      ? "border-b-[3px] border-[#5C4C49]/50"
-                      : "hover:bg-[#5C4C49]/5 border-[#5C4C49]/30"
-                    }`}
+                  className={`px-4 py-2 border-b-2 transition-all duration-500 rounded-2xl relative cursor-pointer shadow-lg ${
+                    multiple
+                      ? value?.includes(option.value)
+                        ? "border-b-[3px] border-[#5C4C49]/50"
+                        : "hover:bg-[#5C4C49]/5 border-[#5C4C49]/30"
+                      : value === option.value
+                        ? "border-b-[3px] border-[#5C4C49]/50"
+                        : "hover:bg-[#5C4C49]/5 border-[#5C4C49]/30"
+                  }`}
                   whileHover={{ y: -1 }}
                   onClick={() => {
                     if (multiple) {
                       const currentValue = Array.isArray(value) ? value : [];
                       if (currentValue.includes(option.value)) {
-                        onChange(currentValue.filter((val) => val !== option.value));
+                        onChange(
+                          currentValue.filter((val) => val !== option.value),
+                        );
                       } else {
                         onChange([...currentValue, option.value]);
                       }
@@ -173,7 +175,9 @@ const CustomSelect = (
                 >
                   <span className="text-nowrap">{option.label}</span>
 
-                  {(multiple ? value?.includes(option.value) : value === option.value) && (
+                  {(multiple
+                    ? value?.includes(option.value)
+                    : value === option.value) && (
                     <span className="w-4 text-[12.4px] text-white h-4 absolute top-4 right-1 bg-[#5C4C49]/80 flex justify-center items-center rounded-full">
                       ✓
                     </span>
