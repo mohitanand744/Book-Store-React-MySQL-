@@ -5,8 +5,8 @@ const fetchStates = async () => {
   return states;
 };
 
-const fetchAddresses = async (userId) => {
-  const addresses = await addressModel.getAddressesByUserId(userId);
+const fetchUserAddresses = async (userId) => {
+  const addresses = await addressModel.getUserAddressesByUserId(userId);
 
   const formattedAddresses = addresses.map((addr) => ({
     id: addr.id,
@@ -31,7 +31,11 @@ const modifyAddress = async (id, userId, data) => {
   const result = await addressModel.updateAddress(id, userId, data);
 
   if (result.affectedRows === 0) {
-    return { success: false, message: "Address not found or unauthorized", statusCode: 404 };
+    return {
+      success: false,
+      message: "Address not found or unauthorized",
+      statusCode: 404,
+    };
   }
 
   return { success: true };
@@ -41,7 +45,11 @@ const removeAddress = async (id, userId) => {
   const result = await addressModel.deleteAddress(id, userId);
 
   if (result.affectedRows === 0) {
-    return { success: false, message: "Address not found or unauthorized", statusCode: 404 };
+    return {
+      success: false,
+      message: "Address not found or unauthorized",
+      statusCode: 404,
+    };
   }
 
   return { success: true };
@@ -49,7 +57,7 @@ const removeAddress = async (id, userId) => {
 
 module.exports = {
   fetchStates,
-  fetchAddresses,
+  fetchUserAddresses,
   createNewAddress,
   modifyAddress,
   removeAddress,

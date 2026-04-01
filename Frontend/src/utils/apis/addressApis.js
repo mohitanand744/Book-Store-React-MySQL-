@@ -14,22 +14,22 @@ export const getStatesFromDB = async () => {
   return response.data;
 };
 
-export const getAddresses = async () => {
-  const response = await axiosInstance.get("/address", {
+export const getUserAddresses = async () => {
+  const response = await axiosInstance.get("/address/user-addresses", {
     withCredentials: true,
   });
   return response.data;
 };
 
 export const addAddress = async (data) => {
-  const response = await axiosInstance.post("/address", data, {
+  const response = await axiosInstance.post("/address/create", data, {
     withCredentials: true,
   });
   return response.data;
 };
 
 export const updateAddress = async (id, data) => {
-  const response = await axiosInstance.put(`/address/${id}`, data, {
+  const response = await axiosInstance.put(`/address/update/${id}`, data, {
     withCredentials: true,
   });
   return response.data;

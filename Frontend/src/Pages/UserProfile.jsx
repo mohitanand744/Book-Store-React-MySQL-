@@ -312,7 +312,7 @@ const UserProfile = () => {
                 transition={{ delay: 0.2 }}
                 className="mb-6 text-center"
               >
-                <h2 className="text-2xl font-bold text-[#5C4C49]">
+                <h2 className="text-2xl capitalize  font-bold text-[#5C4C49]">
                   {user?.name}
                 </h2>
                 <p className="text-[#5C4C49]/80 flex items-center justify-center gap-1 mt-1">

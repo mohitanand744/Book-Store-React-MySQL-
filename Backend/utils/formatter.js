@@ -15,6 +15,16 @@ exports.formatBook = (item) => ({
   images: item.IMAGE_URL,
 });
 
+const formateName = (name) => {
+  if (!name) return;
+  return name
+    .toLowerCase()
+    .split(" ")
+    .filter(Boolean)
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+};
+
 // userFormatter.js
 exports.formatUser = (user) => {
   console.log("User-", user);
@@ -28,8 +38,10 @@ exports.formatUser = (user) => {
   });
   console.log("wishlist_count", user.wishlist_count);
 
+  const name = formateName(`${user?.first_name} ${user?.last_name}`);
+
   return {
-    name: `${user?.first_name} ${user?.last_name}`,
+    name: name || "User",
     email: user?.email,
     userId: user?.id,
     profilePic:

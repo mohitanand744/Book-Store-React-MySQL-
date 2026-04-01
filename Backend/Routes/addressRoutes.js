@@ -1,7 +1,7 @@
 const express = require("express");
 const {
   getStates,
-  getAddresses,
+  getUserAddresses,
   addAddress,
   updateAddress,
   deleteAddress,
@@ -16,10 +16,16 @@ const { validate } = require("../Validators/validate");
 const router = express.Router();
 
 router.get("/states", getStates);
-router.get("/", verifyToken, getAddresses);
-router.post("/", verifyToken, createAddressValidator, validate, addAddress);
+router.get("/user-addresses", verifyToken, getUserAddresses);
+router.post(
+  "/create",
+  verifyToken,
+  createAddressValidator,
+  validate,
+  addAddress,
+);
 router.put(
-  "/:id",
+  "/update/:id",
   verifyToken,
   updateAddressValidator,
   validate,

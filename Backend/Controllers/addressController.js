@@ -1,6 +1,6 @@
 const {
   fetchStates,
-  fetchAddresses,
+  fetchUserAddresses,
   createNewAddress,
   modifyAddress,
   removeAddress,
@@ -17,10 +17,15 @@ const getStates = async (req, res, next) => {
   }
 };
 
-const getAddresses = async (req, res, next) => {
+const getUserAddresses = async (req, res, next) => {
   try {
-    const formattedAddresses = await fetchAddresses(req.userId);
-    successResponse(res, 200, "Addresses fetched successfully", formattedAddresses);
+    const formattedAddresses = await fetchUserAddresses(req.userId);
+    successResponse(
+      res,
+      200,
+      "Addresses fetched successfully",
+      formattedAddresses,
+    );
   } catch (error) {
     handleDbError(error, res, next);
   }
@@ -67,7 +72,7 @@ const deleteAddress = async (req, res, next) => {
 
 module.exports = {
   getStates,
-  getAddresses,
+  getUserAddresses,
   addAddress,
   updateAddress,
   deleteAddress,

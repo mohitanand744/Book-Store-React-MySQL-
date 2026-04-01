@@ -20,6 +20,8 @@ import {
 } from "../../utils/validations/rules";
 import { VALIDATION_MESSAGES } from "../../utils/validations/messages";
 import useInputHandlers from "../../Hooks/useInputHandlers";
+import { FaLocationArrow } from "react-icons/fa6";
+import { getUserAddresses } from "./../../utils/apis/addressApis";
 
 const ProfileUpdateModal = ({
   showProfileUpdateModal,
@@ -39,9 +41,13 @@ const ProfileUpdateModal = ({
     clearErrors,
   } = useForm();
   const [categoriesList, setCategoriesList] = useState([]);
+  const [userAddresses, setUserAddresses] = useState([]);
   const { loading } = useLoader();
 
-  const { handleKeyDown, handleInput } = useInputHandlers(setError, clearErrors);
+  const { handleKeyDown, handleInput } = useInputHandlers(
+    setError,
+    clearErrors,
+  );
 
   const getAllCategoriesLists = async () => {
     try {
@@ -54,12 +60,6 @@ const ProfileUpdateModal = ({
       console.error("Error fetching categories:", error);
     }
   };
-
-  useEffect(() => {
-    if (showProfileUpdateModal) {
-      getAllCategoriesLists();
-    }
-  }, [showProfileUpdateModal]);
 
   useEffect(() => {
     if (user?.name) {
@@ -76,6 +76,26 @@ const ProfileUpdateModal = ({
       });
     }
   }, [user, showProfileUpdateModal]);
+
+  const getUserAddressesList = async () => {
+    try {
+      const response = await getUserAddresses();
+      console.log(response);
+
+      if (response?.success) {
+        setUserAddresses(response?.data);
+      }
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (showProfileUpdateModal) {
+      getAllCategoriesLists();
+      getUserAddressesList();
+    }
+  }, [showProfileUpdateModal]);
 
   const onSubmit = async (data) => {
     try {
@@ -98,6 +118,8 @@ const ProfileUpdateModal = ({
       toast.error(error.response?.data?.message || error.message);
     }
   };
+
+  console.log(userAddresses);
 
   return (
     <Modal
@@ -325,6 +347,8 @@ const ProfileUpdateModal = ({
                 );
               }}
             />
+
+            {/* addresses */}
           </div>
 
           <div className="grid grid-cols-2 gap-3 pt-4">

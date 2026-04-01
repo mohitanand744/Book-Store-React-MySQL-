@@ -34,4 +34,7 @@ const profileCompletionDetails = async (userData) => {
   };
 };
 
-module.exports = { deleteFromCloudinary, profileCompletionDetails };
+module.exports = {
+  deleteFromCloudinary,
+  profileCompletionDetails,
+};
