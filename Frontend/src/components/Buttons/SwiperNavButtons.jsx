@@ -14,7 +14,11 @@ const SwiperNavButtons = ({
       style={position}
     >
       <button
-        onClick={() => swiperRef.current?.slidePrev()}
+        type="button"
+        onClick={(e) => {
+          e.stopPropagation();
+          swiperRef.current?.slidePrev();
+        }}
         className={`flex items-center justify-center  z-10 rounded-full bg-[#D3BD9D] shadow-lg hover:bg-[#c5ac85] text-[#5C4C49] hover:text-[#3E3432] transition-all duration-300 ${prevButtonClass}`}
         aria-label="Previous"
       >
@@ -22,7 +26,11 @@ const SwiperNavButtons = ({
       </button>
 
       <button
-        onClick={() => swiperRef.current?.slideNext()}
+        type="button"
+        onClick={(e) => {
+          e.stopPropagation();
+          swiperRef.current?.slideNext();
+        }}
         className={`flex items-center justify-center  z-10 rounded-full bg-[#D3BD9D] shadow-lg hover:bg-[#ceb896] text-[#5C4C49] hover:text-[#3E3432] transition-all duration-300 ${nextButtonClass}`}
         aria-label="Next"
       >

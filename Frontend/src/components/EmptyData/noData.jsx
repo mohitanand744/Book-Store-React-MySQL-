@@ -12,7 +12,7 @@ const NoData = ({
   showAction = false,
   actionText = "Explore More",
   actionLink = null,
-  onActionClick,
+  onActionClick = null,
 
   className = "",
   titleClassName = "text-xl",
@@ -114,8 +114,11 @@ const NoData = ({
     const buttonContent = (
       <button
         type="button"
-        onClick={onActionClick}
-        className="font-medium flex items-center gap-1 text-[#5C4C49] hover:text-[#c2ac8d] transition-colors duration-200"
+        onClick={() => {
+          console.log("Button clicked", onActionClick);
+          onActionClick && onActionClick();
+        }}
+        className="font-medium flex items-center gap-1 text-[#5C4C49] hover:text-[#af9775] transition-colors duration-200"
       >
         <span> {actionText}</span>
         <span aria-hidden="true" className="text-xl ">

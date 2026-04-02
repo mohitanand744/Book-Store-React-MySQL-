@@ -666,6 +666,7 @@ const UserProfile = () => {
       <AddressModal
         showAddress={showAddressModal}
         setShowAddress={setShowAddressModal}
+        setShowProfileUpdateModal={setShowProfileUpdateModal}
         dbStates={dbStates}
         setDbStates={setDbStates}
       />
@@ -674,6 +675,7 @@ const UserProfile = () => {
         setShowProfileUpdateModal={setShowProfileUpdateModal}
         showProfileUpdateModal={showProfileUpdateModal}
         user={user}
+        setShowAddressModal={setShowAddressModal}
         type={user?.isComplete ? "update" : "complete"}
       />
 

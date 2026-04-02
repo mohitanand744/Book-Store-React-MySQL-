@@ -21,7 +21,7 @@ import NoData from "../EmptyData/noData";
 import {
   getStatesCites,
   getStatesFromDB,
-  getAddresses,
+  getUserAddresses,
   addAddress,
   updateAddress,
   deleteAddress,
@@ -37,6 +37,7 @@ const AddressModal = ({
   setShowAddress,
   dbStates,
   setDbStates,
+  setShowProfileUpdateModal,
 }) => {
   const [activeTab, setActiveTab] = useState("select");
   const [selectedAddress, setSelectedAddress] = useState(null);
@@ -63,11 +64,14 @@ const AddressModal = ({
   const UserPinCode = watch("pinCode");
   const ViewAddressDetailsIcon = viewAddressDetails?.Icon;
 
-  const { handleKeyDown, handleInput } = useInputHandlers(setError, clearErrors);
+  const { handleKeyDown, handleInput } = useInputHandlers(
+    setError,
+    clearErrors,
+  );
 
   const fetchData = async () => {
     try {
-      const addrRes = await getAddresses();
+      const addrRes = await getUserAddresses();
       if (addrRes?.success) setAddresses(addrRes.data || []);
     } catch (error) {
       toast.error("Failed to load address data");
@@ -116,6 +120,13 @@ const AddressModal = ({
     setSelectedAddress(null);
   };
 
+  useEffect(() => {
+    if (showAddress === "add") {
+      handleAddNewAddress();
+      setShowProfileUpdateModal(false);
+    }
+  }, [showAddress]);
+
   const handleBackToSelection = () => {
     reset({
       type: "",
@@ -131,6 +142,8 @@ const AddressModal = ({
   };
 
   const handleEditAddress = (address) => {
+    console.log("successssssssssssssss");
+
     setActiveTab("add");
     setEditAddressData(address);
 
@@ -207,11 +220,21 @@ const AddressModal = ({
         const res = await updateAddress(editAddressData.id, dataToSubmit);
         if (res.success) {
           toast.success("Address updated successfully!");
+
+          if (showAddress?.id) {
+            setShowProfileUpdateModal(true);
+            setShowAddress(false);
+          }
         }
       } else {
         const res = await addAddress(dataToSubmit);
         if (res.success) {
           toast.success("Address added successfully!");
+
+          if (showAddress === "add") {
+            setShowProfileUpdateModal(true);
+            setShowAddress(false);
+          }
         } else {
           toast.error(res.message || "Failed to add address");
         }
@@ -294,14 +317,39 @@ const AddressModal = ({
         toast.error(res.message || "Failed to set default address");
       }
     } catch (error) {
-      toast.error("Error setting default address");
+      toast.error(
+        error.response?.data?.message || "Error setting default address",
+      );
     } finally {
       setShowAddress(false);
     }
   };
 
+  const handleProfileUpdateEditAddress = () => {
+    if (!showAddress?.id) return;
+
+    setShowProfileUpdateModal(false);
+    handleEditAddress(showAddress);
+  };
+
+  useEffect(() => {
+    if (showAddress?.id) {
+      handleProfileUpdateEditAddress();
+    }
+  }, [showAddress]);
+
   return (
-    <Modal isOpen={showAddress} onClose={() => setShowAddress(false)}>
+    <Modal
+      isOpen={showAddress}
+      onClose={() => {
+        if (showAddress === "add" || showAddress?.id) {
+          setShowProfileUpdateModal(true);
+          setShowAddress(false);
+        }
+        setShowAddress(false);
+        handleBackToSelection();
+      }}
+    >
       <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -427,7 +475,9 @@ const AddressModal = ({
                               )}
                             </div>
                             <p className="text-sm text-gray-600 [overflow-wrap:anywhere]">
-                              {address.address.slice(0, 70)} ...
+                              {address.address.length < 50
+                                ? address.address
+                                : address.address.slice(0, 50) + "..."}
                             </p>
                             <p className="text-sm text-gray-500">
                               {address.city}, {address.state} {address.pinCode}
@@ -447,6 +497,10 @@ const AddressModal = ({
                   className="flex-1 text-sm"
                   onClick={() => {
                     setShowAddress(false);
+                    if (showAddress === "add" || showAddress?.id) {
+                      setShowProfileUpdateModal(true);
+                      setShowAddress(false);
+                    }
                     handleBackToSelection();
                   }}
                 >
