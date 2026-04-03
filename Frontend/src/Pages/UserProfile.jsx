@@ -276,7 +276,7 @@ const UserProfile = () => {
                 className="relative w-32 h-32 rounded-full bg-[#5C4C49]"
               >
                 <img
-                  src={preview}
+                  src={preview || "/images/loading.gif"}
                   alt="Profile"
                   className="object-cover w-full h-full border-4 border-orange-500 rounded-full shadow-lg cursor-pointer"
                   onClick={() => openPreview(preview, "Profile Image")}

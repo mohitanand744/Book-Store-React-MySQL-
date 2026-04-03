@@ -17,7 +17,7 @@ const Radio = (
             id={id}
             checked={checked}
             onChange={onChange}
-            className={`w-4 h-4 md:w-5 md:h-5 border-2 border-[#D3BD9D] rounded-full appearance-none flex justify-center items-center transition-all duration-200 checked:bg-[#D3BD9D] ${className}`}
+            className={`w-4 h-4 md:w-5 md:h-5 border-2 border-[#cab492] rounded-full appearance-none flex justify-center items-center transition-all duration-200 checked:bg-[#D3BD9D] ${className}`}
             {...props}
           />
           {checked && (

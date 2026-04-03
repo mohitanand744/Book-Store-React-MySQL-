@@ -7,10 +7,7 @@ import Input from "../Inputs/Input";
 import Button from "../Buttons/Button";
 import { getAllCategories } from "../../utils/apis/categoryApis";
 import { useLoader } from "../../Hooks/useLoader";
-import Spinner from "../Loaders/Spinner";
-import BooksLoader from "../Loaders/BooksLoader";
 import {
-  MapPinIcon,
   PencilIcon,
   PhoneIcon,
   PlusCircleIcon,
@@ -26,7 +23,6 @@ import {
 } from "../../utils/validations/rules";
 import { VALIDATION_MESSAGES } from "../../utils/validations/messages";
 import useInputHandlers from "../../Hooks/useInputHandlers";
-import { FaLocationArrow } from "react-icons/fa6";
 import {
   getUserAddresses,
   updateAddress,
@@ -64,7 +60,7 @@ const ProfileUpdateModal = ({
     setError,
     clearErrors,
   );
-  const { userData } = useAuth();
+  const { userData, getUserUpdatedDetails } = useAuth();
   const swiperRef = useRef(null);
 
   const getAllCategoriesLists = async () => {
@@ -114,28 +110,11 @@ const ProfileUpdateModal = ({
       getUserAddressesList();
     }
   }, [showProfileUpdateModal]);
-
-  const onSubmit = async (data) => {
-    try {
-      const payload = {
-        firstName: data.firstName,
-        lastName: data.lastName,
-        phone: data.phone,
-        gender: data.gender,
-        favoriteGenres: data.favoriteGenres,
-      };
-      console.log("CatePaylo", payload);
-
-      const result = await updateProfile(payload);
-
-      if (result?.success) {
-        toast.success(result?.message);
-        setShowProfileUpdateModal(false);
-      }
-    } catch (error) {
-      toast.error(error.response?.data?.message || error.message);
+  useEffect(() => {
+    if (userData?.default_address?.address) {
+      setValue("address", userData?.default_address);
     }
-  };
+  }, [userData?.default_address?.address]);
 
   const handleSetAsDefaultAddress = async (selectedId) => {
     const selectedAddr = userAddresses.find(
@@ -166,12 +145,38 @@ const ProfileUpdateModal = ({
     }
   };
 
+  const onSubmit = async (data) => {
+    try {
+      const payload = {
+        firstName: data.firstName,
+        lastName: data.lastName,
+        phone: data.phone,
+        gender: data.gender,
+        favoriteGenres: data.favoriteGenres,
+      };
+
+      if (data.address) {
+        await handleSetAsDefaultAddress(data.address);
+      }
+
+      const result = await updateProfile(payload);
+
+      if (result?.success) {
+        toast.success(result?.message);
+        setShowProfileUpdateModal(false);
+      }
+    } catch (error) {
+      toast.error(error.response?.data?.message || error.message);
+    }
+  };
+
   console.log(userAddresses);
 
   return (
     <Modal
       isOpen={showProfileUpdateModal}
       onClose={() => setShowProfileUpdateModal(false)}
+      loading={loading}
     >
       <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
@@ -179,11 +184,6 @@ const ProfileUpdateModal = ({
         exit={{ opacity: 0 }}
         className="relative w-full max-w-md mx-auto"
       >
-        {loading && (
-          <div className="absolute top-[-2rem] right-[-1rem]">
-            <BooksLoader height="0rem" imgHeight="10" imgWidth="10" />
-          </div>
-        )}
         <ModelsHeading
           heading={
             type === "complete"
@@ -414,80 +414,98 @@ const ProfileUpdateModal = ({
                 )}
               </div>
 
-              <div className="bg-[#FFE6C1]/30 border border-[#d4b17d] rounded-2xl">
-                {userAddresses?.length > 0 ? (
-                  <>
-                    <div className="p-3">
-                      <Swiper
-                        onSwiper={(swiper) => {
-                          swiperRef.current = swiper;
-                        }}
-                        spaceBetween={12}
-                        slidesPerView={1.2}
-                        breakpoints={{
-                          640: { slidesPerView: 1.5 },
-                          768: { slidesPerView: 2 },
-                        }}
-                      >
-                        {userAddresses.map((address) => {
-                          const isSelected = selectedId?.id === address.id;
+              <Controller
+                name="address"
+                control={control}
+                rules={{ required: "Please select an default address" }}
+                render={({ field, fieldState }) => (
+                  <div
+                    className={`bg-[#FFE6C1]/30 px-1 ${fieldState?.error?.message ? "border-red-500" : "border-[#cab492]"} border-2  rounded-2xl`}
+                  >
+                    <Swiper
+                      onSwiper={(swiper) => {
+                        swiperRef.current = swiper;
+                      }}
+                      spaceBetween={12}
+                      slidesPerView={1.2}
+                      breakpoints={{
+                        640: { slidesPerView: 1.5 },
+                        768: { slidesPerView: 2 },
+                      }}
+                    >
+                      {userAddresses.map((address) => {
+                        const isSelected = field.value?.id === address.id;
 
-                          return (
-                            <SwiperSlide key={address.id}>
-                              <div
-                                onClick={() => setSelectedId(address)}
-                                className={`relative cursor-pointer rounded-xl border p-4 transition-all duration-200 h-full
-                  ${
-                    isSelected
-                      ? "border-[#D3BD9D] bg-[#FFE6C1] scale-105 shadow-md"
-                      : "border-gray-200 hover:shadow-sm bg-[#FFE6C9]/20"
-                  }`}
-                              >
-                                <div className="absolute top-1 right-8 text-[#af9368]">
-                                  <EyesSvg />
-                                </div>
-
-                                {/* Radio */}
-                                <div className="absolute top-1 -right-2">
-                                  <Radio
-                                    id={address.id}
-                                    checked={isSelected}
-                                    onChange={() => setSelectedId(address)}
-                                  />
-                                </div>
-
-                                {/* Default badge */}
-                                {address.isDefault && (
-                                  <span className="absolute px-2 py-1 text-[9px] text-green-700 bg-green-100 rounded-full top-1 left-1">
-                                    Default
-                                  </span>
-                                )}
-
-                                {/* Address Content */}
-                                <div className="mt-5 space-y-1 text-sm text-gray-700">
-                                  <p className="font-medium text-gray-900">
-                                    {address.address.slice(0, 15) + "..."}
-                                  </p>
-                                  <p>
-                                    {address.city}, {address.state}
-                                  </p>
-                                  <p className="text-gray-500">
-                                    PIN: {address.pinCode}
-                                  </p>
-                                </div>
+                        return (
+                          <SwiperSlide key={address.id}>
+                            <div
+                              onClick={() => {
+                                field.onChange(address);
+                                clearErrors("address");
+                              }}
+                              className={`relative cursor-pointer rounded-xl border p-3 transition-all ${fieldState?.error?.message ? "border-red-500" : "border-[#cab492] "} duration-200 h-full ${
+                                isSelected
+                                  ? "border-[#D3BD9D] bg-[#FFE6C1] scale-105 shadow-md"
+                                  : "hover:shadow-sm bg-[#FFE6C9]/20"
+                              }`}
+                            >
+                              <div className="absolute top-1 right-8 text-[#af9368]">
+                                <EyesSvg />
                               </div>
-                            </SwiperSlide>
-                          );
-                        })}
-                      </Swiper>
-                    </div>
 
-                    {/* Button */}
+                              <div className="absolute top-1 -right-2">
+                                <Radio
+                                  id={address.id}
+                                  name="address"
+                                  checked={isSelected}
+                                  onChange={() => {
+                                    field.onChange(address);
+                                    clearErrors("address");
+                                  }}
+                                />
+                              </div>
+
+                              {address.isDefault && (
+                                <span className="absolute px-2 py-1 text-[9px] text-green-700 bg-green-100 rounded-full top-1 left-1">
+                                  Default
+                                </span>
+                              )}
+
+                              <div className="mt-5 space-y-1 text-sm text-gray-700">
+                                <p className="font-medium text-gray-900">
+                                  {address.address.slice(0, 15) + "..."}
+                                </p>
+                                <p>
+                                  {address.city}, {address.state}
+                                </p>
+                                <p className="text-gray-500">
+                                  PIN: {address.pinCode}
+                                </p>
+                              </div>
+                            </div>
+                          </SwiperSlide>
+                        );
+                      })}
+                    </Swiper>
+
+                    {fieldState.error && (
+                      <p className="mx-auto mb-2 text-xs font-semibold text-center text-red-600">
+                        {fieldState.error.message}
+                      </p>
+                    )}
                     <div className="grid grid-cols-2 gap-2 p-2">
                       <Button
                         type="button"
                         variant="outline"
-                        onClick={() => setShowAddressModal(selectedId)}
+                        onClick={() => {
+                          if (field.value?.id) {
+                            setShowAddressModal(field.value);
+                          } else {
+                            setError("address", {
+                              message: "Please select any address",
+                            });
+                          }
+                        }}
                         className="flex items-center justify-center w-full gap-2 text-sm"
                       >
                         <PencilIcon className="w-5 h-5" /> Edit
@@ -495,36 +513,15 @@ const ProfileUpdateModal = ({
 
                       <Button
                         type="button"
-                        variant="outline"
                         onClick={() => setShowAddressModal("add")}
                         className="flex items-center justify-center w-full gap-2 text-sm"
                       >
                         <PlusCircleIcon className="w-6 h-6" /> Add
                       </Button>
                     </div>
-                    <div className="p-2 ">
-                      <Button
-                        type="button"
-                        onClick={() => handleSetAsDefaultAddress(selectedId)}
-                        className="w-full text-sm"
-                      >
-                        Set as Default
-                      </Button>
-                    </div>
-                  </>
-                ) : (
-                  <NoData
-                    customIcon={<MapPinIcon className="w-8 h-8" />}
-                    title="You have not added any addresses"
-                    message="Please Add your Address and complete your profile."
-                    messageClassName="text-sm"
-                    titleClassName="text-md"
-                    showAction={true}
-                    actionText="Add Address"
-                    onActionClick={() => setShowAddressModal("add")}
-                  />
+                  </div>
                 )}
-              </div>
+              />
             </div>
           </div>
 

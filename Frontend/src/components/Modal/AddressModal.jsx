@@ -349,6 +349,7 @@ const AddressModal = ({
         setShowAddress(false);
         handleBackToSelection();
       }}
+      loading={loading}
     >
       <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
@@ -360,11 +361,6 @@ const AddressModal = ({
           heading={"Delivery Address"}
           subHeading={"Choose where you want your order delivered"}
         />
-        {loading && (
-          <div className="absolute top-[-2rem] right-[-1rem]">
-            <BooksLoader height="0rem" imgHeight="10" imgWidth="10" />
-          </div>
-        )}
 
         <div className="flex mb-6 border-b border-[#5c4c49]/40">
           {["select", "add"].map((tab) => (
