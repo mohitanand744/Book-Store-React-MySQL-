@@ -523,16 +523,24 @@ const ProfileUpdateModal = ({
                         </div>
                       </>
                     ) : (
-                      <NoData
-                        icon={"search"}
-                        title="You have not added any addresses"
-                        message="Please Add your Address and complete your profile."
-                        messageClassName="text-sm"
-                        titleClassName="text-md"
-                        showAction={true}
-                        actionText="Add Address"
-                        onActionClick={() => setShowAddressModal("add")}
-                      />
+                      <>
+                        <NoData
+                          icon={"search"}
+                          title="You have not added any addresses"
+                          message="Please Add your Address and complete your profile."
+                          messageClassName="text-sm"
+                          titleClassName="text-md"
+                          showAction={true}
+                          actionText="Add Address"
+                          onActionClick={() => setShowAddressModal("add")}
+                        />
+
+                        {fieldState.error && (
+                          <p className="mx-auto my-2 text-xs font-semibold text-center text-red-600">
+                            {fieldState.error.message}
+                          </p>
+                        )}
+                      </>
                     )}
                   </div>
                 )}
