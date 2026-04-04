@@ -420,7 +420,7 @@ const ProfileUpdateModal = ({
                 }
                 render={({ field, fieldState }) => (
                   <div
-                    className={`bg-[#FFE6C1]/30 px-1 ${fieldState?.error?.message ? "border-red-500" : "border-[#cab492]"} border-2  rounded-2xl`}
+                    className={`bg-[#FFE6C1]/30 px-1 ${fieldState?.error?.message ? "border-red-500" : "border-[#cab492]"} border-2  rounded-2xl p-1`}
                   >
                     {userAddresses.length > 0 ? (
                       <>
@@ -524,14 +524,14 @@ const ProfileUpdateModal = ({
                       </>
                     ) : (
                       <NoData
-                        customIcon={<MapPinIcon className="w-8 h-8" />}
-                        title="No address found"
-                        message="Add your address to continue"
+                        icon={"search"}
+                        title="You have not added any addresses"
+                        message="Please Add your Address and complete your profile."
                         messageClassName="text-sm"
                         titleClassName="text-md"
                         showAction={true}
                         actionText="Add Address"
-                        actionFunction={() => setShowAddressModal("add")}
+                        onActionClick={() => setShowAddressModal("add")}
                       />
                     )}
                   </div>

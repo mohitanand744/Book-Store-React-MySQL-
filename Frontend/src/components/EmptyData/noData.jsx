@@ -173,7 +173,7 @@ const NoData = ({
       </motion.h3>
 
       <motion.p
-        className={`mb-6 text-center text-[#5C4C49]/75 ${messageClassName}`}
+        className={`mb-3 text-center text-[#5C4C49]/75 ${messageClassName}`}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.3 }}
@@ -187,7 +187,7 @@ const NoData = ({
       {/* Action button */}
       {showAction && (
         <motion.div
-          className="flex justify-center mt-6 text-sm text-center text-gray-500"
+          className="flex justify-center mt-2 text-sm text-center text-gray-500"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.4 }}
