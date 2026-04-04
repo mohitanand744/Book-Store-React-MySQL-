@@ -110,11 +110,6 @@ const ProfileUpdateModal = ({
       getUserAddressesList();
     }
   }, [showProfileUpdateModal]);
-  useEffect(() => {
-    if (userData?.default_address?.address) {
-      setValue("address", userData?.default_address);
-    }
-  }, [userData?.default_address?.address]);
 
   const handleSetAsDefaultAddress = async (selectedId) => {
     const selectedAddr = userAddresses.find(
@@ -417,7 +412,11 @@ const ProfileUpdateModal = ({
               <Controller
                 name="address"
                 control={control}
-                rules={{ required: "Please select an default address" }}
+                rules={
+                  userData?.default_address?.address
+                    ? {}
+                    : { required: "Please select an default address" }
+                }
                 render={({ field, fieldState }) => (
                   <div
                     className={`bg-[#FFE6C1]/30 px-1 ${fieldState?.error?.message ? "border-red-500" : "border-[#cab492]"} border-2  rounded-2xl`}
