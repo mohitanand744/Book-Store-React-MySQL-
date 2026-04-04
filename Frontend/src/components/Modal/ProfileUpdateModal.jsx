@@ -8,6 +8,7 @@ import Button from "../Buttons/Button";
 import { getAllCategories } from "../../utils/apis/categoryApis";
 import { useLoader } from "../../Hooks/useLoader";
 import {
+  MapPinIcon,
   PencilIcon,
   PhoneIcon,
   PlusCircleIcon,
@@ -421,103 +422,118 @@ const ProfileUpdateModal = ({
                   <div
                     className={`bg-[#FFE6C1]/30 px-1 ${fieldState?.error?.message ? "border-red-500" : "border-[#cab492]"} border-2  rounded-2xl`}
                   >
-                    <Swiper
-                      onSwiper={(swiper) => {
-                        swiperRef.current = swiper;
-                      }}
-                      spaceBetween={12}
-                      slidesPerView={1.2}
-                      breakpoints={{
-                        640: { slidesPerView: 1.5 },
-                        768: { slidesPerView: 2 },
-                      }}
-                    >
-                      {userAddresses.map((address) => {
-                        const isSelected = field.value?.id === address.id;
+                    {userAddresses.length > 0 ? (
+                      <>
+                        <Swiper
+                          onSwiper={(swiper) => {
+                            swiperRef.current = swiper;
+                          }}
+                          spaceBetween={12}
+                          slidesPerView={1.2}
+                          breakpoints={{
+                            640: { slidesPerView: 1.5 },
+                            768: { slidesPerView: 2 },
+                          }}
+                        >
+                          {userAddresses.map((address) => {
+                            const isSelected = field.value?.id === address.id;
 
-                        return (
-                          <SwiperSlide key={address.id}>
-                            <div
-                              onClick={() => {
-                                field.onChange(address);
-                                clearErrors("address");
-                              }}
-                              className={`relative cursor-pointer rounded-xl border p-3 transition-all ${fieldState?.error?.message ? "border-red-500" : "border-[#cab492] "} duration-200 h-full ${
-                                isSelected
-                                  ? "border-[#D3BD9D] bg-[#FFE6C1] scale-105 shadow-md"
-                                  : "hover:shadow-sm bg-[#FFE6C9]/20"
-                              }`}
-                            >
-                              <div className="absolute top-1 right-8 text-[#af9368]">
-                                <EyesSvg />
-                              </div>
-
-                              <div className="absolute top-1 -right-2">
-                                <Radio
-                                  id={address.id}
-                                  name="address"
-                                  checked={isSelected}
-                                  onChange={() => {
+                            return (
+                              <SwiperSlide key={address.id}>
+                                <div
+                                  onClick={() => {
                                     field.onChange(address);
                                     clearErrors("address");
                                   }}
-                                />
-                              </div>
+                                  className={`relative cursor-pointer rounded-xl border p-3 transition-all ${fieldState?.error?.message ? "border-red-500" : "border-[#cab492] "} duration-200 h-full ${
+                                    isSelected
+                                      ? "border-[#D3BD9D] bg-[#FFE6C1] scale-105 shadow-md"
+                                      : "hover:shadow-sm bg-[#FFE6C9]/20"
+                                  }`}
+                                >
+                                  <div className="absolute top-1 right-8 text-[#af9368]">
+                                    <EyesSvg />
+                                  </div>
 
-                              {address.isDefault && (
-                                <span className="absolute px-2 py-1 text-[9px] text-green-700 bg-green-100 rounded-full top-1 left-1">
-                                  Default
-                                </span>
-                              )}
+                                  <div className="absolute top-1 -right-2">
+                                    <Radio
+                                      id={address.id}
+                                      name="address"
+                                      checked={isSelected}
+                                      onChange={() => {
+                                        field.onChange(address);
+                                        clearErrors("address");
+                                      }}
+                                    />
+                                  </div>
 
-                              <div className="mt-5 space-y-1 text-sm text-gray-700">
-                                <p className="font-medium text-gray-900">
-                                  {address.address.slice(0, 15) + "..."}
-                                </p>
-                                <p>
-                                  {address.city}, {address.state}
-                                </p>
-                                <p className="text-gray-500">
-                                  PIN: {address.pinCode}
-                                </p>
-                              </div>
-                            </div>
-                          </SwiperSlide>
-                        );
-                      })}
-                    </Swiper>
+                                  {address.isDefault && (
+                                    <span className="absolute px-2 py-1 text-[9px] text-green-700 bg-green-100 rounded-full top-1 left-1">
+                                      Default
+                                    </span>
+                                  )}
 
-                    {fieldState.error && (
-                      <p className="mx-auto mb-2 text-xs font-semibold text-center text-red-600">
-                        {fieldState.error.message}
-                      </p>
+                                  <div className="mt-5 space-y-1 text-sm text-gray-700">
+                                    <p className="font-medium text-gray-900">
+                                      {address.address.slice(0, 15) + "..."}
+                                    </p>
+                                    <p>
+                                      {address.city}, {address.state}
+                                    </p>
+                                    <p className="text-gray-500">
+                                      PIN: {address.pinCode}
+                                    </p>
+                                  </div>
+                                </div>
+                              </SwiperSlide>
+                            );
+                          })}
+                        </Swiper>
+
+                        {fieldState.error && (
+                          <p className="mx-auto mb-2 text-xs font-semibold text-center text-red-600">
+                            {fieldState.error.message}
+                          </p>
+                        )}
+                        <div className="grid grid-cols-2 gap-2 p-2">
+                          <Button
+                            type="button"
+                            variant="outline"
+                            onClick={() => {
+                              if (field.value?.id) {
+                                setShowAddressModal(field.value);
+                              } else {
+                                setError("address", {
+                                  message: "Please select any address",
+                                });
+                              }
+                            }}
+                            className="flex items-center justify-center w-full gap-2 text-sm"
+                          >
+                            <PencilIcon className="w-5 h-5" /> Edit
+                          </Button>
+
+                          <Button
+                            type="button"
+                            onClick={() => setShowAddressModal("add")}
+                            className="flex items-center justify-center w-full gap-2 text-sm"
+                          >
+                            <PlusCircleIcon className="w-6 h-6" /> Add
+                          </Button>
+                        </div>
+                      </>
+                    ) : (
+                      <NoData
+                        customIcon={<MapPinIcon className="w-8 h-8" />}
+                        title="No address found"
+                        message="Add your address to continue"
+                        messageClassName="text-sm"
+                        titleClassName="text-md"
+                        showAction={true}
+                        actionText="Add Address"
+                        actionFunction={() => setShowAddressModal("add")}
+                      />
                     )}
-                    <div className="grid grid-cols-2 gap-2 p-2">
-                      <Button
-                        type="button"
-                        variant="outline"
-                        onClick={() => {
-                          if (field.value?.id) {
-                            setShowAddressModal(field.value);
-                          } else {
-                            setError("address", {
-                              message: "Please select any address",
-                            });
-                          }
-                        }}
-                        className="flex items-center justify-center w-full gap-2 text-sm"
-                      >
-                        <PencilIcon className="w-5 h-5" /> Edit
-                      </Button>
-
-                      <Button
-                        type="button"
-                        onClick={() => setShowAddressModal("add")}
-                        className="flex items-center justify-center w-full gap-2 text-sm"
-                      >
-                        <PlusCircleIcon className="w-6 h-6" /> Add
-                      </Button>
-                    </div>
                   </div>
                 )}
               />
