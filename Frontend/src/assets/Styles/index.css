@@ -25,7 +25,7 @@ textarea::placeholder {
   -moz-border-radius: 3rem !important;
   -ms-border-radius: 3rem !important;
   -o-border-radius: 3rem !important; */
-
+  overflow-y: visible !important;
   padding: 0 10px !important;
 }
 
@@ -62,6 +62,10 @@ textarea::placeholder {
 }
 .swiper-wrapper {
   padding: 1rem 0;
+}
+
+.swiper-slide.swiper-slide-visible.swiper-slide-fully-visible.swiper-slide-active {
+  transform: scale(1.2) !important;
 }
 
 .homeBanner .swiper-wrapper {

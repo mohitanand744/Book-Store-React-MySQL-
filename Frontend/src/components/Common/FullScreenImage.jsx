@@ -9,10 +9,9 @@ const FullScreenImageModal = () => {
     <AnimatePresence>
       {preview.isOpen && (
         <div className="fixed inset-0 z-[9999] flex items-center justify-center isolate">
-
           {/* Backdrop */}
           <motion.div
-            className="fixed inset-0 bg-black/90 cursor-pointer backdrop-blur-sm"
+            className="fixed inset-0 cursor-pointer bg-black/90 backdrop-blur-sm"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -43,7 +42,6 @@ const FullScreenImageModal = () => {
               className="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl"
             />
           </motion.div>
-
         </div>
       )}
     </AnimatePresence>

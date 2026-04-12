@@ -26,6 +26,7 @@ const ScrollBooks = ({ autoScroll = true, books }) => {
           autoScroll && {
             delay: 3500,
             disableOnInteraction: false,
+            pauseOnMouseEnter: true,
           }
         }
         loop={autoScroll}
@@ -68,7 +69,7 @@ const ScrollBooks = ({ autoScroll = true, books }) => {
         {books?.map((book, i) => (
           <SwiperSlide
             key={i}
-            className="relative pb-8 hover:scale-[1.02] transition-transform duration-300"
+            className="relative pb-8 hover:scale-[1.02] hover:z-[9999] transition-all duration-300"
           >
             <BookCard book={book} />
           </SwiperSlide>

@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchAllBooks } from "../store/Redux/Slices/BooksSlice";
 import { useNavigate } from "react-router-dom";
 import { MdOutlineMail } from "react-icons/md";
 import { RiLogoutCircleLine } from "react-icons/ri";
@@ -11,7 +13,7 @@ import {
   FaShoppingBag,
 } from "react-icons/fa";
 import { FiPhone } from "react-icons/fi";
-import { mockBooks } from "./../../Data/mockData";
+
 import ScrollBooks from "../components/ScrollingContainer/ScrollBooks";
 import { toast } from "sonner";
 import Button from "../components/Buttons/Button";
@@ -38,75 +40,35 @@ import "swiper/css";
 import SwiperNavButtons from "../components/Buttons/SwiperNavButtons";
 import { EllipsisHorizontalIcon } from "@heroicons/react/24/outline";
 
-// Mock user data with additional details
-const mockUser = {
-  name: "Alex Johnson",
-  email: "alex.johnson@example.com",
-  profilePic:
-    "https://media.istockphoto.com/id/1322973325/photo/black-girl-standing-with-tablet-at-yellow-studio.jpg?s=612x612&w=0&k=20&c=wZapeoTwD4wICqSnACYEp7VZdOkVtVfBhzBg-1dueJU=",
-  joinDate: "January 2023",
-  address: "123 Book Street, Novel City, 10001",
-  phone: "(555) 123-4567",
-  orders: 12,
-  wishlist: 8,
-  favoriteGenres: ["Fantasy", "Mystery", "Science Fiction"],
-  readingPreferences: {
-    format: "Paperback",
-    language: "English",
-    notification: "Weekly",
-  },
-  recentOrders: [
-    {
-      id: "#BK-2023-0456",
-      title: "The Silent Patient",
-      author: "Alex Michaelides",
-      date: "Today",
-      status: "Delivered",
-      imageUrl:
-        "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQ1Skl5TTerlDFbWVmCW_cL9BBXAtdS-_AdVJdlbE7KPs7DExRiblBJswAfFgPmFj3wqteiD0MbfVnfeTJoBtaZwORgEV0qO9mItMDNsqmD_tnkAf758DwL",
-    },
-    {
-      id: "#BK-2023-0455",
-      title: "Project Hail Mary",
-      author: "Andy Weir",
-      date: "Yesterday",
-      status: "Shipped",
-      imageUrl:
-        "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRLnAxDvjZWtSOIV-5pZ62oZQht34TYOe33DUGFjfYJP1iGUZSQpuIgLb-qWRum_2j4ZHpIR-S558mjlmGHJWSjrott3i2EI6ZSO5fsKuadTtLTYP8Itk3qg-Vc",
-    },
-    {
-      id: "#BK-2023-0454",
-      title: "Dune",
-      author: "Frank Herbert",
-      date: "2 days ago",
-      status: "Processing",
-      imageUrl:
-        "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTOa349umZfJoT8jxIwwlhddByC8XioB8yqGuUsD-74HVhIuq2MSlX7tv9M0p-xLCvH1NUanvF4Gu-ztIzjHXZw-_NpLLB9ofG8DzoHxYBCBqHJfJkVK-HwZg",
-    },
-  ],
-  wishlistItems: [
-    {
-      id: "WL-001",
-      title: "The Midnight Library",
-      author: "Matt Haig",
-      price: "$14.99",
-      image:
-        "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcST2_1i1NyxMqbY6vjq7CgFKocgroiiu9zg770ja3V7fj72rv10n9i_N64_2XQLEHWnnMUSs3Zcss5In9xlJmgHCjEpsLSi3t2FRx8bM7PEa6QCv0SWnMZq2Q",
-    },
-    {
-      id: "WL-002",
-      title: "Klara and the Sun",
-      author: "Kazuo Ishiguro",
-      price: "$13.50",
-      image:
-        "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTOa349umZfJoT8jxIwwlhddByC8XioB8yqGuUsD-74HVhIuq2MSlX7tv9M0p-xLCvH1NUanvF4Gu-ztIzjHXZw-_NpLLB9ofG8DzoHxYBCBqHJfJkVK-HwZg",
-    },
-  ],
-};
+
 
 const UserProfile = () => {
   const [activeTab, setActiveTab] = useState("activity");
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { books } = useSelector((state) => state.books);
+
+  useEffect(() => {
+    if (books?.length === 0) {
+      dispatch(fetchAllBooks());
+    }
+  }, [dispatch, books]);
+
+  const removeDuplicates = (booksArray) => {
+    const uniqueBooks = [];
+    const seen = new Set();
+    for (const book of booksArray) {
+      const uniqueKey = book.title;
+      if (!seen.has(uniqueKey)) {
+        seen.add(uniqueKey);
+        uniqueBooks.push(book);
+      }
+    }
+    return uniqueBooks;
+  };
+
+  const uniqueBooks = books ? removeDuplicates(books) : [];
+
   const [dbStates, setDbStates] = useState([]);
   const {
     logoutStatusSuccess,
@@ -221,7 +183,7 @@ const UserProfile = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.2 }}
-        className="container px-4 py-3 mx-auto"
+        className="container mx-auto"
       >
         {/* Header */}
         <div className="flex flex-col items-start justify-between mb-8 md:flex-row md:items-center">
@@ -434,11 +396,10 @@ const UserProfile = () => {
             <div className="hidden md:flex border-b border-[#D3BD9D]">
               <motion.button
                 onClick={() => setActiveTab("activity")}
-                className={`px-4 py-2 text-nowrap text-[16px] relative ${
-                  activeTab === "activity"
+                className={`px-4 py-2 text-nowrap text-[16px] relative ${activeTab === "activity"
                     ? "text-[#5C4C49] opacity-100 font-bold"
                     : "text-[#5C4C49] opacity-70 font-medium"
-                }`}
+                  }`}
               >
                 Recent Activity
                 {activeTab === "activity" && (
@@ -451,11 +412,10 @@ const UserProfile = () => {
 
               <motion.button
                 onClick={() => setActiveTab("orders")}
-                className={`px-4 py-2 text-nowrap text-[16px] relative ${
-                  activeTab === "orders"
+                className={`px-4 py-2 text-nowrap text-[16px] relative ${activeTab === "orders"
                     ? "text-[#5C4C49] opacity-100 font-bold"
                     : "text-[#5C4C49] opacity-70 font-medium"
-                }`}
+                  }`}
               >
                 Recent Orders
                 {activeTab === "orders" && (
@@ -468,11 +428,10 @@ const UserProfile = () => {
 
               <motion.button
                 onClick={() => setActiveTab("wishlist")}
-                className={`px-4 py-2 text-nowrap text-[16px] relative ${
-                  activeTab === "wishlist"
+                className={`px-4 py-2 text-nowrap text-[16px] relative ${activeTab === "wishlist"
                     ? "text-[#5C4C49] opacity-100 font-bold"
                     : "text-[#5C4C49] opacity-70 font-medium"
-                }`}
+                  }`}
               >
                 Wishlist Preview
                 {activeTab === "wishlist" && (
@@ -488,11 +447,10 @@ const UserProfile = () => {
             <div className="bg-white rounded-3xl border-t border-[#D3BD9D] md:hidden flex justify-around py-2 z-50">
               <motion.button
                 onClick={() => setActiveTab("activity")}
-                className={`flex flex-col items-center p-2 w-full relative ${
-                  activeTab === "activity"
+                className={`flex flex-col items-center p-2 w-full relative ${activeTab === "activity"
                     ? "text-[#5C4C49]"
                     : "text-[#5C4C49] opacity-70"
-                }`}
+                  }`}
                 whileTap={{ scale: 0.95 }}
               >
                 <FaHistory className="w-5 h-5" />
@@ -507,11 +465,10 @@ const UserProfile = () => {
 
               <motion.button
                 onClick={() => setActiveTab("orders")}
-                className={`flex flex-col items-center p-2 w-full relative ${
-                  activeTab === "orders"
+                className={`flex flex-col items-center p-2 w-full relative ${activeTab === "orders"
                     ? "text-[#5C4C49]"
                     : "text-[#5C4C49] opacity-70"
-                }`}
+                  }`}
                 whileTap={{ scale: 0.95 }}
               >
                 <FaShoppingBag className="w-5 h-5" />
@@ -526,11 +483,10 @@ const UserProfile = () => {
 
               <motion.button
                 onClick={() => setActiveTab("wishlist")}
-                className={`flex flex-col items-center p-2 w-full relative ${
-                  activeTab === "wishlist"
+                className={`flex flex-col items-center p-2 w-full relative ${activeTab === "wishlist"
                     ? "text-[#5C4C49]"
                     : "text-[#5C4C49] opacity-70"
-                }`}
+                  }`}
                 whileTap={{ scale: 0.95 }}
               >
                 <FaHeart className="w-5 h-5" />
@@ -553,21 +509,21 @@ const UserProfile = () => {
             >
               {activeTab === "activity" && (
                 <>
-                  <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                    {mockUser?.recentOrders?.slice(0, 3).map((order, index) => (
-                      <ActivityItem
-                        key={order.id}
-                        title={`Order ${order.status}`}
-                        date={order.date}
-                        description={`${order.title} by ${order.author}`}
-                        status={order.status}
-                        delay={0.1 * index}
-                        imageUrl={order.imageUrl}
-                      />
-                    ))}
-                  </div>
-
-                  {mockUser?.recentOrders?.length === 0 && (
+                  {user?.recentActivity?.length > 0 ? (
+                    <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                      {user.recentActivity.slice(0, 3).map((item, index) => (
+                        <ActivityItem
+                          key={item.id}
+                          title={item.title}
+                          date={item.date}
+                          description={item.description}
+                          status={item.status}
+                          delay={0.1 * index}
+                          imageUrl={item.imageUrl}
+                        />
+                      ))}
+                    </div>
+                  ) : (
                     <NoData
                       title="No Activity"
                       message="You have not made any recent activity."
@@ -575,7 +531,6 @@ const UserProfile = () => {
                       showAction={true}
                       actionText="Browse Books"
                       actionLink="/nextChapter/books"
-                      //onActionClick={toggleCart}
                     />
                   )}
                 </>
@@ -583,53 +538,51 @@ const UserProfile = () => {
 
               {activeTab === "orders" && (
                 <>
-                  <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                    {mockUser?.recentOrders.map((order, index) => (
-                      <ActivityItem
-                        key={order.id}
-                        title={`Order ${order.status}`}
-                        date={order.date}
-                        description={`${order.title} by ${order.author}`}
-                        status={order.status}
-                        delay={0.1 * index}
-                        imageUrl={order.imageUrl}
-                      />
-                    ))}
-                  </div>
-
-                  {mockUser?.recentOrders?.length === 0 && (
-                    <div className="">
-                      <NoData
-                        title="No Orders Found"
-                        message="You have not placed any orders yet."
-                        icon="cart"
-                        showAction={true}
-                        actionText="Explore More"
-                        actionLink="/nextChapter/books"
-                        //onActionClick={toggleCart}
-                      />
+                  {user?.recentOrders?.length > 0 ? (
+                    <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                      {user.recentOrders.map((order, index) => (
+                        <ActivityItem
+                          key={order.id}
+                          title={`Order ${order.status}`}
+                          date={order.date}
+                          description={`${order.title} by ${order.author}`}
+                          status={order.status}
+                          delay={0.1 * index}
+                          imageUrl={order.imageUrl}
+                        />
+                      ))}
                     </div>
+                  ) : (
+                    <NoData
+                      title="No Orders Found"
+                      message="You have not placed any orders yet."
+                      icon="cart"
+                      showAction={true}
+                      actionText="Explore More"
+                      actionLink="/nextChapter/books"
+                    />
                   )}
                 </>
               )}
 
               {activeTab === "wishlist" && (
                 <>
-                  <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                    {mockUser?.wishlistItems?.map((item, index) => (
-                      <ActivityItem
-                        key={item.id}
-                        title={`${item.title}`}
-                        date={""}
-                        description={`${item.title} by ${item.author}`}
-                        status={""}
-                        delay={""}
-                        imageUrl={item.image}
-                      />
-                    ))}
-                  </div>
-                  <div className="flex items-center justify-center">
-                    {user?.wishlistItems?.length === 0 && (
+                  {user?.wishlistItems?.length > 0 ? (
+                    <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                      {user.wishlistItems.map((item, index) => (
+                        <ActivityItem
+                          key={item.id}
+                          title={item.title}
+                          date={""}
+                          description={`${item.title} by ${item.author}`}
+                          status={""}
+                          delay={0.1 * index}
+                          imageUrl={item.image}
+                        />
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="flex items-center justify-center">
                       <NoData
                         title="No favorites yet"
                         message="Start adding books to your favorites collection"
@@ -638,8 +591,8 @@ const UserProfile = () => {
                         actionText="Browse Books"
                         actionLink="/nextChapter/books"
                       />
-                    )}
-                  </div>
+                    </div>
+                  )}
                 </>
               )}
             </motion.div>
@@ -654,12 +607,12 @@ const UserProfile = () => {
         transition={{ delay: 1.1 }}
         className="container mt-16"
       >
-        <h2 className="text-2xl font-bold text-[#5C4C49] mb-6">
+        <h2 className="text-2xl font-bold text-[#5C4C49] my-6">
           {/*  More by {book.author.author_name} */}
           Related Books
         </h2>
         <div className="">
-          <ScrollBooks autoScroll={false} books={mockBooks?.slice(5, 11)} />
+          <ScrollBooks autoScroll={false} books={uniqueBooks?.slice(0, 10)} />
         </div>
       </motion.div>
 
@@ -763,13 +716,12 @@ const ActivityItem = ({
         />
         {status && (
           <span
-            className={`absolute top-2 right-2 px-2 py-1 rounded-full text-xs font-medium ${
-              status === "Delivered"
+            className={`absolute top-2 right-2 px-2 py-1 rounded-full text-xs font-medium ${status === "Delivered"
                 ? "bg-green-100 text-green-800"
                 : status === "Shipped"
                   ? "bg-blue-100 text-blue-800"
                   : "bg-yellow-100 text-yellow-800"
-            }`}
+              }`}
           >
             {status}
           </span>
@@ -884,11 +836,11 @@ const ModernProfileDetail = ({
                 )}
               </div>
             ) : (
-              <span
-                className={notProvided ? "text-[#d4b17d]" : "text-[#5C4C49]"}
+              <p
+                className={`${notProvided ? "text-[#d4b17d]" : "text-[#5C4C49]"} text-sm font-semibold`}
               >
                 {value}
-              </span>
+              </p>
             )}
           </div>
 

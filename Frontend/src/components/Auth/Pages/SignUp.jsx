@@ -441,17 +441,25 @@ const SignUp = () => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 1 }}
-                className="mt-6 text-center"
+                className="flex flex-col items-center gap-3 mt-6 text-center"
               >
                 <p className="text-xs bg-[rgba(0,0,0,0.36)]  px-3 py-1 rounded-[12px] text-[#e1d5ca]">
                   Already have an account?{" "}
                   <Link
                     to="/"
-                    className="font-medium text-[#e1d5ca] hover:text-[#e1d5ca]/70 hover:scale-105"
+                    className="inline-block font-medium transition-transform text-[#e1d5ca] hover:text-[#e1d5ca]/70 hover:scale-105"
                   >
                     Sign in &rarr;
                   </Link>
                 </p>
+                <div className="text-xs bg-[rgba(0,0,0,0.36)] px-3 py-1 rounded-[12px] text-[#e1d5ca]">
+                  <Link
+                    to="/nextChapter"
+                    className="inline-block font-medium transition-transform text-[#e1d5ca] hover:text-[#e1d5ca]/70 hover:scale-105"
+                  >
+                    Explore without account &rarr;
+                  </Link>
+                </div>
               </motion.div>
             </div>
 

@@ -38,7 +38,7 @@ const bookSlice = createSlice({
         state.loading = false;
         const { data, nextCursor, hasMore } = action.payload;
 
-        if (action.meta.arg.cursor) {
+        if (action.meta.arg?.cursor) {
           state.books = [...state.books, ...data];
         } else {
           state.books = data;

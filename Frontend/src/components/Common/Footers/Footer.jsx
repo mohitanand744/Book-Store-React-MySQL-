@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
@@ -8,9 +9,15 @@ const Footer = () => {
         <div className="grid grid-cols-12 gap-2">
           {/* About Section */}
           <div className="col-span-12 md:col-span-6 lg:col-span-3">
-            <h3 className="mb-4 text-lg font-bold   text-[#5c4c49]">
-              About Us
-            </h3>
+            <div className="flex-shrink-0 w-28 mb-4">
+              <Link to="/nextChapter">
+                <img
+                  className="object-cover w-full h-full"
+                  src="/images/logoBS.png"
+                  alt="BookStore Logo"
+                />
+              </Link>
+            </div>
             <p className="font-medium text-white text-md">
               Welcome to our bookstore! We provide a wide range of books across
               all genres, from fiction to self-help. Explore, read, and grow
@@ -24,36 +31,36 @@ const Footer = () => {
             </h3>
             <ul className="space-y-2">
               <li>
-                <a
-                  href="/about"
+                <Link
+                  to="/nextChapter/aboutUs"
                   className="text-white transition text-md hover:text-[#5C4C49] "
                 >
                   About Us
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="/books"
+                <Link
+                  to="/nextChapter/books"
                   className="text-white transition text-md hover:text-[#5C4C49] "
                 >
                   Browse Books
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="/contact"
+                <Link
+                  to="/nextChapter"
                   className="text-white transition text-md hover:text-[#5C4C49] "
                 >
                   Contact Us
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="/faq"
+                <Link
+                  to="/nextChapter"
                   className="text-white transition text-md hover:text-[#5C4C49] "
                 >
                   FAQs
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
@@ -62,36 +69,36 @@ const Footer = () => {
             <h3 className="mb-4 text-lg font-bold text-[#5c4c49]">Buy Books</h3>
             <ul className="space-y-2">
               <li>
-                <a
-                  href="/about"
+                <Link
+                  to="/nextChapter/books"
                   className="text-white transition text-md hover:text-[#5C4C49] "
                 >
                   Hindi Books
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="/books"
+                <Link
+                  to="/nextChapter/books"
                   className="text-white transition text-md hover:text-[#5C4C49] "
                 >
                   English Books
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="/contact"
+                <Link
+                  to="/nextChapter/books"
                   className="text-white transition text-md hover:text-[#5C4C49] "
                 >
                   Fantasy
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="/faq"
+                <Link
+                  to="/nextChapter/books"
                   className="text-white transition text-md hover:text-[#5C4C49] "
                 >
                   Other
-                </a>
+                </Link>
               </li>
             </ul>
           </div>

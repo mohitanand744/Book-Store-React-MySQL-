@@ -12,11 +12,10 @@ const ReviewsContainer = () => {
   const swiperRef = useRef(null);
 
   return (
-    <div className="relative">
+    <div className="relative w-full">
       {/* Custom Navigation Buttons */}
       <SwiperNavButtons
         swiperRef={swiperRef}
-        className="my-custom-class"
         position={{ top: "50%" }}
         prevButtonclassName=""
         nextButtonclassName=""

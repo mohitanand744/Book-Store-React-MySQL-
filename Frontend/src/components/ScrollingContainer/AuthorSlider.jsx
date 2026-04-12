@@ -39,8 +39,7 @@ function AuthorSlider({ books }) {
       {/* Custom Navigation Buttons */}
       <SwiperNavButtons
         swiperRef={swiperRef}
-        className="my-custom-class"
-        position={{ top: "37%" }}
+        position={{ top: "40%" }}
         prevButtonclassName=""
         nextButtonclassName=""
       />
@@ -72,8 +71,8 @@ function AuthorSlider({ books }) {
                 <img
                   className="object-cover w-full h-full rounded-full"
                   src={
-                    author.author.author_image_url
-                      ? author.author.author_image_url
+                    author.author.author_image
+                      ? author.author.author_image
                       : "https://cdn.vectorstock.com/i/500p/40/53/accurate-silhouette-of-a-man-for-profile-picture-vector-14714053.jpg"
                   }
                   alt=""

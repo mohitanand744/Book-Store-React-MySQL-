@@ -13,6 +13,9 @@ import {
   PhoneIcon,
   PlusCircleIcon,
   TrashIcon,
+  HomeIcon,
+  BuildingOfficeIcon,
+  BuildingStorefrontIcon,
 } from "@heroicons/react/24/outline";
 import NoData from "../EmptyData/noData";
 import { updateProfile } from "../../utils/apis/userApis";
@@ -34,6 +37,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import SwiperNavButtons from "../Buttons/SwiperNavButtons";
 import { EyesSvg } from "../SVGs/SVGs";
+import ViewAddressDetailsModal from "./ViewAddressDetailsModal";
 
 const ProfileUpdateModal = ({
   showProfileUpdateModal,
@@ -57,6 +61,7 @@ const ProfileUpdateModal = ({
   const [userAddresses, setUserAddresses] = useState([]);
   const { loading } = useLoader();
   const [selectedId, setSelectedId] = useState(null);
+  const [viewAddressDetails, setViewAddressDetails] = useState(false);
   const { handleKeyDown, handleInput } = useInputHandlers(
     setError,
     clearErrors,
@@ -127,7 +132,7 @@ const ProfileUpdateModal = ({
       const res = await updateAddress(selectedId.id, updatedData);
 
       if (res.success) {
-        toast.success("Default address updated successfully!");
+        //toast.success("Default address updated successfully!");
         await getUserAddressesList();
 
         if (swiperRef.current) {
@@ -165,6 +170,14 @@ const ProfileUpdateModal = ({
       toast.error(error.response?.data?.message || error.message);
     }
   };
+
+  useEffect(() => {
+    const defaultAddr = userAddresses.find((addr) => addr.isDefault);
+
+    if (defaultAddr) {
+      setValue("address", defaultAddr, { shouldValidate: true });
+    }
+  }, [userAddresses]);
 
   console.log(userAddresses);
 
@@ -413,11 +426,7 @@ const ProfileUpdateModal = ({
               <Controller
                 name="address"
                 control={control}
-                rules={
-                  userData?.default_address?.address
-                    ? {}
-                    : { required: "Please select an default address" }
-                }
+                rules={{ required: "Please select an default address" }}
                 render={({ field, fieldState }) => (
                   <div
                     className={`bg-[#FFE6C1]/30 px-1 ${fieldState?.error?.message ? "border-red-500" : "border-[#cab492]"} border-2  rounded-2xl p-1`}
@@ -451,7 +460,18 @@ const ProfileUpdateModal = ({
                                       : "hover:shadow-sm bg-[#FFE6C9]/20"
                                   }`}
                                 >
-                                  <div className="absolute top-1 right-8 text-[#af9368]">
+                                  <div
+                                    className="absolute top-1 right-8 text-[#af9368] z-10 cursor-pointer active:scale-75 hover:scale-105 transition-all"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      const Icon = address.type === "Home" 
+                                        ? HomeIcon 
+                                        : address.type === "Work" 
+                                          ? BuildingOfficeIcon 
+                                          : BuildingStorefrontIcon;
+                                      setViewAddressDetails({ ...address, Icon });
+                                    }}
+                                  >
                                     <EyesSvg />
                                   </div>
 
@@ -563,6 +583,11 @@ const ProfileUpdateModal = ({
           </div>
         </motion.form>
       </motion.div>
+
+      <ViewAddressDetailsModal
+        viewAddressDetails={viewAddressDetails}
+        setViewAddressDetails={setViewAddressDetails}
+      />
     </Modal>
   );
 };

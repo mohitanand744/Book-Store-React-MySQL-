@@ -20,6 +20,7 @@ const BookCard = ({ book }) => {
   const path = useLocation().pathname.replaceAll("/", "");
   const dispatch = useDispatch();
   const [isLiked, setIsLiked] = useState(false);
+  const [isReadMore, setIsReadMore] = useState(false);
   const { loading } = useSelector((state) => state.wishlists);
   const debounceRef = useRef(null);
   const { isAuthenticated, userData, getUserUpdatedDetails } = useAuth();
@@ -74,8 +75,8 @@ const BookCard = ({ book }) => {
 
   return (
     <div
-      className="relative flex flex-col bg-white border-t justify-between   shadow-xl
-     md:h-[29rem] h-[26rem] card rounded-3xl"
+      className="relative flex flex-col bg-white border-t justify-between shadow-xl
+     md:h-[29rem] h-[26rem] z-10 hover:z-[9999] transition-all duration-300 card rounded-3xl"
     >
       <div className="absolute top-1 right-1 px-2 py-1 bg-[#ffcd81ab] rounded-3xl">
         <p>{book.category}</p>
@@ -92,7 +93,7 @@ const BookCard = ({ book }) => {
           />
         </div>
 
-        <div className="absolute left-0 w-[20rem] text-sm z-[9999] transition-all duration-300 scale-0 group-hover:translate-y-0 group-hover:scale-100 group-hover:translate-x-0 rotate-45 group-hover:rotate-0 translate-x-[-6rem] translate-y-[-10rem]  font-medium bg-[#5C4C49] p-4 rounded-3xl">
+        <div className="absolute left-0 w-[20rem] text-sm z-[11111] transition-all duration-300 scale-0 group-hover:translate-y-0 group-hover:scale-100 group-hover:translate-x-0 rotate-45 group-hover:rotate-0 translate-x-[-6rem] translate-y-[-10rem]  font-medium bg-[#5C4C49] p-4 rounded-3xl">
           <div className="relative mx-auto mb-2 border-[4px] border-white h-44 w-44 rounded-3xl">
             <img
               src={
@@ -117,7 +118,29 @@ const BookCard = ({ book }) => {
           </div>
           <p className="text-center text-white">
             <b className="text-[0.9rem]">Short Intro:</b>{" "}
-            {book.author.author_description}
+            <motion.span
+              key={isReadMore ? "more" : "less"}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.4, ease: "easeInOut" }}
+            >
+              {isReadMore
+                ? book.author?.author_description
+                : book.author?.author_description?.length > 50
+                  ? `${book.author?.author_description?.slice(0, 50)}...`
+                  : book.author?.author_description}
+            </motion.span>
+            {book.author?.author_description?.length > 50 && (
+              <span
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIsReadMore(!isReadMore);
+                }}
+                className="pl-1 text-xs text-[#d3bd9d] cursor-pointer hover:underline inline-block"
+              >
+                {isReadMore ? "Show less" : "Read more"}
+              </span>
+            )}
           </p>
         </div>
       </div>

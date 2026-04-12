@@ -12,12 +12,11 @@ import ShowErrors from "../components/Errors/ShowErrors";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import BooksLoader from "../components/Loaders/BooksLoader";
 import Button from "../components/Buttons/Button";
-import { mockBooks } from "../../Data/mockData";
+
 import { useLoader } from "../Hooks/useLoader";
 import { toast } from "sonner";
 
 const Home = () => {
-  const { loading } = useLoader();
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
@@ -39,34 +38,14 @@ const Home = () => {
       navigate(window.location.pathname, { replace: true });
     }
   }, []);
-  /*   const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const { books, error, loading } = useSelector((state) => state.books);
 
   useEffect(() => {
     dispatch(fetchAllBooks());
   }, [dispatch]);
 
-  const removeDuplicates = (booksArray) => {
-    const uniqueBooks = [];
-    const seen = new Set();
 
-    for (const book of booksArray) {
-      const uniqueKey = book.title; 
-      if (!seen.has(uniqueKey)) {
-        seen.add(uniqueKey);
-        uniqueBooks.push(book);
-      }
-    }
-
-    return uniqueBooks;
-  };
-
-  const uniqueBooks = books?.books ? removeDuplicates(books.books) : []; */
-  console.log("Loader :", loading);
-
-  const books = mockBooks;
-  const uniqueBooks = books;
-  const error = null;
 
   return (
     <div className="">
@@ -89,13 +68,13 @@ const Home = () => {
           ) : error ? (
             <ShowErrors text={error || "Sorry we are Unable Fetch Books"} />
           ) : (
-            <ScrollBooks books={uniqueBooks} />
+            <ScrollBooks books={books} />
           )}
         </div>
 
         <div className="mb-14">
           <h1 className="my-5 text-2xl font-semibold text-center md:text-4xl ">
-            Explore Your Favorite Books
+            Top Sellers
           </h1>
 
           {loading ? (
@@ -105,7 +84,7 @@ const Home = () => {
           ) : (
             <ScrollBooks
               autoScroll={false}
-              books={uniqueBooks.slice(5, uniqueBooks.length)}
+              books={books.slice(5, books.length)}
             />
           )}
 
@@ -125,7 +104,7 @@ const Home = () => {
           ) : error ? (
             <ShowErrors text={error || "Sorry we are Unable Fetch Books"} />
           ) : (
-            <AuthorSlider books={uniqueBooks} />
+            <AuthorSlider books={books} />
           )}
         </div>
 
