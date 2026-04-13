@@ -22,7 +22,7 @@ function AuthorSlider({ books }) {
     const seen = new Set();
 
     for (const book of booksArray) {
-      const uniqueKey = book.author.author_id;
+      const uniqueKey = book?.author?.author_id;
       if (!seen.has(uniqueKey)) {
         seen.add(uniqueKey);
         uniqueAuthors.push(book);
@@ -71,8 +71,8 @@ function AuthorSlider({ books }) {
                 <img
                   className="object-cover w-full h-full rounded-full"
                   src={
-                    author.author.author_image
-                      ? author.author.author_image
+                    author?.author?.author_image
+                      ? author?.author?.author_image
                       : "https://cdn.vectorstock.com/i/500p/40/53/accurate-silhouette-of-a-man-for-profile-picture-vector-14714053.jpg"
                   }
                   alt=""
@@ -81,14 +81,14 @@ function AuthorSlider({ books }) {
 
               <div className="flex-1">
                 <p className="font-semibold text-gray-500">
-                  {author.author.author_name}
+                  {author?.author?.author_name}
                 </p>
                 <div className="flex items-center text-orange-500">
-                  <Ratings ratings={author.author.author_rating} />
-                  <span className="ps-2">{author.author.author_rating}</span>
+                  <Ratings ratings={author?.author?.author_rating} />
+                  <span className="ps-2">{author?.author?.author_rating}</span>
                 </div>
                 <p className="text-gray-500">
-                  {author.author.author_description?.slice(0, 50)}...
+                  {author?.author?.author_description?.slice(0, 50)}...
                 </p>
               </div>
             </div>

@@ -174,10 +174,10 @@ const SingleBooks = () => {
         <span className="hover:text-[#5C4C49] cursor-pointer">Books</span>
         <span className="mx-2">/</span>
         <span className="hover:text-[#5C4C49] cursor-pointer">
-          {book.category}
+          {book?.category}
         </span>
         <span className="mx-2">/</span>
-        <span className="text-[#5C4C49] font-medium">{book.title}</span>
+        <span className="text-[#5C4C49] font-medium">{book?.title}</span>
       </motion.div>
 
       <div className="flex flex-col gap-8 lg:flex-row">
@@ -192,7 +192,7 @@ const SingleBooks = () => {
           >
             <img
               src={mainImage}
-              alt={book.title}
+              alt={book?.title}
               className="w-full h-[600px] object-contain rounded-3xl p-8"
             />
           </motion.div>
@@ -238,13 +238,13 @@ const SingleBooks = () => {
                 transition={{ delay: 0.3 }}
               >
                 <span className="bg-[#F3E9D9] text-[#5C4C49] text-xs px-2 py-1 rounded-full">
-                  {book.category}
+                  {book?.category}
                 </span>
                 <h1 className="text-3xl font-bold text-[#5C4C49] mt-2 mb-1">
-                  {book.title}
+                  {book?.title}
                 </h1>
                 <p className="text-lg text-gray-600">
-                  by {book.author.author_name}
+                  by {book?.author?.author_name}
                 </p>
               </motion.div>
               <motion.div
@@ -261,7 +261,7 @@ const SingleBooks = () => {
                   <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                 </svg>
                 <span className="text-[#5C4C49] font-medium">
-                  {book.author.author_rating}
+                  {book?.author?.author_rating}
                 </span>
               </motion.div>
             </div>
@@ -274,7 +274,7 @@ const SingleBooks = () => {
             >
               <div className="flex items-center mb-3">
                 <span className="text-3xl font-bold text-[#5C4C49] mr-3">
-                  ₹{book.book_price.toFixed(2)}
+                  ₹{book?.book_price?.toFixed(2)}
                 </span>
                 <span className="px-2 py-1 text-sm text-green-600 bg-green-100 rounded">
                   In Stock
@@ -325,7 +325,7 @@ const SingleBooks = () => {
               {activeTab === "description" ? (
                 <>
                   <p className="mb-6 leading-relaxed text-gray-700">
-                    {book.description}
+                    {book?.description}
                   </p>
 
                   {/* Author Card */}
@@ -338,22 +338,22 @@ const SingleBooks = () => {
                     <div className="flex items-center">
                       <div className="w-14 h-14 rounded-full overflow-hidden mr-4 border-2 border-[#D3BD9D]">
                         <img
-                          src={book.author.author_image_url}
-                          alt={book.author.author_name}
+                          src={book?.author?.author_image_url}
+                          alt={book?.author?.author_name}
                           className="object-cover w-full h-full"
                         />
                       </div>
                       <div>
                         <h4 className="font-medium text-[#5C4C49]">
-                          {book.author.author_name}
+                          {book?.author?.author_name}
                         </h4>
                         <p className="text-sm text-gray-600">
-                          {book.author.author_books_count} books published
+                          {book?.author?.author_books_count} books published
                         </p>
                       </div>
                     </div>
                     <p className="mt-3 text-sm text-gray-700">
-                      {book.author.author_description}
+                      {book?.author?.author_description}
                     </p>
                   </motion.div>
                 </>
@@ -697,7 +697,7 @@ const SingleBooks = () => {
               About the Book
             </h3>
             <p className="mb-4 text-gray-700">
-              {book.description} This special edition includes bonus content and
+              {book?.description} This special edition includes bonus content and
               a foreword by the author.
             </p>
             <div className="bg-[#F8F5F0] p-3 rounded-lg">

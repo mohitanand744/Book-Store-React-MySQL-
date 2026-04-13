@@ -14,6 +14,7 @@ const BASE_QUERY = `
     A.AUTHOR_IMAGE_URL,
     A.AUTHOR_RATING,
     BI.IMAGE_URL,
+    B.BOOK_RATING,
 
     CASE 
       WHEN W.id IS NULL THEN false

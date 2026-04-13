@@ -80,10 +80,10 @@ const Wishlist = () => {
               {/* Count with gradient text */}
               <div className="relative">
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#5C4C49] to-[#D3BD9D] font-bold text-lg">
-                  {wishlists?.data.length}
+                  {wishlists?.data?.length}
                 </span>
                 <span className="text-[#5C4C49]/80 ml-1">
-                  {wishlists?.data.length === 1 ? "book" : "books"} saved
+                  {wishlists?.data?.length === 1 ? "book" : "books"} saved
                 </span>
 
                 {/* Subtle pulse effect */}
@@ -136,7 +136,7 @@ const Wishlist = () => {
         </div>
 
         {/* Empty State */}
-        {wishlists?.data.length === 0 && (
+        {wishlists?.data?.length === 0 && (
           <>
             <NoData
               title=" Your wishlist is empty"

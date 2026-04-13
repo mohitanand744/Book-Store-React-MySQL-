@@ -70,22 +70,22 @@ const BookCard = ({ book }) => {
   };
 
   useEffect(() => {
-    setIsLiked(book.isLiked ? true : false);
-  }, [book.isLiked]);
+    setIsLiked(book?.isLiked ? true : false);
+  }, [book?.isLiked]);
 
   return (
     <div
       className="relative flex flex-col bg-white border-t justify-between shadow-xl
-     md:h-[29rem] h-[26rem] z-10 hover:z-[9999] transition-all duration-300 card rounded-3xl"
+     md:h-[29rem] h-[26rem] z-10 hover:z-[99] transition-all duration-300 card rounded-3xl"
     >
       <div className="absolute top-1 right-1 px-2 py-1 bg-[#ffcd81ab] rounded-3xl">
-        <p>{book.category}</p>
+        <p>{book?.category}</p>
       </div>
       <div className="absolute group top-1 left-1">
         <div className=" w-12 border-2 rounded-full border-orange-600 p-[0.1rem] h-12">
           <img
             src={
-              book.author?.author_image ||
+              book?.author?.author_image ||
               "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
             }
             className="object-cover w-full h-full rounded-full cursor-pointer"
@@ -97,7 +97,7 @@ const BookCard = ({ book }) => {
           <div className="relative mx-auto mb-2 border-[4px] border-white h-44 w-44 rounded-3xl">
             <img
               src={
-                book.author?.author_image ||
+                book?.author?.author_image ||
                 "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
               }
               className="object-cover object-top w-full h-full rounded-3xl"
@@ -107,12 +107,12 @@ const BookCard = ({ book }) => {
           <div className="flex flex-col items-center gap-3 mb-2">
             <h1 className="text-white">
               {" "}
-              <b className="text-[0.9rem]"> Name:</b> {book.author.author_name}
+              <b className="text-[0.9rem]"> Name:</b> {book?.author?.author_name}
             </h1>
             <div className="flex items-center gap-1 border border-white bg-[#1a19190a] p-1 px-3 rounded-lg">
-              <Ratings ratings={book.author.author_rating} />
+              <Ratings ratings={book?.author?.author_rating} />
               <span className="text-orange-400">
-                {book.author.author_rating}
+                {book?.author?.author_rating}
               </span>
             </div>
           </div>
@@ -125,12 +125,12 @@ const BookCard = ({ book }) => {
               transition={{ duration: 0.4, ease: "easeInOut" }}
             >
               {isReadMore
-                ? book.author?.author_description
-                : book.author?.author_description?.length > 50
-                  ? `${book.author?.author_description?.slice(0, 50)}...`
-                  : book.author?.author_description}
+                ? book?.author?.author_description
+                : book?.author?.author_description?.length > 50
+                  ? `${book?.author?.author_description?.slice(0, 50)}...`
+                  : book?.author?.author_description}
             </motion.span>
-            {book.author?.author_description?.length > 50 && (
+            {book?.author?.author_description?.length > 50 && (
               <span
                 onClick={(e) => {
                   e.stopPropagation();
@@ -146,9 +146,9 @@ const BookCard = ({ book }) => {
       </div>
       <div className="image w-[60%] md:w-[90%] mx-auto pt-8 h-[15rem]">
         <img
-          onClick={() => navigate(`/nextChapter/book/${book.book_id}`)}
+          onClick={() => navigate(`/nextChapter/book/${book?.book_id}`)}
           className="object-contain w-full h-full cursor-pointer"
-          src={book?.images[0]}
+          src={book?.images?.[0]}
           alt=""
         />
       </div>
@@ -162,7 +162,7 @@ const BookCard = ({ book }) => {
               whileTap={{ scale: 0.8 }}
               whileHover={{ scale: 1.1 }}
               onClick={() => {
-                if (!loading) handleLike(book.book_id, userData?.userId);
+                if (!loading) handleLike(book?.book_id, userData?.userId);
               }}
               className="cursor-pointer"
             >
@@ -227,16 +227,16 @@ const BookCard = ({ book }) => {
         </div>
 
         <p className="text-sm text-gray-500 md:text-lg">
-          {book.description.slice(0, 50)}...
+          {book?.description?.slice(0, 50)}...
         </p>
 
         <div className="flex gap-4 mt-3 text-sm md:text-lg">
           <p className="font-medium text-gray-300 line-through">
-            ₹ {Number(book.book_price) * 2}
+            ₹ {Number(book?.book_price) * 2}
           </p>
 
           <p className="font-bold text-green-500">
-            ₹ {Number(book.book_price)}
+            ₹ {Number(book?.book_price)}
           </p>
         </div>
       </div>
@@ -251,7 +251,7 @@ const BookCard = ({ book }) => {
 
         <div className="flex items-center text-orange-500">
           <span className="mr-2 text-[12px] sm:text-sm">4.5</span>
-          <Ratings ratings={4.5} />
+          <Ratings ratings={book?.book_rating} />
         </div>
       </div>
     </div>

@@ -149,10 +149,10 @@ const UserProfile = () => {
   useEffect(() => {
     setDefaultAddress(
       userData?.default_address?.address
-        ? `${userData?.default_address.address.slice(0, 60)}..., ${userData?.default_address.city}, ${userData?.default_address.state}, ${userData?.default_address.pinCode}`
+        ? `${userData?.default_address?.address?.slice(0, 60)}..., ${userData?.default_address?.city}, ${userData?.default_address?.state}, ${userData?.default_address?.pinCode}`
         : "No Address Selected",
     );
-  }, [userData.default_address.address]);
+  }, [userData?.default_address?.address]);
 
   const navigateToOrders = () => {
     navigate("/nextChapter/orders");
@@ -312,7 +312,7 @@ const UserProfile = () => {
                   icon={<FaRegHeart className="text-[#5C4C49] text-lg" />}
                   label="Favorite Genres"
                   value={
-                    user?.favoriteGenres?.map((genre) => genre.name) ||
+                    user?.favoriteGenres?.map((genre) => genre?.name) ||
                     "Select your favorite genres"
                   }
                   notProvided={!user?.favoriteGenres?.length}
@@ -511,7 +511,7 @@ const UserProfile = () => {
                 <>
                   {user?.recentActivity?.length > 0 ? (
                     <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                      {user.recentActivity.slice(0, 3).map((item, index) => (
+                      {user?.recentActivity?.slice(0, 3).map((item, index) => (
                         <ActivityItem
                           key={item.id}
                           title={item.title}
@@ -540,7 +540,7 @@ const UserProfile = () => {
                 <>
                   {user?.recentOrders?.length > 0 ? (
                     <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                      {user.recentOrders.map((order, index) => (
+                      {user?.recentOrders?.map((order, index) => (
                         <ActivityItem
                           key={order.id}
                           title={`Order ${order.status}`}
@@ -569,7 +569,7 @@ const UserProfile = () => {
                 <>
                   {user?.wishlistItems?.length > 0 ? (
                     <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                      {user.wishlistItems.map((item, index) => (
+                      {user?.wishlistItems?.map((item, index) => (
                         <ActivityItem
                           key={item.id}
                           title={item.title}

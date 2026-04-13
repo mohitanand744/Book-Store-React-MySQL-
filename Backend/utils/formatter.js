@@ -13,6 +13,7 @@ exports.formatBook = (item) => ({
   book_price: item.BOOK_PRICE,
   category: item.category_name,
   images: item.IMAGE_URL,
+  book_rating: item.BOOK_RATING,
 });
 
 const formateName = (name) => {
