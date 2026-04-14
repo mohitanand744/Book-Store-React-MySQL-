@@ -93,7 +93,7 @@ const BookCard = ({ book }) => {
           />
         </div>
 
-        <div className="absolute left-0 w-[20rem] text-sm z-[11111] transition-all duration-300 scale-0 group-hover:translate-y-0 group-hover:scale-100 group-hover:translate-x-0 rotate-45 group-hover:rotate-0 translate-x-[-6rem] translate-y-[-10rem]  font-medium bg-[#5C4C49] p-4 rounded-3xl">
+        <div className="absolute left-0 w-[20rem] text-sm z-[11111] transition-all duration-300 scale-0 group-hover:translate-y-0 group-hover:scale-100 group-hover:translate-x-0 rotate-90 group-hover:rotate-0 translate-x-[-8rem] translate-y-[-11rem]  font-medium bg-[#5C4C49] p-4 rounded-3xl">
           <div className="relative mx-auto mb-2 border-[4px] border-white h-44 w-44 rounded-3xl">
             <img
               src={
@@ -178,7 +178,6 @@ const BookCard = ({ book }) => {
                 />
               </motion.div>
 
-              {/* Optional floating hearts animation when liked */}
               {isLiked && (
                 <>
                   <motion.div

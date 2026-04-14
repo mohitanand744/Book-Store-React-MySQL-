@@ -52,13 +52,12 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`bg-[#D3BD9D] transition-all z-[999] duration-300  ${
-        isFixed
-          ? animation
-            ? "sticky top-[-8rem] left-0 w-full opacity-80 shadow-xl animate-slideDown"
-            : "sticky opacity-100 top-0 left-0 w-full shadow-xl"
-          : "relative shadow-lg"
-      }`}
+      className={`transition-all z-[999] duration-300 ${isFixed
+        ? animation
+          ? "sticky top-[-8rem] left-0 w-full opacity-0 shadow-xl"
+          : "sticky top-0 left-0 w-full bg-[#D3BD9D]/85 backdrop-blur-xl shadow-[0_10px_30px_-10px_rgba(0,0,0,0.15)] opacity-100 border-b border-white/20 animate-slideDown"
+        : "relative bg-[#D3BD9D] shadow-lg"
+        }`}
     >
       <div className="container px-4 py-3 mx-auto">
         <div className="flex items-center justify-between">
@@ -74,13 +73,12 @@ const Navbar = () => {
           </div>
 
           {/* Desktop Menu */}
-          <ul className="items-center hidden space-x-4 lg:flex">
+          <ul className="items-center hidden space-x-2 lg:flex">
             <li>
               <Link
                 to={"/nextChapter"}
-                className={`px-3 py-1 border-[#5C4C49] text-lg font-bold  transition-all ${
-                  pathName === "nextChapter" ? "text-[#5C4C49]" : "text-white"
-                }  hover:scale-105  hover:text-[#5C4C49] duration-200 rounded-xl`}
+                className={`px-5 py-2 text-[1.02rem] font-bold transition-all duration-300 rounded-2xl shadow-sm ${pathName === "nextChapter" ? "bg-white/60 text-[#5C4C49]" : "text-white bg-transparent shadow-none hover:bg-white/30 hover:text-[#5C4C49]"
+                  }`}
               >
                 Home
               </Link>
@@ -88,38 +86,38 @@ const Navbar = () => {
             <li>
               <Link
                 to="/nextChapter/aboutUs"
-                className="px-3 py-1 border-[#5C4C49] text-lg font-bold text-white transition-all  hover:scale-105  hover:text-[#5C4C49] duration-200 rounded-xl"
+                className={`px-5 py-2 text-[1.02rem] font-bold transition-all duration-300 rounded-2xl shadow-sm ${pathName === "nextChapteraboutUs" ? "bg-white/60 text-[#5C4C49]" : "text-white bg-transparent shadow-none hover:bg-white/30 hover:text-[#5C4C49]"
+                  }`}
               >
                 About
               </Link>
             </li>
             <ul className="group">
               <li
-                className={`px-3 flex gap-1 items-center py-1 text-lg font-bold text-white transition-all    group-hover:text-[#5C4C49] duration-200 rounded-xl `}
+                className={`px-5 py-2 flex gap-1 items-center text-[1.02rem] font-bold text-white transition-all cursor-pointer hover:bg-white/30 hover:text-[#5C4C49] duration-300 rounded-2xl `}
               >
                 Books Types{" "}
                 <span>
-                  <IoIosArrowDown className="transition-all group-hover:rotate-180" />
+                  <IoIosArrowDown className="transition-transform duration-300 group-hover:rotate-180" />
                 </span>
               </li>
               {/* Mega Menu */}
-              <div className="absolute z-[999999] hidden lg:block  opacity-0 scale-0 transition-all duration-500 group-hover:opacity-100 translate-y-[-7rem] group-hover:translate-y-0 group-hover:scale-100 top-[3.8rem] inset-x-0 w-[80%] mx-auto">
+              <div className="absolute z-[999999] hidden lg:block opacity-0 scale-95 pointer-events-none origin-top transition-all duration-300 group-hover:opacity-100 group-hover:pointer-events-auto group-hover:translate-y-0 group-hover:scale-100 top-[3.8rem] inset-x-0 w-[80%] mx-auto drop-shadow-2xl">
                 <MegaMenu />
               </div>
             </ul>
             <ul className="relative">
-              <span className="absolute -top-3 -right-1 bg-[#5C4C49] w-[5rem]">
-                <img src="/images/tag.avif" alt="" />
+              <span className="absolute -top-3 -right-2 w-11 drop-shadow-md pointer-events-none z-10 transition-transform duration-300 group-hover:rotate-12">
+                <img src="/images/tag.avif" alt="New" className="object-contain" />
               </span>
 
-              <li className="px-3 py-1">
+              <li className="px-1 py-1">
                 <Link
                   to={"/nextChapter/books"}
-                  className={` border-[#5C4C49] text-lg font-bold  transition-all ${
-                    pathName === "nextChapterbooks"
-                      ? "text-[#5C4C49]"
-                      : "text-white"
-                  }  hover:scale-105  hover:text-[#5C4C49] duration-200 rounded-xl`}
+                  className={`px-5 py-2 text-[1.02rem] font-bold transition-all duration-300 rounded-2xl shadow-sm ${pathName === "nextChapterbooks"
+                    ? "bg-white/60 text-[#5C4C49]"
+                    : "text-white bg-transparent shadow-none hover:bg-white/30 hover:text-[#5C4C49]"
+                    }`}
                 >
                   Books{" "}
                 </Link>
@@ -127,8 +125,9 @@ const Navbar = () => {
             </ul>
             <li>
               <Link
-                to="/nextChapter"
-                className="px-3 py-1 border-[#5C4C49] text-lg font-bold text-white transition-all  hover:scale-105  hover:text-[#5C4C49] duration-200 rounded-xl"
+                to="/nextChapter/contact"
+                className={`px-5 py-2 text-[1.02rem] font-bold transition-all duration-300 rounded-2xl shadow-sm ${pathName === "nextChaptercontact" ? "bg-white/60 text-[#5C4C49]" : "text-white bg-transparent shadow-none hover:bg-white/30 hover:text-[#5C4C49]"
+                  }`}
               >
                 Contact
               </Link>
@@ -140,21 +139,21 @@ const Navbar = () => {
 
             <div
               onClick={() => setIsCartOpen(!isCartOpen)}
-              className="bg-[#5C4C49] w-10 h-10 flex items-center justify-center rounded-full relative cursor-pointer active:scale-75 transition"
+              className="bg-white/40 hover:bg-white/60 backdrop-blur-md w-11 h-11 flex items-center justify-center rounded-2xl relative cursor-pointer active:scale-95 transition-all duration-300 shadow-sm border border-white/20 text-[#5C4C49]"
             >
-              <div className="absolute flex items-center justify-center w-6 h-6 text-white bg-orange-600 rounded-full -top-2 -right-2">
+              <div className="absolute flex items-center justify-center w-5 h-5 text-[10px] font-bold text-white bg-orange-600 rounded-full -top-1 -right-1 shadow-md border-2 border-[#D3BD9D]">
                 3
               </div>
-              <HiOutlineShoppingCart className="text-2xl text-[#ffeccd]" />
+              <HiOutlineShoppingCart className="text-[1.4rem]" />
             </div>
             {isAuthenticated ? (
               <div className="">
                 <Link to="/nextChapter/user/profile">
-                  <div className="w-12 h-12 relative cursor-pointer active:scale-75 transition border-2 bg-[#5C4C49] border-orange-500 rounded-full">
+                  <div className="w-11 h-11 relative cursor-pointer active:scale-95 transition-all duration-300 border-[2px] border-white/50 hover:border-white shadow-sm rounded-full overflow-hidden">
                     <img
                       src={preview || "/images/loading.gif"}
                       alt="Profile"
-                      className="object-cover w-full h-full rounded-full"
+                      className="object-cover w-full h-full rounded-full bg-white"
                       onClick={() => {
                         if (pathName === "nextChapteruserprofile") {
                           openPreview(preview, "Profile Image");
@@ -163,37 +162,35 @@ const Navbar = () => {
                     />
 
                     {isUploading && (
-                      <div className="absolute inset-0 flex items-center justify-center rounded-full bg-black/40">
-                        <Spinner size={20} />
+                      <div className="absolute inset-0 flex items-center justify-center rounded-full bg-black/40 backdrop-blur-sm">
+                        <Spinner size={16} />
                       </div>
                     )}
                   </div>
                 </Link>
               </div>
             ) : (
-              <>
+              <div className="flex items-center gap-2">
                 <Button
                   onClick={() => navigate("/")}
-                  variant="outline"
-                  className="flex items-center justify-center h-8"
+                  className=""
                 >
                   Login
                 </Button>
                 <Button
-                  onClick={() => navigate("/signup")}
                   variant="outline"
-                  className="items-center justify-center hidden h-8 lg:flex"
+                  className="hidden lg:flex"
                 >
                   Signup
                 </Button>
-              </>
+              </div>
             )}
 
             {/* Mobile Hamburger */}
             <div className="lg:hidden">
               <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="text-gray-700 focus:outline-none"
+                className="bg-white/40 hover:bg-white/60 w-11 h-11 flex items-center justify-center rounded-2xl text-[#5C4C49] focus:outline-none transition-all duration-300 shadow-sm border border-white/20 active:scale-95"
               >
                 <svg
                   className="w-6 h-6"

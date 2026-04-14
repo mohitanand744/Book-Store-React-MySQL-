@@ -60,7 +60,7 @@ const ReviewsContainer = () => {
         }}
       >
         {testimonialData.map((item, index) => (
-          <SwiperSlide key={index} className="relative">
+          <SwiperSlide key={index} className="relative h-auto pt-2 pb-6">
             <TestimonialCard data={item} />
           </SwiperSlide>
         ))}

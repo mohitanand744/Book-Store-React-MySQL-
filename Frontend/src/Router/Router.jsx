@@ -11,6 +11,7 @@ import ProtectedRoute from "./ProtectedRoute";
 import TrackingPage from "../Pages/TrackingPage";
 import { validateToken } from "../store/Redux/Slices/authSlice";
 import { useDispatch } from "react-redux";
+import { FallbackRoute } from "./FallbackRoute";
 
 // Lazy-loaded components
 const Login = lazy(() => import("../components/Auth/Pages/Login"));
@@ -19,6 +20,7 @@ const Home = lazy(() => import("../Pages/Home"));
 const AllBooks = lazy(() => import("../Pages/AllBooks"));
 const SingleBooks = lazy(() => import("../Pages/SingleBooks"));
 const AboutUs = lazy(() => import("../Pages/AboutUs"));
+const ContactUs = lazy(() => import("../Pages/ContactUs"));
 
 const Router = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -43,16 +45,24 @@ const Router = () => {
   return (
     <BrowserRouter>
       <Toaster
-        position="top-right"
+        position="bottom-right"
+        expand={true}
+        closeButton={true}
+        richColors={true}
         toastOptions={{
           style: {
-            background: "linear-gradient(to right, #5C4C49, #D3BD9D)",
-            color: "#fff",
-            border: "2px solid #fff",
-            padding: "8px 12px",
-            minHeight: "auto",
+            background: "rgba(92, 76, 73, 0.85)",
+            backdropFilter: "blur(24px) saturate(150%)",
+            WebkitBackdropFilter: "blur(24px) saturate(150%)",
+            color: "#F3F4F6",
+            border: "1px solid rgba(255, 255, 255, 0.08)",
+            boxShadow: "0px 10px 40px -10px rgba(0,0,0,0.5), inset 0px 1px 0px rgba(255, 255, 255, 0.05)",
+            borderRadius: "24px",
+            padding: "10px 20px",
             fontSize: "14px",
-            lineHeight: "1.2",
+            fontWeight: "500",
+            fontFamily: "'Inter', system-ui, -apple-system, sans-serif",
+            gap: "12px",
           },
         }}
       />
@@ -69,6 +79,7 @@ const Router = () => {
 
             {/* Public routes */}
             <Route path="aboutUs" element={<AboutUs />} />
+            <Route path="contact" element={<ContactUs />} />
             <Route path="books" element={<AllBooks />} />
             <Route path="book/:id" element={<SingleBooks />} />
 
@@ -112,7 +123,7 @@ const Router = () => {
           </Route>
 
           {/* Fallback route */}
-          {/* <Route path="*" element={<FallbackRoute />} /> */}
+          <Route path="*" element={<FallbackRoute />} />
         </Routes>
       </Suspense>
     </BrowserRouter>

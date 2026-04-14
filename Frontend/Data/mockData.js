@@ -385,60 +385,60 @@ export const mockBooks = [
 
 export const testimonialData = [
   {
-    name: "Jenny Wilson",
+    name: "Aarav Sharma",
     rating: 4.5,
     profile:
-      "https://a.storyblok.com/f/191576/1176x882/f95162c213/profile_picture_hero_before.webp",
+      "https://randomuser.me/api/portraits/men/10.jpg",
     review:
-      "Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet.",
+      "The quality of the books and fast delivery time were outstanding. I highly recommend this to everyone!!!",
   },
   {
-    name: "Cameron Williamson",
+    name: "Priya Patel",
     rating: 4.0,
-    profile: "https://randomuser.me/api/portraits/men/32.jpg",
+    profile: "https://randomuser.me/api/portraits/women/32.jpg",
     review:
-      "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+      "A fantastic collection of novels! The customer support is genuinely amazing and they helped me a lot too",
   },
   {
-    name: "Courtney Henry",
+    name: "Rohan Gupta",
     rating: 5.0,
-    profile: "https://randomuser.me/api/portraits/women/68.jpg",
+    profile: "https://randomuser.me/api/portraits/men/68.jpg",
     review:
-      "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+      "I am quite impressed with the book condition. They have an excellent library with such affordable prices",
   },
   {
-    name: "Esther Howard",
+    name: "Sneha Desai",
     rating: 4.2,
     profile: "https://randomuser.me/api/portraits/women/44.jpg",
     review:
-      "Culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error.",
+      "This bookstore never disappoints me at all. Fast shipping, great deals, and completely genuine products!",
   },
   {
-    name: "Wade Warren",
+    name: "Vikram Singh",
     rating: 3.8,
     profile: "https://randomuser.me/api/portraits/men/45.jpg",
     review:
-      "Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur.",
+      "My favorite place to shop for books online! Always a smooth experience from ordering straight to my door",
   },
   {
-    name: "Cameron Williamson",
+    name: "Anjali Verma",
     rating: 4.0,
-    profile: "https://randomuser.me/api/portraits/men/32.jpg",
+    profile: "https://randomuser.me/api/portraits/women/12.jpg",
     review:
-      "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+      "Beautifully designed app and wonderful service. I have bought five books recently and they look gorgeous",
   },
   {
-    name: "Courtney Henry",
+    name: "Karan Malhotra",
     rating: 5.0,
-    profile: "https://randomuser.me/api/portraits/women/68.jpg",
+    profile: "https://randomuser.me/api/portraits/men/11.jpg",
     review:
-      "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+      "An absolute delight for any book lover out there. The vast variety of options matches any other retailer",
   },
   {
-    name: "Esther Howard",
+    name: "Meera Iyer",
     rating: 4.2,
-    profile: "https://randomuser.me/api/portraits/women/44.jpg",
+    profile: "https://randomuser.me/api/portraits/women/22.jpg",
     review:
-      "Culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error.",
+      "Such a reliable platform for purchasing novels. They packaged my order incredibly securely every time...",
   },
 ];

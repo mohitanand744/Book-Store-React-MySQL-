@@ -64,7 +64,8 @@ textarea::placeholder {
 }
 
 .swiper-slide.swiper-slide-visible.swiper-slide-fully-visible.swiper-slide-active {
-  transform: scale(1.2) !important;
+  transform: scale(1.3) !important;
+  transition: all 0.3s ease-in-out !important;
 }
 
 .homeBanner .swiper-wrapper {

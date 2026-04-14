@@ -95,7 +95,7 @@ const Home = () => {
           </div>
         </div>
 
-        <div className="mb-14">
+        <div className="mb-14 ">
           <h1 className="my-5 text-2xl font-semibold text-center md:text-4xl ">
             Find Your Favorite Author
           </h1>
@@ -106,6 +106,12 @@ const Home = () => {
           ) : (
             <AuthorSlider books={books} />
           )}
+
+          <div className="flex justify-center my-5">
+            <Link to={"/nextChapter/authors"}>
+              <Button variant="primary">View All Authors</Button>
+            </Link>
+          </div>
         </div>
 
         <div className="container">

@@ -16,8 +16,9 @@ export const FallbackRoute = () => {
     };
 
     toast.error(
-      `The page "${location.pathname}" was not found. Redirecting...`,
+      `Page not found`,
       {
+        description: "Looks like this page doesn’t exist or was moved. Redirecting you...",
         duration: 3000,
         id: "page-not-found",
       }

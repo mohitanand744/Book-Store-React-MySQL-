@@ -1,87 +1,46 @@
-import { motion, AnimatePresence } from "framer-motion";
-import { useState } from "react";
+import { motion } from "framer-motion";
 import Ratings from "../RatingsReviews/Ratings";
-import { FiChevronRight } from "react-icons/fi";
 
 const TestimonialCard = ({ data, index }) => {
   const { name, profile, rating, review } = data;
-  const [isExpanded, setIsExpanded] = useState(false);
-
-  // Function to truncate text to 17 words
-  const truncateReview = (text) => {
-    const words = text.split(" ");
-    if (words.length > 17) {
-      return words.slice(0, 17).join(" ") + "...";
-    }
-    return text;
-  };
-
-  // Animation variants
-  const cardVariants = {
-    offscreen: {
-      y: 50,
-      opacity: 0,
-    },
-    onscreen: {
-      y: 0,
-      opacity: 1,
-      transition: {
-        duration: 0.5,
-        delay: index * 0.1,
-      },
-    },
-  };
-
-  const textVariants = {
-    collapsed: {
-      height: "5rem",
-      transition: { duration: 0.4, ease: "easeInOut" },
-    },
-    expanded: {
-      height: "auto",
-      transition: { duration: 0.7, ease: "easeInOut" },
-    },
-  };
 
   return (
-    <motion.div
-      className="relative w-full max-w-sm mx-auto overflow-hidden transition-all duration-300 bg-white border border-gray-100 shadow-xl cursor-pointer rounded-2xl hover:shadow-2xl hover:-translate-y-1"
-      initial="offscreen"
-      whileInView="onscreen"
-      viewport={{ once: true, amount: 0.2 }}
-      variants={cardVariants}
+    <div
+      className="relative flex flex-col  w-full max-w-sm mx-auto overflow-hidden transition-all duration-500 bg-white/80 backdrop-blur-xl border border-white/50 shadow-[0_8px_30px_rgb(0,0,0,0.08)] rounded-[2rem] hover:shadow-[0_20px_40px_rgb(0,0,0,0.12)] hover:-translate-y-2 group"
     >
-      <div className="flex bg-gradient-to-r from-[#F9F5F0] to-[#F6F2EB] justify-between p-5 items-center">
-        <div className="flex items-center gap-3">
+      <div className="flex justify-between px-6 pt-6 pb-4 items-center border-b border-[#D3BD9D]/20 bg-gradient-to-br from-white/60 to-transparent flex-shrink-0">
+        <div className="flex items-center gap-4 z-10 w-full relative">
           <motion.img
             src={profile}
             alt={name}
-            className="object-cover border-2 border-white rounded-full shadow-md w-14 h-14"
-            whileHover={{ scale: 1.05 }}
+            className="object-cover border-[3px] border-[#D3BD9D]/60 rounded-full shadow-md w-16 h-16 transition-transform duration-500 group-hover:scale-110"
+            whileHover={{ scale: 1.1 }}
             transition={{ type: "spring", stiffness: 400, damping: 10 }}
           />
-          <div>
-            <h4 className="text-lg font-bold text-gray-800">{name}</h4>
-            <div className="flex items-center">
-              <div className="flex mr-2 text-orange-500">
+          <div className="flex-1">
+            <h4 className="text-lg font-bold text-[#5e4c37] line-clamp-1">{name}</h4>
+            <div className="flex items-center mt-0.5">
+              <div className="flex mr-2 text-[#8a7053]">
                 <Ratings ratings={rating} />
               </div>
-              <span className="text-sm font-bold text-orange-500">
+              <span className="text-sm font-bold text-[#8a7053]">
                 {rating.toFixed(1)}
               </span>
             </div>
           </div>
         </div>
+
+        {/* Animated Background Quote Icon */}
         <motion.div
-          className="w-12 h-12 text-gray-300"
+          className="absolute top-4 right-4 w-16 h-16 text-[#D3BD9D]/20 z-0 pointer-events-none"
           animate={{
             rotate: [0, 5, -5, 0],
-            scale: [1, 1.1, 1],
+            scale: [1, 1.05, 1],
           }}
           transition={{
-            duration: 2,
+            duration: 3,
             repeat: Infinity,
-            repeatDelay: 5,
+            repeatDelay: 4,
           }}
         >
           <svg
@@ -94,69 +53,21 @@ const TestimonialCard = ({ data, index }) => {
         </motion.div>
       </div>
 
-      <motion.div
-        className="relative p-5 overflow-hidden text-center px-9"
-        animate={isExpanded ? "expanded" : "collapsed"}
-        variants={textVariants}
-        initial={false}
-      >
-        <p className="leading-relaxed text-gray-600">
-          {isExpanded ? review : truncateReview(review)}
+      <div className="relative flex-1 px-8 pt-4 pb-6 text-center z-10 overflow-hidden">
+        <p className="leading-relaxed text-[#5e4c37]/90 italic text-sm md:text-base line-clamp-4">
+          "{review}"
         </p>
-      </motion.div>
-
-      <div
-        onClick={() => setIsExpanded(!isExpanded)}
-        className="flex items-center justify-between w-full px-5 py-3 border-t border-gray-100 cursor-pointer bg-gradient-to-t from-white via-white/80 to-transparent"
-      >
-        <button className="text-sm font-medium text-gray-600 hover:text-gray-800 transition-colors flex items-center gap-1.5">
-          {isExpanded ? "Show less" : "Read full review"}
-          <motion.span
-            animate={{ rotate: isExpanded ? 180 : 0 }}
-            transition={{ duration: 0.2 }}
-            className="text-gray-500"
-          >
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-            >
-              <path d="M6 9l6 6 6-6" />
-            </svg>
-          </motion.span>
-        </button>
-
-        <div className="flex items-center justify-center w-8 h-8 transition-colors border border-gray-200 rounded-full bg-gray-50 group-hover:bg-gray-100">
-          <motion.span
-            animate={{ rotate: isExpanded ? 180 : 0 }}
-            transition={{ duration: 0.2 }}
-            className="text-gray-500"
-          >
-            <svg
-              width="14"
-              height="14"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-            >
-              <path d="M6 9l6 6 6-6" />
-            </svg>
-          </motion.span>
-        </div>
       </div>
 
       <motion.div
-        className="h-1 bg-gradient-to-r from-orange-400 to-amber-200"
+        className="h-[6px] w-full mt-auto flex-shrink-0 bg-gradient-to-r from-[#D3BD9D] via-[#8a7053] to-[#5e4c37]"
         initial={{ scaleX: 0 }}
         whileInView={{ scaleX: 1 }}
-        transition={{ duration: 0.5 }}
+        transition={{ duration: 0.7, ease: "easeOut" }}
         viewport={{ once: true }}
+        style={{ transformOrigin: "left" }}
       />
-    </motion.div>
+    </div>
   );
 };
 
