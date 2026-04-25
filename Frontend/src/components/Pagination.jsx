@@ -1,4 +1,3 @@
-import React from "react";
 import { motion } from "framer-motion";
 
 const Pagination = ({ currentPage, totalPages, paginate }) => {
@@ -39,9 +38,9 @@ const Pagination = ({ currentPage, totalPages, paginate }) => {
 
   const btnBase =
     "px-3 py-1 rounded transition-colors duration-200 font-medium";
-  const activeStyle = "bg-[#D3BD9D] text-[#F6F2EC]";
+  const activeStyle = "bg-tan ";
   const normalStyle =
-    "bg-[#F6F2EC] text-[#3a3a3a] hover:bg-[#D3BD9D] hover:text-[#F6F2EC]";
+    "  hover:bg-tan ";
 
   return (
     <div className="flex justify-center my-6">
@@ -70,9 +69,8 @@ const Pagination = ({ currentPage, totalPages, paginate }) => {
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
                 onClick={() => paginate(page)}
-                className={`${btnBase} ${
-                  currentPage === page ? activeStyle : normalStyle
-                }`}
+                className={`${btnBase} ${currentPage === page ? activeStyle : normalStyle
+                  }`}
               >
                 {page}
               </motion.button>
@@ -97,3 +95,5 @@ const Pagination = ({ currentPage, totalPages, paginate }) => {
 };
 
 export default Pagination;
+
+

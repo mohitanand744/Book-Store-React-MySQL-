@@ -21,6 +21,7 @@ const AllBooks = lazy(() => import("../Pages/AllBooks"));
 const SingleBooks = lazy(() => import("../Pages/SingleBooks"));
 const AboutUs = lazy(() => import("../Pages/AboutUs"));
 const ContactUs = lazy(() => import("../Pages/ContactUs"));
+const AuthorDetails = lazy(() => import("../Pages/AuthorDetails"));
 
 const Router = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -54,7 +55,7 @@ const Router = () => {
             background: "rgba(92, 76, 73, 0.85)",
             backdropFilter: "blur(24px) saturate(150%)",
             WebkitBackdropFilter: "blur(24px) saturate(150%)",
-            color: "#F3F4F6",
+            color: "#ffe6c1",
             border: "1px solid rgba(255, 255, 255, 0.08)",
             boxShadow: "0px 10px 40px -10px rgba(0,0,0,0.5), inset 0px 1px 0px rgba(255, 255, 255, 0.05)",
             borderRadius: "24px",
@@ -82,6 +83,7 @@ const Router = () => {
             <Route path="contact" element={<ContactUs />} />
             <Route path="books" element={<AllBooks />} />
             <Route path="book/:id" element={<SingleBooks />} />
+            <Route path="author/:authorId" element={<AuthorDetails />} />
 
             {/* Protected routes */}
             <Route
@@ -131,3 +133,5 @@ const Router = () => {
 };
 
 export default Router;
+
+

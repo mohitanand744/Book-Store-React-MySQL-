@@ -5,13 +5,20 @@ import { motion } from "framer-motion";
 
 const Search = ({
   styling = "hidden md:block w-[15rem]",
-  inputStylrs = "rounded-full py-2 border-b border-[#5C4C49]/20 shadow-lg",
+  inputStylrs = "rounded-full py-2 bg-coffee/20 text-tan border-b border-tan border-coffee/20 ",
   iconStyles = "top-1 right-1",
   onSearch,
   onChange,
   placeholder = "Search books here... ",
+  value,
 }) => {
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState(value || "");
+
+  useEffect(() => {
+    if (value !== undefined) {
+      setSearchTerm(value);
+    }
+  }, [value]);
   const [isBlinking, setIsBlinking] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
@@ -73,7 +80,7 @@ const Search = ({
   };
 
   return (
-    <div className={`relative ${styling} searchbar`}>
+    <div className={`relative ${styling} searchbar group`}>
       <input
         type="text"
         value={searchTerm}
@@ -91,7 +98,7 @@ const Search = ({
             navigate(`/nextChapter/books`);
           }
         }}
-        className={`${inputStylrs} w-full px-3   focus:outline-none`}
+        className={`${inputStylrs} w-full px-3 text-tan/80 placeholder:text-tan focus:outline-none`}
         placeholder={placeholder}
       />
       <motion.div
@@ -112,12 +119,14 @@ const Search = ({
             }
             : { duration: 0.2 }
         }
-        className={`absolute ${iconStyles} cursor-pointer active:scale-75 transition bg-[#5C4C49] h-7 w-7 flex items-center justify-center rounded-full`}
+        className={`absolute ${iconStyles} border  border-tan cursor-pointer group-hover:text-cream active:scale-75 text-tan transition bg-coffee h-7 w-7 flex items-center justify-center rounded-full`}
       >
-        <FaSearch className="text-[#ffeccd] text-sm" />
+        <FaSearch className="text-sm" />
       </motion.div>
     </div>
   );
 };
 
 export default Search;
+
+

@@ -18,12 +18,12 @@ const ViewAddressDetailsModal = ({ viewAddressDetails, setViewAddressDetails }) 
             initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.9, opacity: 0 }}
-            className="w-full max-w-sm p-6 bg-[#D3BD9D] relative shadow-xl rounded-xl"
+            className="w-full max-w-sm p-6 bg-coffee relative border border-tan shadow-xl rounded-xl"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Close Button */}
             <motion.button
-              className="absolute top-1 right-1 text-white/70 hover:text-white bg-black/10 hover:bg-white/20 rounded-xl z-[10000]"
+              className="absolute top-1 right-1 text-tan/70 hover:text-tan bg-black/10 hover:bg-tan/20 rounded-xl z-[10000]"
               onClick={() => setViewAddressDetails(null)}
               initial={{ scale: 0.5 }}
               animate={{ scale: 1 }}
@@ -33,7 +33,7 @@ const ViewAddressDetailsModal = ({ viewAddressDetails, setViewAddressDetails }) 
             </motion.button>
 
             <div className="flex items-center gap-2 mb-2">
-              <h3 className="text-xl font-bold text-[#5c4c49]">
+              <h3 className="text-xl font-bold text-tan">
                 Address Details
               </h3>{" "}
               <div className="flex items-center">
@@ -45,9 +45,9 @@ const ViewAddressDetailsModal = ({ viewAddressDetails, setViewAddressDetails }) 
                     <b>Default</b>
                   </span>
                 )}
-                <span className="inline-flex ms-2 items-center gap-1 py-1 px-2  text-xs font-medium text-green-100 bg-[#5c4c49] rounded-full">
+                <span className="inline-flex ms-2 items-center gap-1 py-1 px-2  text-xs font-medium text-green-100 bg-coffee rounded-full">
                   <div
-                    className={`rounded-lg ${viewAddressDetails?.color} text-white`}
+                    className={`rounded-lg ${viewAddressDetails?.color} text-tan`}
                   >
                     {ViewAddressDetailsIcon && <ViewAddressDetailsIcon className="w-4 h-4" />}
                   </div>
@@ -56,9 +56,9 @@ const ViewAddressDetailsModal = ({ viewAddressDetails, setViewAddressDetails }) 
               </div>
             </div>
 
-            <div className="mt-3 space-y-2 text-sm text-gray-700">
-              <div className="flex gap-2 p-2 transition-all duration-200 ease-in-out border-b shadow-lg border-black/10 rounded-b-xl hover:scale-105">
-                <span className="font-medium text-[#5c4c49] min-w-[110px]">
+            <div className="mt-3 space-y-2 text-sm text-tan/80">
+              <div className="flex gap-2 p-2 transition-all duration-200 ease-in-out border-b shadow-lg border-tan/10 rounded-b-xl hover:scale-105">
+                <span className="font-medium text-tan min-w-[110px]">
                   Street Address:
                 </span>
                 <span className="break-words">
@@ -66,22 +66,22 @@ const ViewAddressDetailsModal = ({ viewAddressDetails, setViewAddressDetails }) 
                 </span>
               </div>
 
-              <div className="flex gap-2 p-2 transition-all duration-200 ease-in-out border-b shadow-lg border-black/10 rounded-b-xl hover:scale-105">
-                <span className="font-medium text-[#5c4c49] min-w-[110px]">
+              <div className="flex gap-2 p-2 transition-all duration-200 ease-in-out border-b shadow-lg border-tan/10 rounded-b-xl hover:scale-105">
+                <span className="font-medium text-tan min-w-[110px]">
                   City:
                 </span>
                 <span>{viewAddressDetails.city}</span>
               </div>
 
-              <div className="flex gap-2 p-2 transition-all duration-200 ease-in-out border-b shadow-lg border-black/10 rounded-b-xl hover:scale-105">
-                <span className="font-medium text-[#5c4c49] min-w-[110px]">
+              <div className="flex gap-2 p-2 transition-all duration-200 ease-in-out border-b shadow-lg border-tan/10 rounded-b-xl hover:scale-105">
+                <span className="font-medium text-tan min-w-[110px]">
                   State:
                 </span>
                 <span>{viewAddressDetails.state}</span>
               </div>
 
-              <div className="flex gap-2 p-2 transition-all duration-200 ease-in-out border-b shadow-lg border-black/10 rounded-b-xl hover:scale-105">
-                <span className="font-medium text-[#5c4c49] min-w-[110px]">
+              <div className="flex gap-2 p-2 transition-all duration-200 ease-in-out border-b shadow-lg border-tan/10 rounded-b-xl hover:scale-105">
+                <span className="font-medium text-tan min-w-[110px]">
                   PIN:
                 </span>
                 <span>{viewAddressDetails.pinCode}</span>
@@ -95,3 +95,5 @@ const ViewAddressDetailsModal = ({ viewAddressDetails, setViewAddressDetails }) 
 };
 
 export default ViewAddressDetailsModal;
+
+

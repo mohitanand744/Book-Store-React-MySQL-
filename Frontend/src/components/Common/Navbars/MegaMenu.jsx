@@ -21,7 +21,7 @@ const MegaMenu = () => {
 
   return (
     <div
-      className="p-6 bg-[#FFE6C1] container rounded-lg h-full
+      className="p-6 bg-coffee border border-tan container rounded-lg h-full
     "
     >
       {/*  <h1 className="mb-6 text-3xl font-bold text-center text-gray-800">
@@ -31,7 +31,7 @@ const MegaMenu = () => {
         {bookTypes.map((type, index) => (
           <div
             key={index}
-            className="flex items-center text-sm md:text-lg justify-center p-4 font-medium text-center text-gray-700 transition duration-300 bg-white rounded-lg shadow-md cursor-pointer hover:scale-105 hover:bg-[#5C4C49] hover:text-white"
+            className="flex items-center text-sm md:text-lg justify-center p-4 font-medium text-center text-tan transition duration-300 bg-tan/10 border border-tan/20 rounded-lg shadow-md cursor-pointer hover:scale-105 hover:bg-tan/20"
           >
             {type}
           </div>
@@ -42,3 +42,5 @@ const MegaMenu = () => {
 };
 
 export default MegaMenu;
+
+

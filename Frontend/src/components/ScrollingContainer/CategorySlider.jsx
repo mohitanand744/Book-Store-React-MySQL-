@@ -121,7 +121,7 @@ const CategorySlider = ({ filters, setFilters }) => {
       className="px-4 py-6 md:px-6"
     >
       <div className="container relative px-4 mx-auto">
-        <h2 className="text-lg font-semibold text-[#5c4c49] mb-4 md:text-xl">
+        <h2 className="text-lg font-semibold text-coffee mb-4 md:text-xl">
           Browse by Category
         </h2>
 
@@ -141,11 +141,10 @@ const CategorySlider = ({ filters, setFilters }) => {
               <motion.div
                 whileHover={{ y: -5 }}
                 onClick={() => handleCategoryClick(category.name)}
-                className={`relative w-32 h-40 overflow-hidden rounded-xl cursor-pointer group md:w-36 md:h-44 transition-all duration-300 ${
-                  filters.category === category.name
-                    ? "border-2 border-white  shadow-[0_0_30px_rgba(92,76,73,1)]"
+                className={`relative w-32 h-40 overflow-hidden rounded-xl cursor-pointer group md:w-36 md:h-44 transition-all duration-300 ${filters.category === category.name
+                    ? "border-2 border-tan  shadow-[0_0_30px_rgba(92,76,73,1)]"
                     : ""
-                }`}
+                  }`}
                 style={{
                   transformStyle: "preserve-3d",
                 }}
@@ -155,7 +154,7 @@ const CategorySlider = ({ filters, setFilters }) => {
                   <motion.div
                     className="absolute inset-0 pointer-events-none rounded-xl"
                     style={{
-                      boxShadow: "inset 0 0 0 2px white",
+                      boxShadow: "inset 0 0 0 2px tan",
                       zIndex: 10,
                     }}
                     initial={{ opacity: 0 }}
@@ -166,7 +165,7 @@ const CategorySlider = ({ filters, setFilters }) => {
                 {/* Glow effect */}
                 {filters.category === category.name && (
                   <motion.div
-                    className="absolute inset-0 bg-[#5c4c49] opacity-20 blur-md rounded-xl"
+                    className="absolute inset-0 bg-coffee opacity-20 blur-md rounded-xl"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 0.2 }}
                     transition={{ duration: 0.3 }}
@@ -177,15 +176,14 @@ const CategorySlider = ({ filters, setFilters }) => {
                   src={
                     categories?.some((cat) => cat.name === category.name)
                       ? categories.find((cat) => cat.name === category.name)
-                          ?.image
+                        ?.image
                       : ""
                   }
                   alt={category.name}
-                  className={`object-cover w-full h-full transition-all duration-300 ${
-                    filters.category === category.name
+                  className={`object-cover w-full h-full transition-all duration-300 ${filters.category === category.name
                       ? "scale-105 brightness-100"
                       : "brightness-90 group-hover:brightness-75"
-                  }`}
+                    }`}
                   style={{
                     transform:
                       filters.category === category.name
@@ -195,18 +193,16 @@ const CategorySlider = ({ filters, setFilters }) => {
                 />
 
                 <div
-                  className={`absolute inset-0 flex items-end p-3 transition-all duration-300 ${
-                    filters.category === category.name
+                  className={`absolute inset-0 flex items-end p-3 transition-all duration-300 ${filters.category === category.name
                       ? "bg-gradient-to-t from-black/90 via-transparent to-transparent"
                       : "bg-gradient-to-t from-black/70 via-transparent to-transparent"
-                  }`}
+                    }`}
                 >
                   <motion.span
-                    className={`text-sm font-medium ${
-                      filters.category === category.name
-                        ? "text-white font-bold tracking-wide"
-                        : "text-white"
-                    } md:text-base`}
+                    className={`text-sm font-medium ${filters.category === category.name
+                        ? "text-tan font-bold tracking-wide"
+                        : "text-tan"
+                      } md:text-base`}
                     initial={{ opacity: 0.9 }}
                     whileHover={{ opacity: 1 }}
                   >
@@ -218,25 +214,25 @@ const CategorySlider = ({ filters, setFilters }) => {
                 {filters.category === category.name && (
                   <>
                     <motion.div
-                      className="absolute w-3 h-3 border-t-2 border-l-2 border-white top-2 left-2"
+                      className="absolute w-3 h-3 border-t-2 border-l-2 border-tan top-2 left-2"
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       transition={{ delay: 0.1 }}
                     />
                     <motion.div
-                      className="absolute w-3 h-3 border-t-2 border-r-2 border-white top-2 right-2"
+                      className="absolute w-3 h-3 border-t-2 border-r-2 border-tan top-2 right-2"
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       transition={{ delay: 0.1 }}
                     />
                     <motion.div
-                      className="absolute w-3 h-3 border-b-2 border-l-2 border-white bottom-2 left-2"
+                      className="absolute w-3 h-3 border-b-2 border-l-2 border-tan bottom-2 left-2"
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       transition={{ delay: 0.1 }}
                     />
                     <motion.div
-                      className="absolute w-3 h-3 border-b-2 border-r-2 border-white bottom-2 right-2"
+                      className="absolute w-3 h-3 border-b-2 border-r-2 border-tan bottom-2 right-2"
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       transition={{ delay: 0.1 }}
@@ -266,7 +262,7 @@ const CategorySlider = ({ filters, setFilters }) => {
             className="md:absolute top-[-20px] left-[14rem] flex justify-center mt-4"
           >
             <motion.div
-              className="inline-flex items-center gap-2 px-2 py-1 rounded-full bg-[#fff5e4] border border-[#e8d9c5] shadow-sm"
+              className="inline-flex items-center gap-2 px-2 py-1 rounded-full bg-tan-subtle border border-tan-border shadow-sm"
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.98 }}
             >
@@ -276,10 +272,10 @@ const CategorySlider = ({ filters, setFilters }) => {
                   scale: 1,
                   transition: { delay: 0.2 },
                 }}
-                className="w-2 h-2 bg-[#5c4c49] rounded-full"
+                className="w-2 h-2 bg-coffee rounded-full"
               />
 
-              <motion.p className="text-xs font-medium text-[#5c4c49]">
+              <motion.p className="text-xs font-medium text-coffee">
                 Viewing:{" "}
                 <span className="ml-1 font-bold">{filters.category}</span>
               </motion.p>
@@ -288,7 +284,7 @@ const CategorySlider = ({ filters, setFilters }) => {
                 onClick={() =>
                   setFilters((prev) => ({ ...prev, category: "" }))
                 }
-                whileHover={{ backgroundColor: "#f0e6d6" }}
+                whileHover={{ backgroundColor: "#ffe6c1" }}
                 className="p-1 rounded-full"
               >
                 <svg
@@ -296,8 +292,9 @@ const CategorySlider = ({ filters, setFilters }) => {
                   height="16"
                   viewBox="0 0 24 24"
                   fill="none"
-                  stroke="#5c4c49"
+                  stroke="currentColor"
                   strokeWidth="2"
+                  className="text-coffee"
                 >
                   <path d="M18 6L6 18M6 6l12 12" />
                 </svg>
@@ -311,3 +308,5 @@ const CategorySlider = ({ filters, setFilters }) => {
 };
 
 export default CategorySlider;
+
+

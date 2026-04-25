@@ -69,7 +69,7 @@ const ForgotPasswordModal = ({
             label="Email Address"
             type="email"
             placeholder="Enter email"
-            icon={<EnvelopeIcon className="w-5 h-5 text-[#5e4c379f]" />}
+            icon={<EnvelopeIcon className="w-5 h-5 " />}
             error={errors.email?.message}
             {...register("email", {
               required: "Email is required",
@@ -100,3 +100,5 @@ const ForgotPasswordModal = ({
 };
 
 export default ForgotPasswordModal;
+
+

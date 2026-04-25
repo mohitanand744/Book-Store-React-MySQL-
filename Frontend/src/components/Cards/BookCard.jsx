@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import { FaHeart, FaStar } from "react-icons/fa";
-import { FaRegStarHalfStroke } from "react-icons/fa6";
-import { FaPlus } from "react-icons/fa6";
+import { FaHeart } from "react-icons/fa";
+import { MdOutlineAddShoppingCart } from "react-icons/md";
 import Ratings from "../RatingsReviews/Ratings";
 import { useLocation, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -14,6 +13,7 @@ import {
 import { useEffect } from "react";
 import { useRef } from "react";
 import useAuth from "../../Hooks/useAuth";
+import FloatingReaction from "../UI/FloatingReaction";
 
 const BookCard = ({ book }) => {
   const navigate = useNavigate();
@@ -61,9 +61,13 @@ const BookCard = ({ book }) => {
         }
       } catch (err) {
         setIsLiked(previousLikedState);
-        toast.error(err?.message || "Wishlist update failed", {
-          id: toastRef.current,
-        });
+        if (err?.status !== 401) {
+          toast.error(err?.message || "Wishlist update failed", {
+            id: toastRef.current,
+          });
+        } else {
+          toast.dismiss(toastRef.current);
+        }
         toastRef.current = null;
       }
     }, 600);
@@ -75,14 +79,14 @@ const BookCard = ({ book }) => {
 
   return (
     <div
-      className="relative flex flex-col bg-white border-t justify-between shadow-xl
-     md:h-[29rem] h-[26rem] z-10 hover:z-[99] transition-all duration-300 card rounded-3xl"
+      className="relative flex flex-col bg-coffee border border-tan/10 justify-between shadow-2xl
+     md:h-[29rem] h-[26rem] z-10 hover:z-[99] transition-all duration-300 card rounded-3xl "
     >
-      <div className="absolute top-1 right-1 px-2 py-1 bg-[#ffcd81ab] rounded-3xl">
+      <div className="absolute top-0 right-0 px-3 py-1 bg-tan/20 text-tan text-xs font-medium backdrop-blur-md rounded-bl-2xl border-l border-b rounded-tr-3xl border-tan/10">
         <p>{book?.category}</p>
       </div>
       <div className="absolute group top-1 left-1">
-        <div className=" w-12 border-2 rounded-full border-orange-600 p-[0.1rem] h-12">
+        <div className=" w-12 border-2 rounded-full border-tan p-[0.1rem] h-12">
           <img
             src={
               book?.author?.author_image ||
@@ -93,8 +97,8 @@ const BookCard = ({ book }) => {
           />
         </div>
 
-        <div className="absolute left-0 w-[20rem] text-sm z-[11111] transition-all duration-300 scale-0 group-hover:translate-y-0 group-hover:scale-100 group-hover:translate-x-0 rotate-90 group-hover:rotate-0 translate-x-[-8rem] translate-y-[-11rem]  font-medium bg-[#5C4C49] p-4 rounded-3xl">
-          <div className="relative mx-auto mb-2 border-[4px] border-white h-44 w-44 rounded-3xl">
+        <div className="absolute border-2 border-tan shadow-lg left-[-4rem] w-[20rem] text-sm z-[11111] transition-all duration-300 scale-0 group-hover:translate-y-0 group-hover:scale-100 group-hover:translate-x-0 rotate-90 group-hover:rotate-0 translate-x-[-5rem] translate-y-[-11.7rem] font-medium bg-coffee/50 backdrop-blur-md p-4 rounded-3xl">
+          <div className="relative mx-auto mb-2 border-[4px] border-tan h-44 w-44 rounded-3xl">
             <img
               src={
                 book?.author?.author_image ||
@@ -105,18 +109,18 @@ const BookCard = ({ book }) => {
             />
           </div>
           <div className="flex flex-col items-center gap-3 mb-2">
-            <h1 className="text-white">
+            <h1 className="text-tan">
               {" "}
               <b className="text-[0.9rem]"> Name:</b> {book?.author?.author_name}
             </h1>
-            <div className="flex items-center gap-1 border border-white bg-[#1a19190a] p-1 px-3 rounded-lg">
+            <div className="flex items-center gap-1 border-2 border-tan  p-1 px-3 rounded-t-2xl">
               <Ratings ratings={book?.author?.author_rating} />
-              <span className="text-orange-400">
+              <span className="text-tan">
                 {book?.author?.author_rating}
               </span>
             </div>
           </div>
-          <p className="text-center text-white">
+          <p className="text-center text-tan">
             <b className="text-[0.9rem]">Short Intro:</b>{" "}
             <motion.span
               key={isReadMore ? "more" : "less"}
@@ -136,7 +140,7 @@ const BookCard = ({ book }) => {
                   e.stopPropagation();
                   setIsReadMore(!isReadMore);
                 }}
-                className="pl-1 text-xs text-[#d3bd9d] cursor-pointer hover:underline inline-block"
+                className="pl-1 text-xs text-cream cursor-pointer hover:underline inline-block"
               >
                 {isReadMore ? "Show less" : "Read more"}
               </span>
@@ -155,7 +159,7 @@ const BookCard = ({ book }) => {
       <div className="px-4 text-xl">
         <div className="text-xl">
           <div className="flex items-center justify-between">
-            <h2 className="mr-2 text-lg font-semibold truncate md:text-xl">
+            <h2 className="mr-2 text-tan text-lg font-semibold truncate md:text-xl">
               {book?.title}
             </h2>
             <motion.div
@@ -169,87 +173,46 @@ const BookCard = ({ book }) => {
               <motion.div
                 animate={{
                   scale: isLiked ? [1, 1.2, 1] : 1,
-                  color: isLiked ? "#ff0000" : "#E9D2AF",
+                  color: isLiked ? "#ef4444" : "#ffe6c1",
                 }}
                 transition={{ duration: 0.5 }}
               >
                 <FaHeart
-                  className={`${isLiked ? "text-red-500" : "text-[#E9D2AF]"}`}
+                  className={`${isLiked ? "text-red-500" : "text-cream"}`}
                 />
               </motion.div>
 
               {isLiked && (
-                <>
-                  <motion.div
-                    initial={{ scale: 0, opacity: 1 }}
-                    animate={{
-                      scale: [0, 1.5],
-                      opacity: [1, 0],
-                      y: -30,
-                      x: -5,
-                    }}
-                    transition={{ duration: 0.8 }}
-                    className="absolute text-red-400 pointer-events-none"
-                  >
-                    <FaHeart />
-                  </motion.div>
-                  <motion.div
-                    initial={{ scale: 0, opacity: 1 }}
-                    animate={{
-                      scale: [0, 1.2],
-                      opacity: [1, 0],
-                      y: -36,
-                      x: 5,
-                    }}
-                    transition={{ duration: 0.6, delay: 0.2 }}
-                    className="absolute text-red-400 pointer-events-none"
-                  >
-                    <FaHeart />
-                  </motion.div>
-                  <motion.div
-                    initial={{ scale: 0, opacity: 1 }}
-                    animate={{
-                      scale: [0, 0.8],
-                      opacity: [1, 0],
-                      y: -40,
-                      x: 5,
-                    }}
-                    transition={{ duration: 0.2, delay: 0.4 }}
-                    className="absolute text-red-400 pointer-events-none"
-                  >
-                    <FaHeart />
-                  </motion.div>
-                </>
+                <FloatingReaction Icon={FaHeart} activeText="text-red-400" />
               )}
             </motion.div>
           </div>
         </div>
 
-        <p className="text-sm text-gray-500 md:text-lg">
+        <p className="text-sm text-tan/70 md:text-lg">
           {book?.description?.slice(0, 50)}...
         </p>
 
         <div className="flex gap-4 mt-3 text-sm md:text-lg">
-          <p className="font-medium text-gray-300 line-through">
+          <p className="font-medium text-tan/40 line-through">
             ₹ {Number(book?.book_price) * 2}
           </p>
-
-          <p className="font-bold text-green-500">
+          <p className="font-bold text-tan">
             ₹ {Number(book?.book_price)}
           </p>
         </div>
       </div>
-      <div className="bottom flex rounded-b-2xl justify-between items-center backdrop-blur-sm mt-2 bg-[#D3BD9D]/20 p-3">
+      <div className="bottom flex rounded-b-2xl justify-between items-center backdrop-blur-md mt-2 bg-tan/10 p-4 border-t border-tan/10">
         <button
           onClick={(e) => e.stopPropagation()}
-          className="px-4 flex gap-1 active:scale-75 transition items-center py-1 font-semibold text-orange-600 border-[#5C4C49] border-b rounded-2xl text-[12px] sm:text-sm"
+          className="px-4 flex gap-2 active:scale-75 transition items-center py-2 font-semibold text-tan bg-tan/20 rounded-xl group hover:bg-tan/30 border border-tan/20"
         >
-          <FaPlus />
-          Add to Cart
+          <MdOutlineAddShoppingCart className="group-hover:-rotate-12 duration-300 text-[22px]" />
+          <span className="text-sm">Add</span>
         </button>
 
-        <div className="flex items-center text-orange-500">
-          <span className="mr-2 text-[12px] sm:text-sm">4.5</span>
+        <div className="flex items-center text-tan">
+          <span className="mr-2 text-[14px] sm:text-sm font-bold">4.5</span>
           <Ratings ratings={book?.book_rating} />
         </div>
       </div>
@@ -258,3 +221,5 @@ const BookCard = ({ book }) => {
 };
 
 export default BookCard;
+
+

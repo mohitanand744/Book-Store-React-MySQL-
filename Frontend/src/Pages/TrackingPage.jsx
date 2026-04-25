@@ -67,11 +67,11 @@ const TrackingPage = () => {
   if (!itemTrackingData) {
     return;
   }
-  <div className="h-screen flex items-center justify-center bg-[#fcfbf9] px-4">
+  <div className="h-screen flex items-center justify-center  px-4">
     <div className="max-w-md mx-auto text-center">
       {/* Icon for visual appeal */}
       <div className="mb-6">
-        <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-[#f0ebe8] text-[#5C4C49] mb-4">
+        <div className="inline-flex items-center justify-center w-16 h-16 rounded-full  text-coffee mb-4">
           <svg
             className="w-8 h-8"
             fill="none"
@@ -89,10 +89,10 @@ const TrackingPage = () => {
       </div>
 
       {/* Text content */}
-      <h2 className="text-2xl md:text-3xl font-bold text-[#5C4C49] mb-3">
+      <h2 className="text-2xl md:text-3xl font-bold text-coffee mb-3">
         Tracking Not Found
       </h2>
-      <p className="text-[#7A6A66] opacity-90 mb-8 text-base leading-relaxed">
+      <p className=" opacity-90 mb-8 text-base leading-relaxed">
         We couldn't find any tracking details for the provided reference. Please
         check the tracking number and try again.
       </p>
@@ -101,24 +101,24 @@ const TrackingPage = () => {
       <div className="flex flex-col justify-center gap-4 sm:flex-row">
         <button
           onClick={() => navigate(-1)}
-          className="px-6 py-3 bg-[#5C4C49] text-white rounded-lg hover:bg-[#4a3d3a] transition-all duration-200 font-medium shadow-sm hover:shadow"
+          className="px-6 py-3 bg-coffee text-tan rounded-lg  transition-all duration-200 font-medium shadow-sm hover:shadow"
         >
           Go Back
         </button>
         <button
           onClick={() => navigate("/")}
-          className="px-6 py-3 border border-[#5C4C49] text-[#5C4C49] rounded-lg hover:bg-[#f0ebe8] transition-all duration-200 font-medium"
+          className="px-6 py-3 border border-coffee text-coffee rounded-lg  transition-all duration-200 font-medium"
         >
           Home Page
         </button>
       </div>
 
       {/* Help text */}
-      <p className="mt-8 text-sm text-[#7A6A66] opacity-80">
+      <p className="mt-8 text-sm  opacity-80">
         Need help?{" "}
         <div
           onClick={() => navigate("/nextChapter/contact")}
-          className="underline hover:text-[#5C4C49] transition-colors"
+          className="underline hover:text-coffee transition-colors"
         >
           Contact our support team
         </div>
@@ -133,7 +133,7 @@ const TrackingPage = () => {
   console.log("Active Steps :", activeStep);
 
   return (
-    <div className="min-h-screen bg-[#fcfbf9] text-[#5C4C49] p-4 md:p-8 font-sans">
+    <div className="min-h-screen  text-coffee p-4 md:p-8 font-sans">
       <div className="container px-4">
         {loading ? (
           <BooksLoader />
@@ -184,7 +184,7 @@ const TrackingPage = () => {
                 </div>
 
                 {/* Progress Timeline */}
-                <div className="bg-white rounded-3xl shadow-sm border border-[#D3BD9D]/30 p-8">
+                <div className="bg-tan text-sepia rounded-3xl shadow-sm border border-tan/30 p-8">
                   <div className="relative">
                     <div className="relative z-10 flex items-start justify-between">
                       {steps.map((step, index) => {
@@ -205,7 +205,7 @@ const TrackingPage = () => {
                                   : "#ffffff",
                                 borderColor:
                                   step.key === "DELIVERED" &&
-                                  itemTrackingData.item_status === "DELIVERED"
+                                    itemTrackingData.item_status === "DELIVERED"
                                     ? "#22C55E"
                                     : "#D3BD9D",
                                 borderWidth: isActive ? 2 : 1,
@@ -226,7 +226,7 @@ const TrackingPage = () => {
                                 <FaCheckCircle
                                   className={
                                     step.key === "DELIVERED" &&
-                                    itemTrackingData.item_status === "DELIVERED"
+                                      itemTrackingData.item_status === "DELIVERED"
                                       ? "text-green-600"
                                       : ""
                                   }
@@ -234,9 +234,8 @@ const TrackingPage = () => {
                               )}
                             </motion.div>
                             <p
-                              className={`mt-3 text-sm font-semibold tracking-wide ${
-                                isActive ? "opacity-100" : "opacity-60"
-                              }`}
+                              className={`mt-3 text-sm font-semibold tracking-wide ${isActive ? "opacity-100" : "opacity-60"
+                                }`}
                             >
                               {step.key === "OUT_FOR_DELIVERY"
                                 ? step.title.toLocaleUpperCase()
@@ -248,24 +247,22 @@ const TrackingPage = () => {
                     </div>
 
                     <div className="absolute top-6 left-0 w-full px-[10%] -z-0">
-                      <div className="h-2 rounded-full bg-[#D3BD9D] opacity-30 w-full absolute top-0 left-0" />
+                      <div className="h-2 rounded-full bg-tan opacity-30 w-full absolute top-0 left-0" />
                       <motion.div
-                        className="h-2 rounded-full bg-[#5C4C49] absolute top-0 left-0"
+                        className="h-2 rounded-full bg-coffee absolute top-0 left-0"
                         initial={{ width: "0%" }}
                         animate={{
-                          width: `calc(${
-                            (activeStep / (steps.length - 1)) * 100
-                          }% ${
-                            itemTrackingData.item_status === "SHIPPED"
+                          width: `calc(${(activeStep / (steps.length - 1)) * 100
+                            }% ${itemTrackingData.item_status === "SHIPPED"
                               ? "+ 100px"
                               : ""
-                          })`,
+                            })`,
                         }}
                         transition={{ duration: 1, ease: "easeInOut" }}
                       >
                         <span className="absolute right-0 flex w-4 h-4 -top-1">
-                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#5C4C49] opacity-75"></span>
-                          <span className="relative inline-flex rounded-full h-4 w-4 bg-[#5C4C49]"></span>
+                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-coffee opacity-75"></span>
+                          <span className="relative inline-flex rounded-full h-4 w-4 bg-coffee"></span>
                         </span>
                       </motion.div>
                     </div>
@@ -275,7 +272,7 @@ const TrackingPage = () => {
                   <div className="mt-12 space-y-6">
                     {/* Mock History Items based on status */}
                     <div className="mt-12 space-y-6">
-                      <h3 className="font-serif text-lg border-b border-[#D3BD9D]/30 pb-2 mb-4">
+                      <h3 className="font-serif text-lg border-b border-tan/30 pb-2 mb-4">
                         Tracking History
                       </h3>
 
@@ -288,12 +285,11 @@ const TrackingPage = () => {
                           <div key={step.key} className="flex gap-4">
                             <div className="flex flex-col items-center">
                               <div
-                                className={`w-2 h-2 rounded-full ${
-                                  isLast ? "bg-[#5C4C49]" : "bg-[#D3BD9D]"
-                                }`}
+                                className={`w-2 h-2 rounded-full ${isLast ? "bg-coffee" : "bg-tan"
+                                  }`}
                               />
                               {!isLast && (
-                                <div className="w-0.5 h-full bg-[#D3BD9D]/30 my-1" />
+                                <div className="w-0.5 h-full bg-tan/30 my-1" />
                               )}
                             </div>
 
@@ -326,7 +322,7 @@ const TrackingPage = () => {
                 transition={{ delay: 0.2 }}
                 className="lg:col-span-1"
               >
-                <div className="bg-[#D3BD9D] bg-opacity-10 rounded-3xl p-6 sticky top-6">
+                <div className="bg-tan bg-opacity-10 rounded-3xl p-6 sticky top-6">
                   <h3 className="mb-6 font-serif text-xl font-bold">
                     Order Details
                   </h3>
@@ -358,7 +354,7 @@ const TrackingPage = () => {
                   </div>
 
                   {/* Order Meta */}
-                  <div className="space-y-3 text-sm border-t border-[#5C4C49]/10 pt-4">
+                  <div className="space-y-3 text-sm border-t border-coffee/10 pt-4">
                     <div className="flex justify-between">
                       <span className="opacity-70">Order ID</span>
                       <span className="font-medium">
@@ -399,7 +395,7 @@ const TrackingPage = () => {
                   </div>
 
                   {/* Price Breakdown */}
-                  <div className="mt-6 space-y-2 text-sm border-t border-[#5C4C49]/10 pt-4">
+                  <div className="mt-6 space-y-2 text-sm border-t border-coffee/10 pt-4">
                     <div className="flex justify-between">
                       <span className="opacity-70">Subtotal</span>
                       <span>₹{itemTrackingData.item_subtotal}</span>
@@ -427,7 +423,7 @@ const TrackingPage = () => {
                   </div>
 
                   {/* Delivery Address */}
-                  <div className="mt-6 text-sm border-t border-[#5C4C49]/10 pt-4">
+                  <div className="mt-6 text-sm border-t border-coffee/10 pt-4">
                     <p className="mb-1 font-medium">Delivery Address</p>
                     <p className="text-xs leading-relaxed opacity-70">
                       {itemTrackingData.address}
@@ -435,11 +431,11 @@ const TrackingPage = () => {
                   </div>
 
                   {/* Support */}
-                  <div className="mt-8 pt-6 border-t border-[#5C4C49]/10">
+                  <div className="mt-8 pt-6 border-t border-coffee/10">
                     <p className="mb-3 text-xs opacity-70">
                       Need help with this order?
                     </p>
-                    <button className="w-full py-2.5 rounded-xl border border-[#5C4C49] text-[#5C4C49] font-medium text-sm hover:bg-[#5C4C49] hover:text-white transition-colors">
+                    <button className="w-full py-2.5 rounded-xl border border-coffee text-coffee font-medium text-sm hover:bg-coffee hover:text-tan transition-colors">
                       Contact Support
                     </button>
                   </div>
@@ -454,3 +450,5 @@ const TrackingPage = () => {
 };
 
 export default TrackingPage;
+
+

@@ -27,7 +27,7 @@ const NoData = ({
 
     const iconProps = {
       xmlns: "http://www.w3.org/2000/svg",
-      className: `w-14 h-14 text-[#5C4C49] ${iconClassName}`,
+      className: `w-14 h-14 text-coffee ${iconClassName}`,
       fill: "none",
       viewBox: "0 0 24 24",
       stroke: "currentColor",
@@ -114,11 +114,8 @@ const NoData = ({
     const buttonContent = (
       <button
         type="button"
-        onClick={() => {
-          console.log("Button clicked", onActionClick);
-          onActionClick && onActionClick();
-        }}
-        className="font-medium flex items-center gap-1 text-[#5C4C49] hover:text-[#af9775] transition-colors duration-200"
+        onClick={onActionClick}
+        className="font-medium flex items-center gap-1 text-tan  transition-colors duration-200"
       >
         <span> {actionText}</span>
         <span aria-hidden="true" className="text-xl ">
@@ -141,16 +138,16 @@ const NoData = ({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, ease: "easeOut" }}
-      className={`flex flex-col border bg-[#D3BD9D]/20 border-[#D3BD9D] mx-auto  shadow-inner shadow-[#D3BD9D]  items-center justify-center max-w-md p-5 rounded-xl ${className}`}
+      className={`flex flex-col bg-sepia mx-auto border border-tan/20 shadow-xl items-center justify-center max-w-md p-5 rounded-xl ${className}`}
     >
       <motion.div
-        className="flex items-center mb-3 justify-center w-16 h-16 border-2 border-[#D3BD9D] rounded-full"
+        className="flex items-center mb-3 justify-center w-16 h-16 border-2 border-tan rounded-full bg-tan/10"
         animate={
           animateIcon
             ? {
-                scale: [1, 1.1, 1],
-                rotate: [0, 5, -5, 0],
-              }
+              scale: [1, 1.1, 1],
+              rotate: [0, 5, -5, 0],
+            }
             : {}
         }
         transition={{
@@ -164,7 +161,7 @@ const NoData = ({
       </motion.div>
 
       <motion.h3
-        className={`mb-1 text-center font-semibold text-[#5C4C49] ${titleClassName}`}
+        className={`mb-1 text-center font-semibold text-tan ${titleClassName}`}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.2 }}
@@ -173,7 +170,7 @@ const NoData = ({
       </motion.h3>
 
       <motion.p
-        className={`mb-3 text-center text-[#5C4C49]/75 ${messageClassName}`}
+        className={`mb-3 text-center text-tan/75 ${messageClassName}`}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.3 }}
@@ -200,3 +197,5 @@ const NoData = ({
 };
 
 export default NoData;
+
+

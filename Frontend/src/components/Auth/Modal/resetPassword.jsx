@@ -75,7 +75,7 @@ const ResetPasswordModal = ({
     } catch (error) {
       toast.error(
         error.response?.data?.message ||
-          "Something went wrong. Please try again later.",
+        "Something went wrong. Please try again later.",
       );
 
       setShowReset(false);
@@ -113,7 +113,7 @@ const ResetPasswordModal = ({
       setEmailResent(false);
       toast.error(
         error.response?.data?.message ||
-          "Something went wrong. Please try again later.",
+        "Something went wrong. Please try again later.",
       );
     }
 
@@ -188,10 +188,10 @@ const ResetPasswordModal = ({
                 />
               </motion.svg>
             </motion.div>
-            <h2 className="mb-1 text-2xl font-bold text-center text-[#5E4C37]">
+            <h2 className="mb-1 text-2xl font-bold text-center ">
               Check Your Email
             </h2>
-            <p className="mb-4 text-sm text-center text-[#5E4C37]">
+            <p className="mb-4 text-sm text-center ">
               We've sent a password reset link to your email <b>{emailValue}</b>{" "}
               address. Please check your inbox and click the link to reset your
               password.
@@ -238,7 +238,7 @@ const ResetPasswordModal = ({
             <Button
               variant="outline"
               onClick={handleClose}
-              className="w-full hover:bg-red-800 hover:text-white"
+              className="w-full hover:bg-red-800 hover:text-tan"
             >
               Cancel
             </Button>
@@ -251,27 +251,27 @@ const ResetPasswordModal = ({
   if (isAuthenticated && afterExitingUserResettingPasswordPopup) {
     return (
       <Modal isOpen={showReset} onClose={handleClose}>
-        <h2 className="text-xl text-center font-bold text-[#5E4C37] mb-1">
+        <h2 className="text-xl text-center font-bold  mb-1">
           Account Confirmation
         </h2>
-        <p className="mb-7 text-sm text-center text-[#5E4C37]">
+        <p className="mb-7 text-sm text-center ">
           Please confirm your account before resetting your password.
         </p>
 
-        <div className="space-y-3 text-[#5E4C37]">
+        <div className="space-y-3 ">
           <p>You are currently logged in as:</p>
 
-          <p className="font-semibold text-[#5E4C37] bg-gray-100 px-3 py-2 rounded-md">
+          <p className="font-semibold  bg-gray-100 px-3 py-2 rounded-md">
             {userData?.email}
           </p>
 
           <p>You are resetting password for:</p>
 
-          <p className="font-semibold text-[#5E4C37] bg-gray-100 px-3 py-2 rounded-md">
+          <p className="font-semibold  bg-gray-100 px-3 py-2 rounded-md">
             {forgotPasswordEmail}
           </p>
 
-          <p className="mt-2 text-sm text-[#5E4C37]">
+          <p className="mt-2 text-sm ">
             If you continue, the password for the second account will be
             updated. You will remain logged in to your current account.
           </p>
@@ -289,7 +289,7 @@ const ResetPasswordModal = ({
 
           <Button
             variant="outline"
-            className="hover:bg-red-800 hover:text-white"
+            className="hover:bg-red-800 hover:text-tan"
             onClick={() => {
               navigate("/nextChapter");
               confirmClose();
@@ -306,10 +306,10 @@ const ResetPasswordModal = ({
   return (
     <Modal isOpen={showReset} onClose={handleClose}>
       <div className="w-full">
-        <h2 className="mb-1 text-2xl font-bold text-center text-[#5E4C37]">
+        <h2 className="mb-1 text-2xl font-bold text-center ">
           Reset Password
         </h2>
-        <p className="mb-4 text-sm text-center text-[#5E4C37]">
+        <p className="mb-4 text-sm text-center ">
           Enter your new password and confirm it.
         </p>
 
@@ -318,16 +318,16 @@ const ResetPasswordModal = ({
             label="New Password"
             type={showNewPassword ? "text" : "password"}
             placeholder="Enter new password"
-            icon={<LockClosedIcon className="w-5 h-5 text-[#5e4c379f]" />}
+            icon={<LockClosedIcon className="w-5 h-5 " />}
             endicon={
               showNewPassword ? (
                 <EyeSlashIcon
-                  className="w-5 h-5 text-[#5e4c379f] cursor-pointer"
+                  className="w-5 h-5  cursor-pointer"
                   onClick={() => setShowNewPassword(false)}
                 />
               ) : (
                 <EyeIcon
-                  className="w-5 h-5 text-[#5e4c379f] cursor-pointer"
+                  className="w-5 h-5  cursor-pointer"
                   onClick={() => setShowNewPassword(true)}
                 />
               )
@@ -353,16 +353,16 @@ const ResetPasswordModal = ({
             label="Confirm Password"
             type={showConfirmPassword ? "text" : "password"}
             placeholder="Confirm new password"
-            icon={<LockClosedIcon className="w-5 h-5 text-[#5e4c379f]" />}
+            icon={<LockClosedIcon className="w-5 h-5 " />}
             endicon={
               showConfirmPassword ? (
                 <EyeSlashIcon
-                  className="w-5 h-5 text-[#5e4c379f] cursor-pointer"
+                  className="w-5 h-5  cursor-pointer"
                   onClick={() => setShowConfirmPassword(false)}
                 />
               ) : (
                 <EyeIcon
-                  className="w-5 h-5 text-[#5e4c379f] cursor-pointer"
+                  className="w-5 h-5  cursor-pointer"
                   onClick={() => setShowConfirmPassword(true)}
                 />
               )
@@ -390,7 +390,7 @@ const ResetPasswordModal = ({
             )}
             <Button
               variant="outline"
-              className="hover:bg-red-800 hover:text-white"
+              className="hover:bg-red-800 hover:text-tan"
               onClick={handleClose}
             >
               Cancel
@@ -407,8 +407,8 @@ export default ResetPasswordModal;
 const CancelModalWarning = ({ confirmClose, setWarningMsg }) => {
   return (
     <div className="absolute top-[-10rem] left-0 flex items-center justify-center w-full h-full bg-black bg-opacity-40">
-      <div className="w-full max-w-md p-6 bg-white border-t-[5px] border-b-[5px] border-yellow-500 shadow-lg rounded-xl">
-        <h2 className="mb-2 text-xl text-[#5E4C37] font-bold">
+      <div className="w-full max-w-md p-6 bg-tan text-sepia border-t-[5px] border-b-[5px] border-yellow-500 shadow-lg rounded-xl">
+        <h2 className="mb-2 text-xl  font-bold">
           Leave Password Reset?
         </h2>
 
@@ -431,3 +431,5 @@ const CancelModalWarning = ({ confirmClose, setWarningMsg }) => {
     </div>
   );
 };
+
+

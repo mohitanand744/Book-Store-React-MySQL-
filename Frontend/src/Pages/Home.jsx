@@ -12,6 +12,7 @@ import ShowErrors from "../components/Errors/ShowErrors";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import BooksLoader from "../components/Loaders/BooksLoader";
 import Button from "../components/Buttons/Button";
+import SectionHeading from "../components/Headings/SectionHeading";
 
 import { useLoader } from "../Hooks/useLoader";
 import { toast } from "sonner";
@@ -45,8 +46,6 @@ const Home = () => {
     dispatch(fetchAllBooks());
   }, [dispatch]);
 
-
-
   return (
     <div className="">
       <div className="search">
@@ -58,71 +57,57 @@ const Home = () => {
       </div>
       <HomeBanner />
       <div className="mx-auto w-[97%]">
-        <div className="mb-14">
-          <h1 className="relative mx-auto my-5 text-2xl font-semibold text-center w-fit md:text-4xl ">
-            Deal of the day <CountdownTimer />
-          </h1>
-
-          {loading ? (
+        {loading ? (
+          <div className="py-20 flex items-center justify-center min-h-[40vh]">
             <BooksLoader />
-          ) : error ? (
-            <ShowErrors text={error || "Sorry we are Unable Fetch Books"} />
-          ) : (
-            <ScrollBooks books={books} />
-          )}
-        </div>
-
-        <div className="mb-14">
-          <h1 className="my-5 text-2xl font-semibold text-center md:text-4xl ">
-            Top Sellers
-          </h1>
-
-          {loading ? (
-            <BooksLoader />
-          ) : error ? (
-            <ShowErrors text={error || "Sorry we are Unable Fetch Books"} />
-          ) : (
-            <ScrollBooks
-              autoScroll={false}
-              books={books.slice(5, books.length)}
-            />
-          )}
-
-          <div className="flex justify-center my-5">
-            <Link to={"/nextChapter/books"}>
-              <Button variant="primary">View All</Button>
-            </Link>
           </div>
-        </div>
+        ) : (
+          <>
+            <div className="mb-14">
+              <SectionHeading subtitle="Limited Time Offer">
+                Deal of the day
+              </SectionHeading>
+              <CountdownTimer />
+              <ScrollBooks books={books} />
+            </div>
 
-        <div className="mb-14 ">
-          <h1 className="my-5 text-2xl font-semibold text-center md:text-4xl ">
-            Find Your Favorite Author
-          </h1>
-          {loading ? (
-            <BooksLoader />
-          ) : error ? (
-            <ShowErrors text={error || "Sorry we are Unable Fetch Books"} />
-          ) : (
-            <AuthorSlider books={books} />
-          )}
+            <div className="mb-14">
+              <SectionHeading subtitle="Our Most Loved Books">
+                Top Sellers
+              </SectionHeading>
+              <ScrollBooks autoScroll={false} books={books} />
+              <div className="flex justify-center my-5">
+                <Link to={"/nextChapter/books"}>
+                  <Button variant="primary">View All</Button>
+                </Link>
+              </div>
+            </div>
 
-          <div className="flex justify-center my-5">
-            <Link to={"/nextChapter/authors"}>
-              <Button variant="primary">View All Authors</Button>
-            </Link>
-          </div>
-        </div>
+            <div className="mb-14 ">
+              <SectionHeading subtitle="Discover Great Minds">
+                Find Your Favorite Author
+              </SectionHeading>
+              <AuthorSlider books={books} />
+              <div className="flex justify-center my-5">
+                <Link to={"/nextChapter/authors"}>
+                  <Button variant="primary">View All Authors</Button>
+                </Link>
+              </div>
+            </div>
 
-        <div className="container">
-          <h1 className="my-5 text-2xl font-semibold text-center md:text-4xl ">
-            What Our Readers Say About Us
-          </h1>
-          <ReviewsContainer />
-        </div>
+            <div className="container">
+              <SectionHeading subtitle="Testimonials">
+                What Our Readers Say About Us
+              </SectionHeading>
+              <ReviewsContainer />
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
 };
 
 export default Home;
+
+

@@ -9,7 +9,7 @@ import { Autoplay } from "swiper/modules";
 
 const DiscountHeader = () => {
   return (
-    <div className="bg-[#ffe6c1] h-12 flex items-center justify-center">
+    <div className="bg-tan h-12 flex items-center justify-center">
       <Swiper
         grabCursor={true}
         loop={true}
@@ -23,9 +23,9 @@ const DiscountHeader = () => {
           (offer, i) => (
             <SwiperSlide key={i}>
               <center className="font-bold">
-                <span className="text-orange-500">{offer.slice(0, 5)}</span>{" "}
-                {offer.slice(5, 15)}
-                <span className="text-lg text-orange-500 ps-[0.1rem]">
+                <span className="text-sepia">{offer.slice(0, 5)}</span>{" "}
+                <span className="text-coffee scale-110">{offer.slice(5, 15)}</span>
+                <span className="text-lg text-sepia ps-[0.1rem]">
                   {" "}
                   {offer.slice(15, 22)}
                 </span>
@@ -39,3 +39,5 @@ const DiscountHeader = () => {
 };
 
 export default DiscountHeader;
+
+

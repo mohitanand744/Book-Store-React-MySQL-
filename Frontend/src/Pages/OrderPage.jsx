@@ -170,13 +170,13 @@ const OrdersPage = () => {
         titleSecond={"Orders"}
         description={"Checkout your orders"}
       />
-      <div className="min-h-screen bg-[#F5F1ED] py-8 px-4 sm:px-6 lg:px-8">
+      <div className="min-h-screen  py-8 px-4 sm:px-6 lg:px-8">
         <div className="container px-4">
           <BackButton label="Back to Profile" />
 
           <div className="mb-6">
             <Search
-              styling="w-full md:w-[25rem]"
+              styling="w-full md:w-[25rem] bg-sepia rounded-full"
               placeholder="Search by Order ID or Book Title..."
               onChange={(val) => setSearchTerm(val)}
               onSearch={(val) => setSearchTerm(val)}
@@ -188,280 +188,287 @@ const OrdersPage = () => {
             {loading ? (
               <BooksLoader />
             ) : (
-              orders
-                ?.filter((order) => {
-                  const query = searchTerm.toLowerCase();
-                  return (
-                    order?.order_number?.toLowerCase().includes(query) ||
-                    order?.order_items?.some((item) =>
-                      item?.title?.toLowerCase().includes(query),
-                    )
-                  );
-                })
-                ?.map((order, i) => {
+              <>
+                {orders.length === 0 && (
+                  <>
+                    <NoData
+                      title="No Orders Found"
+                      message="You have not placed any orders yet."
+                      icon="cart"
+                      showAction={true}
+                      actionText="Explore More"
+                      actionLink="/nextChapter/books"
+                    />
+                  </>
+                )}
 
-                const safeOrderStatus =
-                  statusConfig[order?.order_status] || statusConfig.PLACED;
+                {
+                  orders
+                    ?.filter((order) => {
+                      const query = searchTerm.toLowerCase();
+                      return (
+                        order?.order_number?.toLowerCase().includes(query) ||
+                        order?.order_items?.some((item) =>
+                          item?.title?.toLowerCase().includes(query),
+                        )
+                      );
+                    })
+                    ?.map((order, i) => {
 
-                return (
-                  <motion.div
-                    key={order?.order_id}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    whileHover={{ scale: 1.02 }}
-                    transition={{ duration: 0.2, delay: i * 0.1 }}
-                    className="bg-[url('https://img.freepik.com/premium-photo/close-up-light-cream-paper-texture-cardboard-background-old-paper-texture-aesthetic-creative-design_364465-127.jpg')] bg-no-repeat bg-bottom bg-cover rounded-2xl"
-                  >
-                    {/* Order Summary (Clickable Header) */}
-                    <div
-                      onClick={() => toggleOrder(order?.order_id)}
-                      className="flex items-center justify-between p-5 transition cursor-pointer backdrop-blur-sm rounded-xl"
-                    >
-                      <div className="flex flex-col gap-4 sm:flex-row sm:gap-8">
-                        {/* Order Date */}
-                        <div className="flex items-start gap-3">
-                          <div className="p-2 bg-[#FFE6C1] rounded-lg">
-                            <FiCalendar className="text-[#5C4C49]" />
-                          </div>
-                          <div>
-                            <p className="text-xs text-[#5C4C49]">
-                              ORDER PLACED
-                            </p>
-                            <p className="font-medium text-[#5C4C49]">
-                              {formatDate(order?.created_at)}
-                            </p>
-                          </div>
-                        </div>
+                      const safeOrderStatus =
+                        statusConfig[order?.order_status] || statusConfig.PLACED;
 
-                        {/* Payment Method */}
-                        <div className="flex items-start gap-3">
-                          <div className="p-2 bg-[#FFE6C1] rounded-lg">
-                            <FiCreditCard className="text-[#5C4C49]" />
-                          </div>
-                          <div>
-                            <p className="text-xs text-[#5C4C49]">PAYMENT</p>
-                            <p className="font-medium text-[#5C4C49]">
-                              {order?.payment_method}
-                            </p>
-                            {/*  <p className="text-xs text-[#5C4C49]">
+                      return (
+                        <motion.div
+                          key={order?.order_id}
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -10 }}
+                          whileHover={{ scale: 1.02 }}
+                          transition={{ duration: 0.2, delay: i * 0.1 }}
+                          className="bg-[url('https://img.freepik.com/premium-photo/close-up-light-cream-paper-texture-cardboard-background-old-paper-texture-aesthetic-creative-design_364465-127.jpg')] bg-no-repeat bg-bottom bg-cover rounded-2xl"
+                        >
+                          {/* Order Summary (Clickable Header) */}
+                          <div
+                            onClick={() => toggleOrder(order?.order_id)}
+                            className="flex items-center justify-between p-5 transition cursor-pointer backdrop-blur-sm rounded-xl"
+                          >
+                            <div className="flex flex-col gap-4 sm:flex-row sm:gap-8">
+                              {/* Order Date */}
+                              <div className="flex items-start gap-3">
+                                <div className="p-2 bg-cream rounded-lg">
+                                  <FiCalendar className="text-coffee" />
+                                </div>
+                                <div>
+                                  <p className="text-xs text-coffee">
+                                    ORDER PLACED
+                                  </p>
+                                  <p className="font-medium text-coffee">
+                                    {formatDate(order?.created_at)}
+                                  </p>
+                                </div>
+                              </div>
+
+                              {/* Payment Method */}
+                              <div className="flex items-start gap-3">
+                                <div className="p-2 bg-cream rounded-lg">
+                                  <FiCreditCard className="text-coffee" />
+                                </div>
+                                <div>
+                                  <p className="text-xs text-coffee">PAYMENT</p>
+                                  <p className="font-medium text-coffee">
+                                    {order?.payment_method}
+                                  </p>
+                                  {/*  <p className="text-xs text-coffee">
                           ****{order?.lastFourDigits}
                         </p> */}
-                          </div>
-                        </div>
+                                </div>
+                              </div>
 
-                        {/* Order Total */}
-                        <div className="flex items-start gap-3">
-                          <div className="p-1 px-3 text-[#5C4C49] bg-[#FFE6C1] rounded-lg">
-                            ₹
-                          </div>
-                          <div>
-                            <p className="text-xs text-[#5C4C49]">TOTAL</p>
-                            <p className="font-medium text-[#5C4C49]">
-                              {order?.total_amount}
-                            </p>
-                            <p className="text-xs text-[#5C4C49]">
-                              {order?.order_items.length} items
-                            </p>
-                          </div>
-                        </div>
+                              {/* Order Total */}
+                              <div className="flex items-start gap-3">
+                                <div className="p-1 px-3 text-coffee bg-cream rounded-lg">
+                                  ₹
+                                </div>
+                                <div>
+                                  <p className="text-xs text-coffee">TOTAL</p>
+                                  <p className="font-medium text-coffee">
+                                    {order?.total_amount}
+                                  </p>
+                                  <p className="text-xs text-coffee">
+                                    {order?.order_items.length} items
+                                  </p>
+                                </div>
+                              </div>
 
-                        {/* Order Number */}
-                        <div className="flex items-start gap-3">
-                          <div className="p-2 bg-[#FFE6C1] rounded-lg">
-                            <FiHash className="text-[#5C4C49]" />
-                          </div>
-                          <div className="">
-                            <p className="text-xs text-[#5C4C49]">ORDER ID</p>
-                            <div className="flex items-center gap-2">
-                              <p className="font-medium text-[#5C4C49]">
-                                {order?.order_number}
-                              </p>
-                              <motion.button
-                                whileHover={{ scale: 1.1 }}
-                                whileTap={{ scale: 0.9 }}
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  navigator.clipboard
-                                    .writeText(order?.order_number)
-                                    .then(() => {
-                                      toast.success(`Copied to clipboard!`);
-                                    })
-                                    .catch((error) => {
-                                      console.error(
-                                        "Failed to copy to clipboard:",
-                                        error,
-                                      );
-                                    });
-                                }}
-                                className="text-[#5C4C49]/50 hover:text-[#5C4C49] transition-colors"
-                                title="Copy to clipboard"
-                              >
-                                <CopyIcon />
-                              </motion.button>
+                              {/* Order Number */}
+                              <div className="flex items-start gap-3">
+                                <div className="p-2 bg-cream rounded-lg">
+                                  <FiHash className="text-coffee" />
+                                </div>
+                                <div className="">
+                                  <p className="text-xs text-coffee">ORDER ID</p>
+                                  <div className="flex items-center gap-2">
+                                    <p className="font-medium text-coffee">
+                                      {order?.order_number}
+                                    </p>
+                                    <motion.button
+                                      whileHover={{ scale: 1.1 }}
+                                      whileTap={{ scale: 0.9 }}
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        navigator.clipboard
+                                          .writeText(order?.order_number)
+                                          .then(() => {
+                                            toast.success(`Copied to clipboard!`);
+                                          })
+                                          .catch((error) => {
+                                            console.error(
+                                              "Failed to copy to clipboard:",
+                                              error,
+                                            );
+                                          });
+                                      }}
+                                      className="text-coffee/50 hover:text-coffee transition-colors"
+                                      title="Copy to clipboard"
+                                    >
+                                      <CopyIcon />
+                                    </motion.button>
+                                  </div>
+                                </div>
+                              </div>
                             </div>
-                          </div>
-                        </div>
-                      </div>
 
-                      {/* Status and Chevron */}
-                      <div className="flex items-center gap-4">
-                        <div className="flex-col items-end hidden sm:flex">
-                          <div className="flex items-center gap-2">
-                            <span
-                              className={`px-3 py-1 rounded-full text-xs font-medium ${safeOrderStatus.color}`}
-                            >
-                              {getDeliveryOrderStatusLabel(order?.order_status)}
-                            </span>
-                            {/*  {order?.isDelayed && (
+                            {/* Status and Chevron */}
+                            <div className="flex items-center gap-4">
+                              <div className="flex-col items-end hidden sm:flex">
+                                <div className="flex items-center gap-2">
+                                  <span
+                                    className={`px-3 py-1 rounded-full text-xs font-medium ${safeOrderStatus.color}`}
+                                  >
+                                    {getDeliveryOrderStatusLabel(order?.order_status)}
+                                  </span>
+                                  {/*  {order?.isDelayed && (
                           <span className="px-2 py-1 text-xs text-red-500 rounded-full bg-red-50">
                             Delayed
                           </span>
                         )} */}
+                                </div>
+                                <p className="mt-1 text-xs text-coffee">
+                                  {statusConfig[order?.order_status].estimatedText}
+                                </p>
+                              </div>
+
+                              <motion.div
+                                animate={{
+                                  rotate: expandedOrder === order?.order_id ? 180 : 0,
+                                }}
+                                transition={{ duration: 0.2 }}
+                                className="p-2 bg-cream rounded-lg"
+                              >
+                                <FiChevronDown className="text-coffee" />
+                              </motion.div>
+                            </div>
                           </div>
-                          <p className="mt-1 text-xs text-[#5C4C49]">
-                            {statusConfig[order?.order_status].estimatedText}
-                          </p>
-                        </div>
 
-                        <motion.div
-                          animate={{
-                            rotate: expandedOrder === order?.order_id ? 180 : 0,
-                          }}
-                          transition={{ duration: 0.2 }}
-                          className="p-2 bg-[#FFE6C1] rounded-lg"
-                        >
-                          <FiChevronDown className="text-[#5C4C49]" />
-                        </motion.div>
-                      </div>
-                    </div>
+                          {/* Dropdown Content */}
+                          <AnimatePresence>
+                            {expandedOrder === order?.order_id && (
+                              <motion.div
+                                initial={{ opacity: 0, height: 0 }}
+                                animate={{ opacity: 1, height: "auto" }}
+                                exit={{ opacity: 0, height: 0 }}
+                                transition={{ duration: 0.2, ease: "easeInOut" }}
+                                className="overflow-hidden backdrop-blur-sm"
+                              >
+                                <div className="border-t border-tan px-5 py-4">
+                                  {/* Order Items */}
+                                  <div className="space-y-4">
+                                    {order?.order_items.map((item) => {
+                                      const safeItemStatus =
+                                        statusConfigOrderItems[item?.item_status] ||
+                                        statusConfigOrderItems.PROCESSING;
 
-                    {/* Dropdown Content */}
-                    <AnimatePresence>
-                      {expandedOrder === order?.order_id && (
-                        <motion.div
-                          initial={{ opacity: 0, height: 0 }}
-                          animate={{ opacity: 1, height: "auto" }}
-                          exit={{ opacity: 0, height: 0 }}
-                          transition={{ duration: 0.2, ease: "easeInOut" }}
-                          className="overflow-hidden backdrop-blur-sm"
-                        >
-                          <div className="border-t border-[#D3BD9D] px-5 py-4">
-                            {/* Order Items */}
-                            <div className="space-y-4">
-                              {order?.order_items.map((item) => {
-                                const safeItemStatus =
-                                  statusConfigOrderItems[item?.item_status] ||
-                                  statusConfigOrderItems.PROCESSING;
-
-                                return (
-                                  <motion.div
-                                    key={item?.order_item_id}
-                                    initial={{ opacity: 0 }}
-                                    animate={{ opacity: 1 }}
-                                    transition={{ delay: 0.2 }}
-                                    className="p-4 flex flex-col sm:flex-row gap-4 border border-[#D3BD9D]/30 rounded-lg bg-[#FFE6C1]/10"
-                                  >
-                                    <img
-                                      src={item?.cover_image}
-                                      alt={item?.title}
-                                      className="self-center object-cover w-20 h-24 rounded-lg sm:self-start"
-                                    />
-                                    <div className="flex-1">
-                                      <h3 className="font-medium text-[#5C4C49]">
-                                        {item?.title}
-                                      </h3>
-                                      <p className="mt-1 text-sm text-gray-600">
-                                        {item?.description}
-                                      </p>
-                                      <div className="flex items-center mt-2">
-                                        <span className="font-medium text-[#5C4C49]">
-                                          {item?.price}
-                                        </span>
-                                        {item?.original_price && (
-                                          <span className="ml-2 text-xs text-[#5C4C49] line-through">
-                                            {item?.original_price}
-                                          </span>
-                                        )}
-                                        <span className="ml-auto text-xs text-[#5C4C49]">
-                                          Qty: {item?.quantity}
-                                        </span>
-                                      </div>
-                                      <div className="flex flex-col gap-2 mt-3 sm:flex-row sm:items-center sm:justify-between">
-                                        <div className="flex items-center text-sm">
-                                          {safeItemStatus.icon}
-
-                                          <span className="ml-2">
-                                            •{" "}
-                                            <span className="text-gray-600 ">
-                                              <span className="pr-3">
-                                                {getDeliveryLabel(
-                                                  item?.item_status,
-                                                )}
+                                      return (
+                                        <motion.div
+                                          key={item?.order_item_id}
+                                          initial={{ opacity: 0 }}
+                                          animate={{ opacity: 1 }}
+                                          transition={{ delay: 0.2 }}
+                                          className="p-4 flex flex-col sm:flex-row gap-4 border border-tan/30 rounded-lg bg-cream/10"
+                                        >
+                                          <img
+                                            src={item?.cover_image}
+                                            alt={item?.title}
+                                            className="self-center object-cover w-20 h-24 rounded-lg sm:self-start"
+                                          />
+                                          <div className="flex-1">
+                                            <h3 className="font-medium text-coffee">
+                                              {item?.title}
+                                            </h3>
+                                            <p className="mt-1 text-sm text-gray-600">
+                                              {item?.description}
+                                            </p>
+                                            <div className="flex items-center mt-2">
+                                              <span className="font-medium text-coffee">
+                                                {item?.price}
                                               </span>
-                                              {order?.expected_delivery &&
-                                                new Date(
-                                                  order.expected_delivery,
-                                                ).toLocaleDateString("en-GB", {
-                                                  day: "2-digit",
-                                                  month: "long",
-                                                  year: "numeric",
-                                                })}
-                                            </span>
-                                          </span>
-                                        </div>
-                                        {item?.tracking_id && (
-                                          <button
-                                            onClick={() =>
-                                              navigate(
-                                                `/nextChapter/tracking/${item?.order_item_id}/${item?.tracking_id}`,
-                                              )
-                                            }
-                                            className="px-3 py-1 text-xs bg-[#D3BD9D] hover:bg-[#5C4C49] text-[#5C4C49] hover:text-white rounded-full transition-colors"
-                                          >
-                                            Track Package
-                                          </button>
-                                        )}
-                                      </div>
-                                    </div>
-                                  </motion.div>
-                                );
-                              })}
-                            </div>
+                                              {item?.original_price && (
+                                                <span className="ml-2 text-xs text-coffee line-through">
+                                                  {item?.original_price}
+                                                </span>
+                                              )}
+                                              <span className="ml-auto text-xs text-coffee">
+                                                Qty: {item?.quantity}
+                                              </span>
+                                            </div>
+                                            <div className="flex flex-col gap-2 mt-3 sm:flex-row sm:items-center sm:justify-between">
+                                              <div className="flex items-center text-sm">
+                                                {safeItemStatus.icon}
 
-                            {/* Order Actions */}
-                            <div className="flex flex-wrap justify-end gap-2 mt-6">
-                              <button className="flex items-center gap-1 px-3 py-2 text-sm border border-[#5C4C49] text-[#5C4C49] hover:bg-[#5C4C49] hover:text-white rounded-lg transition-colors">
-                                <FiFileText /> Invoice
-                              </button>
-                              <button className="flex items-center gap-1 px-3 py-2 text-sm border border-[#5C4C49] text-[#5C4C49] hover:bg-[#5C4C49] hover:text-white rounded-lg transition-colors">
-                                <FiRepeat /> Return
-                              </button>
-                              <button className="flex items-center gap-1 px-3 py-2 text-sm border border-[#5C4C49] text-[#5C4C49] hover:bg-[#5C4C49] hover:text-white rounded-lg transition-colors">
-                                <FiShoppingCart /> Buy Again
-                              </button>
-                            </div>
-                          </div>
+                                                <span className="ml-2">
+                                                  •{" "}
+                                                  <span className="text-gray-600 ">
+                                                    <span className="pr-3">
+                                                      {getDeliveryLabel(
+                                                        item?.item_status,
+                                                      )}
+                                                    </span>
+                                                    {order?.expected_delivery &&
+                                                      new Date(
+                                                        order.expected_delivery,
+                                                      ).toLocaleDateString("en-GB", {
+                                                        day: "2-digit",
+                                                        month: "long",
+                                                        year: "numeric",
+                                                      })}
+                                                  </span>
+                                                </span>
+                                              </div>
+                                              {item?.tracking_id && (
+                                                <button
+                                                  onClick={() =>
+                                                    navigate(
+                                                      `/nextChapter/tracking/${item?.order_item_id}/${item?.tracking_id}`,
+                                                    )
+                                                  }
+                                                  className="px-3 py-1 text-xs bg-tan hover:bg-coffee text-coffee hover:text-tan rounded-full transition-colors"
+                                                >
+                                                  Track Package
+                                                </button>
+                                              )}
+                                            </div>
+                                          </div>
+                                        </motion.div>
+                                      );
+                                    })}
+                                  </div>
+
+                                  {/* Order Actions */}
+                                  <div className="flex flex-wrap justify-end gap-2 mt-6">
+                                    <button className="flex items-center gap-1 px-3 py-2 text-sm border border-coffee text-coffee hover:bg-coffee hover:text-tan rounded-lg transition-colors">
+                                      <FiFileText /> Invoice
+                                    </button>
+                                    <button className="flex items-center gap-1 px-3 py-2 text-sm border border-coffee text-coffee hover:bg-coffee hover:text-tan rounded-lg transition-colors">
+                                      <FiRepeat /> Return
+                                    </button>
+                                    <button className="flex items-center gap-1 px-3 py-2 text-sm border border-coffee text-coffee hover:bg-coffee hover:text-tan rounded-lg transition-colors">
+                                      <FiShoppingCart /> Buy Again
+                                    </button>
+                                  </div>
+                                </div>
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
                         </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </motion.div>
-                );
-              })
-            )}
+                      );
+                    })
+                }
 
-            {orders.length === 0 && (
-              <>
-                <NoData
-                  title="No Orders Found"
-                  message="You have not placed any orders yet."
-                  icon="cart"
-                  showAction={true}
-                  actionText="Explore More"
-                  actionLink="/nextChapter/books"
-                />
               </>
             )}
+
+
           </div>
         </div>
       </div>
@@ -470,3 +477,5 @@ const OrdersPage = () => {
 };
 
 export default OrdersPage;
+
+

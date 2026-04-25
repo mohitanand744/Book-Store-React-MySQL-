@@ -3,22 +3,23 @@ import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
-    <footer className="py-8 text-gray-200 bg-[#D3BD9D]">
+    <footer className="relative rounded-t-[3rem] py-8 text-tan bg-coffee">
+
       <div className="container px-4 mx-auto">
         {/* Top Section */}
         <div className="grid grid-cols-12 gap-2">
           {/* About Section */}
           <div className="col-span-12 md:col-span-6 lg:col-span-3">
-            <div className="flex-shrink-0 w-28 mb-4">
+            <div className="flex-shrink-0 bg-tan p-1 rounded-xl w-28 mb-4">
               <Link to="/nextChapter">
                 <img
                   className="object-cover w-full h-full"
-                  src="/images/logoBS.png"
+                  src="/images/logo.png"
                   alt="BookStore Logo"
                 />
               </Link>
             </div>
-            <p className="font-medium text-white text-md">
+            <p className="font-medium text-tan/90 text-md">
               Welcome to our bookstore! We provide a wide range of books across
               all genres, from fiction to self-help. Explore, read, and grow
               with us.
@@ -26,14 +27,14 @@ const Footer = () => {
           </div>
           {/* Quick Links */}
           <div className="col-span-6 lg:mx-auto md:col-span-6 lg:col-span-3">
-            <h3 className="mb-4 text-lg font-bold text-[#5c4c49]">
+            <h3 className="mb-4 text-lg font-bold text-tan">
               Quick Links
             </h3>
             <ul className="space-y-2">
               <li>
                 <Link
                   to="/nextChapter/aboutUs"
-                  className="text-white transition text-md hover:text-[#5C4C49] "
+                  className="text-tan/80 transition text-md hover:text-cream "
                 >
                   About Us
                 </Link>
@@ -41,7 +42,7 @@ const Footer = () => {
               <li>
                 <Link
                   to="/nextChapter/books"
-                  className="text-white transition text-md hover:text-[#5C4C49] "
+                  className="text-tan/80 transition text-md hover:text-cream "
                 >
                   Browse Books
                 </Link>
@@ -49,7 +50,7 @@ const Footer = () => {
               <li>
                 <Link
                   to="/nextChapter"
-                  className="text-white transition text-md hover:text-[#5C4C49] "
+                  className="text-tan/80 transition text-md hover:text-cream "
                 >
                   Contact Us
                 </Link>
@@ -57,7 +58,7 @@ const Footer = () => {
               <li>
                 <Link
                   to="/nextChapter"
-                  className="text-white transition text-md hover:text-[#5C4C49] "
+                  className="text-tan/80 transition text-md hover:text-cream "
                 >
                   FAQs
                 </Link>
@@ -66,12 +67,12 @@ const Footer = () => {
           </div>
           {/* Quick Links */}
           <div className="col-span-6 md:col-span-6 lg:col-span-3">
-            <h3 className="mb-4 text-lg font-bold text-[#5c4c49]">Buy Books</h3>
+            <h3 className="mb-4 text-lg font-bold text-tan">Buy Books</h3>
             <ul className="space-y-2">
               <li>
                 <Link
                   to="/nextChapter/books"
-                  className="text-white transition text-md hover:text-[#5C4C49] "
+                  className="text-tan/80 transition text-md hover:text-cream "
                 >
                   Hindi Books
                 </Link>
@@ -79,7 +80,7 @@ const Footer = () => {
               <li>
                 <Link
                   to="/nextChapter/books"
-                  className="text-white transition text-md hover:text-[#5C4C49] "
+                  className="text-tan/80 transition text-md hover:text-cream "
                 >
                   English Books
                 </Link>
@@ -87,7 +88,7 @@ const Footer = () => {
               <li>
                 <Link
                   to="/nextChapter/books"
-                  className="text-white transition text-md hover:text-[#5C4C49] "
+                  className="text-tan/80 transition text-md hover:text-cream "
                 >
                   Fantasy
                 </Link>
@@ -95,7 +96,7 @@ const Footer = () => {
               <li>
                 <Link
                   to="/nextChapter/books"
-                  className="text-white transition text-md hover:text-[#5C4C49] "
+                  className="text-tan/80 transition text-md hover:text-cream "
                 >
                   Other
                 </Link>
@@ -104,21 +105,21 @@ const Footer = () => {
           </div>
           {/* Newsletter Section */}
           <div className="col-span-12 md:col-span-6 lg:col-span-3">
-            <h3 className="mb-4 text-lg font-bold text-[#5c4c49]">
+            <h3 className="mb-4 text-lg font-bold text-tan">
               Stay Updated
             </h3>
-            <p className="mb-4 font-medium text-white text-md">
+            <p className="mb-4 font-medium text-tan/90 text-md">
               Subscribe to our newsletter for the latest books and offers.
             </p>
             <form className="relative flex">
               <input
                 type="email"
                 placeholder="Enter your email"
-                className="w-full px-4 py-2 text-gray-200 bg-white border-none rounded-full"
+                className="w-full px-4 py-2 text-coffee bg-tan/10 border border-tan/20 rounded-full focus:outline-none focus:border-tan/40 placeholder:text-tan/50"
               />
               <button
                 type="submit"
-                className="absolute right-0 px-4 py-2 text-white transition bg-[#5C4C49] rounded-r-full hover:scale-105"
+                className="absolute right-0 px-4 py-2 text-coffee transition bg-tan rounded-r-full hover:bg-cream hover:scale-105 font-bold"
               >
                 Subscribe
               </button>
@@ -129,14 +130,14 @@ const Footer = () => {
         <div className="my-6 border-t border-gray-700"></div>
         {/* Bottom Section */}
         <div className="flex flex-col items-center justify-between md:flex-row">
-          <p className="font-medium text-white text-md">
+          <p className="font-medium text-tan/80 text-md">
             &copy; {new Date().getFullYear()} BookStore. All rights reserved.
           </p>
           <div className="flex mt-4 space-x-4 md:mt-0">
             {/* Facebook */}
             <a
               href="#"
-              className="transition hover:text-[#5C4C49] "
+              className="transition hover:text-tan "
               aria-label="Facebook"
             >
               <svg
@@ -151,7 +152,7 @@ const Footer = () => {
             {/* Twitter */}
             <a
               href="#"
-              className="transition hover:text-[#5C4C49] "
+              className="transition hover:text-tan "
               aria-label="Twitter"
             >
               <svg
@@ -166,7 +167,7 @@ const Footer = () => {
             {/* Instagram */}
             <a
               href="#"
-              className="transition hover:text-[#5C4C49] "
+              className="transition hover:text-tan "
               aria-label="Instagram"
             >
               <svg
@@ -182,7 +183,7 @@ const Footer = () => {
             {/* YouTube */}
             <a
               href="#"
-              className="transition hover:text-[#5C4C49] "
+              className="transition hover:text-tan "
               aria-label="YouTube"
             >
               <svg
@@ -202,3 +203,5 @@ const Footer = () => {
 };
 
 export default Footer;
+
+

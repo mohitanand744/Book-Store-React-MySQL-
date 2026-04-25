@@ -12,7 +12,7 @@
 
   .swiper-button-prev:after,
   .swiper-button-next:after {
-    color: #000 !important;
+    color: #5C4C49 !important;
     font-size: 0.8rem !important;
     font-weight: bold !important;
   }
@@ -35,7 +35,7 @@
   }
 
   .swiper-pagination-bullet-active {
-    background: #5c4c49 !important;
+    background: theme('colors.coffee') !important;
     width: 1.3rem !important;
     border-radius: 1rem !important;
     -webkit-border-radius: 1rem !important;

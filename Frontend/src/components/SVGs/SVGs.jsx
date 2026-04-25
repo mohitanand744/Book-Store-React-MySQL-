@@ -30,22 +30,22 @@ export const NoRecentOrders = () => {
     >
       <path
         d="M40 30C40 27.7909 41.7909 26 44 26H76C78.2091 26 80 27.7909 80 30V40H40V30Z"
-        fill="#f1f3f5"
+        fill="#ffe6c1"
       />
       <path
         d="M30 40H90V100C90 105.523 85.5228 110 80 110H40C34.4772 110 30 105.523 30 100V40Z"
-        fill="white"
-        stroke="#dee2e6"
+        fill="tan"
+        stroke="#D3BD9D"
         stroke-width="2"
       />
 
       <path
         d="M35 30C35 27.2386 37.2386 25 40 25H45C47.7614 25 50 27.2386 50 30V35H35V30Z"
-        fill="#dee2e6"
+        fill="#D3BD9D"
       />
       <path
         d="M70 30C70 27.2386 72.2386 25 75 25H80C82.7614 25 85 27.2386 85 30V35H70V30Z"
-        fill="#dee2e6"
+        fill="#D3BD9D"
       />
 
       <circle
@@ -53,13 +53,13 @@ export const NoRecentOrders = () => {
         cy="65"
         r="20"
         fill="none"
-        stroke="#dee2e6"
+        stroke="#D3BD9D"
         stroke-width="2"
         stroke-dasharray="3 3"
       />
       <path
         d="M60 55V75M50 65H70"
-        stroke="#dee2e6"
+        stroke="#D3BD9D"
         stroke-width="2"
         stroke-linecap="round"
       />
@@ -101,9 +101,9 @@ export const HearthSvg = () => {
   );
 };
 
-export const DecorativeHeader = () => {
+export const DecorativeHeader = ({ height = "h-28" }) => {
   return (
-    <div className="relative h-28 bg-[#5C4C49] rounded-t-2xl overflow-hidden">
+    <div className={`relative ${height} bg-coffee text-tan rounded-t-2xl overflow-hidden`}>
       {/* Subtle SVG Pattern Background */}
       <svg
         className="absolute inset-0 w-full h-full opacity-10"
@@ -118,7 +118,7 @@ export const DecorativeHeader = () => {
           height="20"
           patternUnits="userSpaceOnUse"
         >
-          <circle cx="10" cy="10" r="1.5" fill="#E8D9C5" />
+          <circle cx="10" cy="10" r="1.5" fill="#D3BD9D" />
         </pattern>
         <rect
           x="0"
@@ -138,22 +138,22 @@ export const DecorativeHeader = () => {
         <path
           d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z"
           opacity=".25"
-          fill="#E8D9C5"
+          fill="#D3BD9D"
         />
         <path
           d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z"
           opacity=".5"
-          fill="#E8D9C5"
+          fill="#D3BD9D"
         />
         <path
           d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z"
-          fill="#E8D9C5"
+          fill="#D3BD9D"
         />
       </svg>
 
       {/* Decorative Corner Elements */}
       <svg
-        className="absolute top-2 left-2 w-8 h-8 text-[#E8D9C5]/20"
+        className="absolute top-2 left-2 w-8 h-8 "
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
@@ -162,7 +162,7 @@ export const DecorativeHeader = () => {
         <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
       </svg>
       <svg
-        className="absolute top-2 right-2 w-8 h-8 text-[#E8D9C5]/20"
+        className="absolute top-2 right-2 w-8 h-8 "
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
@@ -173,7 +173,7 @@ export const DecorativeHeader = () => {
 
       {/* Floating Book Icons */}
       <svg
-        className="absolute top-1/4 left-1/4 w-6 h-6 text-[#E8D9C5]/30 animate-float"
+        className="absolute top-1/4 left-1/4 w-6 h-6  animate-float"
         viewBox="0 0 24 24"
         fill="currentColor"
       >
@@ -181,7 +181,7 @@ export const DecorativeHeader = () => {
       </svg>
 
       <svg
-        className="absolute top-1/3 right-1/4 w-5 h-5 text-[#E8D9C5]/40 animate-float animation-delay-100"
+        className="absolute top-1/3 right-1/4 w-5 h-5  animate-float animation-delay-100"
         viewBox="0 0 24 24"
         fill="currentColor"
       >
@@ -260,10 +260,13 @@ export const BookSvg = () => {
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      className="text-[#5C4C49]"
+      className="text-coffee"
     >
       <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
       <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
     </svg>
   );
 };
+
+
+

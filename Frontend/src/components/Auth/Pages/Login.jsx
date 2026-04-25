@@ -34,7 +34,10 @@ const Login = () => {
     mode: "onTouched",
   });
 
-  const { handleKeyDown, handleInput } = useInputHandlers(setError, clearErrors);
+  const { handleKeyDown, handleInput } = useInputHandlers(
+    setError,
+    clearErrors,
+  );
   const navigate = useNavigate();
   const { loginStatusSuccess, getUserUpdatedDetails, isAuthenticated } =
     useAuth();
@@ -206,39 +209,39 @@ const Login = () => {
     <div className="flex items-center justify-center min-h-screen gap-3 p-4 bg-[url('/images/authBG.webp')] bg-center bg-no-repeat bg-cover">
       <div className="flex gap-4">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
+          initial={{ scale: 0, y: 20 }}
+          animate={{ scale: 1, y: 0 }}
+          transition={{ duration: 0.2 }}
           className="w-full max-w-md"
         >
           <motion.div
             whileHover={{ scale: 1.01 }}
             transition={{ duration: 0.2 }}
-            className="overflow-hidden bg-[#ffffff7f] backdrop-blur-sm shadow-xl rounded-3xl p-3"
+            className="overflow-hidden bg-white/50 backdrop-blur-sm shadow-xl rounded-3xl p-3"
           >
             <div className="p-3">
-              <div className="mb-8 text-center">
+              <div className="mb-8 text-coffee text-center">
                 <motion.img
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
                   transition={{ delay: 0.1 }}
-                  className="object-cover w-auto h-20 mx-auto mb-4"
-                  src="/images/logo.png"
+                  className="object-cover w-auto h-32 mx-auto mb-4"
+                  src="/images/logo-transperant.png"
                   alt="Logo"
                 />
                 <motion.h1
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
                   transition={{ delay: 0.2 }}
-                  className="mb-2 text-3xl font-bold text-[#5E4C37]"
+                  className="mb-2 text-3xl font-bold "
                 >
                   Welcome Back
                 </motion.h1>
                 <motion.p
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
                   transition={{ delay: 0.3 }}
-                  className="font-semibold text-[#5e4c37]"
+                  className="font-semibold "
                 >
                   Sign in to your <b>NextChapter</b> account
                 </motion.p>
@@ -246,30 +249,43 @@ const Login = () => {
 
               <form onSubmit={handleSubmit(onSubmit)}>
                 <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
                   transition={{ delay: 0.4 }}
                 >
                   <Input
                     label="Email Address"
                     type="email"
                     placeholder="your@email.com"
-                    icon={<EnvelopeIcon className="w-5 h-5 text-[#5e4c379f]" />}
+                    icon={<EnvelopeIcon className="w-5 h-5 " />}
                     error={errors.email?.message}
                     {...register("email", emailValidationRules)}
                     maxLength={emailValidationRules.maxLength.value}
                     onKeyDown={(e) =>
-                      handleKeyDown(e, /^[a-zA-Z0-9_.+\-@]$/, "email", "Email", "Invalid character for email", emailValidationRules.maxLength.value)
+                      handleKeyDown(
+                        e,
+                        /^[a-zA-Z0-9_.+\-@]$/,
+                        "email",
+                        "Email",
+                        "Invalid character for email",
+                        emailValidationRules.maxLength.value,
+                      )
                     }
                     onInput={(e) =>
-                      handleInput(e, /^[a-zA-Z0-9_.+\-@]$/, emailValidationRules.maxLength.value, "email", "Email")
+                      handleInput(
+                        e,
+                        /^[a-zA-Z0-9_.+\-@]$/,
+                        emailValidationRules.maxLength.value,
+                        "email",
+                        "Email",
+                      )
                     }
                   />
                 </motion.div>
 
                 <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
                   transition={{ delay: 0.5 }}
                 >
                   <Input
@@ -277,7 +293,7 @@ const Login = () => {
                     type="password"
                     placeholder="••••••••"
                     icon={
-                      <LockClosedIcon className="w-5 h-5 text-[#5e4c378f]" />
+                      <LockClosedIcon className="w-5 h-5 " />
                     }
                     error={errors.password?.message}
                     {...register("password", passwordValidationRules)}
@@ -286,8 +302,8 @@ const Login = () => {
 
                 <div className="flex items-center justify-between mb-6">
                   <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
                     transition={{ delay: 0.6 }}
                     className="flex items-center"
                   >
@@ -300,14 +316,14 @@ const Login = () => {
                   </motion.div>
 
                   <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
                     transition={{ delay: 0.7 }}
                     className="text-sm"
                   >
                     <p
                       onClick={() => setShowForgot(true)}
-                      className="font-medium text-[#5e4c37] hover:text-[#5e4c37]/80 cursor-pointer"
+                      className="font-medium   cursor-pointer"
                     >
                       Forgot password?
                     </p>
@@ -315,8 +331,8 @@ const Login = () => {
                 </div>
 
                 <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
                   transition={{ delay: 0.8 }}
                 >
                   <Button
@@ -331,17 +347,17 @@ const Login = () => {
               </form>
 
               <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
                 transition={{ delay: 0.9 }}
                 className="mt-6"
               >
                 <div className="relative">
                   <div className="absolute inset-0 flex items-center">
-                    <div className="w-full border-t border-[#5E4C37]"></div>
+                    <div className="w-full border-t "></div>
                   </div>
                   <div className="relative flex justify-center text-sm">
-                    <span className="px-3 py-1 bg-white rounded-full text-[#5E4C37] font-semibold">
+                    <span className="px-3 py-1 bg-tan text-sepia rounded-full  font-semibold">
                       Or continue with
                     </span>
                   </div>
@@ -360,8 +376,8 @@ const Login = () => {
                       }
                     >
                       <motion.img
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
                         transition={{ delay: 0.9 }}
                         src="/images/google.png"
                         alt="Google"
@@ -379,8 +395,8 @@ const Login = () => {
                       className="flex items-center justify-center w-full"
                     >
                       <motion.img
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
                         transition={{ delay: 0.9 }}
                         src="/images/fb.jpg"
                         alt="Facebook"
@@ -393,49 +409,50 @@ const Login = () => {
               </motion.div>
 
               <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
                 transition={{ delay: 1 }}
                 className="flex flex-col items-center gap-3 mt-6 text-center"
               >
-                <p className="text-xs bg-[rgba(0,0,0,0.36)]  px-3 py-1 rounded-[12px] text-[#e1d5ca]">
+                <p className="text-xs   px-3 rounded-[12px] flex items-center gap-1 ">
                   Don't have an account?{" "}
                   <Link
                     to="/signup"
-                    className="inline-block font-medium transition-transform text-[#e1d5ca] hover:text-[#e1d5ca]/70 hover:scale-105"
+                    className="flex items-center gap-1 text-nowrap font-medium transition-transform   "
                   >
-                    Sign up &rarr;
+                    Sign up <span className="text-xl">&rarr;</span>
                   </Link>
                 </p>
-                <div className="text-xs bg-[rgba(0,0,0,0.36)] px-3 py-1 rounded-[12px] text-[#e1d5ca]">
+                <div className="text-xs  px-3 rounded-[12px] ">
                   <Link
                     to="/nextChapter"
-                    className="inline-block font-medium transition-transform text-[#e1d5ca] hover:text-[#e1d5ca]/70 hover:scale-105"
+                    className="flex items-center gap-1 text-nowrap font-medium transition-transform  "
                   >
-                    Explore without login &rarr;
+                    Explore without login{" "}
+                    <span className="text-xl">&rarr;</span>
                   </Link>
                 </div>
               </motion.div>
             </div>
 
             <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
               transition={{ delay: 1.1 }}
-              className="px-2 py-4 text-center bg-[rgba(252,237,219,0.37)] backdrop-blur-sm rounded-3xl"
+              className="px-2 py-4 text-center  backdrop-blur-sm rounded-xl"
             >
-              <p className="text-[11px] text-[#5e4c37]">
+              <p className="text-[11px] ">
                 By creating an account, you agree to our{" "}
                 <a
                   href="#"
-                  className="font-medium transition-all text-[12px] duration-200 text-[#5e4c37] hover:text-[#5e4c37]/70 hover:scale-105"
+                  className="font-medium transition-all text-[12px] duration-200   hover:scale-105"
                 >
                   Terms of Service
                 </a>{" "}
                 and{" "}
                 <a
                   href="#"
-                  className="font-medium transition-all text-[12px] duration-200 text-[#5e4c37] hover:text-[#5e4c37]/70 hover:scale-105"
+                  className="font-medium transition-all text-[12px] duration-200   hover:scale-105"
                 >
                   Privacy Policy
                 </a>
@@ -445,12 +462,12 @@ const Login = () => {
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
             transition={{ delay: 1.2 }}
             className="mt-4 text-center"
           >
-            <p className="text-xs bg-[#a2a2a27f] px-3 py-1 rounded-full text-gray-50">
+            <p className="text-xs  px-3 py-1 rounded-full text-gray-50">
               <b>&copy; {new Date().getFullYear()} NextChapter.</b> All rights
               reserved.
             </p>
@@ -502,3 +519,5 @@ const Login = () => {
 };
 
 export default Login;
+
+

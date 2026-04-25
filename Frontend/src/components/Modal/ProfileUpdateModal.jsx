@@ -140,9 +140,11 @@ const ProfileUpdateModal = ({
         }
       }
     } catch (error) {
-      toast.error(
-        error.response?.data?.message || "Error setting default address",
-      );
+      if (error.response?.status !== 401) {
+        toast.error(
+          error.response?.data?.message || "Error setting default address",
+        );
+      }
     }
   };
 
@@ -167,7 +169,9 @@ const ProfileUpdateModal = ({
         setShowProfileUpdateModal(false);
       }
     } catch (error) {
-      toast.error(error.response?.data?.message || error.message);
+      if (error.response?.status !== 401) {
+        toast.error(error.response?.data?.message || error.message);
+      }
     }
   };
 
@@ -239,6 +243,7 @@ const ProfileUpdateModal = ({
                   "First Name",
                 )
               }
+              className="bg-tan/10 hover:bg-tan/20 transition-all duration-300"
             />
             <Input
               label="Last Name"
@@ -266,6 +271,7 @@ const ProfileUpdateModal = ({
                   "Last Name",
                 )
               }
+              className="bg-tan/10 hover:bg-tan/20 transition-all duration-300"
             />
           </div>
 
@@ -311,6 +317,7 @@ const ProfileUpdateModal = ({
               placeholder="Enter your phone number"
               error={errors.phone?.message}
               icon={<PhoneIcon className="w-5 h-5 " />}
+              className="bg-tan/10 hover:bg-tan/20 transition-all duration-300"
             />
             <Controller
               name="gender"
@@ -329,6 +336,7 @@ const ProfileUpdateModal = ({
                   onChange={field.onChange}
                   error={errors.gender?.message}
                   placeholder="Select Gender"
+                  className="bg-tan/10 hover:bg-tan/20 transition-all duration-300"
                 />
               )}
             />
@@ -356,20 +364,21 @@ const ProfileUpdateModal = ({
                       onChange={field.onChange}
                       error={errors.favoriteGenres?.message}
                       placeholder="Select Favorite Genres"
+                      className="bg-tan/10 hover:bg-tan/20 transition-all duration-300"
                     />
 
                     <div className="mt-3">
-                      <label className="block text-sm font-medium text-[#5e4c37] mb-1">
+                      <label className="block text-sm font-medium  mb-1">
                         Selected Favorite Genres
                       </label>
 
-                      <div className="bg-[#FFE6C1]/30 border border-[#d4b17d] rounded-2xl">
+                      <div className="bg-tan/10 border border-tan/20 rounded-2xl">
                         {selectedGenres?.length > 0 ? (
                           <div className="grid grid-cols-2 p-3 h-[140px] overflow-y-auto gap-3">
                             {selectedGenres.map((genre) => (
                               <span
                                 key={genre.id}
-                                className="p-1 text-sm relative h-8 flex items-center border-b border-black/5 shadow-xl justify-center  rounded-2xl text-white bg-[#d4b17d]"
+                                className="p-1 text-sm relative h-8 flex items-center border-b border-tan/10 shadow-xl justify-center  rounded-2xl text-tan "
                               >
                                 <span className="mr-4">{genre.name}</span>
 
@@ -406,7 +415,7 @@ const ProfileUpdateModal = ({
 
             <div className="mt-6">
               <div className="flex items-center justify-between mb-3">
-                <label className="block text-sm font-medium text-[#5e4c37] mb-1">
+                <label className="block text-sm font-medium  mb-1">
                   {userAddresses?.length > 0
                     ? "Select Default Address"
                     : "Add Address"}
@@ -417,8 +426,8 @@ const ProfileUpdateModal = ({
                     swiperRef={swiperRef}
                     className="!relative !w-auto !h-auto justify-end gap-2"
                     position={{}}
-                    prevButtonClass="!w-7 !h-7 shadow-sm flex border border-[#FFE6C1] items-center justify-center scale-90"
-                    nextButtonClass="!w-7 !h-7 shadow-sm flex border border-[#FFE6C1] items-center justify-center scale-90"
+                    prevButtonClass="!w-7 !h-7 shadow-sm flex border border-cream items-center justify-center scale-90"
+                    nextButtonClass="!w-7 !h-7 shadow-sm flex border border-cream items-center justify-center scale-90"
                   />
                 )}
               </div>
@@ -429,7 +438,7 @@ const ProfileUpdateModal = ({
                 rules={{ required: "Please select an default address" }}
                 render={({ field, fieldState }) => (
                   <div
-                    className={`bg-[#FFE6C1]/30 px-1 ${fieldState?.error?.message ? "border-red-500" : "border-[#cab492]"} border-2  rounded-2xl p-1`}
+                    className={`bg-tan/10 px-1 ${fieldState?.error?.message ? "border-red-error" : ""} border-2 border-tan/20 rounded-2xl p-1`}
                   >
                     {userAddresses.length > 0 ? (
                       <>
@@ -454,20 +463,19 @@ const ProfileUpdateModal = ({
                                     field.onChange(address);
                                     clearErrors("address");
                                   }}
-                                  className={`relative cursor-pointer rounded-xl border p-3 transition-all ${fieldState?.error?.message ? "border-red-500" : "border-[#cab492] "} duration-200 h-full ${
-                                    isSelected
-                                      ? "border-[#D3BD9D] bg-[#FFE6C1] scale-105 shadow-md"
-                                      : "hover:shadow-sm bg-[#FFE6C9]/20"
-                                  }`}
+                                  className={`relative cursor-pointer rounded-xl border p-3 transition-all ${fieldState?.error?.message ? "border-red-error" : " border-tan/20"} duration-200 h-full ${isSelected
+                                    ? "border-tan bg-tan/20 scale-105 shadow-md"
+                                    : "hover:shadow-sm "
+                                    }`}
                                 >
                                   <div
-                                    className="absolute top-1 right-8 text-[#af9368] z-10 cursor-pointer active:scale-75 hover:scale-105 transition-all"
+                                    className="absolute top-1 right-8  z-10 cursor-pointer active:scale-75 hover:scale-105 transition-all"
                                     onClick={(e) => {
                                       e.stopPropagation();
-                                      const Icon = address.type === "Home" 
-                                        ? HomeIcon 
-                                        : address.type === "Work" 
-                                          ? BuildingOfficeIcon 
+                                      const Icon = address.type === "Home"
+                                        ? HomeIcon
+                                        : address.type === "Work"
+                                          ? BuildingOfficeIcon
                                           : BuildingStorefrontIcon;
                                       setViewAddressDetails({ ...address, Icon });
                                     }}
@@ -493,14 +501,14 @@ const ProfileUpdateModal = ({
                                     </span>
                                   )}
 
-                                  <div className="mt-5 space-y-1 text-sm text-gray-700">
-                                    <p className="font-medium text-gray-900">
+                                  <div className="mt-5 space-y-1 text-sm text-tan/80">
+                                    <p className="font-medium text-tan">
                                       {address.address.slice(0, 15) + "..."}
                                     </p>
                                     <p>
                                       {address.city}, {address.state}
                                     </p>
-                                    <p className="text-gray-500">
+                                    <p className="text-tan/50">
                                       PIN: {address.pinCode}
                                     </p>
                                   </div>
@@ -511,7 +519,7 @@ const ProfileUpdateModal = ({
                         </Swiper>
 
                         {fieldState.error && (
-                          <p className="mx-auto mb-2 text-xs font-semibold text-center text-red-600">
+                          <p className="mx-auto mb-2 text-xs font-semibold text-center text-red-error">
                             {fieldState.error.message}
                           </p>
                         )}
@@ -556,7 +564,7 @@ const ProfileUpdateModal = ({
                         />
 
                         {fieldState.error && (
-                          <p className="mx-auto my-2 text-xs font-semibold text-center text-red-600">
+                          <p className="mx-auto my-2 text-xs font-semibold text-center text-red-error">
                             {fieldState.error.message}
                           </p>
                         )}
@@ -593,3 +601,5 @@ const ProfileUpdateModal = ({
 };
 
 export default ProfileUpdateModal;
+
+

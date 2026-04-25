@@ -16,15 +16,15 @@ const Banners = ({ titleFirst, titleSecond, description }) => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.2, duration: 0.8 }}
-          className="mb-6 text-5xl font-bold text-[#5E4C37] md:text-6xl"
+          className="mb-6 text-5xl text-coffee font-bold  md:text-6xl"
         >
-          {titleFirst} <span className="text-[#b1946a]">{titleSecond}</span>
+          {titleFirst} <span className="text-sepia">{titleSecond}</span>
         </motion.h1>
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.4, duration: 0.8 }}
-          className="mb-8 text-xl font-medium leading-relaxed text-[#5E4C37] md:text-2xl"
+          className="mb-8 text-xl font-medium leading-relaxed text-coffee  md:text-2xl"
         >
           {description ? (
             description
@@ -41,7 +41,7 @@ const Banners = ({ titleFirst, titleSecond, description }) => {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.6, duration: 0.8 }}
         >
-          <GiBookPile className="mx-auto text-7xl text-[#b1946a]" />
+          <GiBookPile className="mx-auto text-coffee text-7xl " />
         </motion.div>
       </div>
     </motion.section>
@@ -49,3 +49,5 @@ const Banners = ({ titleFirst, titleSecond, description }) => {
 };
 
 export default Banners;
+
+

@@ -20,10 +20,12 @@ const Ratings = ({ ratings }) => {
   });
 
   return (
-    <div className="flex items-center text-[12px] sm:text-sm text-orange-400">
+    <div className="flex items-center text-[14px] sm:text-[17px] text-tan">
       {rating}
     </div>
   );
 };
 
 export default Ratings;
+
+

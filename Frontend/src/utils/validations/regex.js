@@ -6,3 +6,5 @@ export const PASSWORD_REGEX =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/;
 
 export const INDIAN_PHONE_REGEX = /^[6-9]\d{9}$/;
+
+

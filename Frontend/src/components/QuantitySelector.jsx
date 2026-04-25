@@ -58,14 +58,14 @@ const QuantitySelector = ({ initialQuantity = 1, onChange }) => {
       transition={{ delay: 0.7 }}
       className=""
     >
-      <div className="flex items-center w-40">
+      <div className="flex gap-1 items-center w-40">
         <button
           onClick={decrementQuantity}
-          className="px-2 h-8 w-10 pb-0.5 sm:pb-1 flex justify-center items-center text-2xl bg-[#D3BD9D] text-[#fff] hover:bg-[#c5ae8d] transition rounded-l-full"
+          className="px-2 h-8 w-10 pb-0.5 sm:pb-1 flex justify-center items-center text-3xl bg-tan text-sepia  transition rounded-l-full"
         >
           -
         </button>
-        <div className="w-[3rem] relative border-y-2 border-[#D3BD9D] h-8 text-center">
+        <div className="w-[3rem] bg-sepia rounded-2xl text-cream relative border-y-2 border-tan h-8 text-center">
           <AnimatePresence mode="popLayout" custom={getAnimationDirection()}>
             <motion.span
               key={quantity}
@@ -74,7 +74,7 @@ const QuantitySelector = ({ initialQuantity = 1, onChange }) => {
               initial={getAnimationDirection()}
               animate="enter"
               exit={getAnimationDirection()}
-              className="absolute inset-0 flex items-center justify-center"
+              className="absolute  inset-0 flex items-center justify-center"
             >
               {quantity}
             </motion.span>
@@ -82,7 +82,7 @@ const QuantitySelector = ({ initialQuantity = 1, onChange }) => {
         </div>
         <button
           onClick={incrementQuantity}
-          className="px-2 h-8 pb-1 w-10 flex justify-center items-center text-xl text-white bg-[#D3BD9D] hover:bg-[#c5ae8d] transition rounded-r-full"
+          className="px-2 h-8 pb-1 w-10 flex justify-center items-center text-2xl bg-tan text-sepia  transition rounded-r-full"
         >
           +
         </button>
@@ -92,3 +92,5 @@ const QuantitySelector = ({ initialQuantity = 1, onChange }) => {
 };
 
 export default QuantitySelector;
+
+

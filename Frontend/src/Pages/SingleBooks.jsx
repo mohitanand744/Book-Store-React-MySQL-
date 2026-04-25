@@ -1,10 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
-import { mockBooks } from "../../Data/mockData";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchAllBooks } from "../store/Redux/Slices/BooksSlice";
 import BookCard from "../components/Cards/BookCard";
 import ScrollBooks from "./../components/ScrollingContainer/ScrollBooks";
 import QuantitySelector from "../components/QuantitySelector";
+import Input from "../components/Inputs/Input";
+import Button from "../components/Buttons/Button";
+import SectionHeading from "../components/Headings/SectionHeading";
 
 // Mock reviews data
 const mockReviews = [
@@ -68,6 +72,9 @@ const additionalProductImages = [
 
 const SingleBooks = () => {
   const { id } = useParams();
+  const dispatch = useDispatch();
+  const { books } = useSelector((state) => state.books);
+
   const [book, setBook] = useState(null);
   const [mainImage, setMainImage] = useState("");
   const [quantity, setQuantity] = useState(1);
@@ -81,19 +88,30 @@ const SingleBooks = () => {
   });
 
   useEffect(() => {
-    const foundBook = mockBooks.find((book) => book.book_id === parseInt(id));
-    if (foundBook) {
-      setBook(foundBook);
-      const combinedImages = [...foundBook.images, ...additionalProductImages];
-      setAllImages(combinedImages);
-      setMainImage(combinedImages[0]);
+    if (books?.length === 0) {
+      dispatch(fetchAllBooks());
     }
-  }, [id]);
+  }, [dispatch, books]);
+
+  useEffect(() => {
+    if (books?.length > 0) {
+      const foundBook = books.find((book) => book.book_id === parseInt(id));
+      if (foundBook) {
+        setBook(foundBook);
+        const combinedImages = [
+          foundBook.images?.[0] || foundBook.image,
+          ...additionalProductImages
+        ];
+        setAllImages(combinedImages);
+        setMainImage(combinedImages[0]);
+      }
+    }
+  }, [id, books]);
 
   if (!book) {
     return (
       <div className="flex items-center justify-center h-screen">
-        <div className="animate-pulse text-2xl text-[#5C4C49]">Loading...</div>
+        <div className="animate-pulse text-2xl text-coffee">Loading...</div>
       </div>
     );
   }
@@ -104,7 +122,9 @@ const SingleBooks = () => {
 
   // Calculate average rating
   const averageRating =
-    reviews.reduce((acc, review) => acc + review.rating, 0) / reviews.length;
+    reviews.length > 0
+      ? reviews.reduce((acc, review) => acc + review.rating, 0) / reviews.length
+      : 0;
 
   // Handle review submission
   const handleReviewSubmit = (e) => {
@@ -126,29 +146,37 @@ const SingleBooks = () => {
 
   // Render star rating
   const renderStars = (rating) => {
-    return [...Array(5)].map((_, i) => (
-      <svg
-        key={i}
-        className={`w-5 h-5 ${
-          i < rating ? "text-yellow-400" : "text-gray-300"
-        }`}
-        fill="currentColor"
-        viewBox="0 0 20 20"
-      >
-        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-      </svg>
-    ));
+    return [...Array(5)].map((_, i) => {
+      const starValue = i + 1;
+      const isFull = starValue <= rating;
+      const isHalf = starValue - 0.5 <= rating && !isFull;
+
+      return (
+        <div key={i} className="relative">
+          <svg
+            className={`w-5 h-5 ${isFull ? "text-yellow-400" : "text-tan/20"}`}
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+          </svg>
+          {isHalf && (
+            <div className="absolute inset-0 overflow-hidden w-1/2">
+              <svg
+                className="w-5 h-5 text-yellow-400"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
+                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+              </svg>
+            </div>
+          )}
+        </div>
+      );
+    });
   };
 
-  /*  const relatedBooks = mockBooks
-    .filter(
-      (b) =>
-        b.author.author_id === book.author.author_id &&
-        b.book_id !== book.book_id
-    )
-    .slice(0, 5); */
-
-  const relatedBooks = mockBooks.slice(5, 17);
+  const relatedBooks = books || [];
 
   const tabs = [
     { id: "description", label: "Description" },
@@ -167,17 +195,17 @@ const SingleBooks = () => {
         initial={{ x: -20, opacity: 0 }}
         animate={{ x: 0, opacity: 1 }}
         transition={{ delay: 0.2 }}
-        className="flex items-center mb-6 text-sm text-gray-500"
+        className="flex items-center mb-8 text-xs uppercase tracking-[0.2em] text-sepia/60 font-medium"
       >
-        <span className="hover:text-[#5C4C49] cursor-pointer">Home</span>
-        <span className="mx-2">/</span>
-        <span className="hover:text-[#5C4C49] cursor-pointer">Books</span>
-        <span className="mx-2">/</span>
-        <span className="hover:text-[#5C4C49] cursor-pointer">
+        <span className="hover:text-coffee transition-colors cursor-pointer">Home</span>
+        <span className="mx-3 opacity-30">/</span>
+        <span className="hover:text-coffee transition-colors cursor-pointer">Books</span>
+        <span className="mx-3 opacity-30">/</span>
+        <span className="hover:text-coffee transition-colors cursor-pointer">
           {book?.category}
         </span>
-        <span className="mx-2">/</span>
-        <span className="text-[#5C4C49] font-medium">{book?.title}</span>
+        <span className="mx-3 opacity-30">/</span>
+        <span className="text-coffee tracking-normal font-serif lowercase italic">{book?.title}</span>
       </motion.div>
 
       <div className="flex flex-col gap-8 lg:flex-row">
@@ -188,7 +216,7 @@ const SingleBooks = () => {
             animate={{ scale: 1, opacity: 1 }}
             transition={{ delay: 0.3 }}
             whileHover={{ scale: 1.01 }}
-            className="bg-white rounded-xl overflow-hidden mb-4 border border-[#EDE7DC]"
+            className="bg-coffee/95 text-tan rounded-[2.5rem] overflow-hidden mb-4 border border-tan/20 shadow-2xl backdrop-blur-xl"
           >
             <img
               src={mainImage}
@@ -209,9 +237,8 @@ const SingleBooks = () => {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => handleImageChange(img)}
-                className={`flex-shrink-0 cursor-pointer rounded-lg overflow-hidden border-2 ${
-                  mainImage === img ? "border-[#5C4C49]" : "border-transparent"
-                }`}
+                className={`flex-shrink-0 cursor-pointer rounded-lg overflow-hidden border-2 ${mainImage === img ? "border-coffee" : "border-transparent"
+                  }`}
               >
                 <img
                   src={img}
@@ -229,7 +256,7 @@ const SingleBooks = () => {
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.2 }}
-            className="bg-white rounded-xl p-6 shadow-sm border border-[#EDE7DC]"
+            className="bg-coffee/95 text-tan rounded-[2.5rem] p-8 shadow-2xl border border-tan/20 backdrop-blur-xl"
           >
             <div className="flex items-start justify-between mb-4">
               <motion.div
@@ -237,13 +264,13 @@ const SingleBooks = () => {
                 animate={{ x: 0, opacity: 1 }}
                 transition={{ delay: 0.3 }}
               >
-                <span className="bg-[#F3E9D9] text-[#5C4C49] text-xs px-2 py-1 rounded-full">
+                <span className="bg-tan/10 text-tan text-xs px-3 py-1 rounded-full border border-tan/20">
                   {book?.category}
                 </span>
-                <h1 className="text-3xl font-bold text-[#5C4C49] mt-2 mb-1">
+                <h1 className="text-3xl font-serif tracking-tight text-tan mt-3 mb-1">
                   {book?.title}
                 </h1>
-                <p className="text-lg text-gray-600">
+                <p className="text-lg text-tan/70 font-serif">
                   by {book?.author?.author_name}
                 </p>
               </motion.div>
@@ -251,7 +278,7 @@ const SingleBooks = () => {
                 initial={{ scale: 0.9, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ delay: 0.4 }}
-                className="flex items-center bg-[#F8F5F0] px-3 py-1 rounded-full"
+                className="flex items-center  px-3 py-1 rounded-full"
               >
                 <svg
                   className="w-5 h-5 mr-1 text-yellow-400"
@@ -260,7 +287,7 @@ const SingleBooks = () => {
                 >
                   <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                 </svg>
-                <span className="text-[#5C4C49] font-medium">
+                <span className="text-tan font-medium">
                   {book?.author?.author_rating}
                 </span>
               </motion.div>
@@ -273,35 +300,34 @@ const SingleBooks = () => {
               className="my-6"
             >
               <div className="flex items-center mb-3">
-                <span className="text-3xl font-bold text-[#5C4C49] mr-3">
-                  ₹{book?.book_price?.toFixed(2)}
+                <span className="text-4xl font-serif text-tan mr-3">
+                  ₹{Number(book?.book_price || 0).toFixed(2)}
                 </span>
                 <span className="px-2 py-1 text-sm text-green-600 bg-green-100 rounded">
                   In Stock
                 </span>
               </div>
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-tan/50">
                 Inclusive of all taxes | Free delivery
               </p>
             </motion.div>
 
             {/* Tabs */}
             <div className="relative mb-6">
-              <div className="flex relative border-b border-[#EDE7DC]">
+              <div className="flex relative border-b border-tan/10">
                 {tabs.map((tab) => (
                   <button
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id)}
-                    className={`relative px-4 py-2 font-medium text-sm sm:text-base ${
-                      activeTab === tab.id
-                        ? "text-[#5C4C49]"
-                        : "text-gray-500 hover:text-[#5C4C49]/80"
-                    } transition-colors duration-200`}
+                    className={`relative px-4 py-2 font-medium text-sm sm:text-base ${activeTab === tab.id
+                      ? "text-tan"
+                      : "text-tan/40 hover:text-tan/80"
+                      } transition-colors duration-200`}
                   >
                     {tab.label}
                     {activeTab === tab.id && (
                       <motion.div
-                        className="absolute bottom-0 left-0 right-0 rounded-full h-1 bg-[#5C4C49]"
+                        className="absolute bottom-0 left-0 right-0 rounded-full h-1 bg-tan"
                         layoutId="activeTab"
                         transition={{
                           type: "spring",
@@ -324,7 +350,7 @@ const SingleBooks = () => {
             >
               {activeTab === "description" ? (
                 <>
-                  <p className="mb-6 leading-relaxed text-gray-700">
+                  <p className="mb-6 leading-relaxed text-tan/80 font-serif text-lg">
                     {book?.description}
                   </p>
 
@@ -333,10 +359,10 @@ const SingleBooks = () => {
                     initial={{ scale: 0.98, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
                     transition={{ delay: 0.3 }}
-                    className="bg-[#F8F5F0] rounded-lg p-4 mb-6"
+                    className=" rounded-lg p-4 mb-6"
                   >
                     <div className="flex items-center">
-                      <div className="w-14 h-14 rounded-full overflow-hidden mr-4 border-2 border-[#D3BD9D]">
+                      <div className="w-14 h-14 rounded-full overflow-hidden mr-4 border-2 border-tan">
                         <img
                           src={book?.author?.author_image_url}
                           alt={book?.author?.author_name}
@@ -344,15 +370,15 @@ const SingleBooks = () => {
                         />
                       </div>
                       <div>
-                        <h4 className="font-medium text-[#5C4C49]">
+                        <h4 className="font-serif text-xl text-tan">
                           {book?.author?.author_name}
                         </h4>
-                        <p className="text-sm text-gray-600">
+                        <p className="text-sm text-tan/60 uppercase tracking-widest mt-1">
                           {book?.author?.author_books_count} books published
                         </p>
                       </div>
                     </div>
-                    <p className="mt-3 text-sm text-gray-700">
+                    <p className="mt-4 text-tan/70 leading-relaxed italic">
                       {book?.author?.author_description}
                     </p>
                   </motion.div>
@@ -364,12 +390,12 @@ const SingleBooks = () => {
                     initial={{ y: 10, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
                     transition={{ delay: 0.3 }}
-                    className="bg-[#F8F5F0] rounded-lg p-4 mb-6"
+                    className=" rounded-lg p-4 mb-6"
                   >
                     <div className="flex items-center">
                       <div className="mr-4">
-                        <div className="text-4xl text-center font-bold text-[#5C4C49]">
-                          {averageRating.toFixed(1)}
+                        <div className="text-4xl text-center font-serif text-tan">
+                          {Number(averageRating || 0).toFixed(1)}
                         </div>
                         <div className="flex mt-1">
                           {renderStars(Math.round(averageRating))}
@@ -383,10 +409,10 @@ const SingleBooks = () => {
                           const percentage = (count / reviews.length) * 100;
                           return (
                             <div key={star} className="flex items-center mb-1">
-                              <p className="text-sm w-9 text-gray-6r00 text-nowrap">
+                              <p className="text-sm w-9 text-tan/60 text-nowrap">
                                 {star} star{parseInt(star) > 1 ? "s" : ""}
                               </p>
-                              <div className="flex-1 h-2 mx-2 bg-gray-200 rounded-full">
+                              <div className="flex-1 h-2 mx-2 bg-tan/10 rounded-full">
                                 <motion.div
                                   initial={{ width: 0 }}
                                   animate={{ width: `${percentage}%` }}
@@ -394,7 +420,7 @@ const SingleBooks = () => {
                                   className="h-full bg-yellow-400 rounded-full"
                                 />
                               </div>
-                              <span className="w-8 text-sm text-gray-600">
+                              <span className="w-8 text-sm text-tan/60">
                                 {count}
                               </span>
                             </div>
@@ -412,7 +438,7 @@ const SingleBooks = () => {
                         initial={{ x: 20, opacity: 0 }}
                         animate={{ x: 0, opacity: 1 }}
                         transition={{ delay: 0.5 + index * 0.1 }}
-                        className="bg-white border border-[#EDE7DC] rounded-lg p-4"
+                        className="bg-coffee/40 text-tan border border-tan/10 backdrop-blur-sm rounded-2xl p-6"
                       >
                         <div className="flex items-center mb-3">
                           <img
@@ -421,23 +447,23 @@ const SingleBooks = () => {
                             className="w-10 h-10 mr-3 rounded-full"
                           />
                           <div>
-                            <h4 className="font-medium text-[#5C4C49]">
+                            <h4 className="font-serif text-lg text-tan">
                               {review.user.name}
                             </h4>
                             <div className="flex items-center">
                               <div className="flex mr-2">
                                 {renderStars(review.rating)}
                               </div>
-                              <span className="text-sm text-gray-500">
+                              <span className="text-sm text-tan/40 tracking-wider font-serif">
                                 {review.date}
                               </span>
                             </div>
                           </div>
                         </div>
-                        <h5 className="mb-2 text-lg font-semibold">
+                        <h5 className="mb-2 text-lg font-serif italic text-tan/90">
                           {review.title}
                         </h5>
-                        <p className="text-gray-700">{review.comment}</p>
+                        <p className="text-tan/70 leading-relaxed font-serif">{review.comment}</p>
                       </motion.div>
                     ))}
                   </div>
@@ -452,11 +478,11 @@ const SingleBooks = () => {
                       damping: 10,
                       delay: 0.3,
                     }}
-                    className="bg-white border border-[#EDE7DC] rounded-xl p-6 mb-6 shadow-sm hover:shadow-md transition-shadow duration-300"
+                    className="bg-coffee/95 text-tan border border-tan/20 rounded-[2.5rem] p-8 mb-6 shadow-2xl backdrop-blur-xl"
                   >
                     <div className="flex items-center mb-6">
                       <svg
-                        className="w-6 h-6 text-[#EAB308] mr-2"
+                        className="w-6 h-6  mr-2"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -468,94 +494,78 @@ const SingleBooks = () => {
                           d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"
                         />
                       </svg>
-                      <h3 className="text-xl font-semibold text-[#5C4C49]">
+                      <h3 className="text-2xl font-serif tracking-wide text-tan">
                         Share Your Experience
                       </h3>
                     </div>
 
                     <form onSubmit={handleReviewSubmit}>
-                      <div className="mb-6">
-                        <label className="block mb-3 font-medium text-gray-700">
-                          How would you rate this product?
-                        </label>
-                        <div className="flex space-x-2">
-                          {[1, 2, 3, 4, 5].map((star) => (
-                            <motion.button
-                              key={star}
-                              type="button"
-                              whileHover={{ scale: 1.1 }}
-                              whileTap={{ scale: 0.95 }}
-                              onClick={() =>
-                                setNewReview({ ...newReview, rating: star })
-                              }
-                              className="transition-transform focus:outline-none"
-                            >
-                              <svg
-                                className={`w-8 h-8 ${
-                                  star <= newReview.rating
-                                    ? "text-yellow-500"
-                                    : "text-gray-300"
-                                } transition-colors duration-200`}
-                                fill="currentColor"
-                                viewBox="0 0 20 20"
-                              >
-                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                              </svg>
-                            </motion.button>
-                          ))}
+                      <div className="flex flex-col sm:flex-row gap-6 mb-6">
+                        <div className="sm:w-48">
+                          <Input
+                            label="Rating (0.5 - 5)"
+                            labelClassName="font-serif text-lg text-tan/80"
+                            type="number"
+                            min="0.5"
+                            max="5"
+                            step="0.5"
+                            placeholder="e.g. 4.5"
+                            value={newReview.rating}
+                            onChange={(e) =>
+                              setNewReview({
+                                ...newReview,
+                                rating: parseFloat(e.target.value) || 0,
+                              })
+                            }
+                            className="!bg-tan/5 !border-tan/10 !text-tan !rounded-2xl !px-6 !py-4 focus:!ring-tan/30 h-auto w-full"
+                            required
+                          />
+                          <div className="flex gap-1 mt-2 px-1">
+                            {renderStars(newReview.rating)}
+                          </div>
                         </div>
+
+                        <Input
+                          label="Review Title"
+                          labelClassName="font-serif text-lg text-tan/80"
+                          placeholder="Summarize your experience"
+                          value={newReview.title}
+                          onChange={(e) =>
+                            setNewReview({
+                              ...newReview,
+                              title: e.target.value,
+                            })
+                          }
+                          className="!bg-tan/5 !border-tan/10 !text-tan !rounded-2xl !px-6 !py-4 focus:!ring-tan/30 h-auto flex-1"
+                          required
+                        />
                       </div>
 
-                      <div className="mb-6">
-                        <label className="block mb-3 font-medium text-gray-700">
-                          Review Title
-                        </label>
-                        <motion.div whileFocusWithin={{ scale: 1.01 }}>
-                          <input
-                            type="text"
-                            value={newReview.title}
-                            onChange={(e) =>
-                              setNewReview({
-                                ...newReview,
-                                title: e.target.value,
-                              })
-                            }
-                            className="w-full px-4 py-3 border border-[#EDE7DC] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#5C4C49] focus:border-transparent transition"
-                            placeholder="Summarize your experience"
-                            required
-                          />
-                        </motion.div>
-                      </div>
+                      <Input
+                        as="textarea"
+                        label="Your Review"
+                        labelClassName="font-serif text-lg text-tan/80"
+                        placeholder="Share details about your experience with this product..."
+                        value={newReview.comment}
+                        onChange={(e) =>
+                          setNewReview({
+                            ...newReview,
+                            comment: e.target.value,
+                          })
+                        }
+                        rows={5}
+                        className="!bg-tan/5 !border-tan/10 !text-tan !rounded-2xl !px-6 !py-4 focus:!ring-tan/30 h-auto"
+                        required
+                      />
 
-                      <div className="mb-6">
-                        <label className="block mb-3 font-medium text-gray-700">
-                          Your Review
-                        </label>
-                        <motion.div whileFocusWithin={{ scale: 1.01 }}>
-                          <textarea
-                            value={newReview.comment}
-                            onChange={(e) =>
-                              setNewReview({
-                                ...newReview,
-                                comment: e.target.value,
-                              })
-                            }
-                            className="w-full px-4 py-3 border border-[#EDE7DC] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#5C4C49] focus:border-transparent transition"
-                            rows="5"
-                            placeholder="Share details about your experience with this product..."
-                            required
-                          />
-                        </motion.div>
-                      </div>
-
-                      <motion.button
+                      <Button
                         type="submit"
-                        whileHover={{ scale: 1.02 }}
-                        whileTap={{ scale: 0.98 }}
-                        className="w-full bg-gradient-to-r from-[#5C4C49] to-[#3E3432] text-white px-6 py-3 rounded-lg font-medium hover:shadow-md transition-all"
+                        variant="outline"
+                        isSerif
+                        className="w-full !rounded-2xl !py-4 !text-lg tracking-wide"
                       >
                         Submit Review
-                      </motion.button>
+                      </Button>
                     </form>
                   </motion.div>
                 </div>
@@ -574,15 +584,15 @@ const SingleBooks = () => {
               initial={{ y: 10, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.8 }}
-              className="flex flex-col gap-4 sm:flex-row"
+              className="flex flex-col mt-5 gap-4 sm:flex-row"
             >
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className="flex-1 bg-[#5C4C49] text-white py-3 px-6 rounded-lg font-medium hover:bg-[#4a3d3b] transition flex items-center justify-center"
+              <Button
+                variant="primary"
+                isSerif
+                className="flex-1 !rounded-2xl !py-4 !text-lg flex items-center justify-center"
               >
                 <svg
-                  className="w-5 h-5 mr-2"
+                  className="w-5 h-5 mr-3"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -595,14 +605,14 @@ const SingleBooks = () => {
                   />
                 </svg>
                 Add to Cart
-              </motion.button>
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className="flex-1 bg-[#D3BD9D] text-[#5C4C49] py-3 px-6 rounded-lg font-medium hover:bg-[#c5ae8d] transition flex items-center justify-center"
+              </Button>
+              <Button
+                variant="outline"
+                isSerif
+                className="flex-1 !rounded-2xl !py-4 !text-lg flex items-center justify-center"
               >
                 <svg
-                  className="w-5 h-5 mr-2"
+                  className="w-5 h-5 mr-3"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -615,7 +625,7 @@ const SingleBooks = () => {
                   />
                 </svg>
                 Buy Now
-              </motion.button>
+              </Button>
             </motion.div>
 
             {/* Delivery Info */}
@@ -623,11 +633,11 @@ const SingleBooks = () => {
               initial={{ y: 10, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.9 }}
-              className="mt-6 border-t border-[#EDE7DC] pt-4"
+              className="mt-6 border-t border-tan/10 pt-6"
             >
               <div className="flex items-start">
                 <svg
-                  className="w-6 h-6 text-[#5C4C49] mr-2 mt-1"
+                  className="w-6 h-6 text-tan mr-3 mt-1"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -640,10 +650,10 @@ const SingleBooks = () => {
                   />
                 </svg>
                 <div>
-                  <h4 className="font-medium text-[#5C4C49]">
+                  <h4 className="font-serif text-lg text-tan">
                     Delivery Information
                   </h4>
-                  <p className="mt-1 text-sm text-gray-600">
+                  <p className="mt-2 text-sm text-tan/60 font-serif leading-relaxed">
                     Free standard delivery on orders over ₹500. Expected
                     delivery in 3-5 business days.
                   </p>
@@ -659,52 +669,52 @@ const SingleBooks = () => {
         initial={{ y: 20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 1 }}
-        className="mt-12 bg-white rounded-xl p-6 shadow-sm border border-[#EDE7DC]"
+        className="mt-12 bg-coffee/95 text-tan rounded-[2.5rem] p-10 shadow-2xl border border-tan/20 backdrop-blur-xl"
       >
-        <h2 className="text-2xl font-bold text-[#5C4C49] mb-6">
+        <h2 className="text-3xl font-serif tracking-wide text-tan mb-8">
           Product Details
         </h2>
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
           <div>
-            <h3 className="text-lg font-semibold text-[#5C4C49] mb-3">
+            <h3 className="text-xl font-serif text-tan/90 mb-4 border-b border-tan/10 pb-2">
               Specifications
             </h3>
             <ul className="space-y-2">
               <li className="flex">
-                <p className="text-gray-600 w-44 ">Publisher</p>
-                <p className="w-44 text-[#5C4C49]">Penguin Random House</p>
+                <p className="text-tan/50 w-44 font-serif">Publisher</p>
+                <p className="w-44 text-tan">Penguin Random House</p>
               </li>
               <li className="flex">
-                <p className="text-gray-600 w-44 ">Language</p>
-                <p className="w-44 text-[#5C4C49]">English</p>
+                <p className="text-tan/50 w-44 font-serif">Language</p>
+                <p className="w-44 text-tan">English</p>
               </li>
               <li className="flex">
-                <p className="text-gray-600 w-44 ">Paperback</p>
-                <p className="w-44 text-[#5C4C49]">320 pages</p>
+                <p className="text-tan/50 w-44 font-serif">Paperback</p>
+                <p className="w-44 text-tan">320 pages</p>
               </li>
               <li className="flex">
-                <p className="text-gray-600 w-44 ">ISBN-10</p>
-                <p className="w-44 text-[#5C4C49]">1234567890</p>
+                <p className="text-tan/50 w-44 font-serif">ISBN-10</p>
+                <p className="w-44 text-tan">1234567890</p>
               </li>
               <li className="flex">
-                <p className="text-gray-600 w-44 ">Dimensions</p>
-                <p className="w-44 text-[#5C4C49]">13.97 x 1.85 x 21.59 cm</p>
+                <p className="text-tan/50 w-44 font-serif">Dimensions</p>
+                <p className="w-44 text-tan">13.97 x 1.85 x 21.59 cm</p>
               </li>
             </ul>
           </div>
           <div>
-            <h3 className="text-lg font-semibold text-[#5C4C49] mb-3">
+            <h3 className="text-xl font-serif text-tan/90 mb-4 border-b border-tan/10 pb-2">
               About the Book
             </h3>
-            <p className="mb-4 text-gray-700">
+            <p className="mb-6 text-tan/70 leading-relaxed font-serif italic">
               {book?.description} This special edition includes bonus content and
               a foreword by the author.
             </p>
-            <div className="bg-[#F8F5F0] p-3 rounded-lg">
-              <h4 className="font-medium text-[#5C4C49] mb-1">
+            <div className=" p-3 rounded-lg">
+              <h4 className="font-serif text-lg text-tan/90 mb-2">
                 Why you'll love it:
               </h4>
-              <ul className="space-y-1 text-sm text-gray-700 list-disc list-inside">
+              <ul className="space-y-2 text-sm text-tan/60 list-disc list-inside font-serif">
                 <li>Beautifully designed cover</li>
                 <li>Premium quality paper</li>
                 <li>Perfect gift for book lovers</li>
@@ -720,12 +730,17 @@ const SingleBooks = () => {
         initial={{ y: 20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 1.1 }}
-        className="mt-16"
+        className="mt-20 border-t border-tan/10 pt-16"
       >
-        <h2 className="text-2xl font-bold text-[#5C4C49] mb-6">
-          {/*  More by {book.author.author_name} */}
-          Related Books
-        </h2>
+        <div className="mb-2">
+          <SectionHeading
+            align="left"
+            subtitle={`Discover more from ${book?.author?.author_name}`}
+          >
+            More by this Author
+          </SectionHeading>
+        </div>
+
         <div className="">
           <ScrollBooks autoScroll={false} books={relatedBooks} />
         </div>
@@ -741,3 +756,5 @@ export default SingleBooks;
   }, []);
 
 */
+
+

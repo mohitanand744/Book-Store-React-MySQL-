@@ -26,7 +26,7 @@ const Modal = ({ isOpen, onClose, loading, children }) => {
                 layout: { duration: 0.35, ease: "easeInOut" },
               }}
               onClick={(e) => e.stopPropagation()}
-              className="w-full overflow-y-auto max-h-[93vh]  max-w-md relative border-2 border-[#2e26246a] bg-[#D3BD9D] p-6 rounded-xl shadow-xl"
+              className="w-full overflow-y-auto max-h-[93vh]  max-w-md relative border-2 border-tan bg-coffee text-tan p-6 rounded-xl shadow-xl"
             >
               <AnimatePresence>
                 {loading && (
@@ -54,3 +54,5 @@ const Modal = ({ isOpen, onClose, loading, children }) => {
 };
 
 export default Modal;
+
+

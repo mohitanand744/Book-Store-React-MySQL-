@@ -9,18 +9,15 @@ const CheckoutBooksCard = ({ items, updateQuantity, removeItem }) => {
       initial={{ y: 10, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{
-        delay: i * 0.25,
-        type: "spring",
-        stiffness: 100,
-        damping: 10,
+        delay: i * 0.3,
       }}
       whileHover={{
-        scale: 1.02,
+        scale: 1.05,
         transition: { duration: 0.1 },
       }}
-      className="flex p-3 h-fit transition-all duration-300 bg-[#F8F5F0] rounded-2xl"
+      className="flex p-3 h-fit transition-all bg-black/10 duration-300  rounded-2xl  border border-sepia"
     >
-      <div className="flex-shrink-0 w-24 h-24 p-1 overflow-hidden border border-gray-200 rounded-2xl">
+      <div className="flex-shrink-0 w-24 h-24 p-1 overflow-hidden border border-sepia rounded-2xl">
         <img
           src={item?.image}
           alt={item?.name}
@@ -32,13 +29,13 @@ const CheckoutBooksCard = ({ items, updateQuantity, removeItem }) => {
         <div>
           <div className="flex justify-between text-base font-medium text-gray-900">
             <div className="flex flex-col">
-              <h3>{item?.name}</h3>
-              <p className="text-[12px] leading-4 text-gray-500">
+              <h3 className="text-tan">{item?.name}</h3>
+              <p className="text-[12px] leading-4 text-tan/80">
                 A journey through space and time. This special edition
                 includes...
               </p>
             </div>
-            <p className="ml-4">${item?.price?.toFixed(2)}</p>
+            <p className="ml-4 text-tan">${item?.price?.toFixed(2)}</p>
           </div>
         </div>
         <div className="mt-3">
@@ -62,3 +59,5 @@ const CheckoutBooksCard = ({ items, updateQuantity, removeItem }) => {
 };
 
 export default CheckoutBooksCard;
+
+

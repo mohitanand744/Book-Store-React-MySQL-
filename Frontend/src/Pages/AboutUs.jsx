@@ -149,7 +149,7 @@ const AboutUs = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#F6F2EB] to-[#F6F2EB]">
+    <div className="min-h-screen bg-tan">
       {/* Hero Section */}
       <Banners titleFirst={"Our"} titleSecond={"Story"} />
 
@@ -165,13 +165,13 @@ const AboutUs = () => {
           <motion.div
             key={index}
             whileHover={{ scale: 1.05 }}
-            className="p-6 text-center transition-all duration-300 bg-white border-b-4 border-[#b1946a] shadow-lg rounded-xl hover:shadow-xl"
+            className="p-6 text-center transition-all duration-300 bg-coffee text-tan border-b-4 border-tan shadow-lg rounded-xl hover:shadow-xl"
           >
-            <div className="flex justify-center mb-3 text-[#b1946a]">
+            <div className="flex justify-center mb-3 text-tan">
               {stat.icon}
             </div>
-            <h3 className="text-2xl font-bold text-gray-800">{stat.value}</h3>
-            <p className="text-gray-600">{stat.label}</p>
+            <h3 className="text-2xl font-bold">{stat.value}</h3>
+            <p className="text-tan/70">{stat.label}</p>
           </motion.div>
         ))}
       </motion.div>
@@ -184,17 +184,17 @@ const AboutUs = () => {
         viewport={{ once: true }}
         className="max-w-5xl px-4 mx-auto mb-28"
       >
-        <h2 className="mb-12 text-3xl font-bold text-center text-[#5E4C37]">
-          Our <span className="text-[#b1946a]">Journey</span>
+        <h2 className="mb-12 text-3xl font-bold text-center text-coffee">
+          Our <span className="text-sepia">Journey</span>
         </h2>
         <div className="relative">
           {/* Timeline line */}
-          <div className="absolute hidden w-1 h-[94%] top-2 transform -translate-x-1/2 bg-[#f5d7ad] md:block left-1/2"></div>
+          <div className="absolute hidden w-1 h-[94%] top-2 transform -translate-x-1/2  md:block left-1/2"></div>
 
           {/* Timeline Section - Responsive */}
           <div className="relative">
             {/* Timeline line - only visible on md+ screens */}
-            <div className="absolute left-1/2 hidden h-full w-0.5 bg-gray-200 md:block transform -translate-x-1/2"></div>
+            <div className="absolute left-1/2 hidden h-full w-0.5 bg-coffee/20 md:block transform -translate-x-1/2"></div>
 
             {/* Timeline items */}
             <div className="space-y-16 md:space-y-12">
@@ -211,20 +211,20 @@ const AboutUs = () => {
                   <div className="flex flex-col md:hidden">
                     {/* Year - mobile version */}
                     <div className="flex items-center mb-4">
-                      <div className="w-4 h-4 rounded-full bg-[#b1946a]"></div>
-                      <div className="ml-4 px-4 py-2 bg-[#b1946a] bg-opacity-10 rounded-lg">
-                        <span className="font-bold text-[#b1946a]">
+                      <div className="w-4 h-4 rounded-full bg-coffee"></div>
+                      <div className="ml-4 px-4 py-2  bg-opacity-10 rounded-lg">
+                        <span className="font-bold text-coffee">
                           {item.year}
                         </span>
                       </div>
                     </div>
 
                     {/* Content - mobile */}
-                    <div className="ml-8 pl-6 border-l-2 border-[#b1946a] border-opacity-30">
-                      <h3 className="text-lg font-bold text-gray-800">
+                    <div className="ml-8 pl-6 border-l-2 border-coffee/30">
+                      <h3 className="text-lg font-bold text-coffee">
                         {item.title}
                       </h3>
-                      <p className="mt-1 text-gray-600">{item.description}</p>
+                      <p className="mt-1 text-sepia">{item.description}</p>
                     </div>
                   </div>
 
@@ -236,25 +236,23 @@ const AboutUs = () => {
                       whileInView={{ opacity: 1, x: 0 }}
                       transition={{ duration: 0.6 }}
                       viewport={{ once: true }}
-                      className={`relative flex ${
-                        index % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"
-                      } items-center`}
+                      className={`relative flex ${index % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"
+                        } items-center`}
                     >
                       {/* Year */}
-                      <div className="z-10 flex items-center justify-center w-20 h-20 font-bold text-white transform -translate-x-1/2 bg-[#b1946a] rounded-full md:absolute left-1/2">
+                      <div className="z-10 flex items-center justify-center w-20 h-20 font-bold text-tan bg-coffee shadow-xl transform -translate-x-1/2 rounded-full md:absolute left-1/2">
                         {item.year}
                       </div>
 
                       {/* Content */}
                       <div
-                        className={`md:w-5/12 mt-10 md:mt-0 ${
-                          index % 2 === 0 ? "md:pr-6 md:text-right" : "md:pl-6"
-                        }`}
+                        className={`md:w-5/12 mt-10 md:mt-0 ${index % 2 === 0 ? "md:pr-6 md:text-right" : "md:pl-6"
+                          }`}
                       >
-                        <h3 className="text-xl font-bold text-gray-800">
+                        <h3 className="text-xl font-bold text-coffee">
                           {item.title}
                         </h3>
-                        <p className="mt-2 text-gray-600">{item.description}</p>
+                        <p className="mt-2 text-sepia">{item.description}</p>
                       </div>
                     </motion.div>
                   </div>
@@ -271,22 +269,22 @@ const AboutUs = () => {
         whileInView={{ opacity: 1 }}
         transition={{ duration: 0.8 }}
         viewport={{ once: true }}
-        className="px-4 py-20 text-white bg-[#5E4C37] mb-28"
+        className="px-4 py-20 bg-coffee text-tan mb-28 rounded-[3rem]"
       >
         <div className="max-w-6xl mx-auto">
           <h2 className="mb-16 text-3xl font-bold text-center">
-            Our <span className="text-[#c7a77a]">Values</span>
+            Our <span className="text-sepia">Values</span>
           </h2>
           <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
             {values.map((value, index) => (
               <motion.div
                 key={index}
                 whileHover={{ y: -10 }}
-                className="p-8 bg-white border border-white bg-opacity-10 rounded-xl backdrop-blur-sm border-opacity-20"
+                className="p-8 bg-tan/10 text-tan border border-tan/20 rounded-xl backdrop-blur-sm"
               >
-                <div className="mb-4 text-purple-300">{value.icon}</div>
+                <div className="mb-4 text-tan">{value.icon}</div>
                 <h3 className="mb-3 text-xl font-bold">{value.title}</h3>
-                <p className="text-indigo-100">{value.description}</p>
+                <p className="text-tan/70">{value.description}</p>
               </motion.div>
             ))}
           </div>
@@ -301,10 +299,10 @@ const AboutUs = () => {
         viewport={{ once: true }}
         className="max-w-6xl px-4 mx-auto mb-28"
       >
-        <h2 className="mb-4 text-3xl font-bold text-center text-[#5E4C37]">
-          The <span className="text-[#b1946a]">People</span> Behind the Pages
+        <h2 className="mb-4 text-3xl font-bold text-center text-coffee">
+          The <span className="text-sepia">People</span> Behind the Pages
         </h2>
-        <p className="max-w-2xl mx-auto mb-12 text-center text-gray-600">
+        <p className="max-w-2xl mx-auto mb-12 text-center text-sepia">
           Meet the passionate book lovers who make <b>NextChapter</b> possible
         </p>
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
@@ -316,7 +314,7 @@ const AboutUs = () => {
               transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
               viewport={{ once: true, margin: "-50px" }}
               whileHover={{ y: -8 }}
-              className="relative group overflow-hidden bg-white rounded-2xl shadow-2xl hover:shadow-3xl transition-all duration-500 hover:ring-2 hover:ring-opacity-20 hover:ring-[#b1946a]"
+              className="relative group overflow-hidden bg-coffee text-tan rounded-2xl shadow-2xl hover:shadow-3xl transition-all duration-500 border border-tan/10"
             >
               {/* 3D Tilt Effect Container */}
               <div className="perspective group-hover:perspective-active">
@@ -330,22 +328,22 @@ const AboutUs = () => {
                   />
 
                   {/* Gradient overlay with animation */}
-                  <div className="absolute inset-0 transition-opacity duration-500 bg-gradient-to-b from-transparent via-transparent to-black opacity-80 group-hover:opacity-90"></div>
+                  <div className="absolute inset-0 transition-opacity duration-500 bg-gradient-to-b from-transparent via-transparent to-coffee opacity-80 group-hover:opacity-90"></div>
 
                   {/* Floating info badge */}
-                  <div className="absolute px-3 py-1 rounded-full shadow-sm top-4 right-4 bg-white/90 backdrop-blur-sm">
-                    <span className="text-xs font-medium text-gray-800">
+                  <div className="absolute px-3 py-1 rounded-full shadow-sm top-4 right-4 bg-tan/90 backdrop-blur-sm">
+                    <span className="text-xs font-medium text-coffee">
                       {member.role}
                     </span>
                   </div>
 
                   {/* Name with sliding underline */}
                   <div className="absolute bottom-6 left-6">
-                    <h3 className="relative inline-block mb-1 text-2xl font-bold text-white">
+                    <h3 className="relative inline-block mb-1 text-2xl font-bold text-tan">
                       {member.name}
-                      <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#b1946a] transition-all duration-500 group-hover:w-full"></span>
+                      <span className="absolute bottom-0 left-0 w-0 h-0.5  transition-all duration-500 group-hover:w-full"></span>
                     </h3>
-                    <p className="text-sm font-light text-gray-300">
+                    <p className="text-sm font-light text-tan/70">
                       {member.department}
                     </p>
                   </div>
@@ -365,7 +363,7 @@ const AboutUs = () => {
                   }}
                 >
                   <motion.p
-                    className="mb-4 leading-relaxed text-gray-600"
+                    className="mb-4 leading-relaxed text-tan/80"
                     variants={{
                       hidden: { y: 10, opacity: 0 },
                       visible: { y: 0, opacity: 1 },
@@ -375,7 +373,7 @@ const AboutUs = () => {
                   </motion.p>
 
                   <motion.div
-                    className="flex items-center gap-2 text-sm text-[#b1946a] mb-4"
+                    className="flex items-center gap-2 text-sm  mb-4"
                     variants={{
                       hidden: { y: 10, opacity: 0 },
                       visible: { y: 0, opacity: 1 },
@@ -394,7 +392,7 @@ const AboutUs = () => {
 
                   {/* Social links with hover effects */}
                   <motion.div
-                    className="flex gap-3 pt-4 border-t border-gray-100"
+                    className="flex gap-3 pt-4 border-t border-tan/10"
                     variants={{
                       hidden: { y: 10, opacity: 0 },
                       visible: { y: 0, opacity: 1 },
@@ -404,7 +402,7 @@ const AboutUs = () => {
                       <a
                         key={link.platform}
                         href={link.url}
-                        className="p-2 rounded-full bg-gray-50 hover:bg-[#b1946a] hover:text-white transition-colors duration-300"
+                        className="p-2 rounded-full bg-gray-50  hover:text-tan transition-colors duration-300"
                         aria-label={link.platform}
                       >
                         <svg
@@ -418,7 +416,7 @@ const AboutUs = () => {
                 </motion.div>
 
                 {/* Decorative elements */}
-                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#b1946a] via-purple-500 to-pink-500 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r  via-purple-500 to-pink-500 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
               </div>
             </motion.div>
           ))}
@@ -431,24 +429,24 @@ const AboutUs = () => {
         whileInView={{ opacity: 1 }}
         transition={{ duration: 0.8 }}
         viewport={{ once: true }}
-        className="px-4 py-20 bg-gradient-to-r from-[#5E4C37] to-[#b1946a] mb-28"
+        className="px-4 py-20 bg-coffee text-tan mb-28 rounded-[3rem]"
       >
         <div className="max-w-4xl mx-auto">
-          <h2 className="mb-12 text-3xl font-bold text-center text-[#ffdeb9]">
-            What Our <span className="text-[#f7cb8d]">Community</span> Says
+          <h2 className="mb-12 text-3xl font-bold text-center ">
+            What Our <span className="text-sepia">Community</span> Says
           </h2>
           <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
             {testimonials.map((testimonial, index) => (
               <motion.div
                 key={index}
                 whileHover={{ scale: 1.03 }}
-                className="p-8 bg-white shadow-md rounded-xl"
+                className="p-8 bg-tan/10 text-tan shadow-md rounded-xl border border-tan/10"
               >
-                <FaQuoteLeft className="mb-4 text-3xl text-[#b1946a]" />
-                <p className="mb-6 italic text-gray-700">
+                <FaQuoteLeft className="mb-4 text-3xl " />
+                <p className="mb-6 italic text-tan/80">
                   "{testimonial.quote}"
                 </p>
-                <p className="font-semibold text-[#b1946a]">
+                <p className="font-semibold ">
                   — {testimonial.author}
                 </p>
               </motion.div>
@@ -463,132 +461,40 @@ const AboutUs = () => {
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
         viewport={{ once: true }}
-        className="px-4 py-20 text-center text-white bg-gradient-to-r from-[#5E4C37] to-[#b1946a]"
+        className="px-4 py-20 text-center text-tan bg-coffee rounded-[3rem] mx-4 mb-28"
       >
         <div className="max-w-4xl mx-auto">
-          <h2 className="mb-6 text-[#ffdeb9] text-3xl font-bold md:text-4xl">
-            Ready for Your <span className="text-[#f7cb8d]">Next Chapter?</span>
+          <h2 className="mb-6  text-3xl font-bold md:text-4xl">
+            Ready for Your <span className="text-sepia">Next Chapter?</span>
           </h2>
-          <p className="max-w-2xl mx-auto mb-8 text-xl">
+          <p className="max-w-2xl mx-auto mb-8 text-xl text-tan/80">
             Join our community of passionate readers today
           </p>
           <div className="flex flex-col justify-center gap-4 sm:flex-row">
             <motion.button
               whileHover={{
                 scale: 1.05,
-                boxShadow: "0 10px 25px -5px #b1946a",
+                boxShadow: "0 10px 25px -5px #D3BD9D",
               }}
               whileTap={{ scale: 0.98 }}
-              className="px-8 py-3 font-medium border-2 border-white text-white rounded-full shadow-md bg-gradient-to-r from-[#806642] to-[#b1946a]"
+              className="px-8 py-3 font-medium border-2 border-tan text-tan rounded-full shadow-md bg-gradient-to-r  "
             >
               Start Reading Now
             </motion.button>
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="px-8 py-3 font-bold text-white transition-all duration-300 bg-transparent border-2 border-white rounded-full hover:bg-[#b1946a] hover:text-[#5E4C37]"
+              className="px-8 py-3 font-bold text-tan transition-all duration-300 bg-transparent border-2 border-tan rounded-full  "
             >
               Join Our Book Club
             </motion.button>
           </div>
         </div>
       </motion.section>
-
-      {/* Footer Note */}
-      <motion.footer
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        transition={{ duration: 0.8 }}
-        viewport={{ once: true }}
-        className="relative px-6 py-16 overflow-hidden text-center"
-      >
-        {/* Decorative background elements */}
-        <div className="absolute inset-0 overflow-hidden">
-          {/* Floating book icons */}
-          <motion.div
-            animate={{
-              y: [0, -15, 0],
-              rotate: [0, 5, 0],
-            }}
-            transition={{
-              duration: 8,
-              repeat: Infinity,
-              ease: "easeInOut",
-            }}
-            className="absolute text-[#b1946a] left-1/4 top-1/3 opacity-20"
-            style={{ fontSize: "3rem" }}
-          >
-            <GiBookPile />
-          </motion.div>
-          <motion.div
-            animate={{
-              y: [0, 15, 0],
-              rotate: [0, -5, 0],
-            }}
-            transition={{
-              duration: 10,
-              repeat: Infinity,
-              ease: "easeInOut",
-              delay: 1,
-            }}
-            className="absolute text-[#b1946a] right-1/4 bottom-1/4 opacity-20"
-            style={{ fontSize: "4rem" }}
-          >
-            <GiBookPile />
-          </motion.div>
-        </div>
-
-        {/* Main content */}
-        <div className="relative z-10">
-          <motion.p
-            initial={{ scale: 0.9 }}
-            whileInView={{ scale: 1 }}
-            transition={{ duration: 0.5 }}
-            viewport={{ once: true }}
-            className="max-w-3xl mx-auto text-2xl font-light leading-relaxed text-gray-700 md:text-3xl"
-          >
-            "Every book you read writes a new chapter in{" "}
-            <span className="font-bold text-[#b1946a]">your</span> story."
-          </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6, duration: 0.5 }}
-            viewport={{ once: true }}
-            className="pt-8 mt-12 border-t border-gray-200"
-          >
-            <div className="flex justify-center mb-6 space-x-6">
-              {["Facebook", "Twitter", "Instagram", "Goodreads"].map(
-                (social) => (
-                  <motion.a
-                    key={social}
-                    whileHover={{ y: -3, color: "#5e4c37" }}
-                    className="text-gray-500 transition-colors hover:text-purple-600"
-                    href="#"
-                  >
-                    {social}
-                  </motion.a>
-                )
-              )}
-            </div>
-
-            <motion.div
-              whileHover={{ rotate: 10 }}
-              whileTap={{ scale: 0.9 }}
-              className="inline-block mb-4"
-            >
-              <GiBookPile className="mx-auto text-5xl text-[#b1946a]" />
-            </motion.div>
-
-            <p className="text-sm text-gray-500">
-              © {new Date().getFullYear()} NextChapter. All stories welcome.
-            </p>
-          </motion.div>
-        </div>
-      </motion.footer>
     </div>
   );
 };
 
 export default AboutUs;
+
+

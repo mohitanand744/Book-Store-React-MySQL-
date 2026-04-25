@@ -297,7 +297,7 @@ export const mockBooks = [
       author_id: 113,
       author_name: "Arya Dev",
       author_image_url:
-        "https://media.istockphoto.com/id/116192438/photo/one-indian-it-software-engineer-white-collar-worker-computer-people.jpg?s=612x612&w=0&k=20&c=jcaJlUnvfFPJOXwXuDXQBYWoigHh_rfUHvZ22VnBZlk=",
+        "https://media.istockphoto.com/id/116192438/photo/one-indian-it-software-engineer-tan-collar-worker-computer-people.jpg?s=612x612&w=0&k=20&c=jcaJlUnvfFPJOXwXuDXQBYWoigHh_rfUHvZ22VnBZlk=",
       author_description: "Mathematician decoding ancient patterns.",
       author_books_count: 4,
       author_rating: 4.7,

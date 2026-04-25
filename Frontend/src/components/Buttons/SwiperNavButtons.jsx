@@ -19,7 +19,7 @@ const SwiperNavButtons = ({
           e.stopPropagation();
           swiperRef.current?.slidePrev();
         }}
-        className={`flex items-center justify-center  z-10 rounded-full bg-[#D3BD9D] shadow-lg hover:bg-[#c5ac85] text-[#5C4C49] hover:text-[#3E3432] transition-all duration-300 ${prevButtonClass}`}
+        className={`flex items-center justify-center  z-10 rounded-full bg-tan shadow-lg  text-coffee  transition-all duration-300 ${prevButtonClass}`}
         aria-label="Previous"
       >
         <FiChevronLeft className="w-6 h-6" />
@@ -31,7 +31,7 @@ const SwiperNavButtons = ({
           e.stopPropagation();
           swiperRef.current?.slideNext();
         }}
-        className={`flex items-center justify-center  z-10 rounded-full bg-[#D3BD9D] shadow-lg hover:bg-[#ceb896] text-[#5C4C49] hover:text-[#3E3432] transition-all duration-300 ${nextButtonClass}`}
+        className={`flex items-center justify-center  z-10 rounded-full bg-tan shadow-lg  text-coffee  transition-all duration-300 ${nextButtonClass}`}
         aria-label="Next"
       >
         <FiChevronRight className="w-6 h-6" />
@@ -41,3 +41,5 @@ const SwiperNavButtons = ({
 };
 
 export default SwiperNavButtons;
+
+

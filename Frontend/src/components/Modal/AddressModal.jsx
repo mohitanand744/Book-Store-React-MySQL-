@@ -74,7 +74,9 @@ const AddressModal = ({
       const addrRes = await getUserAddresses();
       if (addrRes?.success) setAddresses(addrRes.data || []);
     } catch (error) {
-      toast.error("Failed to load address data");
+      if (error.response?.status !== 401) {
+        toast.error("Failed to load address data");
+      }
     }
   };
 
@@ -176,7 +178,9 @@ const AddressModal = ({
         toast.error(res.message || "Failed to delete address");
       }
     } catch (error) {
-      toast.error("An error occurred while deleting the address");
+      if (error.response?.status !== 401) {
+        toast.error("An error occurred while deleting the address");
+      }
     } finally {
       setAddressToDelete(null);
     }
@@ -242,10 +246,12 @@ const AddressModal = ({
       await fetchData();
       handleBackToSelection();
     } catch (error) {
-      toast.error(
-        error.response?.data?.message ||
+      if (error.response?.status !== 401) {
+        toast.error(
+          error.response?.data?.message ||
           "An error occurred while saving the address",
-      );
+        );
+      }
     }
   };
 
@@ -362,7 +368,7 @@ const AddressModal = ({
           subHeading={"Choose where you want your order delivered"}
         />
 
-        <div className="flex mb-6 border-b border-[#5c4c49]/40">
+        <div className="flex mb-6 border-b border-coffee/40">
           {["select", "add"].map((tab) => (
             <button
               key={tab}
@@ -379,8 +385,8 @@ const AddressModal = ({
               <span
                 className={
                   activeTab === tab
-                    ? "text-[#5c4c49]"
-                    : "text-gray-600 hover:text-[#5c4c49]"
+                    ? "text-tan"
+                    : "text-tan/60 hover:text-tan"
                 }
               >
                 {tab === "select" ? "Saved Addresses" : "Add New"}
@@ -389,7 +395,7 @@ const AddressModal = ({
               {activeTab === tab && (
                 <motion.div
                   layoutId="AddressTabUnderline"
-                  className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#5c4c49]"
+                  className="absolute bottom-0 left-0 right-0 h-0.5 bg-tan"
                   transition={{ type: "spring", stiffness: 500, damping: 30 }}
                 ></motion.div>
               )}
@@ -426,11 +432,10 @@ const AddressModal = ({
                       <div
                         key={address.id}
                         onClick={() => handleAddressSelect(address)}
-                        className={`p-4  rounded-xl cursor-pointer  hover:scale-105 transition-all duration-300 ease-linear ${
-                          selectedAddress === address.id
-                            ? "border-[4px] border-[#fff]"
-                            : "border border-[#5c4c4955]"
-                        }`}
+                        className={`p-4 rounded-xl cursor-pointer bg-tan/10 backdrop-blur-sm hover:scale-105 transition-all duration-300 ease-linear ${selectedAddress === address.id
+                          ? "border-[4px] border-tan shadow-xl"
+                          : "border border-tan/20"
+                          }`}
                       >
                         <div className="relative flex items-start gap-3">
                           <PencilSquareIcon
@@ -438,13 +443,13 @@ const AddressModal = ({
                               e.stopPropagation();
                               handleEditAddress(address);
                             }}
-                            className="w-5 active:scale-75 hover:scale-105 transition-all duration-200 ease-linear h-5 absolute top-0 right-0 cursor-pointer text-[#5c4c49]"
+                            className="w-5 active:scale-75 hover:scale-105 transition-all duration-200 ease-linear h-5 absolute top-0 right-0 cursor-pointer text-tan"
                           />
                           <div
                             onClick={() =>
                               setViewAddressDetails({ ...address, Icon })
                             }
-                            className="absolute active:scale-75 hover:scale-105 transition-all duration-200 ease-linear text-[#5c4c49] top-0 w-5 h-5 right-7"
+                            className="absolute active:scale-75 hover:scale-105 transition-all duration-200 ease-linear text-tan top-0 w-5 h-5 right-7"
                           >
                             <EyesSvg />
                           </div>
@@ -454,7 +459,7 @@ const AddressModal = ({
                           />
 
                           <div
-                            className={`p-2 rounded-lg ${address.color} text-white`}
+                            className={`p-2 rounded-lg ${address.color} text-tan`}
                           >
                             <Icon className="w-5 h-5" />
                           </div>
@@ -470,12 +475,12 @@ const AddressModal = ({
                                 </span>
                               )}
                             </div>
-                            <p className="text-sm text-gray-600 [overflow-wrap:anywhere]">
+                            <p className="text-sm text-tan/70 [overflow-wrap:anywhere]">
                               {address.address.length < 50
                                 ? address.address
                                 : address.address.slice(0, 50) + "..."}
                             </p>
-                            <p className="text-sm text-gray-500">
+                            <p className="text-sm text-tan/50">
                               {address.city}, {address.state} {address.pinCode}
                             </p>
                           </div>
@@ -503,7 +508,7 @@ const AddressModal = ({
                   Cancel
                 </Button>
                 <Button
-                  variant="primary"
+                  variant="outline"
                   className="flex-1 text-sm"
                   disabled={!selectedAddress}
                   onClick={handleSetDefaultAddress}
@@ -539,6 +544,7 @@ const AddressModal = ({
                       onChange={field.onChange}
                       error={errors.type?.message}
                       placeholder="Select Address Type"
+                      className="bg-tan/10 hover:bg-tan/20 transition-all duration-300"
                     />
                   )}
                 />
@@ -554,6 +560,7 @@ const AddressModal = ({
                   error={errors.pinCode?.message}
                   placeholder="Enter Pin code"
                   maxLength={6}
+                  className="bg-tan/10 hover:bg-tan/20 transition-all duration-300"
                   onKeyDown={(e) =>
                     handleKeyDown(
                       e,
@@ -577,6 +584,7 @@ const AddressModal = ({
                   })}
                   error={errors.city?.message}
                   placeholder="Enter City"
+                  className="bg-tan/10 hover:bg-tan/20 transition-all duration-300"
                   onKeyDown={(e) =>
                     handleKeyDown(
                       e,
@@ -608,6 +616,7 @@ const AddressModal = ({
                       onChange={field.onChange}
                       error={errors.state?.message}
                       placeholder="Select State"
+                      className="bg-tan/10 hover:bg-tan/20 transition-all duration-300"
                     />
                   )}
                 />
@@ -639,6 +648,7 @@ const AddressModal = ({
                     showCounter={true}
                     maxCount={255}
                     maxLength={255}
+                    className="bg-tan/10 hover:bg-tan/20 transition-all duration-300"
                     onKeyDown={(e) =>
                       handleKeyDown(
                         e,
@@ -702,20 +712,20 @@ const AddressModal = ({
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className="w-full max-w-sm p-6 bg-white shadow-xl rounded-xl"
+              className="w-full max-w-sm p-6 bg-coffee text-tan border border-tan shadow-xl rounded-xl"
             >
-              <h3 className="mb-2 text-xl font-bold text-[#5c4c49]">
+              <h3 className="mb-2 text-xl font-bold text-tan">
                 Incorrect address
               </h3>
-              <p className="mb-4 text-sm text-gray-600">
+              <p className="mb-4 text-sm text-tan/70">
                 The entered address is incorrect. Please select any of the
                 suggested address.
               </p>
 
-              <div className="p-3 mb-6 bg-gray-50 border border-[#5c4c49]/20 rounded-lg">
-                <p className="text-sm text-gray-800 break-words">
+              <div className="p-3 mb-6 bg-tan/5 border border-tan/20 rounded-lg">
+                <p className="text-sm text-tan/80 break-words">
                   {confirmationData.address},{" "}
-                  <span className="text-red-500 line-through decoration-red-500">
+                  <span className="text-red-error line-through decoration-red-error">
                     {confirmationData.city} {confirmationData.state}
                   </span>{" "}
                   {confirmationData.correctCity},{" "}
@@ -767,14 +777,14 @@ const AddressModal = ({
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className="w-full max-w-sm p-6 bg-white shadow-xl rounded-xl"
+              className="w-full max-w-sm p-6 bg-coffee text-tan border border-tan shadow-xl rounded-xl"
             >
-              <h3 className="mb-2 text-xl font-bold text-[#5c4c49]">
+              <h3 className="mb-2 text-xl font-bold text-tan">
                 Delete Address
               </h3>
 
-              <div className="p-3 mb-6 bg-gray-50 border border-[#5c4c49]/20 rounded-lg">
-                <p className="text-sm text-gray-800">
+              <div className="p-3 mb-6 bg-tan/5 border border-tan/20 rounded-lg">
+                <p className="text-sm text-tan/80">
                   Are you sure you want to delete this address? This action
                   cannot be undone.
                 </p>
@@ -810,3 +820,5 @@ const AddressModal = ({
 };
 
 export default AddressModal;
+
+

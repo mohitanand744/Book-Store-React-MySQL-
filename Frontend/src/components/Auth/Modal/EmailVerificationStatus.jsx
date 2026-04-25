@@ -114,10 +114,10 @@ const EmailVerificationStatus = ({
               />
             </motion.svg>
           </motion.div>
-          <h2 className="mb-3 text-2xl font-bold text-center text-[#5E4C37]">
+          <h2 className="mb-3 text-2xl font-bold text-center ">
             Email Verified Successfully!
           </h2>
-          <p className="mb-4 text-sm text-center text-[#5E4C37]">
+          <p className="mb-4 text-sm text-center ">
             Your email address <b>{email}</b> has been successfully verified.
             You can now access all features of your account.
           </p>
@@ -243,7 +243,7 @@ const EmailVerificationStatus = ({
 
           <Button
             variant="outline"
-            className="hover:bg-red-800 hover:text-white"
+            className="hover:bg-red-800 hover:text-tan"
             onClick={handleClose}
           >
             Cancel
@@ -362,7 +362,7 @@ const EmailVerificationStatus = ({
           </Button>
           <Button
             variant="outline"
-            className="hover:bg-red-800 hover:text-white"
+            className="hover:bg-red-800 hover:text-tan"
             onClick={handleClose}
           >
             Cancel
@@ -390,3 +390,5 @@ const EmailVerificationStatus = ({
 };
 
 export default EmailVerificationStatus;
+
+

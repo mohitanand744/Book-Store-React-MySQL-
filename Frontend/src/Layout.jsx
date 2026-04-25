@@ -5,8 +5,11 @@ import { Outlet, useLocation } from "react-router-dom";
 import Footer from "./components/Common/Footers/Footer";
 import { useAxiosLoader } from "./services/api";
 import FullScreenImageModal from "./components/Common/FullScreenImage";
+import ShoppingCart from "./components/Common/Navbars/ShoppingCarts";
+import { useState } from "react";
 
 const Layout = () => {
+  const [isCartOpen, setIsCartOpen] = useState(false);
   const pathName = useLocation().pathname;
   useAxiosLoader();
 
@@ -15,14 +18,19 @@ const Layout = () => {
   }, [pathName]);
 
   return (
-    <>
+    <div className="bg-tan min-h-screen flex flex-col">
       <DiscountHeader />
-      <Navbar />
-      <Outlet />
+      <Navbar isCartOpen={isCartOpen} setIsCartOpen={setIsCartOpen} />
+      <div className="flex-1">
+        <Outlet />
+      </div>
+      <ShoppingCart isCartOpen={isCartOpen} setIsCartOpen={setIsCartOpen} />
       <FullScreenImageModal />
       <Footer />
-    </>
+    </div>
   );
 };
 
 export default Layout;
+
+

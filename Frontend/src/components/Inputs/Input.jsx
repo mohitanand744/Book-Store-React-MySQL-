@@ -11,6 +11,7 @@ import { toast } from "sonner";
 const Input = (
   {
     label,
+    labelClassName = "text-brand-label",
     type = "text",
     placeholder,
     error,
@@ -48,13 +49,13 @@ const Input = (
   return (
     <div className={`mb-4 w-full ${containerClassName}`}>
       {label && (
-        <label className="flex items-center justify-between text-sm font-medium text-[#5e4c37] mb-1">
-          <span>{label}</span>
+        <label className="flex items-center justify-between text-sm font-medium text-brand-label mb-1">
+          <span className={`${labelClassName}`}>{label}</span>
           {showCounter && maxCount && (
             <span
               className={`text-[13px] ${(value?.length || 0) > maxCount
-                ? "text-red-500"
-                : "text-[#5e4c37a2] font-normal"
+                ? "text-error"
+                : "text-brand-label/60 font-normal"
                 }`}
             >
               <b>{value?.length || 0}/{maxCount}</b>
@@ -77,9 +78,9 @@ const Input = (
         ) : Component === "textarea" ? (
           <textarea
             ref={ref}
-            className={`w-full  truncate px-4 py-2 rounded-lg border ${error
-              ? "border-red-500 placeholder:text-red-500 focus:ring-red-500 focus:border-red-500"
-              : "border-gray-300 focus:ring-[#8a7053] focus:border-[#8a7053]"
+            className={`w-full bg-tan text-tan/90 placeholder:text-tan truncate px-4 py-2 rounded-lg border ${error
+              ? "border-red-error placeholder:text-red-error focus:ring-red-error focus:border-red-error"
+              : "border-sepia focus:ring-coffee focus:border-coffee"
               }  focus:outline-none focus:ring-2 ${className}`}
             value={value}
             onChange={onChange}
@@ -91,9 +92,9 @@ const Input = (
           <input
             ref={ref}
             type={inputType}
-            className={`w-full h-[42px] pr-[44px] truncate  px-4 py-2 rounded-lg border ${error
-              ? "border-red-500 placeholder:text-red-500 focus:ring-red-500 focus:border-red-500"
-              : "border-gray-300 focus:ring-[#8a7053] focus:border-[#8a7053]"
+            className={`w-full bg-tan text-tan/90 !placeholder-tan/90 h-[42px] pr-[44px] truncate  px-4 py-2 rounded-lg border ${error
+              ? "border-red-error placeholder:text-red-error focus:ring-red-error focus:border-red-error"
+              : "border-sepia focus:ring-coffee focus:border-coffee"
               } shadow-sm  focus:outline-none focus:ring-2 ${className}`}
             placeholder={placeholder}
             value={value}
@@ -111,13 +112,13 @@ const Input = (
         {/* Custom right icon: show/hide or external icon */}
         {!error && icon && (
           <div
-            className={`absolute right-0 top-[0.6px] h-[40px] flex items-center justify-center pr-3 bg-white rounded-r-lg`}
+            className={`absolute right-0 top-[0.6px] min-w-[40px] h-[40px] flex items-center justify-center  bg-sepia/10 text-tan/90 rounded-r-lg`}
           >
             {type === "password" ? (
               <button
                 type="button"
                 onClick={() => setShowPassword((prev) => !prev)}
-                className="focus:outline-none text-[#5e4c37a2]"
+                className="focus:outline-none text-brand-label/60"
               >
                 {showPassword ? (
                   <EyeSlashIcon className="w-5 h-5" />
@@ -126,7 +127,7 @@ const Input = (
                 )}
               </button>
             ) : icon ? (
-              <div className="pl-3 text-[#5e4c37a2] pointer-events-none">
+              <div className="text-brand-label/60 pointer-events-none">
                 {icon}
               </div>
             ) : null}
@@ -134,23 +135,23 @@ const Input = (
         )}
         {error && (
           <div
-            className={`absolute right-0 top-0  ${Component === "textarea" ? "border-t border-r rounded-tr-lg" : "border-y border-r rounded-r-lg"} border-red-600 h-[42px] flex items-center justify-center px-3 bg-white `}
+            className={`absolute right-0 top-0  ${Component === "textarea" ? "border-t border-r rounded-tr-lg" : "border-y border-r rounded-r-lg"} border-error-dark h-[42px] flex items-center justify-center px-3 bg-tan text-tan/90 `}
           >
             {type === "password" ? (
               <button
                 type="button"
                 onClick={() => setShowPassword((prev) => !prev)}
-                className="focus:outline-none pointer-events-auto text-[#5e4c37a2]"
+                className="focus:outline-none pointer-events-auto text-brand-label/60"
               >
                 {showPassword ? (
-                  <EyeSlashIcon className="w-5 h-5 text-red-500" />
+                  <EyeSlashIcon className="w-5 h-5 text-red-error" />
                 ) : (
-                  <EyeIcon className="w-5 h-5 text-red-500" />
+                  <EyeIcon className="w-5 h-5 text-red-error" />
                 )}
               </button>
             ) : (
               <ExclamationCircleIcon
-                className="w-5 h-5 text-red-500"
+                className="w-5 h-5 text-red-error"
                 aria-hidden="true"
               />
             )}
@@ -158,7 +159,7 @@ const Input = (
         )}
       </div>
       {error && (
-        <p className="mt-1 text-sm text-red-600" id="input-error">
+        <p className="mt-1 text-sm text-red-error" id="input-error">
           {error}
         </p>
       )}
@@ -169,3 +170,5 @@ const Input = (
 Input.displayName = "Input";
 
 export default React.forwardRef(Input);
+
+

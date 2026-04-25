@@ -15,7 +15,7 @@ const HomeBanner = () => {
       <Swiper
         modules={[Navigation, Pagination, Autoplay]}
         autoplay={{
-          delay: 2500, // Auto slide change every 1.5 seconds
+          delay: 2500,
           disableOnInteraction: false,
         }}
         loop={true}
@@ -28,20 +28,20 @@ const HomeBanner = () => {
           {/* Image with a gradient fade at the bottom */}
           <img
             className="object-cover object-top w-full h-full"
-            src="/images/Welcome_Banner.webp"
+            src="/images/Welcome_Banner.png"
             alt="Welcome Banner"
           />
           {/* Gradient effect */}
-          <div className="absolute bottom-0 left-0 w-full h-1/5 bg-gradient-to-t from-white to-transparent"></div>
+          <div className="absolute bottom-0 left-0 w-full h-1/5 bg-gradient-to-t from-tan to-transparent"></div>
         </SwiperSlide>
         <SwiperSlide className="relative">
           <img
             className="object-cover object-top w-full h-full"
-            src="/images/bannersec.webp"
+            src="/images/bannersec.png"
             alt="Second Banner"
           />
           {/* Gradient effect */}
-          <div className="absolute bottom-0 left-0 w-full h-2/5 bg-gradient-to-t from-white to-transparent"></div>
+          <div className="absolute bottom-0 left-0 w-full h-2/5 bg-gradient-to-t from-tan to-transparent"></div>
         </SwiperSlide>
       </Swiper>
     </div>
@@ -49,3 +49,5 @@ const HomeBanner = () => {
 };
 
 export default HomeBanner;
+
+

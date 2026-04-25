@@ -5,39 +5,42 @@ import { motion } from "framer-motion";
 const Button = ({
   children,
   type = "button",
-  variant = "primary", // new
+  variant = "primary",
   className = "",
   isLoading = false,
+  isSerif = false,
+  isUppercase = false,
   ...props
 }) => {
   const baseClasses =
     "px-4 py-2 font-semibold rounded-xl transition duration-200 active:scale-95 focus:outline-none";
 
   const variantClasses = {
-    primary: "bg-[#5c4c49] text-white hover:bg-[#7C664D] hover:scale-105",
-    outline:
-      "border border-[#5c4c49] text-[#5c4c49] bg-transparent hover:bg-[#7C664D] hover:text-white hover:scale-105",
-    ghost:
-      "bg-transparent text-[#5c4c49] hover:bg-[#7C664D] hover:text-white hover:scale-105",
+    primary: "bg-coffee border-2 border-tan text-tan hover:bg-sepia",
+    secondary: "bg-tan text-coffee border-2 border-transparent hover:bg-cream",
+    outline: "border-2 border-tan text-tan bg-transparent hover:bg-tan hover:text-coffee",
+    "outline-tan": "border-2 border-tan/20 text-tan bg-tan/5 hover:bg-tan/10",
+    ghost: "bg-transparent text-coffee hover:bg-sepia hover:text-tan",
   };
+
+  const typographyClasses = `${isSerif ? "font-serif" : "font-sans"} ${isUppercase ? "uppercase tracking-widest text-xs" : ""}`;
 
   return (
     <motion.button
       type={type}
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
-      className={`${baseClasses} ${variantClasses[variant]} ${className} ${
-        isLoading || props.disabled
-          ? "cursor-not-allowed hover:bg-[#5c4c49]/60 bg-[#5c4c49]/50"
-          : ""
-      }`}
+      className={`${baseClasses} ${variantClasses[variant]} ${typographyClasses} ${className} ${isLoading || props.disabled
+        ? "opacity-50 cursor-not-allowed"
+        : ""
+        }`}
       disabled={isLoading}
       {...props}
     >
       {isLoading ? (
         <div className="flex items-center justify-center text-nowrap">
           <svg
-            className="w-4 h-4 mr-2 -ml-1 text-white animate-spin"
+            className="w-4 h-4 mr-2 -ml-1 text-tan animate-spin"
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
@@ -66,3 +69,5 @@ const Button = ({
 };
 
 export default Button;
+
+

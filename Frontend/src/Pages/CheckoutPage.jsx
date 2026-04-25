@@ -88,14 +88,14 @@ const CheckoutPage = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
-      className="min-h-screen bg-[#F5F1ED]"
+      className="min-h-screen "
     >
       <div className="container px-4 py-12 mx-auto sm:px-6 lg:px-8">
         <BackButton label="Continue Shopping" to={"/nextChapter/books"} />
         <div className="flex items-center mb-8">
           <div className="flex items-center mx-auto">
-            <FiShoppingBag className="mr-2 text-2xl text-[#5C4C49]" />
-            <h1 className="text-2xl font-bold text-[#5C4C49]">Your Cart</h1>
+            <FiShoppingBag className="mr-2 text-2xl text-coffee" />
+            <h1 className="text-2xl font-bold text-coffee">Your Cart</h1>
           </div>
         </div>
 
@@ -105,7 +105,7 @@ const CheckoutPage = () => {
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-            className="p-8 rounded-2xl bg-gradient-to-br from-[#FAF5ED] to-[#E8DBC5] shadow-[0_10px_40px_-15px_rgba(0,0,0,0.2)] backdrop-blur-sm border border-white/30"
+            className="p-8 rounded-2xl bg-gradient-to-br   shadow-[0_10px_40px_-15px_rgba(0,0,0,0.2)] backdrop-blur-sm border border-tan/30"
           >
             {/* Floating Section Titles */}
             <div className="relative mb-8">
@@ -113,11 +113,11 @@ const CheckoutPage = () => {
                 initial={{ x: -10, opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
                 transition={{ delay: 0.1 }}
-                className="text-2xl font-bold text-[#3A2F2D] relative inline-block"
+                className="text-2xl font-bold  relative inline-block"
               >
                 <span className="relative z-10">Contact Information</span>
                 <span
-                  className="absolute bottom-0 left-0 w-full h-2 bg-[#D3BD9D]/50 -z-0"
+                  className="absolute bottom-0 left-0 w-full h-2 bg-tan/50 -z-0"
                   style={{ transform: "skewX(-15deg)" }}
                 />
               </motion.h2>
@@ -136,9 +136,9 @@ const CheckoutPage = () => {
                   value={formData.name}
                   onChange={handleInputChange}
                   placeholder="Enter your full name"
-                  icon={<FiUser className="text-[#5C4C49]/80" />}
+                  icon={<FiUser className="text-coffee/80" />}
                   containerClassName="group"
-                  className=" bg-white/80 border-[#E8DBC5] hover:shadow-[0_5px_15px_-5px_rgba(0,0,0,0.1)] focus:ring-[#3A2F2D]/50"
+                  className=" bg-tan/80  hover:shadow-[0_5px_15px_-5px_rgba(0,0,0,0.1)] "
                 />
               </motion.div>
 
@@ -154,9 +154,9 @@ const CheckoutPage = () => {
                   value={formData.email}
                   onChange={handleInputChange}
                   placeholder="your@email.com"
-                  icon={<FiMail className="text-[#5C4C49]/80" />}
+                  icon={<FiMail className="text-coffee/80" />}
                   containerClassName="group"
-                  className=" bg-white/80 border-[#E8DBC5] hover:shadow-[0_5px_15px_-5px_rgba(0,0,0,0.1)] focus:ring-[#3A2F2D]/50"
+                  className=" bg-tan/80  hover:shadow-[0_5px_15px_-5px_rgba(0,0,0,0.1)] "
                 />
               </motion.div>
             </div>
@@ -167,11 +167,11 @@ const CheckoutPage = () => {
                 initial={{ x: -10, opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
                 transition={{ delay: 0.4 }}
-                className="text-2xl font-bold text-[#3A2F2D] relative inline-block"
+                className="text-2xl font-bold  relative inline-block"
               >
                 <span className="relative z-10">Delivery Address</span>
                 <span
-                  className="absolute bottom-0 left-0 w-full h-2 bg-[#D3BD9D]/50 -z-0"
+                  className="absolute bottom-0 left-0 w-full h-2 bg-tan/50 -z-0"
                   style={{ transform: "skewX(-15deg)" }}
                 />
               </motion.h2>
@@ -197,9 +197,9 @@ const CheckoutPage = () => {
                     { value: "option3", label: "Option 3" },
                     { value: "option4", label: "Option 4" },
                   ]}
-                  //icon={<FiHome className="text-[#5C4C49]/80" />}
+                  //icon={<FiHome className="text-coffee/80" />}
                   containerClassName="group"
-                  className=" bg-white/80 border-[#E8DBC5] hover:shadow-[0_5px_15px_-5px_rgba(0,0,0,0.1)] focus:ring-[#3A2F2D]/50 appearance-none"
+                  className=" bg-tan/80  hover:shadow-[0_5px_15px_-5px_rgba(0,0,0,0.1)]  appearance-none"
                 />
               </motion.div>
 
@@ -214,9 +214,9 @@ const CheckoutPage = () => {
                   value={formData.country}
                   onChange={handleInputChange}
                   placeholder="Your country"
-                  icon={<FiGlobe className="text-[#5C4C49]/80" />}
+                  icon={<FiGlobe className="text-coffee/80" />}
                   containerClassName="group"
-                  className=" bg-white/80 border-[#E8DBC5] hover:shadow-[0_5px_15px_-5px_rgba(0,0,0,0.1)] focus:ring-[#3A2F2D]/50"
+                  className=" bg-tan/80  hover:shadow-[0_5px_15px_-5px_rgba(0,0,0,0.1)] "
                 />
               </motion.div>
 
@@ -233,9 +233,9 @@ const CheckoutPage = () => {
                   as="textarea"
                   rows={3}
                   placeholder="Street address, apartment/unit number"
-                  icon={<FiMapPin className="text-[#5C4C49]/80" />}
+                  icon={<FiMapPin className="text-coffee/80" />}
                   containerClassName="group"
-                  className=" pt-3 bg-white/80 border-[#E8DBC5] hover:shadow-[0_5px_15px_-5px_rgba(0,0,0,0.1)] focus:ring-[#3A2F2D]/50 min-h-[100px]"
+                  className=" pt-3 bg-tan/80  hover:shadow-[0_5px_15px_-5px_rgba(0,0,0,0.1)]  min-h-[100px]"
                 />
               </motion.div>
 
@@ -254,7 +254,7 @@ const CheckoutPage = () => {
                     onChange={handleInputChange}
                     placeholder="City name"
                     containerClassName="group"
-                    className="bg-white/80 border-[#E8DBC5] hover:shadow-[0_5px_15px_-5px_rgba(0,0,0,0.1)] focus:ring-[#3A2F2D]/50"
+                    className="bg-tan/80  hover:shadow-[0_5px_15px_-5px_rgba(0,0,0,0.1)] "
                   />
                 </div>
                 <div>
@@ -265,7 +265,7 @@ const CheckoutPage = () => {
                     onChange={handleInputChange}
                     placeholder="ZIP/Postal code"
                     containerClassName="group"
-                    className="bg-white/80 border-[#E8DBC5] hover:shadow-[0_5px_15px_-5px_rgba(0,0,0,0.1)] focus:ring-[#3A2F2D]/50"
+                    className="bg-tan/80  hover:shadow-[0_5px_15px_-5px_rgba(0,0,0,0.1)] "
                   />
                 </div>
               </motion.div>
@@ -295,29 +295,29 @@ const CheckoutPage = () => {
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.2 }}
-              className="p-8 rounded-2xl bg-gradient-to-br from-[#FAF5ED] to-[#E8DBC5] shadow-[0_10px_40px_-15px_rgba(0,0,0,0.2)] backdrop-blur-sm border border-white/30"
+              className="p-8 rounded-2xl bg-gradient-to-br   shadow-[0_10px_40px_-15px_rgba(0,0,0,0.2)] backdrop-blur-sm border border-tan/30"
             >
-              <h2 className="mb-4 text-xl font-bold text-[#5C4C49]">
+              <h2 className="mb-4 text-xl font-bold text-coffee">
                 Order Summary
               </h2>
               <div className="space-y-4">
                 <div className="flex justify-between">
-                  <span className="text-[#5C4C49]">Subtotal</span>
-                  <span className="font-medium text-[#5C4C49]">
+                  <span className="text-coffee">Subtotal</span>
+                  <span className="font-medium text-coffee">
                     ${subtotal.toFixed(2)}
                   </span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-[#5C4C49]">Shipping</span>
-                  <span className="font-medium text-[#5C4C49]">
+                  <span className="text-coffee">Shipping</span>
+                  <span className="font-medium text-coffee">
                     Calculated at checkout
                   </span>
                 </div>
-                <div className="flex justify-between pt-4 border-t border-[#5C4C49]/20">
-                  <span className="text-lg font-medium text-[#5C4C49]">
+                <div className="flex justify-between pt-4 border-t border-coffee/20">
+                  <span className="text-lg font-medium text-coffee">
                     Total
                   </span>
-                  <span className="text-xl font-bold text-[#5C4C49]">
+                  <span className="text-xl font-bold text-coffee">
                     ${subtotal.toFixed(2)}
                   </span>
                 </div>
@@ -326,15 +326,15 @@ const CheckoutPage = () => {
               <motion.button
                 whileHover={{ scale: 1.02, backgroundColor: "#5C4C49" }}
                 whileTap={{ scale: 0.98 }}
-                className="w-full px-4 py-3 mt-6 font-medium text-white bg-[#5C4C49] rounded-md shadow-sm hover:bg-[#3a302e] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#5C4C49]"
+                className="w-full px-4 py-3 mt-6 font-medium text-tan bg-coffee rounded-md shadow-sm  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-coffee"
               >
                 Place Order
               </motion.button>
 
               <div className="flex justify-center mt-6 space-x-4">
-                <FaCcVisa className="text-4xl text-[#5C4C49]/70" />
-                <FaCcMastercard className="text-4xl text-[#5C4C49]/70" />
-                <FaCcApplePay className="text-4xl text-[#5C4C49]/70" />
+                <FaCcVisa className="text-4xl text-coffee/70" />
+                <FaCcMastercard className="text-4xl text-coffee/70" />
+                <FaCcApplePay className="text-4xl text-coffee/70" />
               </div>
             </motion.div>
           </div>
@@ -345,3 +345,5 @@ const CheckoutPage = () => {
 };
 
 export default CheckoutPage;
+
+

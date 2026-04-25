@@ -36,3 +36,5 @@ export const getWishlist = async () => {
   });
   return response.data;
 };
+
+

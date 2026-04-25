@@ -54,3 +54,5 @@ export const useAxiosLoader = () => {
 };
 
 export { axiosInstance, axiosInstanceFormData };
+
+

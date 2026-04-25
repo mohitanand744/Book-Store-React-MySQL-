@@ -12,7 +12,7 @@ import NoData from "../components/EmptyData/noData";
 import { useLocation, useNavigate } from "react-router-dom";
 import useDebounce from "../Hooks/useDebounce";
 
-const defaultFilters = {
+export const defaultFilters = {
   limit: 10,
   cursor: "",
   category: "",
@@ -127,39 +127,73 @@ const AllBooks = () => {
         setShowFilters(false);
       }}
     >
-      <div className="bg-[#fff5e4] py-4 px-6">
+      <div className="bg-sepia/50 backdrop-blur-md py-4 px-6">
         <div className="container flex items-center justify-between gap-5 md:px-4">
-          <h1 className="text-xl font-semibold text-start sm:text-center text-[#5c4c49] md:text-2xl uppercase">
+          <h1 className="text-xl font-semibold text-start sm:text-center text-coffee md:text-2xl uppercase">
             We have various types of books
           </h1>
 
           <div className="flex items-center gap-2">
             {appliedFiltersCount > 0 && (
-              <div className="flex items-center gap-2 px-3 py-1 rounded-lg bg-[#E8D9C5]/50 border border-[#5C4C49]/20 w-fit">
-                <span className="text-[#5C4C49] font-medium">Filters:</span>
+              <div className="flex items-center gap-2 px-3 py-1 rounded-lg bg-tan/50 border border-coffee/20 w-fit">
+                <span className="text-coffee font-medium">Filters:</span>
 
-                <span className="px-2 py-0.5 text-xs font-semibold rounded-full bg-[#5C4C49] text-white">
+                <span className="px-2 py-0.5 text-xs font-semibold rounded-full bg-coffee text-tan">
                   {appliedFiltersCount}
                 </span>
 
-                <span className="bg-red-600/20 rounded-xl">
+                <span className="bg-red-heart/10 rounded-xl p-0.5">
                   <XCircleIcon
                     onClick={() => setFilters(defaultFilters)}
-                    className="bottom-0 right-0 w-5 h-5 text-red-600 transition-all duration-200 ease-linear cursor-pointer active:scale-75 hover:scale-105"
+                    className="bottom-0 right-0 w-5 h-5 text-red-heart transition-all duration-200 ease-linear cursor-pointer active:scale-75 hover:scale-105"
                   />
                 </span>
               </div>
             )}
-            <motion.img
+            <motion.button
               onClick={(e) => {
                 e.stopPropagation();
                 setShowFilters(!showFilters);
               }}
-              whileTap={{ scale: 1.2 }}
-              className="w-10 cursor-pointer"
-              src={`/images/${showFilters ? "close" : "filter"}.png`}
-              alt=""
-            />
+              whileTap={{ scale: 0.9 }}
+              className="w-11 h-11 flex items-center justify-center rounded-2xl bg-tan/10 border border-tan/20 text-coffee shadow-sm hover:bg-tan/20 transition-all duration-300"
+            >
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <AnimatePresence mode="wait">
+                  {showFilters ? (
+                    <motion.path
+                      key="close"
+                      initial={{ pathLength: 0, opacity: 0 }}
+                      animate={{ pathLength: 1, opacity: 1 }}
+                      exit={{ pathLength: 0, opacity: 0 }}
+                      d="M6 18L18 6M6 6l12 12"
+                      stroke="currentColor"
+                      strokeWidth="2.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  ) : (
+                    <motion.path
+                      key="filter"
+                      initial={{ pathLength: 0, opacity: 0 }}
+                      animate={{ pathLength: 1, opacity: 1 }}
+                      exit={{ pathLength: 0, opacity: 0 }}
+                      d="M3 6H21M6 12H18M10 18H14"
+                      stroke="currentColor"
+                      strokeWidth="2.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  )}
+                </AnimatePresence>
+              </svg>
+            </motion.button>
           </div>
         </div>
       </div>
@@ -233,7 +267,7 @@ const AllBooks = () => {
             animate={{ x: 0, scale: 1 }}
             exit={{ x: 300, scale: 0 }}
             transition={{ type: "spring", stiffness: 300, damping: 40 }}
-            className="fixed top-[3.6rem] right-[1.6rem] z-[9999]"
+            className="fixed top-[7rem] right-[1.6rem] z-[9999]"
           >
             <BookListingFilter
               filters={filters}
@@ -249,3 +283,5 @@ const AllBooks = () => {
 };
 
 export default AllBooks;
+
+

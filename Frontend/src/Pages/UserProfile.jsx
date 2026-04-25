@@ -39,6 +39,7 @@ import { Navigation, Autoplay, FreeMode } from "swiper/modules";
 import "swiper/css";
 import SwiperNavButtons from "../components/Buttons/SwiperNavButtons";
 import { EllipsisHorizontalIcon } from "@heroicons/react/24/outline";
+import SectionHeading from "../components/Headings/SectionHeading";
 
 
 
@@ -100,9 +101,11 @@ const UserProfile = () => {
       }
     } catch (error) {
       console.error("Upload error:", error);
-      toast.error(
-        error.response?.data?.message || "Failed to upload profile picture",
-      );
+      if (error.response?.status !== 401) {
+        toast.error(
+          error.response?.data?.message || "Failed to upload profile picture",
+        );
+      }
       setPreview(user.profilePic);
       setIsUploading(false);
     }
@@ -178,7 +181,7 @@ const UserProfile = () => {
   console.log("UserData", userData);
 
   return (
-    <div className="min-h-screen relative bg-[#F5F1ED] px-4 py-8">
+    <div className="min-h-screen relative  px-4 py-8">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -190,7 +193,7 @@ const UserProfile = () => {
           <motion.h1
             initial={{ x: -20 }}
             animate={{ x: 0 }}
-            className="text-3xl font-bold text-[#5C4C49] mb-4 md:mb-0"
+            className="text-3xl font-bold text-coffee mb-4 md:mb-0"
           >
             My Profile
           </motion.h1>
@@ -200,7 +203,7 @@ const UserProfile = () => {
               whileTap={{ scale: 0.95 }}
               onClick={navigateToOrders}
             >
-              <Button className="flex items-center gap-1 text-nowrap px-4 py-2 bg-[#5C4C49] text-[#E8D9C5] rounded-lg shadow-md">
+              <Button className="flex items-center gap-1 text-nowrap px-4 py-2 bg-coffee  rounded-lg shadow-md">
                 <BagSvg />
                 My Orders
               </Button>
@@ -210,7 +213,7 @@ const UserProfile = () => {
               whileTap={{ scale: 0.95 }}
               onClick={navigateToWishlist}
             >
-              <Button className="flex items-center gap-1 text-nowrap px-4 py-2 bg-[#D3BD9D] text-[#5C4C49] rounded-lg shadow-md">
+              <Button className="flex items-center gap-1 text-nowrap px-4 py-2 bg-coffee text-tan border border-tan/20 rounded-lg shadow-md">
                 <HearthSvg />
                 My Wishlist
               </Button>
@@ -225,7 +228,7 @@ const UserProfile = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.2 }}
-            className="w-full lg:w-1/3 bg-gradient-to-br from-[#E8D9C5] to-[#D3BD9D] rounded-2xl shadow-xl overflow-hidden h-fit border border-[#5C4C49]/10"
+            className="w-full lg:w-1/3 bg-coffee text-tan rounded-2xl shadow-xl overflow-hidden h-fit border border-tan/20"
           >
             {/* Profile Header with Decorative Elements */}
             <DecorativeHeader />
@@ -235,7 +238,7 @@ const UserProfile = () => {
                 initial={{ scale: 0.95 }}
                 animate={{ scale: 1 }}
                 transition={{ type: "spring", stiffness: 100 }}
-                className="relative w-32 h-32 rounded-full bg-[#5C4C49]"
+                className="relative w-32 h-32 rounded-full bg-coffee"
               >
                 <img
                   src={preview || "/images/loading.gif"}
@@ -246,7 +249,7 @@ const UserProfile = () => {
 
                 <img
                   onClick={() => fileInputRef.current.click()}
-                  className="absolute bottom-0 bg-[#FFE6C1] border-2 border-[#5C4C49] p-[0.7px] z-30 w-8 h-8 rounded-full cursor-pointer duration-200 active:scale-75 top-[5rem]  -right-[0.5px]"
+                  className="absolute bottom-0 bg-cream border-2 border-coffee p-[0.7px] z-30 w-8 h-8 rounded-full cursor-pointer duration-200 active:scale-75 top-[5rem]  -right-[0.5px]"
                   src="/images/camera.png"
                   alt="Upload"
                 />
@@ -274,10 +277,10 @@ const UserProfile = () => {
                 transition={{ delay: 0.2 }}
                 className="mb-6 text-center"
               >
-                <h2 className="text-2xl capitalize  font-bold text-[#5C4C49]">
+                <h2 className="text-2xl capitalize  font-bold text-tan">
                   {user?.name}
                 </h2>
-                <p className="text-[#5C4C49]/80 flex items-center justify-center gap-1 mt-1">
+                <p className="text-tan/80 flex items-center justify-center gap-1 mt-1">
                   <CalendarSvg />
                   <b>Member since</b> {user?.joinDate}
                 </p>
@@ -286,14 +289,14 @@ const UserProfile = () => {
               {/* Profile Details */}
               <div className="space-y-5">
                 <ModernProfileDetail
-                  icon={<MdOutlineMail className="text-[#5C4C49] text-xl" />}
+                  icon={<MdOutlineMail className="text-tan text-xl" />}
                   label="Email"
                   value={user?.email}
                   delay={0.4}
                   isCopyable
                 />
                 <ModernProfileDetail
-                  icon={<FiPhone className="text-[#5C4C49] text-lg" />}
+                  icon={<FiPhone className="text-tan text-lg" />}
                   label="Phone"
                   value={user?.phone || "Not provided"}
                   notProvided={!user?.phone}
@@ -301,7 +304,7 @@ const UserProfile = () => {
                   isCopyable
                 />
                 <ModernProfileDetail
-                  icon={<FaRegAddressCard className="text-[#5C4C49] text-lg" />}
+                  icon={<FaRegAddressCard className="text-tan text-lg" />}
                   label="Address"
                   value={defaultAddress}
                   notProvided={!user?.default_address?.address}
@@ -309,7 +312,7 @@ const UserProfile = () => {
                   delay={0.6}
                 />
                 <ModernProfileDetail
-                  icon={<FaRegHeart className="text-[#5C4C49] text-lg" />}
+                  icon={<FaRegHeart className="text-tan text-lg" />}
                   label="Favorite Genres"
                   value={
                     user?.favoriteGenres?.map((genre) => genre?.name) ||
@@ -329,7 +332,7 @@ const UserProfile = () => {
                 >
                   {/* Edit Button */}
                   <Button
-                    className="flex relative items-center w-full justify-center px-4 text-nowrap py-2 bg-[#5C4C49] text-[#E8D9C5] rounded-lg shadow-md"
+                    className="flex relative items-center w-full justify-center px-4 text-nowrap py-2 bg-coffee  rounded-lg shadow-md"
                     type="button"
                     onClick={() => setShowProfileUpdateModal(true)}
                   >
@@ -337,7 +340,7 @@ const UserProfile = () => {
                       ? "Update Profile"
                       : "Complete Your Profile"}
                     {!user?.isComplete && (
-                      <span className="absolute top-[-10px] left-[-10px] w-8 h-8 bg-[#5C4C49] border-2 border-orange-500 rounded-full flex items-center justify-center text-xs">
+                      <span className="absolute top-[-10px] left-[-10px] w-8 h-8 bg-coffee border-2 border-orange-500 rounded-full flex items-center justify-center text-xs">
                         {user?.percentage}%
                       </span>
                     )}
@@ -353,7 +356,7 @@ const UserProfile = () => {
                 >
                   <Button
                     onClick={handleLogout}
-                    className="flex items-center gap-1 w-full justify-center px-4 text-nowrap py-2 hover:bg-[#7e362a]/90 bg-[#7e362a] text-[#E8D9C5] rounded-lg shadow-md"
+                    className="flex items-center gap-1 w-full justify-center px-4 text-nowrap py-2    rounded-lg shadow-md"
                     type="button"
                   >
                     <RiLogoutCircleLine />
@@ -364,7 +367,7 @@ const UserProfile = () => {
             </div>
           </motion.div>
           {/* Right Column */}
-          <div className="flex-1 space-y-6">
+          <div className="flex-1 h-full space-y-6">
             {/* Stats Cards */}
             <motion.div
               initial={{ opacity: 0 }}
@@ -375,36 +378,36 @@ const UserProfile = () => {
               <StatCard
                 title="Orders"
                 value={user?.orders}
-                color="bg-[#5C4C49]"
-                text="#E8D9C5"
+                color="bg-coffee"
+                text=""
                 delay={0.2}
-                icon={<BagSvg />}
+                icon={<BagSvg className="" />}
                 onClick={navigateToOrders}
               />
               <StatCard
                 title="Wishlist"
                 value={user?.wishlist}
-                color="bg-[#D3BD9D]"
-                text="#5C4C49"
+                color="bg-coffee"
+                text=""
                 delay={0.2}
-                icon={<HearthSvg />}
+                icon={<HearthSvg className="" />}
                 onClick={navigateToWishlist}
               />
             </motion.div>
 
             {/* Desktop Tabs Navigation */}
-            <div className="hidden md:flex border-b border-[#D3BD9D]">
+            <div className="hidden md:flex border-b border-tan">
               <motion.button
                 onClick={() => setActiveTab("activity")}
                 className={`px-4 py-2 text-nowrap text-[16px] relative ${activeTab === "activity"
-                    ? "text-[#5C4C49] opacity-100 font-bold"
-                    : "text-[#5C4C49] opacity-70 font-medium"
+                  ? "text-coffee opacity-100 font-bold"
+                  : "text-coffee opacity-70 font-medium"
                   }`}
               >
                 Recent Activity
                 {activeTab === "activity" && (
                   <motion.div
-                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#5C4C49]"
+                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-coffee"
                     layoutId="underline"
                   />
                 )}
@@ -413,14 +416,14 @@ const UserProfile = () => {
               <motion.button
                 onClick={() => setActiveTab("orders")}
                 className={`px-4 py-2 text-nowrap text-[16px] relative ${activeTab === "orders"
-                    ? "text-[#5C4C49] opacity-100 font-bold"
-                    : "text-[#5C4C49] opacity-70 font-medium"
+                  ? "text-coffee opacity-100 font-bold"
+                  : "text-coffee opacity-70 font-medium"
                   }`}
               >
                 Recent Orders
                 {activeTab === "orders" && (
                   <motion.div
-                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#5C4C49]"
+                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-coffee"
                     layoutId="underline"
                   />
                 )}
@@ -429,14 +432,14 @@ const UserProfile = () => {
               <motion.button
                 onClick={() => setActiveTab("wishlist")}
                 className={`px-4 py-2 text-nowrap text-[16px] relative ${activeTab === "wishlist"
-                    ? "text-[#5C4C49] opacity-100 font-bold"
-                    : "text-[#5C4C49] opacity-70 font-medium"
+                  ? "text-coffee opacity-100 font-bold"
+                  : "text-coffee opacity-70 font-medium"
                   }`}
               >
                 Wishlist Preview
                 {activeTab === "wishlist" && (
                   <motion.div
-                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#5C4C49]"
+                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-coffee"
                     layoutId="underline"
                   />
                 )}
@@ -444,12 +447,12 @@ const UserProfile = () => {
             </div>
 
             {/* Mobile Bottom Navigation */}
-            <div className="bg-white rounded-3xl border-t border-[#D3BD9D] md:hidden flex justify-around py-2 z-50">
+            <div className="bg-coffee text-tan rounded-3xl border border-tan/20 md:hidden flex justify-around py-2 z-50">
               <motion.button
                 onClick={() => setActiveTab("activity")}
                 className={`flex flex-col items-center p-2 w-full relative ${activeTab === "activity"
-                    ? "text-[#5C4C49]"
-                    : "text-[#5C4C49] opacity-70"
+                  ? "text-tan"
+                  : "text-tan opacity-70"
                   }`}
                 whileTap={{ scale: 0.95 }}
               >
@@ -457,7 +460,7 @@ const UserProfile = () => {
                 <span className="mt-1 text-xs">Activity</span>
                 {activeTab === "activity" && (
                   <motion.div
-                    className="absolute top-0 left-6 right-6 h-0.5 bg-[#5C4C49]"
+                    className="absolute top-0 left-6 right-6 h-0.5 bg-tan"
                     layoutId="mobileUnderline"
                   />
                 )}
@@ -466,8 +469,8 @@ const UserProfile = () => {
               <motion.button
                 onClick={() => setActiveTab("orders")}
                 className={`flex flex-col items-center p-2 w-full relative ${activeTab === "orders"
-                    ? "text-[#5C4C49]"
-                    : "text-[#5C4C49] opacity-70"
+                  ? "text-tan"
+                  : "text-tan opacity-70"
                   }`}
                 whileTap={{ scale: 0.95 }}
               >
@@ -475,7 +478,7 @@ const UserProfile = () => {
                 <span className="mt-1 text-xs">Orders</span>
                 {activeTab === "orders" && (
                   <motion.div
-                    className="absolute top-0 left-0 right-0 h-0.5 bg-[#5C4C49]"
+                    className="absolute top-0 left-0 right-0 h-0.5 bg-tan"
                     layoutId="mobileUnderline"
                   />
                 )}
@@ -484,8 +487,8 @@ const UserProfile = () => {
               <motion.button
                 onClick={() => setActiveTab("wishlist")}
                 className={`flex flex-col items-center p-2 w-full relative ${activeTab === "wishlist"
-                    ? "text-[#5C4C49]"
-                    : "text-[#5C4C49] opacity-70"
+                  ? "text-tan"
+                  : "text-tan opacity-70"
                   }`}
                 whileTap={{ scale: 0.95 }}
               >
@@ -493,7 +496,7 @@ const UserProfile = () => {
                 <span className="mt-1 text-xs">Wishlist</span>
                 {activeTab === "wishlist" && (
                   <motion.div
-                    className="absolute top-0 left-6 right-6 h-0.5 bg-[#5C4C49]"
+                    className="absolute top-0 left-6 right-6 h-0.5 bg-tan"
                     layoutId="mobileUnderline"
                   />
                 )}
@@ -505,7 +508,7 @@ const UserProfile = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.3 }}
-              className="p-6 bg-white rounded-2xl"
+              className="p-6 bg-coffee text-tan h-full rounded-2xl border border-tan/10"
             >
               {activeTab === "activity" && (
                 <>
@@ -600,17 +603,20 @@ const UserProfile = () => {
         </div>
       </motion.div>
 
-      {/* Related Books Section */}
       <motion.div
         initial={{ y: 20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 1.1 }}
-        className="container mt-16"
+        className="container mt-20 border-t border-tan/10 pt-16"
       >
-        <h2 className="text-2xl font-bold text-[#5C4C49] my-6">
-          {/*  More by {book.author.author_name} */}
-          Related Books
-        </h2>
+        <div className="mb-2">
+          <SectionHeading 
+            align="left"
+            subtitle="Handpicked titles based on your recent activity"
+          >
+            Recommended for You
+          </SectionHeading>
+        </div>
         <div className="">
           <ScrollBooks autoScroll={false} books={uniqueBooks?.slice(0, 10)} />
         </div>
@@ -636,27 +642,27 @@ const UserProfile = () => {
       <Modal isOpen={showLogoutModal} onClose={() => setShowLogoutModal(false)}>
         <div className="text-center">
           <div className="flex justify-center mb-4">
-            <div className="bg-[#7e362a]/10 p-4 rounded-full">
-              <RiLogoutCircleLine className="text-4xl text-[#7e362a]" />
+            <div className=" p-4 rounded-full">
+              <RiLogoutCircleLine className="text-4xl " />
             </div>
           </div>
-          <h2 className="text-2xl font-bold text-[#5C4C49] mb-2">
+          <h2 className="text-2xl font-bold text-tan mb-2">
             Confirm Logout
           </h2>
-          <p className="text-[#5C4C49]/80 mb-8">
+          <p className="text-tan/80 mb-8">
             Are you sure you want to log out of your account?
           </p>
           <div className="flex gap-4">
             <Button
               onClick={() => setShowLogoutModal(false)}
-              className="flex-1 px-4 py-2 border-2 border-[#5C4C49] text-[#5C4C49] rounded-lg font-medium hover:bg-[#5C4C49]/5 transition-colors"
+              className="flex-1 px-4 py-2 border-2 border-tan text-tan rounded-lg font-medium hover:bg-tan/5 transition-colors"
               type="button"
             >
               Cancel
             </Button>
             <Button
               onClick={handleConfirmLogout}
-              className="flex-1 px-4 py-2 bg-[#7e362a] text-[#E8D9C5] rounded-lg font-medium hover:bg-[#7e362a]/90 transition-colors shadow-md"
+              className="flex-1 px-4 py-2   rounded-lg font-medium  transition-colors shadow-md"
               type="button"
             >
               Logout
@@ -674,14 +680,14 @@ const StatCard = ({ title, value, color, delay, icon, text, onClick }) => (
     animate={{ opacity: 1, y: 0 }}
     transition={{ delay }}
     onClick={onClick}
-    className={`${color} text-[${text}] rounded-xl shadow-md p-6 cursor-pointer transition-all duration-200 hover:shadow-lg`}
+    className={`${color} text-tan rounded-xl shadow-md p-6 cursor-pointer transition-all duration-200 hover:shadow-lg`}
   >
     <div className="flex items-start justify-between">
       <div>
         <p className="text-lg font-medium">{title}</p>
         <p className="text-3xl font-bold">{value}</p>
       </div>
-      <div className="flex items-center justify-center w-10 h-10 bg-white rounded-full bg-opacity-30">
+      <div className="flex items-center justify-center w-10 h-10 text-tan rounded-full bg-tan/10">
         {icon}
       </div>
     </div>
@@ -701,7 +707,7 @@ const ActivityItem = ({
     animate={{ opacity: 1, y: 0 }}
     transition={{ delay, type: "spring", stiffness: 300 }}
     whileHover={{ y: -3, boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1)" }}
-    className="bg-white rounded-xl shadow-md overflow-hidden border border-[#E8D9C5] transition-all duration-200 hover:shadow-lg"
+    className="bg-coffee text-tan rounded-xl shadow-md overflow-hidden border border-tan/20 transition-all duration-200 hover:shadow-lg"
   >
     <div className="flex flex-col sm:flex-row">
       {/* Product Image */}
@@ -717,10 +723,10 @@ const ActivityItem = ({
         {status && (
           <span
             className={`absolute top-2 right-2 px-2 py-1 rounded-full text-xs font-medium ${status === "Delivered"
-                ? "bg-green-100 text-green-800"
-                : status === "Shipped"
-                  ? "bg-blue-100 text-blue-800"
-                  : "bg-yellow-100 text-yellow-800"
+              ? "bg-green-100 text-green-800"
+              : status === "Shipped"
+                ? "bg-blue-100 text-blue-800"
+                : "bg-yellow-100 text-yellow-800"
               }`}
           >
             {status}
@@ -731,11 +737,11 @@ const ActivityItem = ({
       {/* Content */}
       <div className="flex flex-col p-4 sm:w-3/4">
         <div className="flex items-start justify-between mb-2">
-          <h4 className="text-lg font-semibold text-[#5C4C49]">{title}</h4>
-          <span className="text-sm text-[#5C4C49] opacity-70">{date}</span>
+          <h4 className="text-lg font-semibold text-tan">{title}</h4>
+          <span className="text-sm text-tan opacity-70">{date}</span>
         </div>
 
-        <p className="text-[#5C4C49] opacity-90 mb-4 line-clamp-2">
+        <p className="text-tan opacity-90 mb-4 line-clamp-2">
           {description}
         </p>
 
@@ -747,7 +753,7 @@ const ActivityItem = ({
           >
             <div
               type="button"
-              className=" bg-[#5C4C49] w-10 h-10 text-[#E8D9C5] rounded-[4rem] font-medium flex justify-center items-center"
+              className=" bg-coffee w-10 h-10  rounded-[4rem] font-medium flex justify-center items-center"
             >
               <EyesSvg />
             </div>
@@ -775,13 +781,13 @@ const ModernProfileDetail = ({
       initial={{ opacity: 0, x: -10 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ delay }}
-      className="flex items-start gap-3 p-3 bg-white/50 rounded-lg backdrop-blur-sm border border-[#5C4C49]/10"
+      className="flex items-start gap-3 p-3 bg-tan/10 rounded-lg backdrop-blur-sm border border-tan/20"
     >
-      <span className="text-xl text-[#5C4C49] flex-shrink-0">{icon}</span>
+      <span className="text-xl text-tan flex-shrink-0">{icon}</span>
 
       <div className="flex-1 min-w-0">
         <div className="flex items-center justify-between w-full">
-          <p className="text-xs font-medium text-[#5C4C49]/70 uppercase tracking-wider">
+          <p className="text-xs font-medium text-tan/70 uppercase tracking-wider">
             {label}
           </p>
           {Array.isArray(value) && (
@@ -819,12 +825,12 @@ const ModernProfileDetail = ({
                     rounded-full
                     text-sm
                     font-semibold
-                    text-[#E8D9C5]
+                    
                     bg-gradient-to-r
-                    from-[#5C4C49]/80
-                    to-[#5C4C49]/60
+                    from-coffee/80
+                    to-coffee/60
                     shadow-md
-                    whitespace-nowrap"
+                    tanspace-nowrap"
                         >
                           {item}
                         </span>
@@ -832,12 +838,12 @@ const ModernProfileDetail = ({
                     ))}
                   </Swiper>
                 ) : (
-                  <span className="text-[#d4b17d]">Not Provided</span>
+                  <span className="">Not Provided</span>
                 )}
               </div>
             ) : (
               <p
-                className={`${notProvided ? "text-[#d4b17d]" : "text-[#5C4C49]"} text-sm font-semibold`}
+                className={`${notProvided ? "" : "text-tan"} text-sm font-semibold`}
               >
                 {value}
               </p>
@@ -857,7 +863,7 @@ const ModernProfileDetail = ({
                 navigator.clipboard.writeText(value);
                 toast.success("Copied");
               }}
-              className="text-[#e8d9c5] w-[32px] h-[32px] flex items-center justify-center rounded-full bg-[#5C4C49]"
+              className=" w-[32px] h-[32px] flex items-center justify-center rounded-full bg-coffee"
             >
               <CopyIcon />
             </motion.button>
@@ -867,7 +873,7 @@ const ModernProfileDetail = ({
           {label === "Address" && (
             <div
               onClick={() => setShowAddressModal(true)}
-              className="text-[#e8d9c5] w-[32px] cursor-pointer h-[32px] flex items-center justify-center rounded-full bg-[#5C4C49]"
+              className=" w-[32px] cursor-pointer h-[32px] flex items-center justify-center rounded-full bg-coffee"
             >
               <EllipsisHorizontalIcon className="w-6 h-6" />
             </div>
@@ -877,3 +883,5 @@ const ModernProfileDetail = ({
     </motion.div>
   );
 };
+
+

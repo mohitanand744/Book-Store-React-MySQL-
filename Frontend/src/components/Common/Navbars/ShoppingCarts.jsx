@@ -82,28 +82,28 @@ const ShoppingCart = ({ isCartOpen, setIsCartOpen }) => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50"
+            className="fixed inset-0  z-[9999999]"
             onClick={toggleCart}
           >
             {/* Backdrop */}
-            <div className="absolute inset-0 bg-black/40" />
+            <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
 
             {/* Panel Wrapper */}
-            <div className="absolute inset-y-0 right-0 flex max-w-full">
+            <div className="absolute  inset-y-0 right-0 flex max-w-full">
               <motion.div
                 initial={{ x: "100%" }}
                 animate={{ x: 0 }}
                 exit={{ x: "100%" }}
                 transition={{ type: "tween", ease: "easeInOut" }}
-                className="relative w-screen max-w-md"
+                className="relative h-full w-screen max-w-md"
                 onClick={(e) => e.stopPropagation()}
               >
-                <div className="flex flex-col h-full bg-white bg-[url('https://images.rawpixel.com/image_800/czNmcy1wcml2YXRlL3Jhd3BpeGVsX2ltYWdlcy93ZWJzaXRlX2NvbnRlbnQvbHIvcm00MjgtMDAxOWIuanBn.jpg')] bg-cover bg-top shadow-xl">
+                <div className="flex flex-col rounded-l-[4rem] h-full bg-coffee text-tan border-l border-tan shadow-xl">
                   {/* Header + Items */}
                   <div className="flex-1 pt-6 pb-2 pl-4 pr-2 overflow-y-auto sm:px-6">
                     {/* Header */}
-                    <div className="flex h-[2.5rem] bg-[#F8F5F0] border-r-2 border-red-600 px-3 rounded-3xl items-center justify-between">
-                      <h2 className="text-lg font-medium text-gray-900">
+                    <div className="flex h-[2.5rem] bg-sepia  border-r-2 border-tan px-3 rounded-3xl items-center justify-between">
+                      <h2 className="text-lg font-medium text-tan">
                         Shopping Cart
                       </h2>
                       <div className="flex items-center gap-4">
@@ -112,19 +112,18 @@ const ShoppingCart = ({ isCartOpen, setIsCartOpen }) => {
     flex items-center justify-center
     min-w-[22px] h-[22px] px-1.5
     text-[11px] font-bold
-    text-white
-    bg-gradient-to-tr from-[#5C4C49] to-[#D3BD9D]
+    text-tan
+    bg-gradient-to-tr from-coffee to-sepia
     rounded-full
     shadow-md
-    ring-2 ring-white
-  "
-                        >
+    ring-2 ring-tan
+  ">
                           {totalItems}
                         </p>
 
                         <button
                           onClick={toggleCart}
-                          className="flex items-center justify-center gap-4 h-10 text-red-700 rounded-full w-7 hover:text-gray-500"
+                          className="flex items-center justify-center gap-4 h-10 text-tan rounded-full w-7 hover:text-cream"
                           aria-label="Close cart"
                         >
                           <FaArrowRightLong size={18} />
@@ -162,14 +161,14 @@ const ShoppingCart = ({ isCartOpen, setIsCartOpen }) => {
                     <motion.div
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
-                      className="px-4 py-6 border-t rounded-t-3xl bg-[#F8F5F0] border-gray-200 sm:px-6"
+                      className="px-4 py-6 border-t  rounded-t-3xl  border-cream sm:px-6"
                     >
-                      <div className="flex justify-between text-base font-medium text-gray-900">
+                      <div className="flex justify-between text-base font-medium text-tan">
                         <p>Subtotal</p>
                         <p>${subtotal.toFixed(2)}</p>
                       </div>
 
-                      <p className="mt-1 text-sm text-gray-500">
+                      <p className="mt-1 text-sm text-tan/70">
                         Shipping and taxes calculated at checkout.
                       </p>
 
@@ -192,13 +191,13 @@ const ShoppingCart = ({ isCartOpen, setIsCartOpen }) => {
                         </motion.div>
                       </div>
 
-                      <div className="flex justify-center mt-6 text-sm text-gray-500">
+                      <div className="flex justify-center mt-6 text-sm text-tan/70">
                         <p>
                           or{" "}
                           <button
                             type="button"
                             onClick={toggleCart}
-                            className="font-medium text-[#5C4C49] hover:text-indigo-500"
+                            className="font-medium text-tan hover:text-tan/80"
                           >
                             Continue Shopping →
                           </button>
@@ -217,3 +216,5 @@ const ShoppingCart = ({ isCartOpen, setIsCartOpen }) => {
 };
 
 export default ShoppingCart;
+
+

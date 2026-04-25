@@ -11,8 +11,8 @@ const BackButton = ({ label = "Back", to = -1, className = "" }) => {
         className="
   group inline-flex items-center gap-2
   rounded-full
-  bg-gradient-to-r from-[#5C4C49] to-[#D3BD9D]
-  px-5 py-2.5 text-sm font-semibold text-white
+  bg-gradient-to-r from-coffee to-sepia
+  px-5 py-2.5 text-sm font-semibold text-tan
   shadow-md transition-all duration-200
   hover:shadow-lg hover:brightness-110
   active:scale-95
@@ -26,3 +26,5 @@ const BackButton = ({ label = "Back", to = -1, className = "" }) => {
 };
 
 export default BackButton;
+
+

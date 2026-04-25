@@ -17,18 +17,18 @@ const Radio = (
             id={id}
             checked={checked}
             onChange={onChange}
-            className={`w-4 h-4 md:w-5 md:h-5 border-2 border-[#cab492] rounded-full appearance-none flex justify-center items-center transition-all duration-200 checked:bg-[#D3BD9D] ${className}`}
+            className={`w-4 h-4 md:w-5 md:h-5 border-2 border-tan  rounded-full appearance-none flex justify-center items-center transition-all duration-200  ${className}`}
             {...props}
           />
           {checked && (
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[11px] h-[11px] bg-white rounded-full">
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[6px] h-[6px] bg-[#D3BD9D] rounded-full"></div>
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[11px] h-[11px] bg-tan text-sepia rounded-full">
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[6px] h-[6px] bg-tan rounded-full"></div>
             </div>
           )}
         </div>
         <label
           htmlFor={id}
-          className="ml-3 text-sm font-semibold text-[#5C4C49] cursor-pointer group-hover:text-[#8a7053]"
+          className="ml-3 text-sm font-semibold text-tan cursor-pointer "
         >
           {label}
         </label>
@@ -40,3 +40,5 @@ const Radio = (
 };
 
 export default React.forwardRef(Radio);
+
+

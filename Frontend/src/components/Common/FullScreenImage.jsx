@@ -20,7 +20,7 @@ const FullScreenImageModal = () => {
 
           {/* Close Button */}
           <motion.button
-            className="absolute top-5 right-5 p-2 text-white/70 hover:text-white bg-white/10 hover:bg-white/20 rounded-full z-[10000]"
+            className="absolute top-5 right-5 p-2 text-tan/70 hover:text-tan bg-tan/10 hover:bg-tan/20 rounded-full z-[10000]"
             onClick={closePreview}
             initial={{ opacity: 0, scale: 0.5 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -49,3 +49,5 @@ const FullScreenImageModal = () => {
 };
 
 export default FullScreenImageModal;
+
+

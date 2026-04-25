@@ -26,3 +26,5 @@ export const updateProfile = async (data) => {
   });
   return response.data;
 };
+
+

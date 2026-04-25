@@ -16,12 +16,12 @@ const Checkbox = (
           id={id}
           checked={checked}
           onChange={onChange}
-          className={`w-4 h-4 border-2 md:w-5 md:h-5 bg-gray-300 rounded-md appearance-none checked:after:content-['✓'] checked:after:text-white flex justify-center items-center checked:bg-[#D3BD9D] ${className}`}
+          className={`w-4 h-4 border-2 md:w-5 md:h-5 bg-tan/70 border-coffee rounded-md appearance-none checked:after:content-['✓'] checked:after:text-sepia  flex justify-center items-center checked:bg-cream ${className}`}
           {...props}
         />
         <label
           htmlFor={id}
-          className="ml-2 text-sm font-semibold text-gray-700 cursor-pointer"
+          className="ml-2 text-sm font-semibold text-tan cursor-pointer"
         >
           {label}
         </label>
@@ -33,3 +33,5 @@ const Checkbox = (
 };
 
 export default React.forwardRef(Checkbox);
+
+

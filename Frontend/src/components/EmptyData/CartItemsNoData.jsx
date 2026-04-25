@@ -25,7 +25,7 @@ const CartItemsNoData = ({ toggleCart }) => {
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          className="w-16 h-16 text-[#D3BD9D]"
+          className="w-16 h-16 text-tan"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -63,7 +63,7 @@ const CartItemsNoData = ({ toggleCart }) => {
           <button
             type="button"
             onClick={toggleCart}
-            className="font-medium text-[#5C4C49] hover:text-indigo-500"
+            className="font-medium text-coffee hover:text-indigo-500"
           >
             Continue Shopping
             <span aria-hidden="true"> &rarr;</span>
@@ -75,3 +75,5 @@ const CartItemsNoData = ({ toggleCart }) => {
 };
 
 export default CartItemsNoData;
+
+

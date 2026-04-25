@@ -35,7 +35,7 @@ const ContactUs = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#F6F2EB] to-[#F6F2EB]">
+    <div className="min-h-screen bg-tan">
       {/* Hero Section */}
       <Banners titleFirst={"Get in"} titleSecond={"Touch"} />
 
@@ -51,8 +51,8 @@ const ContactUs = () => {
             viewport={{ once: true }}
             className="w-full lg:w-1/3"
           >
-            <h2 className="mb-8 text-3xl font-bold text-[#5E4C37]">Contact <span className="text-[#b1946a]">Information</span></h2>
-            <p className="mb-10 text-gray-600 leading-relaxed">
+            <h2 className="mb-8 text-3xl font-bold text-coffee">Contact <span className="text-sepia">Information</span></h2>
+            <p className="mb-10 text-sepia leading-relaxed">
               Whether you have a question about a specific book, need help with your order, or just want to share your latest literary discovery, our team is always ready to hear from you.
             </p>
 
@@ -60,16 +60,16 @@ const ContactUs = () => {
               {contactInfo.map((info, index) => (
                 <motion.div
                   whileHover={{ x: 10 }}
-                  className="flex items-start gap-4 p-4 transition-colors duration-300 bg-white shadow-sm rounded-xl hover:bg-[#F6F2EB]"
+                  className="flex items-start gap-4 p-4 transition-colors duration-300 bg-coffee text-tan shadow-sm rounded-xl border border-tan/10"
                   key={index}
                 >
-                  <div className="p-3 text-[#b1946a] bg-[#b1946a]/10 rounded-full">
+                  <div className="p-3 bg-tan/10 rounded-full text-tan">
                     {info.icon}
                   </div>
                   <div>
-                    <h4 className="text-lg font-bold text-gray-800">{info.title}</h4>
-                    <p className="font-medium text-[#b1946a]">{info.detail}</p>
-                    <p className="text-sm text-gray-500 mt-1">{info.description}</p>
+                    <h4 className="text-lg font-bold">{info.title}</h4>
+                    <p className="font-medium text-tan/90">{info.detail}</p>
+                    <p className="text-sm text-tan/60 mt-1">{info.description}</p>
                   </div>
                 </motion.div>
               ))}
@@ -84,19 +84,19 @@ const ContactUs = () => {
             viewport={{ once: true }}
             className="w-full lg:w-2/3"
           >
-            <div className="p-8 bg-white md:p-12 shadow-2xl rounded-3xl">
-              <h3 className="mb-6 text-2xl font-bold text-gray-800">Send us a Message</h3>
+            <div className="p-8 bg-coffee text-tan md:p-12 shadow-2xl rounded-[3rem] border border-tan/10">
+              <h3 className="mb-6 text-2xl font-bold">Send us a Message</h3>
               <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                   <Input
                     label="First Name"
                     placeholder="Enter your first name"
-                    className="bg-gray-50 hover:bg-white transition-colors duration-300"
+                    className="bg-tan/10 hover:bg-tan/20 transition-colors duration-300"
                   />
                   <Input
                     label="Last Name"
                     placeholder="Enter your last name"
-                    className="bg-gray-50 hover:bg-white transition-colors duration-300"
+                    className="bg-tan/10 hover:bg-tan/20 transition-colors duration-300"
                   />
                 </div>
 
@@ -104,7 +104,7 @@ const ContactUs = () => {
                   type="email"
                   label="Email Address"
                   placeholder="Enter your email address"
-                  className="bg-gray-50 hover:bg-white transition-colors duration-300"
+                  className="bg-tan/10 hover:bg-tan/20 transition-colors duration-300"
                 />
 
                 <Input
@@ -114,21 +114,21 @@ const ContactUs = () => {
                   options={subjectOptions}
                   selectedValue={subject}
                   onChange={setSubject}
-                  className="bg-gray-50 hover:bg-white transition-colors duration-300"
+                  className="bg-tan/10 hover:bg-tan/20 transition-colors duration-300"
                 />
 
                 <Input
                   as="textarea"
                   label="Message"
                   placeholder="Write your message here..."
-                  className="bg-gray-50 hover:bg-white transition-colors duration-300 resize-none h-32"
+                  className="bg-tan/10 hover:bg-tan/20 transition-colors duration-300 resize-none h-32"
                 />
 
                 {/* Submit Button */}
                 <motion.button
-                  whileHover={{ scale: 1.02, boxShadow: "0 10px 25px -5px #b1946a" }}
+                  whileHover={{ scale: 1.02, boxShadow: "0 10px 25px -5px #D3BD9D" }}
                   whileTap={{ scale: 0.98 }}
-                  className="flex items-center justify-center w-full gap-2 px-8 py-4 font-bold text-white transition-colors duration-300 bg-gradient-to-r from-[#5E4C37] to-[#b1946a] rounded-xl text-lg hover:from-[#4a3d2c] hover:to-[#9a805a]"
+                  className="flex items-center justify-center w-full gap-2 px-8 py-4 font-bold text-tan transition-colors duration-300 bg-gradient-to-r from-coffee to-sepia border border-tan/20 rounded-xl text-lg"
                 >
                   <FaPaperPlane />
                   Send Message
@@ -166,3 +166,4 @@ const ContactUs = () => {
 };
 
 export default ContactUs;
+
