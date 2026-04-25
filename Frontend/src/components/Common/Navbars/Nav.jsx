@@ -8,9 +8,9 @@ import Button from "../../Buttons/Button";
 import MobileMenu from "./MobileMenu";
 import useAuth from "../../../Hooks/useAuth";
 import { useUser } from "../../../store/Context/UserContext";
-import Spinner from "../../Loaders/Spinner";
 import { useImagePreview } from "../../../store/Context/ImagePreviewContext";
 import { NAV_LINKS } from "./NavLinksData";
+import BooksLoader from "../../Loaders/BooksLoader";
 
 const Navbar = ({ isCartOpen, setIsCartOpen }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -136,11 +136,11 @@ const Navbar = ({ isCartOpen, setIsCartOpen }) => {
             {isAuthenticated ? (
               <div className="">
                 <Link to="/nextChapter/user/profile">
-                  <div className="w-12 h-12 relative cursor-pointer active:scale-95 transition-all duration-300  border-[2px] border-tan shadow-lg shadow-tan/30 rounded-full overflow-hidden">
+                  <div className="w-12 h-12 relative cursor-pointer active:scale-95 bg-coffee transition-all duration-300  border-[2px] border-tan shadow-lg shadow-tan/30 rounded-full overflow-hidden">
                     <img
                       src={preview || "/images/loading.gif"}
                       alt="Profile"
-                      className="object-cover w-full h-full bg-tan text-sepia rounded-full"
+                      className="object-cover w-full h-full text-sepia rounded-full"
                       onClick={() => {
                         if (pathName === "nextChapteruserprofile") {
                           openPreview(preview, "Profile Image");
@@ -149,8 +149,8 @@ const Navbar = ({ isCartOpen, setIsCartOpen }) => {
                     />
 
                     {isUploading && (
-                      <div className="absolute inset-0 flex items-center justify-center rounded-full bg-black/40 backdrop-blur-sm">
-                        <Spinner size={16} />
+                      <div className="absolute bg-coffee/70 inset-0 flex items-center justify-center rounded-full ">
+                        <BooksLoader imgHeight="8" imgWidth="8" marginTop="0" />
                       </div>
                     )}
                   </div>

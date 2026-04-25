@@ -206,7 +206,7 @@ const Login = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen gap-3 p-4 bg-[url('/images/authBG.webp')] bg-center bg-no-repeat bg-cover">
+    <div className="flex items-center justify-center min-h-screen gap-3 p-4 bg-[url('/images/authBG.png')] bg-center bg-no-repeat bg-cover">
       <div className="flex gap-4">
         <motion.div
           initial={{ scale: 0, y: 20 }}
@@ -220,7 +220,7 @@ const Login = () => {
             className="overflow-hidden bg-coffee/65 backdrop-blur-xl shadow-2xl rounded-3xl p-3 border border-tan/20"
           >
             <div className="p-3">
-              <div className="mb-8 text-cream text-center">
+              <div className="mb-8 border bg-black/20 p-3 pt-1 rounded-2xl border-tan/20 text-cream text-center">
                 <motion.img
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
@@ -359,10 +359,10 @@ const Login = () => {
               >
                 <div className="relative">
                   <div className="absolute inset-0 flex items-center">
-                    <div className="w-full border-t "></div>
+                    <div className="w-full border-t border-tan/30 "></div>
                   </div>
                   <div className="relative flex justify-center text-sm">
-                    <span className="px-3 py-1 bg-tan/10 backdrop-blur-md text-cream/60 rounded-full border border-tan/10 font-semibold">
+                    <span className="px-3 py-1 bg-coffee/50 backdrop-blur-md text-cream/60 rounded-full border border-tan/10 font-semibold">
                       Or continue with
                     </span>
                   </div>
@@ -444,7 +444,7 @@ const Login = () => {
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               transition={{ delay: 1.1 }}
-              className="px-2 py-4 bg-cream/30 backdrop-blur-sm text-center rounded-xl"
+              className="px-2 py-4 bg-black/20 backdrop-blur-sm text-center text-tan rounded-xl"
             >
               <p className="text-[11px] ">
                 By creating an account, you agree to our{" "}
@@ -472,7 +472,7 @@ const Login = () => {
             transition={{ delay: 1.2 }}
             className="mt-4 text-center"
           >
-            <p className="text-xs bg-cream/20 px-3 py-1 rounded-full text-tan">
+            <p className="text-xs bg-coffee/75 px-3 py-1 rounded-full text-tan">
               <b>&copy; {new Date().getFullYear()} NextChapter.</b> All rights
               reserved.
             </p>

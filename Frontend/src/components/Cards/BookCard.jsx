@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { FaHeart } from "react-icons/fa";
+import { FaEye, FaHeart } from "react-icons/fa";
+import { HiOutlineEye } from "react-icons/hi2";
 import { MdOutlineAddShoppingCart } from "react-icons/md";
 import Ratings from "../RatingsReviews/Ratings";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -14,6 +15,7 @@ import { useEffect } from "react";
 import { useRef } from "react";
 import useAuth from "../../Hooks/useAuth";
 import FloatingReaction from "../UI/FloatingReaction";
+import Button from "../Buttons/Button";
 
 const BookCard = ({ book }) => {
   const navigate = useNavigate();
@@ -146,6 +148,23 @@ const BookCard = ({ book }) => {
               </span>
             )}
           </p>
+
+          <motion.div
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            className="mt-4"
+          >
+            <Button
+              onClick={(e) => {
+                e.stopPropagation();
+                navigate(`/nextChapter/author/${book?.author?.author_id}`);
+              }}
+              className="w-full flex items-center justify-center gap-2 group"
+            >
+              <HiOutlineEye className="text-base group-hover:scale-110 transition-transform duration-300" />
+              View Profile
+            </Button>
+          </motion.div>
         </div>
       </div>
       <div className="image w-[60%] md:w-[90%] mx-auto pt-8 h-[15rem]">

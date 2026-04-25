@@ -30,7 +30,7 @@ import NoData from "../components/EmptyData/noData";
 import AddressModal from "../components/Modal/AddressModal";
 import { uploadProfilePic as uploadProfilePicApi } from "../utils/apis/userApis";
 import { useUser } from "../store/Context/UserContext";
-import Spinner from "../components/Loaders/Spinner";
+import BooksLoader from "../components/Loaders/BooksLoader";
 import { useImagePreview } from "../store/Context/ImagePreviewContext";
 import ProfileUpdateModal from "../components/Modal/ProfileUpdateModal";
 import Modal from "../components/Modal/ModalContainer";
@@ -256,7 +256,11 @@ const UserProfile = () => {
 
                 {isUploading ? (
                   <div className="absolute inset-0 flex items-center justify-center rounded-full bg-black/40">
-                    <Spinner size={36} />
+                    <BooksLoader
+                      imgHeight="16"
+                      imgWidth="16"
+                      marginTop="0"
+                    />
                   </div>
                 ) : (
                   <input
@@ -356,7 +360,7 @@ const UserProfile = () => {
                 >
                   <Button
                     onClick={handleLogout}
-                    className="flex items-center gap-1 w-full justify-center px-4 text-nowrap py-2    rounded-lg shadow-md"
+                    className="flex items-center gap-1 w-full justify-center px-4 text-nowrap py-2 bg-red-error/15 hover:bg-red-error/20 rounded-lg shadow-md"
                     type="button"
                   >
                     <RiLogoutCircleLine />
@@ -662,7 +666,7 @@ const UserProfile = () => {
             </Button>
             <Button
               onClick={handleConfirmLogout}
-              className="flex-1 px-4 py-2   rounded-lg font-medium  transition-colors shadow-md"
+              className="flex-1 px-4 py-2 bg-red-error/15 hover:bg-red-error/20 rounded-lg font-medium  transition-colors shadow-md"
               type="button"
             >
               Logout

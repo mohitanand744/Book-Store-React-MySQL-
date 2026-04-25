@@ -14,6 +14,9 @@ const axiosInstance = axios.create({
   baseURL: BASE_URL,
   headers: {
     "Content-Type": "application/json",
+    "Cache-Control": "no-cache, no-store, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "0",
   },
 });
 
@@ -21,6 +24,9 @@ const axiosInstanceFormData = axios.create({
   baseURL: BASE_URL,
   headers: {
     "Content-Type": "multipart/form-data",
+    "Cache-Control": "no-cache, no-store, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "0",
   },
 });
 

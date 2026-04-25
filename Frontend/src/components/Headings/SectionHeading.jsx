@@ -43,7 +43,7 @@ const SectionHeading = ({ children, className = "", subtitle, align = "center" }
 
       {/* Subtitle / Ornament */}
       {subtitle ? (
-        <p className={`mt-3 text-sm md:text-base text-sepia/70 font-light tracking-[0.2em] uppercase italic ${isLeft ? "ml-16" : ""}`}>
+        <p className={`mt-1 text-sm md:text-base text-sepia font-light tracking-[0.2em] uppercase italic ${isLeft ? "ml-16" : ""}`}>
           {subtitle}
         </p>
       ) : (

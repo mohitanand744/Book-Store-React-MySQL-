@@ -95,7 +95,7 @@ const SignUp = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen gap-3 p-4 bg-[url('/images/authBG.webp')] bg-center bg-no-repeat bg-cover">
+    <div className="flex items-center justify-center min-h-screen gap-3 p-4 bg-[url('/images/authBG.png')] bg-center bg-no-repeat bg-cover">
       <div className="flex gap-4">
         <motion.div
           initial={{ scale: 0, y: 20 }}
@@ -109,7 +109,7 @@ const SignUp = () => {
             className="overflow-hidden bg-coffee/70 backdrop-blur-xl shadow-2xl p-3 rounded-3xl border border-tan/20"
           >
             <div className="p-3">
-              <div className="mb-8 text-cream text-center">
+              <div className="mb-8 border bg-black/20 p-3 pt-1 rounded-2xl border-tan/20 text-cream text-center">
                 <motion.img
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
@@ -396,10 +396,10 @@ const SignUp = () => {
               >
                 <div className="relative">
                   <div className="absolute inset-0 flex items-center">
-                    <div className="w-full border-t border-gray-600"></div>
+                    <div className="w-full border-t border-tan/30 "></div>
                   </div>
                   <div className="relative flex justify-center text-sm">
-                    <span className="px-3 py-1 bg-tan/10 backdrop-blur-md text-cream/60 rounded-full border border-tan/10 font-semibold">
+                    <span className="px-3 py-1 bg-coffee/50 backdrop-blur-md text-cream/60 rounded-full border border-tan/10 font-semibold">
                       Or sign up with
                     </span>
                   </div>
@@ -481,20 +481,20 @@ const SignUp = () => {
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               transition={{ delay: 1.1 }}
-              className="px-2 py-4 text-center backdrop-blur-sm rounded-xl text-cream/60"
+              className="px-2 py-4 bg-black/20 backdrop-blur-sm text-center text-tan rounded-xl"
             >
               <p className="text-[11px] ">
                 By creating an account, you agree to our{" "}
                 <a
                   href="#"
-                  className="font-medium transition-all text-[12px] duration-200 hover:text-cream"
+                  className="font-semibold transition-all text-[12px] duration-200   hover:scale-105"
                 >
                   Terms of Service
                 </a>{" "}
                 and{" "}
                 <a
                   href="#"
-                  className="font-medium transition-all text-[12px] duration-200 hover:text-cream"
+                  className="font-semibold transition-all text-[12px] duration-200   hover:scale-105"
                 >
                   Privacy Policy
                 </a>

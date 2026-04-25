@@ -19,6 +19,7 @@ const HomeBanner = () => {
           disableOnInteraction: false,
         }}
         loop={true}
+        spaceBetween={0}
         slidesPerView={1}
         navigation
         pagination={{ clickable: true }}
