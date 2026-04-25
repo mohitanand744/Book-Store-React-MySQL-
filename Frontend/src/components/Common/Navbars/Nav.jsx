@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 import MegaMenu from "./MegaMenu";
 import { HiOutlineShoppingCart } from "react-icons/hi2";
 import { IoIosArrowDown } from "react-icons/io";
@@ -50,6 +51,29 @@ const Navbar = ({ isCartOpen, setIsCartOpen }) => {
     }
   }, [userData]);
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.3,
+      },
+    },
+  };
+  const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: {
+        type: "spring",
+        stiffness: 300,
+        damping: 15,
+      },
+    },
+  };
+
   return (
     <nav
       className={`transition-all z-[999] duration-300 ${isFixed
@@ -73,11 +97,20 @@ const Navbar = ({ isCartOpen, setIsCartOpen }) => {
           </div>
 
           {/* Desktop Menu */}
-          <ul className="items-center hidden space-x-2 lg:flex">
+          <motion.ul
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+            className="items-center hidden space-x-2 lg:flex"
+          >
             {NAV_LINKS.map((link) => {
               if (link.type === "dropdown") {
                 return (
-                  <ul key={link.key} className="group">
+                  <motion.ul
+                    key={link.key}
+                    variants={itemVariants}
+                    className="group"
+                  >
                     <li
                       className={`px-5 py-2 flex gap-1 items-center text-[1.02rem] font-bold text-tan transition-all cursor-pointer hover:bg-tan/20 hover:text-cream duration-300 rounded-2xl `}
                     >
@@ -90,12 +123,16 @@ const Navbar = ({ isCartOpen, setIsCartOpen }) => {
                     <div className="absolute z-[999999] hidden lg:block opacity-0 scale-95 pointer-events-none origin-top transition-all duration-300 group-hover:opacity-100 group-hover:pointer-events-auto group-hover:translate-y-0 group-hover:scale-100 top-[3.7rem] inset-x-0 w-[80%] mx-auto drop-shadow-2xl">
                       <MegaMenu />
                     </div>
-                  </ul>
+                  </motion.ul>
                 );
               }
 
               return (
-                <ul key={link.key} className="relative">
+                <motion.ul
+                  key={link.key}
+                  variants={itemVariants}
+                  className="relative"
+                >
                   {link.hasTag && (
                     <span className="absolute z-10 transition-transform duration-300 pointer-events-none -top-[14px] -right-2 w-11 drop-shadow-md h-5 w-20 group-hover:rotate-12">
                       <img
@@ -116,10 +153,10 @@ const Navbar = ({ isCartOpen, setIsCartOpen }) => {
                       {link.name}
                     </Link>
                   </li>
-                </ul>
+                </motion.ul>
               );
             })}
-          </ul>
+          </motion.ul>
 
           <div className="flex items-center gap-4">
             <Search />
