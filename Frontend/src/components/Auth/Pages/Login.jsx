@@ -417,9 +417,9 @@ const Login = () => {
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
                 transition={{ delay: 1 }}
-                className="flex flex-col items-center gap-3 mt-6 text-center"
+                className="flex flex-col items-center mt-6 text-center"
               >
-                <p className="text-xs flex gap-1 items-center px-3 py-1 bg-tan/30 backdrop-blur-md rounded-[12px] text-cream/80">
+                <p className="text-xs flex gap-1 items-center px-3 py-1 rounded-[12px] text-cream/80">
                   Don't have an account?{" "}
                   <Link
                     to="/signup"
@@ -431,7 +431,7 @@ const Login = () => {
                 <div className="text-xs  px-3 rounded-[12px] ">
                   <Link
                     to="/nextChapter"
-                    className="flex items-center gap-1 text-nowrap bg-tan/30 backdrop-blur-md px-3 text-cream/80 py-1 rounded-xl font-medium transition-transform  "
+                    className="flex items-center gap-1 text-nowrap px-3 text-cream/80 py-1 rounded-xl font-medium transition-transform  "
                   >
                     Explore without login{" "}
                     <span className="text-xl">&rarr;</span>

@@ -460,7 +460,7 @@ const SignUp = () => {
                   Already have an account?{" "}
                   <Link
                     to="/"
-                    className="flex gap-1 items-center font-medium transition-transform text-cream hover:underline"
+                    className="flex gap-1 items-center font-medium transition-transform text-cream "
                   >
                     Sign in <span className="text-xl">&rarr;</span>
                   </Link>
@@ -468,7 +468,7 @@ const SignUp = () => {
                 <div className="text-xs px-3 rounded-[12px] text-cream/80">
                   <Link
                     to="/nextChapter"
-                    className="flex gap-1 items-center font-medium transition-transform text-cream hover:underline"
+                    className="flex gap-1 items-center font-medium transition-transform text-cream "
                   >
                     Explore without account{" "}
                     <span className="text-xl">&rarr;</span>
