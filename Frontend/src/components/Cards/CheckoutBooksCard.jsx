@@ -29,13 +29,13 @@ const CheckoutBooksCard = ({ items, updateQuantity, removeItem }) => {
         <div>
           <div className="flex justify-between text-base font-medium text-gray-900">
             <div className="flex flex-col">
-              <h3 className="text-tan">{item?.name}</h3>
-              <p className="text-[12px] leading-4 text-tan/80">
+              <h3 className="text-cream">{item?.name}</h3>
+              <p className="text-[12px] leading-4 text-cream/90">
                 A journey through space and time. This special edition
                 includes...
               </p>
             </div>
-            <p className="ml-4 text-tan">${item?.price?.toFixed(2)}</p>
+            <p className="ml-4 text-cream">${item?.price?.toFixed(2)}</p>
           </div>
         </div>
         <div className="mt-3">

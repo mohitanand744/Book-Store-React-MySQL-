@@ -87,7 +87,7 @@ const SignUp = () => {
       console.error("Error signing up:", error);
       toast.error(
         error.response?.data?.message ||
-          "Something went wrong. Please try again later.",
+        "Something went wrong. Please try again later.",
       );
       reset();
       navigate("/");
@@ -106,23 +106,23 @@ const SignUp = () => {
           <motion.div
             whileHover={{ scale: 1.01 }}
             transition={{ duration: 0.2 }}
-            className="overflow-hidden  backdrop-blur-sm shadow-xl p-3 rounded-3xl"
+            className="overflow-hidden bg-coffee/70 backdrop-blur-xl shadow-2xl p-3 rounded-3xl border border-tan/20"
           >
             <div className="p-3">
-              <div className="mb-8 text-center">
+              <div className="mb-8 text-cream text-center">
                 <motion.img
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
                   transition={{ delay: 0.1 }}
-                  className="object-cover w-auto h-20 mx-auto mb-4"
-                  src="/images/logo.png"
+                  className="object-cover w-auto h-32 mx-auto mb-4 rounded-2xl"
+                  src="/images/logo-transperant-light.png"
                   alt="Logo"
                 />
                 <motion.h1
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
                   transition={{ delay: 0.2 }}
-                  className="mb-2 text-3xl font-bold "
+                  className="mb-2 text-3xl font-bold text-tan"
                 >
                   Create Account
                 </motion.h1>
@@ -130,7 +130,7 @@ const SignUp = () => {
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
                   transition={{ delay: 0.3 }}
-                  className="font-semibold "
+                  className="font-semibold text-tan/90"
                 >
                   Join <b>NextChapter</b> today
                 </motion.p>
@@ -145,9 +145,11 @@ const SignUp = () => {
                   >
                     <Input
                       label="First Name"
+                      labelClassName="text-cream/90"
                       type="text"
                       placeholder="First Name"
-                      icon={<UserIcon className="w-5 h-5 " />}
+                      icon={<UserIcon className="w-5 h-5 text-cream/60" />}
+
                       error={errors.firstName?.message}
                       {...register("firstName", firstNameValidationRules)}
                       maxLength={firstNameValidationRules.maxLength.value}
@@ -180,9 +182,11 @@ const SignUp = () => {
                   >
                     <Input
                       label="Last Name"
+                      labelClassName="text-cream/90"
                       type="text"
                       placeholder="Last Name"
-                      icon={<UserIcon className="w-5 h-5 " />}
+                      icon={<UserIcon className="w-5 h-5 text-cream/60" />}
+
                       error={errors.lastName?.message}
                       {...register("lastName", lastNameValidationRules)}
                       maxLength={lastNameValidationRules.maxLength.value}
@@ -217,9 +221,10 @@ const SignUp = () => {
                 >
                   <Input
                     label="Email Address"
+                    labelClassName="text-cream/90"
                     type="email"
                     placeholder="your@email.com"
-                    icon={<EnvelopeIcon className="w-5 h-5 " />}
+                    icon={<EnvelopeIcon className="w-5 h-5 text-cream/60" />}
                     error={errors.email?.message}
                     {...register("email", emailValidationRules)}
                     maxLength={emailValidationRules.maxLength.value}
@@ -253,11 +258,13 @@ const SignUp = () => {
                 >
                   <Input
                     label="Password"
+                    labelClassName="text-cream/90"
                     type="password"
                     placeholder="Enter password"
                     icon={
-                      <LockClosedIcon className="w-5 h-5 " />
+                      <LockClosedIcon className="w-5 h-5 text-cream/60" />
                     }
+
                     error={errors.password?.message}
                     {...register("password", passwordValidationRules)}
                     maxLength={passwordValidationRules.maxLength.value}
@@ -291,11 +298,13 @@ const SignUp = () => {
                 >
                   <Input
                     label="Confirm Password"
+                    labelClassName="text-cream/90"
                     type="password"
                     placeholder="Repeat password"
                     icon={
-                      <LockClosedIcon className="w-5 h-5 " />
+                      <LockClosedIcon className="w-5 h-5 text-cream/60" />
                     }
+
                     error={errors.confirmPassword?.message}
                     {...register(
                       "confirmPassword",
@@ -335,19 +344,20 @@ const SignUp = () => {
                 >
                   <Checkbox
                     id="termsAccepted"
+                    labelClassName="text-cream/80"
                     label={
                       <span className="">
                         I agree to the{" "}
                         <a
                           href="#"
-                          className=" font-semibold hover:underline"
+                          className=" font-semibold hover:underline text-cream"
                         >
                           Terms of Service
                         </a>{" "}
                         and{" "}
                         <a
                           href="#"
-                          className=" font-semibold hover:underline"
+                          className=" font-semibold hover:underline text-cream"
                         >
                           Privacy Policy
                         </a>
@@ -389,7 +399,7 @@ const SignUp = () => {
                     <div className="w-full border-t border-gray-600"></div>
                   </div>
                   <div className="relative flex justify-center text-sm">
-                    <span className="px-3 py-1 bg-tan text-sepia rounded-full text-slate-600">
+                    <span className="px-3 py-1 bg-tan/10 backdrop-blur-md text-cream/60 rounded-full border border-tan/10 font-semibold">
                       Or sign up with
                     </span>
                   </div>
@@ -413,7 +423,7 @@ const SignUp = () => {
                         transition={{ delay: 0.9 }}
                         src="/images/google.png"
                         alt="Google"
-                        className="w-5 h-5"
+                        className="w-6 h-6"
                       />{" "}
                       <span className="ms-1">Google</span>
                     </Button>
@@ -432,7 +442,7 @@ const SignUp = () => {
                         transition={{ delay: 0.9 }}
                         src="/images/fb.jpg"
                         alt="Facebook"
-                        className="w-5 h-5 rounded-full"
+                        className="w-6 h-6 rounded-full"
                       />{" "}
                       <span className="ms-1">Facebook</span>
                     </Button>
@@ -446,19 +456,19 @@ const SignUp = () => {
                 transition={{ delay: 1 }}
                 className="flex flex-col items-center gap-3 mt-6 text-center"
               >
-                <p className="text-xs flex gap-1 items-center   px-3  rounded-[12px] ">
+                <p className="text-xs flex gap-1 items-center px-3 rounded-[12px] text-cream/80">
                   Already have an account?{" "}
                   <Link
                     to="/"
-                    className="flex gap-1 items-center font-medium transition-transform   "
+                    className="flex gap-1 items-center font-medium transition-transform text-cream hover:underline"
                   >
                     Sign in <span className="text-xl">&rarr;</span>
                   </Link>
                 </p>
-                <div className="text-xs  px-3  rounded-[12px] ">
+                <div className="text-xs px-3 rounded-[12px] text-cream/80">
                   <Link
                     to="/nextChapter"
-                    className="flex gap-1 items-center font-medium transition-transform   "
+                    className="flex gap-1 items-center font-medium transition-transform text-cream hover:underline"
                   >
                     Explore without account{" "}
                     <span className="text-xl">&rarr;</span>
@@ -471,20 +481,20 @@ const SignUp = () => {
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               transition={{ delay: 1.1 }}
-              className="px-2 py-4 text-center  backdrop-blur-sm rounded-xl"
+              className="px-2 py-4 text-center backdrop-blur-sm rounded-xl text-cream/60"
             >
               <p className="text-[11px] ">
                 By creating an account, you agree to our{" "}
                 <a
                   href="#"
-                  className="font-medium transition-all text-[12px] duration-200   hover:scale-105"
+                  className="font-medium transition-all text-[12px] duration-200 hover:text-cream"
                 >
                   Terms of Service
                 </a>{" "}
                 and{" "}
                 <a
                   href="#"
-                  className="font-medium transition-all text-[12px] duration-200   hover:scale-105"
+                  className="font-medium transition-all text-[12px] duration-200 hover:text-cream"
                 >
                   Privacy Policy
                 </a>
@@ -499,7 +509,7 @@ const SignUp = () => {
             transition={{ delay: 1.2 }}
             className="mt-4 text-center"
           >
-            <p className="text-xs  px-3 py-1 rounded-full text-gray-50">
+            <p className="text-xs text-tan bg-cream/20  px-3 py-1 rounded-full ">
               <b>&copy; {new Date().getFullYear()} NextChapter.</b> All rights
               reserved.
             </p>

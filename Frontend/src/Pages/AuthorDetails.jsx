@@ -582,7 +582,7 @@ const AuthorDetails = () => {
                                   prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
                                 );
                               }}
-                              className={`px-3 py-1.5 text-xs font-semibold rounded-lg border cursor-pointer transition-colors flex items-center gap-1.5 ${isSelected
+                              className={`px-3 py-1.5 text-xs font-semibold rounded-lg border border-tan/50 cursor-pointer transition-colors flex items-center gap-1.5 ${isSelected
                                 ? "bg-coffee text-tan font-semibold border-coffee"
                                 : "bg-cream-light text-tan border-divider hover:border-coffee hover:bg-coffee hover:text-tan"
                                 }`}
@@ -614,7 +614,7 @@ const AuthorDetails = () => {
                       placeholder="Your email address"
                       value={subscribeEmail}
                       onChange={(e) => setSubscribeEmail(e.target.value)}
-                      className="!rounded-full !text-black "
+                      className="!rounded-full"
 
                     />
                     <Button

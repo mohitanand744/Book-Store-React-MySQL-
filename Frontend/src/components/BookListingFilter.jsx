@@ -40,9 +40,9 @@ const BookListingFilter = ({
       <div className="px-6 pt-8 pb-4 flex items-center justify-between border-b border-tan/10">
         <div>
           <h2 className="text-2xl font-serif tracking-wide text-tan">Refine Search</h2>
-          <p className="text-[10px] uppercase tracking-[0.2em] text-tan/50 mt-1">Filters & Preferences</p>
+          <p className="text-[10px] uppercase tracking-[0.2em] text-tan mt-1">Filters & Preferences</p>
         </div>
-        <button 
+        <button
           onClick={resetFilters}
           className="text-xs font-medium px-4 py-2 rounded-full border border-tan/20 hover:bg-tan hover:text-coffee transition-all duration-300"
         >
@@ -76,7 +76,7 @@ const BookListingFilter = ({
             className="flex items-center justify-between p-5 cursor-pointer group hover:bg-tan/5 transition-colors"
           >
             <div className="flex flex-col">
-              <span className="text-sm font-serif text-tan/90">Offers & Savings</span>
+              <span className="text-sm font-serif text-tan">Offers & Savings</span>
               <h1 className="text-lg font-medium leading-none mt-1">Discount Range</h1>
             </div>
             <motion.div
@@ -85,14 +85,14 @@ const BookListingFilter = ({
               className="w-8 h-8 flex items-center justify-center rounded-full bg-tan/10 group-hover:bg-tan/20 transition-colors"
             >
               <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M2.5 4.5L6 8L9.5 4.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M2.5 4.5L6 8L9.5 4.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             </motion.div>
           </div>
 
           <motion.ul
             initial={false}
-            animate={{ 
+            animate={{
               height: openCategory.DiscountFilter ? "auto" : 0,
               opacity: openCategory.DiscountFilter ? 1 : 0
             }}
@@ -142,14 +142,14 @@ const BookListingFilter = ({
               className="w-8 h-8 flex items-center justify-center rounded-full bg-tan/10 group-hover:bg-tan/20 transition-colors"
             >
               <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M2.5 4.5L6 8L9.5 4.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M2.5 4.5L6 8L9.5 4.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             </motion.div>
           </div>
 
           <motion.ul
             initial={false}
-            animate={{ 
+            animate={{
               height: openCategory.LanguageFilter ? "auto" : 0,
               opacity: openCategory.LanguageFilter ? 1 : 0
             }}

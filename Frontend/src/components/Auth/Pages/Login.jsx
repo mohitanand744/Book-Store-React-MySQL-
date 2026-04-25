@@ -217,23 +217,23 @@ const Login = () => {
           <motion.div
             whileHover={{ scale: 1.01 }}
             transition={{ duration: 0.2 }}
-            className="overflow-hidden bg-white/50 backdrop-blur-sm shadow-xl rounded-3xl p-3"
+            className="overflow-hidden bg-coffee/65 backdrop-blur-xl shadow-2xl rounded-3xl p-3 border border-tan/20"
           >
             <div className="p-3">
-              <div className="mb-8 text-coffee text-center">
+              <div className="mb-8 text-cream text-center">
                 <motion.img
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
                   transition={{ delay: 0.1 }}
-                  className="object-cover w-auto h-32 mx-auto mb-4"
-                  src="/images/logo-transperant.png"
+                  className="object-cover w-auto h-32 mx-auto rounded-2xl mb-4"
+                  src="/images/logo-transperant-light.png"
                   alt="Logo"
                 />
                 <motion.h1
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
                   transition={{ delay: 0.2 }}
-                  className="mb-2 text-3xl font-bold "
+                  className="mb-2 text-3xl font-bold text-tan"
                 >
                   Welcome Back
                 </motion.h1>
@@ -241,7 +241,7 @@ const Login = () => {
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
                   transition={{ delay: 0.3 }}
-                  className="font-semibold "
+                  className="font-semibold text-tan/90"
                 >
                   Sign in to your <b>NextChapter</b> account
                 </motion.p>
@@ -255,9 +255,11 @@ const Login = () => {
                 >
                   <Input
                     label="Email Address"
+                    labelClassName="text-cream/90"
                     type="email"
                     placeholder="your@email.com"
-                    icon={<EnvelopeIcon className="w-5 h-5 " />}
+                    icon={<EnvelopeIcon className="w-5 h-5 text-cream/60" />}
+
                     error={errors.email?.message}
                     {...register("email", emailValidationRules)}
                     maxLength={emailValidationRules.maxLength.value}
@@ -290,11 +292,13 @@ const Login = () => {
                 >
                   <Input
                     label="Password"
+                    labelClassName="text-cream/90"
                     type="password"
                     placeholder="••••••••"
                     icon={
-                      <LockClosedIcon className="w-5 h-5 " />
+                      <LockClosedIcon className="w-5 h-5 text-cream/60" />
                     }
+
                     error={errors.password?.message}
                     {...register("password", passwordValidationRules)}
                   />
@@ -310,6 +314,7 @@ const Login = () => {
                     <Checkbox
                       id="remember-me"
                       label="Remember me"
+                      labelClassName="text-cream/80"
                       checked={isChecked}
                       onChange={(e) => handleCheckboxChange(e)}
                     />
@@ -323,7 +328,7 @@ const Login = () => {
                   >
                     <p
                       onClick={() => setShowForgot(true)}
-                      className="font-medium   cursor-pointer"
+                      className="font-medium text-cream/80 hover:text-cream cursor-pointer transition-colors"
                     >
                       Forgot password?
                     </p>
@@ -357,7 +362,7 @@ const Login = () => {
                     <div className="w-full border-t "></div>
                   </div>
                   <div className="relative flex justify-center text-sm">
-                    <span className="px-3 py-1 bg-tan text-sepia rounded-full  font-semibold">
+                    <span className="px-3 py-1 bg-tan/10 backdrop-blur-md text-cream/60 rounded-full border border-tan/10 font-semibold">
                       Or continue with
                     </span>
                   </div>
@@ -414,7 +419,7 @@ const Login = () => {
                 transition={{ delay: 1 }}
                 className="flex flex-col items-center gap-3 mt-6 text-center"
               >
-                <p className="text-xs   px-3 rounded-[12px] flex items-center gap-1 ">
+                <p className="text-xs flex gap-1 items-center px-3 py-1 bg-tan/30 backdrop-blur-md rounded-[12px] text-cream/80">
                   Don't have an account?{" "}
                   <Link
                     to="/signup"
@@ -426,7 +431,7 @@ const Login = () => {
                 <div className="text-xs  px-3 rounded-[12px] ">
                   <Link
                     to="/nextChapter"
-                    className="flex items-center gap-1 text-nowrap font-medium transition-transform  "
+                    className="flex items-center gap-1 text-nowrap bg-tan/30 backdrop-blur-md px-3 text-cream/80 py-1 rounded-xl font-medium transition-transform  "
                   >
                     Explore without login{" "}
                     <span className="text-xl">&rarr;</span>
@@ -439,20 +444,20 @@ const Login = () => {
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               transition={{ delay: 1.1 }}
-              className="px-2 py-4 text-center  backdrop-blur-sm rounded-xl"
+              className="px-2 py-4 bg-cream/30 backdrop-blur-sm text-center rounded-xl"
             >
               <p className="text-[11px] ">
                 By creating an account, you agree to our{" "}
                 <a
                   href="#"
-                  className="font-medium transition-all text-[12px] duration-200   hover:scale-105"
+                  className="font-semibold transition-all text-[12px] duration-200   hover:scale-105"
                 >
                   Terms of Service
                 </a>{" "}
                 and{" "}
                 <a
                   href="#"
-                  className="font-medium transition-all text-[12px] duration-200   hover:scale-105"
+                  className="font-semibold transition-all text-[12px] duration-200   hover:scale-105"
                 >
                   Privacy Policy
                 </a>
@@ -467,7 +472,7 @@ const Login = () => {
             transition={{ delay: 1.2 }}
             className="mt-4 text-center"
           >
-            <p className="text-xs  px-3 py-1 rounded-full text-gray-50">
+            <p className="text-xs bg-cream/20 px-3 py-1 rounded-full text-tan">
               <b>&copy; {new Date().getFullYear()} NextChapter.</b> All rights
               reserved.
             </p>

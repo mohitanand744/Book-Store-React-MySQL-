@@ -243,7 +243,7 @@ const UserProfile = () => {
                 <img
                   src={preview || "/images/loading.gif"}
                   alt="Profile"
-                  className="object-cover w-full h-full border-4 border-orange-500 rounded-full shadow-lg cursor-pointer"
+                  className="object-cover w-full h-full border-4 border-tan rounded-full shadow-lg cursor-pointer"
                   onClick={() => openPreview(preview, "Profile Image")}
                 />
 
@@ -277,10 +277,10 @@ const UserProfile = () => {
                 transition={{ delay: 0.2 }}
                 className="mb-6 text-center"
               >
-                <h2 className="text-2xl capitalize  font-bold text-tan">
+                <h2 className="text-2xl capitalize  font-bold text-cream">
                   {user?.name}
                 </h2>
-                <p className="text-tan/80 flex items-center justify-center gap-1 mt-1">
+                <p className="text-cream/90 flex items-center justify-center gap-1 mt-1">
                   <CalendarSvg />
                   <b>Member since</b> {user?.joinDate}
                 </p>
@@ -610,7 +610,7 @@ const UserProfile = () => {
         className="container mt-20 border-t border-tan/10 pt-16"
       >
         <div className="mb-2">
-          <SectionHeading 
+          <SectionHeading
             align="left"
             subtitle="Handpicked titles based on your recent activity"
           >
@@ -787,7 +787,7 @@ const ModernProfileDetail = ({
 
       <div className="flex-1 min-w-0">
         <div className="flex items-center justify-between w-full">
-          <p className="text-xs font-medium text-tan/70 uppercase tracking-wider">
+          <p className="text-xs font-medium text-cream/90 uppercase tracking-wider">
             {label}
           </p>
           {Array.isArray(value) && (
@@ -825,7 +825,7 @@ const ModernProfileDetail = ({
                     rounded-full
                     text-sm
                     font-semibold
-                    
+                    text-cream
                     bg-gradient-to-r
                     from-coffee/80
                     to-coffee/60
@@ -843,7 +843,7 @@ const ModernProfileDetail = ({
               </div>
             ) : (
               <p
-                className={`${notProvided ? "" : "text-tan"} text-sm font-semibold`}
+                className={`${notProvided ? "" : "text-cream"} text-sm font-semibold`}
               >
                 {value}
               </p>

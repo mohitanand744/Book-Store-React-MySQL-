@@ -6,13 +6,13 @@ export default {
       colors: {
         // Main branding colors
         coffee: "#5C4C49",
-        tan: "#D3BD9D",
+        tan: "#DCB491",
         cream: "#ffe6c1",
         sepia: "#7C664D",
         // Semantic Colors
         red: {
-          error: "#dc2626",
-          heart: "#ef4444",
+          error: "#ef4444",
+          heart: "#f21717ff",
         },
         success: "#22c55e",
         orange: "#FB923C",

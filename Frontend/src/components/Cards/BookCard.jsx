@@ -109,18 +109,18 @@ const BookCard = ({ book }) => {
             />
           </div>
           <div className="flex flex-col items-center gap-3 mb-2">
-            <h1 className="text-tan">
+            <h1 className="text-cream">
               {" "}
               <b className="text-[0.9rem]"> Name:</b> {book?.author?.author_name}
             </h1>
             <div className="flex items-center gap-1 border-2 border-tan  p-1 px-3 rounded-t-2xl">
               <Ratings ratings={book?.author?.author_rating} />
-              <span className="text-tan">
+              <span className="text-cream">
                 {book?.author?.author_rating}
               </span>
             </div>
           </div>
-          <p className="text-center text-tan">
+          <p className="text-center text-cream">
             <b className="text-[0.9rem]">Short Intro:</b>{" "}
             <motion.span
               key={isReadMore ? "more" : "less"}
@@ -159,7 +159,7 @@ const BookCard = ({ book }) => {
       <div className="px-4 text-xl">
         <div className="text-xl">
           <div className="flex items-center justify-between">
-            <h2 className="mr-2 text-tan text-lg font-semibold truncate md:text-xl">
+            <h2 className="mr-2 text-cream text-lg font-semibold truncate md:text-xl">
               {book?.title}
             </h2>
             <motion.div
@@ -189,15 +189,15 @@ const BookCard = ({ book }) => {
           </div>
         </div>
 
-        <p className="text-sm text-tan/70 md:text-lg">
+        <p className="text-sm text-cream/80 md:text-lg">
           {book?.description?.slice(0, 50)}...
         </p>
 
         <div className="flex gap-4 mt-3 text-sm md:text-lg">
-          <p className="font-medium text-tan/40 line-through">
+          <p className="font-medium text-cream/70 line-through">
             ₹ {Number(book?.book_price) * 2}
           </p>
-          <p className="font-bold text-tan">
+          <p className="font-bold text-cream">
             ₹ {Number(book?.book_price)}
           </p>
         </div>
@@ -205,13 +205,13 @@ const BookCard = ({ book }) => {
       <div className="bottom flex rounded-b-2xl justify-between items-center backdrop-blur-md mt-2 bg-tan/10 p-4 border-t border-tan/10">
         <button
           onClick={(e) => e.stopPropagation()}
-          className="px-4 flex gap-2 active:scale-75 transition items-center py-2 font-semibold text-tan bg-tan/20 rounded-xl group hover:bg-tan/30 border border-tan/20"
+          className="px-4 flex gap-2 active:scale-75 transition items-center py-2 font-semibold text-cream bg-tan/20 rounded-xl group hover:bg-tan/30 border border-tan/20"
         >
           <MdOutlineAddShoppingCart className="group-hover:-rotate-12 duration-300 text-[22px]" />
           <span className="text-sm">Add</span>
         </button>
 
-        <div className="flex items-center text-tan">
+        <div className="flex items-center text-cream">
           <span className="mr-2 text-[14px] sm:text-sm font-bold">4.5</span>
           <Ratings ratings={book?.book_rating} />
         </div>

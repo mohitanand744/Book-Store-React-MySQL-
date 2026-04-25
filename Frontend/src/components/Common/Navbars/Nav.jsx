@@ -59,14 +59,14 @@ const Navbar = ({ isCartOpen, setIsCartOpen }) => {
         : "relative bg-coffee shadow-lg"
         }`}
     >
-      <div className="container px-4 py-3 mx-auto">
+      <div className="container px-4 py-1 mx-auto">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <div className="flex-shrink-0 w-20">
+          <div className="flex-shrink-0 w-28">
             <Link to="/nextChapter">
               <img
                 className="object-cover w-full rounded-lg h-full"
-                src="/images/logo.png"
+                src="/images/logo-transperant-light.png"
                 alt=""
               />
             </Link>

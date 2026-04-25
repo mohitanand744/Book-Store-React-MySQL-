@@ -190,7 +190,7 @@ const PostCard = ({ post, index, author }) => {
           <motion.button
             whileTap={{ scale: 0.9 }}
             onClick={() => setShowMenu(!showMenu)}
-            className="p-2 text-tan/60 hover:text-tan hover:bg-tan/10 rounded-full !rotate-[90deg] transition-all"
+            className="p-2 text-tan hover:text-tan hover:bg-tan/10 rounded-full !rotate-[90deg] transition-all"
           >
             <FaEllipsisV size={14} />
           </motion.button>
@@ -386,17 +386,17 @@ const PostCard = ({ post, index, author }) => {
                         <div className="flex-1 min-w-0">
                           <div className="bg-tan/5 border border-tan/10 rounded-2xl rounded-tl-sm px-4 py-2">
                             <div className="flex items-baseline justify-between mb-1">
-                              <span className="text-xs font-bold text-tan">
+                              <span className="text-xs font-bold text-cream">
                                 {c.user}
                               </span>
-                              <span className="text-[10px] text-tan/30 ml-2 flex-shrink-0">
+                              <span className="text-[10px] text-cream/60 ml-2 flex-shrink-0">
                                 {new Date(c.date).toLocaleDateString("en-IN", {
                                   day: "numeric",
                                   month: "short",
                                 })}
                               </span>
                             </div>
-                            <p className="text-xs leading-relaxed text-tan/70">
+                            <p className="text-xs leading-relaxed text-cream/90">
                               {c.text}
                             </p>
                           </div>
@@ -405,7 +405,7 @@ const PostCard = ({ post, index, author }) => {
                           <div className="flex items-center gap-4 mt-1 ml-2">
                             <button
                               onClick={() => setReplyingTo(replyingTo === c.id ? null : c.id)}
-                              className="text-[10px] font-bold text-tan/40 hover:text-tan transition-colors"
+                              className="text-xs font-bold text-cream/90 hover:text-cream transition-colors"
                             >
                               Reply
                             </button>
@@ -427,12 +427,12 @@ const PostCard = ({ post, index, author }) => {
                                   onChange={(e) => setReplyText(e.target.value)}
                                   placeholder="Write a reply..."
                                   containerClassName="!mb-0 flex-1"
-                                  className="!h-8 text-[10px] bg-tan/5 border border-tan/10 rounded-full px-3 text-tan !ring-0 placeholder:text-tan/70"
+                                  className="!h-8 text-xs bg-tan/5 border border-tan/10 rounded-full px-3 text-cream !ring-0 placeholder:text-cream/70"
                                   autoFocus
                                 />
                                 <motion.button
                                   type="submit"
-                                  className="text-tan/90 absolute right-2 top-1/2 -translate-y-1/2 hover:text-tan/60 disabled:opacity-30 cursor-pointer"
+                                  className="text-cream/90 absolute right-2 top-1/2 -translate-y-1/2 hover:text-cream/60 disabled:opacity-30 cursor-pointer"
                                 >
                                   <FaPaperPlane size={13} />
                                 </motion.button>
@@ -450,7 +450,7 @@ const PostCard = ({ post, index, author }) => {
                                   key={reply.id}
                                   className="flex gap-2"
                                 >
-                                  <div className="w-6 h-6 rounded-full p-[1px] bg-tan/20 flex-shrink-0">
+                                  <div className="w-7 h-7 rounded-full p-[1px] bg-tan/20 flex-shrink-0">
                                     <img
                                       src={reply.avatar}
                                       alt={reply.user}
@@ -459,15 +459,15 @@ const PostCard = ({ post, index, author }) => {
                                   </div>
                                   <div className="flex-1 bg-tan/5 border border-tan/5 rounded-xl px-3 py-1.5">
                                     <div className="flex justify-between items-center mb-0.5">
-                                      <span className="text-[10px] font-bold text-tan">{reply.user}</span>
-                                      <span className="text-[8px] text-tan/30">
+                                      <span className="text-xs font-bold text-cream">{reply.user}</span>
+                                      <span className="text-[10px] text-cream/50">
                                         {new Date(reply.date).toLocaleDateString("en-IN", {
                                           day: "numeric",
                                           month: "short",
                                         })}
                                       </span>
                                     </div>
-                                    <p className="text-[10px] leading-relaxed text-tan/70">{reply.text}</p>
+                                    <p className="text-xs leading-relaxed text-cream/70">{reply.text}</p>
                                   </div>
                                 </motion.div>
                               ))}

@@ -78,9 +78,9 @@ const Input = (
         ) : Component === "textarea" ? (
           <textarea
             ref={ref}
-            className={`w-full bg-tan text-tan/90 placeholder:text-tan truncate px-4 py-2 rounded-lg border ${error
+            className={`w-full bg-tan/10 text-tan/90 truncate px-4 py-2 rounded-lg border ${error
               ? "border-red-error placeholder:text-red-error focus:ring-red-error focus:border-red-error"
-              : "border-sepia focus:ring-coffee focus:border-coffee"
+              : "border-sepia placeholder:text-tan/60 focus:ring-coffee focus:border-coffee"
               }  focus:outline-none focus:ring-2 ${className}`}
             value={value}
             onChange={onChange}
@@ -92,10 +92,10 @@ const Input = (
           <input
             ref={ref}
             type={inputType}
-            className={`w-full bg-tan text-tan/90 !placeholder-tan/90 h-[42px] pr-[44px] truncate  px-4 py-2 rounded-lg border ${error
-              ? "border-red-error placeholder:text-red-error focus:ring-red-error focus:border-red-error"
-              : "border-sepia focus:ring-coffee focus:border-coffee"
-              } shadow-sm  focus:outline-none focus:ring-2 ${className}`}
+            className={`w-full bg-tan/10 text-cream/95 h-[42px] pr-[44px] truncate px-4 py-2 rounded-lg border ${error
+              ? "border-red-error placeholder:!text-red-error focus:ring-red-error focus:border-red-error"
+              : "placeholder:text-cream/70 border-sepia focus:ring-coffee focus:border-coffee"
+              } shadow-sm focus:outline-none focus:ring-2 ${className}`}
             placeholder={placeholder}
             value={value}
             onChange={onChange}
@@ -112,7 +112,7 @@ const Input = (
         {/* Custom right icon: show/hide or external icon */}
         {!error && icon && (
           <div
-            className={`absolute right-0 top-[0.6px] min-w-[40px] h-[40px] flex items-center justify-center  bg-sepia/10 text-tan/90 rounded-r-lg`}
+            className={`absolute right-0 top-[0.6px] min-w-[40px] h-[40px] flex items-center justify-center  bg-tan/10 text-cream/95 rounded-r-lg`}
           >
             {type === "password" ? (
               <button
@@ -135,7 +135,7 @@ const Input = (
         )}
         {error && (
           <div
-            className={`absolute right-0 top-0  ${Component === "textarea" ? "border-t border-r rounded-tr-lg" : "border-y border-r rounded-r-lg"} border-error-dark h-[42px] flex items-center justify-center px-3 bg-tan text-tan/90 `}
+            className={`absolute right-0 top-0  ${Component === "textarea" ? "border-t border-r rounded-tr-lg" : "border-y border-r rounded-r-lg"} border-red-error h-[42px] flex items-center justify-center px-3 bg-tan/10 text-red-error `}
           >
             {type === "password" ? (
               <button

@@ -163,12 +163,12 @@ const ShoppingCart = ({ isCartOpen, setIsCartOpen }) => {
                       animate={{ opacity: 1 }}
                       className="px-4 py-6 border-t  rounded-t-3xl  border-cream sm:px-6"
                     >
-                      <div className="flex justify-between text-base font-medium text-tan">
+                      <div className="flex justify-between text-base font-medium text-cream">
                         <p>Subtotal</p>
                         <p>${subtotal.toFixed(2)}</p>
                       </div>
 
-                      <p className="mt-1 text-sm text-tan/70">
+                      <p className="mt-1 text-sm text-cream/90">
                         Shipping and taxes calculated at checkout.
                       </p>
 
@@ -191,13 +191,13 @@ const ShoppingCart = ({ isCartOpen, setIsCartOpen }) => {
                         </motion.div>
                       </div>
 
-                      <div className="flex justify-center mt-6 text-sm text-tan/70">
+                      <div className="flex justify-center mt-6 text-sm text-cream/90">
                         <p>
                           or{" "}
                           <button
                             type="button"
                             onClick={toggleCart}
-                            className="font-medium text-tan hover:text-tan/80"
+                            className="font-medium text-cream hover:text-cream/80"
                           >
                             Continue Shopping →
                           </button>

@@ -195,7 +195,7 @@ const SingleBooks = () => {
         initial={{ x: -20, opacity: 0 }}
         animate={{ x: 0, opacity: 1 }}
         transition={{ delay: 0.2 }}
-        className="flex items-center mb-8 text-xs uppercase tracking-[0.2em] text-sepia/60 font-medium"
+        className="flex items-center mb-8 text-xs uppercase tracking-[0.2em] text-cream/90 font-medium"
       >
         <span className="hover:text-coffee transition-colors cursor-pointer">Home</span>
         <span className="mx-3 opacity-30">/</span>
@@ -216,7 +216,7 @@ const SingleBooks = () => {
             animate={{ scale: 1, opacity: 1 }}
             transition={{ delay: 0.3 }}
             whileHover={{ scale: 1.01 }}
-            className="bg-coffee/95 text-tan rounded-[2.5rem] overflow-hidden mb-4 border border-tan/20 shadow-2xl backdrop-blur-xl"
+            className="bg-coffee/95 text-cream rounded-[2.5rem] overflow-hidden mb-4 border border-tan/20 shadow-2xl backdrop-blur-xl"
           >
             <img
               src={mainImage}
@@ -256,7 +256,7 @@ const SingleBooks = () => {
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.2 }}
-            className="bg-coffee/95 text-tan rounded-[2.5rem] p-8 shadow-2xl border border-tan/20 backdrop-blur-xl"
+            className="bg-coffee/95 text-cream rounded-[2.5rem] p-8 shadow-2xl border border-tan/20 backdrop-blur-xl"
           >
             <div className="flex items-start justify-between mb-4">
               <motion.div
@@ -267,12 +267,15 @@ const SingleBooks = () => {
                 <span className="bg-tan/10 text-tan text-xs px-3 py-1 rounded-full border border-tan/20">
                   {book?.category}
                 </span>
-                <h1 className="text-3xl font-serif tracking-tight text-tan mt-3 mb-1">
+                <h1 className="text-3xl font-serif tracking-tight text-cream mt-3 mb-1">
                   {book?.title}
                 </h1>
-                <p className="text-lg text-tan/70 font-serif">
-                  by {book?.author?.author_name}
+                <p className="text-cream/90 mt-2 font-serif italic text-lg">
+                  Explore more titles from similar categories and authors
                 </p>
+                <span className="text-cream font-bold not-italic hover:underline cursor-pointer">
+                  {book?.author?.author_name}
+                </span>
               </motion.div>
               <motion.div
                 initial={{ scale: 0.9, opacity: 0 }}
@@ -287,7 +290,7 @@ const SingleBooks = () => {
                 >
                   <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                 </svg>
-                <span className="text-tan font-medium">
+                <span className="text-cream font-medium">
                   {book?.author?.author_rating}
                 </span>
               </motion.div>
@@ -300,14 +303,17 @@ const SingleBooks = () => {
               className="my-6"
             >
               <div className="flex items-center mb-3">
-                <span className="text-4xl font-serif text-tan mr-3">
+                <p className="font-medium text-cream/90 line-through mr-3">
+                  ₹ {Number(book?.book_price) * 2}
+                </p>
+                <span className="text-4xl font-serif text-cream mr-3">
                   ₹{Number(book?.book_price || 0).toFixed(2)}
                 </span>
                 <span className="px-2 py-1 text-sm text-green-600 bg-green-100 rounded">
                   In Stock
                 </span>
               </div>
-              <p className="text-sm text-tan/50">
+              <p className="text-sm text-cream/90">
                 Inclusive of all taxes | Free delivery
               </p>
             </motion.div>
@@ -320,8 +326,8 @@ const SingleBooks = () => {
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id)}
                     className={`relative px-4 py-2 font-medium text-sm sm:text-base ${activeTab === tab.id
-                      ? "text-tan"
-                      : "text-tan/40 hover:text-tan/80"
+                      ? "text-cream"
+                      : "text-cream/90 hover:text-cream"
                       } transition-colors duration-200`}
                   >
                     {tab.label}
@@ -350,9 +356,11 @@ const SingleBooks = () => {
             >
               {activeTab === "description" ? (
                 <>
-                  <p className="mb-6 leading-relaxed text-tan/80 font-serif text-lg">
-                    {book?.description}
-                  </p>
+                  <div className="prose prose-invert max-w-none">
+                    <p className="text-cream leading-relaxed text-lg">
+                      {book?.book_description || book?.description}
+                    </p>
+                  </div>
 
                   {/* Author Card */}
                   <motion.div
@@ -370,15 +378,15 @@ const SingleBooks = () => {
                         />
                       </div>
                       <div>
-                        <h4 className="font-serif text-xl text-tan">
+                        <h4 className="font-serif text-xl text-cream">
                           {book?.author?.author_name}
                         </h4>
-                        <p className="text-sm text-tan/60 uppercase tracking-widest mt-1">
+                        <p className="text-sm text-cream/90 uppercase tracking-widest mt-1">
                           {book?.author?.author_books_count} books published
                         </p>
                       </div>
                     </div>
-                    <p className="mt-4 text-tan/70 leading-relaxed italic">
+                    <p className="mt-4 text-cream/90 leading-relaxed italic">
                       {book?.author?.author_description}
                     </p>
                   </motion.div>
@@ -394,7 +402,7 @@ const SingleBooks = () => {
                   >
                     <div className="flex items-center">
                       <div className="mr-4">
-                        <div className="text-4xl text-center font-serif text-tan">
+                        <div className="text-4xl text-center font-serif text-cream">
                           {Number(averageRating || 0).toFixed(1)}
                         </div>
                         <div className="flex mt-1">
@@ -409,7 +417,7 @@ const SingleBooks = () => {
                           const percentage = (count / reviews.length) * 100;
                           return (
                             <div key={star} className="flex items-center mb-1">
-                              <p className="text-sm w-9 text-tan/60 text-nowrap">
+                              <p className="text-sm w-9 text-cream/90 text-nowrap">
                                 {star} star{parseInt(star) > 1 ? "s" : ""}
                               </p>
                               <div className="flex-1 h-2 mx-2 bg-tan/10 rounded-full">
@@ -420,7 +428,7 @@ const SingleBooks = () => {
                                   className="h-full bg-yellow-400 rounded-full"
                                 />
                               </div>
-                              <span className="w-8 text-sm text-tan/60">
+                              <span className="w-8 text-sm text-cream/90">
                                 {count}
                               </span>
                             </div>
@@ -438,7 +446,7 @@ const SingleBooks = () => {
                         initial={{ x: 20, opacity: 0 }}
                         animate={{ x: 0, opacity: 1 }}
                         transition={{ delay: 0.5 + index * 0.1 }}
-                        className="bg-coffee/40 text-tan border border-tan/10 backdrop-blur-sm rounded-2xl p-6"
+                        className="bg-coffee/40 text-cream border border-tan/10 backdrop-blur-sm rounded-2xl p-6"
                       >
                         <div className="flex items-center mb-3">
                           <img
@@ -447,7 +455,7 @@ const SingleBooks = () => {
                             className="w-10 h-10 mr-3 rounded-full"
                           />
                           <div>
-                            <h4 className="font-serif text-lg text-tan">
+                            <h4 className="font-serif text-lg text-cream">
                               {review.user.name}
                             </h4>
                             <div className="flex items-center">
@@ -460,10 +468,10 @@ const SingleBooks = () => {
                             </div>
                           </div>
                         </div>
-                        <h5 className="mb-2 text-lg font-serif italic text-tan/90">
+                        <h5 className="mb-2 text-lg font-serif italic text-cream/90">
                           {review.title}
                         </h5>
-                        <p className="text-tan/70 leading-relaxed font-serif">{review.comment}</p>
+                        <p className="text-cream/90 leading-relaxed font-serif">{review.comment}</p>
                       </motion.div>
                     ))}
                   </div>
@@ -478,7 +486,7 @@ const SingleBooks = () => {
                       damping: 10,
                       delay: 0.3,
                     }}
-                    className="bg-coffee/95 text-tan border border-tan/20 rounded-[2.5rem] p-8 mb-6 shadow-2xl backdrop-blur-xl"
+                    className="bg-coffee/95 text-cream border border-tan/20 rounded-[2.5rem] p-8 mb-6 shadow-2xl backdrop-blur-xl"
                   >
                     <div className="flex items-center mb-6">
                       <svg
@@ -494,7 +502,7 @@ const SingleBooks = () => {
                           d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"
                         />
                       </svg>
-                      <h3 className="text-2xl font-serif tracking-wide text-tan">
+                      <h3 className="text-2xl font-serif tracking-wide text-cream">
                         Share Your Experience
                       </h3>
                     </div>
@@ -504,7 +512,7 @@ const SingleBooks = () => {
                         <div className="sm:w-48">
                           <Input
                             label="Rating (0.5 - 5)"
-                            labelClassName="font-serif text-lg text-tan/80"
+                            labelClassName="font-serif text-lg text-cream/90"
                             type="number"
                             min="0.5"
                             max="5"
@@ -517,7 +525,7 @@ const SingleBooks = () => {
                                 rating: parseFloat(e.target.value) || 0,
                               })
                             }
-                            className="!bg-tan/5 !border-tan/10 !text-tan !rounded-2xl !px-6 !py-4 focus:!ring-tan/30 h-auto w-full"
+                            className="!bg-tan/5 !border-tan/10 !text-cream !rounded-2xl !px-6 !py-4 focus:!ring-tan/30 h-auto w-full"
                             required
                           />
                           <div className="flex gap-1 mt-2 px-1">
@@ -527,7 +535,7 @@ const SingleBooks = () => {
 
                         <Input
                           label="Review Title"
-                          labelClassName="font-serif text-lg text-tan/80"
+                          labelClassName="font-serif text-lg text-cream/90"
                           placeholder="Summarize your experience"
                           value={newReview.title}
                           onChange={(e) =>
@@ -536,7 +544,7 @@ const SingleBooks = () => {
                               title: e.target.value,
                             })
                           }
-                          className="!bg-tan/5 !border-tan/10 !text-tan !rounded-2xl !px-6 !py-4 focus:!ring-tan/30 h-auto flex-1"
+                          className="!bg-tan/5 !border-tan/10 !text-cream !rounded-2xl !px-6 !py-4 focus:!ring-tan/30 h-auto flex-1"
                           required
                         />
                       </div>
@@ -544,7 +552,7 @@ const SingleBooks = () => {
                       <Input
                         as="textarea"
                         label="Your Review"
-                        labelClassName="font-serif text-lg text-tan/80"
+                        labelClassName="font-serif text-lg text-cream/90"
                         placeholder="Share details about your experience with this product..."
                         value={newReview.comment}
                         onChange={(e) =>
@@ -554,7 +562,7 @@ const SingleBooks = () => {
                           })
                         }
                         rows={5}
-                        className="!bg-tan/5 !border-tan/10 !text-tan !rounded-2xl !px-6 !py-4 focus:!ring-tan/30 h-auto"
+                        className="!bg-tan/5 !border-tan/10 !text-cream !rounded-2xl !px-6 !py-4 focus:!ring-tan/30 h-auto"
                         required
                       />
 
@@ -637,7 +645,7 @@ const SingleBooks = () => {
             >
               <div className="flex items-start">
                 <svg
-                  className="w-6 h-6 text-tan mr-3 mt-1"
+                  className="w-6 h-6 text-cream mr-3 mt-1"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -650,10 +658,10 @@ const SingleBooks = () => {
                   />
                 </svg>
                 <div>
-                  <h4 className="font-serif text-lg text-tan">
+                  <h4 className="font-serif text-lg text-cream">
                     Delivery Information
                   </h4>
-                  <p className="mt-2 text-sm text-tan/60 font-serif leading-relaxed">
+                  <p className="mt-2 text-sm text-cream/90 font-serif leading-relaxed">
                     Free standard delivery on orders over ₹500. Expected
                     delivery in 3-5 business days.
                   </p>
@@ -669,9 +677,9 @@ const SingleBooks = () => {
         initial={{ y: 20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 1 }}
-        className="mt-12 bg-coffee/95 text-tan rounded-[2.5rem] p-10 shadow-2xl border border-tan/20 backdrop-blur-xl"
+        className="mt-12 bg-coffee/95 text-cream rounded-[2.5rem] p-10 shadow-2xl border border-tan/20 backdrop-blur-xl"
       >
-        <h2 className="text-3xl font-serif tracking-wide text-tan mb-8">
+        <h2 className="text-3xl font-serif tracking-wide text-cream mb-8">
           Product Details
         </h2>
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
@@ -682,23 +690,23 @@ const SingleBooks = () => {
             <ul className="space-y-2">
               <li className="flex">
                 <p className="text-tan/50 w-44 font-serif">Publisher</p>
-                <p className="w-44 text-tan">Penguin Random House</p>
+                <p className="w-44 text-cream">Penguin Random House</p>
               </li>
               <li className="flex">
                 <p className="text-tan/50 w-44 font-serif">Language</p>
-                <p className="w-44 text-tan">English</p>
+                <p className="w-44 text-cream">English</p>
               </li>
               <li className="flex">
                 <p className="text-tan/50 w-44 font-serif">Paperback</p>
-                <p className="w-44 text-tan">320 pages</p>
+                <p className="w-44 text-cream">320 pages</p>
               </li>
               <li className="flex">
                 <p className="text-tan/50 w-44 font-serif">ISBN-10</p>
-                <p className="w-44 text-tan">1234567890</p>
+                <p className="w-44 text-cream">1234567890</p>
               </li>
               <li className="flex">
                 <p className="text-tan/50 w-44 font-serif">Dimensions</p>
-                <p className="w-44 text-tan">13.97 x 1.85 x 21.59 cm</p>
+                <p className="w-44 text-cream">13.97 x 1.85 x 21.59 cm</p>
               </li>
             </ul>
           </div>
@@ -711,10 +719,10 @@ const SingleBooks = () => {
               a foreword by the author.
             </p>
             <div className=" p-3 rounded-lg">
-              <h4 className="font-serif text-lg text-tan/90 mb-2">
+              <h4 className="font-serif text-lg text-cream/90 mb-2">
                 Why you'll love it:
               </h4>
-              <ul className="space-y-2 text-sm text-tan/60 list-disc list-inside font-serif">
+              <ul className="space-y-2 text-sm text-cream/90 list-disc list-inside font-serif">
                 <li>Beautifully designed cover</li>
                 <li>Premium quality paper</li>
                 <li>Perfect gift for book lovers</li>

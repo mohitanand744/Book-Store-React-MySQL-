@@ -10,11 +10,11 @@ const Footer = () => {
         <div className="grid grid-cols-12 gap-2">
           {/* About Section */}
           <div className="col-span-12 md:col-span-6 lg:col-span-3">
-            <div className="flex-shrink-0 bg-tan p-1 rounded-xl w-28 mb-4">
+            <div className="flex-shrink-0 w-36 mb-4">
               <Link to="/nextChapter">
                 <img
                   className="object-cover w-full h-full"
-                  src="/images/logo.png"
+                  src="/images/logo-transperant-light.png"
                   alt="BookStore Logo"
                 />
               </Link>
