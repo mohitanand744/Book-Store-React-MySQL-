@@ -220,7 +220,7 @@ const Login = () => {
             className="overflow-hidden bg-coffee/65 backdrop-blur-xl shadow-2xl rounded-3xl p-3 border border-tan/20"
           >
             <div className="p-3">
-              <div className="mb-8 border bg-black/20 p-3 pt-1 rounded-2xl border-tan/20 text-cream text-center">
+              <div className="mb-8 border bg-black/20 p-3 pt-1 rounded-3xl border-tan/20 text-cream text-center">
                 <motion.img
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
@@ -368,14 +368,14 @@ const Login = () => {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-3 mt-6">
+                <div className="grid grid-cols-3 gap-3 mt-6">
                   <motion.div
                     whileHover={{ scale: 1.03 }}
                     whileTap={{ scale: 0.98 }}
                   >
                     <Button
                       variant="outline"
-                      className="flex items-center justify-center w-full"
+                      className="flex items-center justify-center w-full h-[44px]"
                       onClick={() =>
                         (window.location.href = `${import.meta.env.VITE_API_BASE_URL}/${import.meta.env.VITE_API_VERSION}/auth/google`)
                       }
@@ -397,7 +397,7 @@ const Login = () => {
                   >
                     <Button
                       variant="outline"
-                      className="flex items-center justify-center w-full"
+                      className="flex items-center justify-center w-full h-[44px] px-1"
                     >
                       <motion.img
                         initial={{ scale: 0 }}
@@ -408,6 +408,25 @@ const Login = () => {
                         className="w-6 h-6 rounded-full"
                       />{" "}
                       <span className="ms-1">Facebook</span>
+                    </Button>
+                  </motion.div>
+                  <motion.div
+                    whileHover={{ scale: 1.03 }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    <Button
+                      variant="outline"
+                      className="flex items-center justify-center w-full h-[44px] px-1"
+                    >
+                      <motion.img
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        transition={{ delay: 0.9 }}
+                        src="/images/linkedin.jpg"
+                        alt="LinkedIn"
+                        className="w-6 h-6 rounded-full"
+                      />{" "}
+                      <span className="ms-1">LinkedIn</span>
                     </Button>
                   </motion.div>
                 </div>

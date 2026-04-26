@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useForm } from "react-hook-form";
 import Button from "./../../Buttons/Button";
+import { CheckCircleIcon } from "@heroicons/react/24/solid";
 import {
   EnvelopeIcon,
   LockClosedIcon,
@@ -43,6 +44,7 @@ const SignUp = () => {
     setError,
     clearErrors,
   );
+  const [role, setRole] = useState("user");
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
 
@@ -69,6 +71,7 @@ const SignUp = () => {
       email: data.email,
       password: data.password,
       terms_accepted: data.termsAccepted,
+      role: role,
     };
 
     try {
@@ -106,10 +109,10 @@ const SignUp = () => {
           <motion.div
             whileHover={{ scale: 1.01 }}
             transition={{ duration: 0.2 }}
-            className="overflow-hidden bg-coffee/70 backdrop-blur-xl shadow-2xl p-3 rounded-3xl border border-tan/20"
+            className="overflow-hidden bg-coffee/80 backdrop-blur-2xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] p-4 rounded-[2.5rem] border border-tan/10"
           >
             <div className="p-3">
-              <div className="mb-8 border bg-black/20 p-3 pt-1 rounded-2xl border-tan/20 text-cream text-center">
+              <div className="mb-8 border bg-black/20 p-3 pt-1 rounded-3xl border-tan/20 text-cream text-center">
                 <motion.img
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
@@ -122,21 +125,107 @@ const SignUp = () => {
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
                   transition={{ delay: 0.2 }}
-                  className="mb-2 text-3xl font-bold text-tan"
+                  className="mb-2 text-4xl font-serif font-bold text-tan tracking-tight"
                 >
-                  Create Account
+                  Open Your NextChapter
                 </motion.h1>
                 <motion.p
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
                   transition={{ delay: 0.3 }}
-                  className="font-semibold text-tan/90"
+                  className="text-sm font-medium text-tan/70 italic"
                 >
-                  Join <b>NextChapter</b> today
+                  "Every story begins with a single choice."
                 </motion.p>
               </div>
 
               <form onSubmit={handleSubmit(onSubmit)}>
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.35 }}
+                  className="grid grid-cols-2 gap-4 mb-8"
+                >
+                  <button
+                    type="button"
+                    onClick={() => setRole("user")}
+                    className={`relative overflow-hidden group p-5 rounded-2xl border-2 transition-all duration-500 ${role === "user"
+                      ? "bg-tan/10 border-tan shadow-[0_0_25px_rgba(210,180,140,0.15)]"
+                      : "bg-black/20 border-tan/10 hover:border-tan/30"
+                      }`}
+                  >
+                    <div className="flex flex-col items-center gap-2 relative z-10">
+                      <div className={`relative p-0.5 rounded-2xl border-2 transition-all duration-500 ${role === "user" ? "border-tan scale-110 shadow-lg" : "border-transparent opacity-50"}`}>
+                        <img
+                          src="/images/patron-avatar.png"
+                          alt="Patron"
+                          className="w-28 h-28 rounded-2xl object-cover bg-tan/10"
+                        />
+                        {role === "user" && (
+                          <motion.div
+                            initial={{ scale: 0 }}
+                            animate={{ scale: 1 }}
+                            className="absolute top-1 right-1 bg-sepia rounded-full p-0.5 z-20 shadow-lg"
+                          >
+                            <CheckCircleIcon className="w-5 h-5 text-tan" />
+                          </motion.div>
+                        )}
+                      </div>
+                      <span className={`font-bold text-sm uppercase tracking-[0.2em] transition-colors duration-500 ${role === "user" ? "text-tan" : "text-tan/50"}`}>
+                        Patron
+                      </span>
+                      <p className={`text-[13px] text-center mt-[-8px] transition-opacity duration-500 ${role === "user" ? "text-cream/60" : "text-cream/30"}`}>
+                        Read, Engage & Support
+                      </p>
+                    </div>
+                    {role === "user" && (
+                      <motion.div
+                        layoutId="role-glow"
+                        className="absolute inset-0 bg-gradient-to-br from-tan/10 to-transparent pointer-events-none"
+                      />
+                    )}
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setRole("author")}
+                    className={`relative overflow-hidden group p-5 rounded-2xl border-2 transition-all duration-500 ${role === "author"
+                      ? "bg-tan/10 border-tan shadow-[0_0_25px_rgba(210,180,140,0.15)]"
+                      : "bg-black/20 border-tan/10 hover:border-tan/30"
+                      }`}
+                  >
+                    <div className="flex flex-col items-center gap-2 relative z-10">
+                      <div className={`relative p-0.5 rounded-2xl border-2 transition-all duration-500 ${role === "author" ? "border-tan scale-110 shadow-lg" : "border-transparent opacity-50"}`}>
+                        <img
+                          src="/images/author-avatar.jpeg"
+                          alt="Author"
+                          className="w-28 h-28 rounded-2xl object-cover bg-tan/10"
+                        />
+                        {role === "author" && (
+                          <motion.div
+                            initial={{ scale: 0 }}
+                            animate={{ scale: 1 }}
+                            className="absolute top-1 right-1 bg-sepia rounded-full p-0.5 z-20 shadow-lg"
+                          >
+                            <CheckCircleIcon className="w-5 h-5 text-tan" />
+                          </motion.div>
+                        )}
+                      </div>
+                      <span className={`font-bold text-sm uppercase tracking-[0.2em] transition-colors duration-500 ${role === "author" ? "text-tan" : "text-tan/50"}`}>
+                        Author
+                      </span>
+                      <p className={`text-[13px] text-center mt-[-8px] transition-opacity duration-500 ${role === "author" ? "text-cream/60" : "text-cream/30"}`}>
+                        Write, Sell & Share
+                      </p>
+                    </div>
+                    {role === "author" && (
+                      <motion.div
+                        layoutId="role-glow"
+                        className="absolute inset-0 bg-gradient-to-br from-tan/10 to-transparent pointer-events-none"
+                      />
+                    )}
+                  </button>
+                </motion.div>
                 <div className="grid grid-cols-2 gap-4 mb-4">
                   <motion.div
                     initial={{ scale: 0 }}
@@ -399,13 +488,13 @@ const SignUp = () => {
                     <div className="w-full border-t border-tan/30 "></div>
                   </div>
                   <div className="relative flex justify-center text-sm">
-                    <span className="px-3 py-1 bg-coffee/50 backdrop-blur-md text-cream/60 rounded-full border border-tan/10 font-semibold">
-                      Or sign up with
+                    <span className="px-4 py-1.5 bg-coffee/80 backdrop-blur-md text-tan/70 rounded-full border border-tan/20 font-serif italic text-xs">
+                      Sign in with your social account
                     </span>
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-3 mt-6">
+                <div className="grid grid-cols-3 gap-3 mt-6">
                   <motion.div
                     whileHover={{ scale: 1.03 }}
                     whileTap={{ scale: 0.98 }}
@@ -434,7 +523,7 @@ const SignUp = () => {
                   >
                     <Button
                       variant="outline"
-                      className="flex items-center justify-center w-full"
+                      className="flex items-center justify-center w-full px-1"
                     >
                       <motion.img
                         initial={{ scale: 0 }}
@@ -442,9 +531,28 @@ const SignUp = () => {
                         transition={{ delay: 0.9 }}
                         src="/images/fb.jpg"
                         alt="Facebook"
-                        className="w-6 h-6 rounded-full"
+                        className="w-5 h-5 rounded-full"
                       />{" "}
-                      <span className="ms-1">Facebook</span>
+                      <span className="ms-1 text-xs">Facebook</span>
+                    </Button>
+                  </motion.div>
+                  <motion.div
+                    whileHover={{ scale: 1.03 }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    <Button
+                      variant="outline"
+                      className="flex items-center justify-center w-full px-1"
+                    >
+                      <motion.img
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        transition={{ delay: 0.9 }}
+                        src="/images/linkedin.webp"
+                        alt="LinkedIn"
+                        className="w-5 h-5 rounded-md"
+                      />{" "}
+                      <span className="ms-1 text-xs">LinkedIn</span>
                     </Button>
                   </motion.div>
                 </div>
