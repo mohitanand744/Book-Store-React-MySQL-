@@ -15,6 +15,9 @@ import { toast } from "sonner";
 import useAuth from "../../../Hooks/useAuth";
 import { use } from "react";
 import { useNavigate } from "react-router-dom";
+import { SuccessCheckmarkSvg } from "../../SVGs/SVGs";
+import ModelsHeading from "../../Headings/ModelsHeading";
+import CancelModalWarning from "../../Modal/CancelModalWarning";
 
 const ResetPasswordModal = ({
   showReset,
@@ -102,7 +105,8 @@ const ResetPasswordModal = ({
     setIsResending(true);
 
     try {
-      const response = await forgotPassword(emailValue);
+      const finalEmail = forgotPasswordEmail || email || emailValue;
+      const response = await forgotPassword(finalEmail);
 
       if (response?.success) {
         setIsResending(false);
@@ -157,45 +161,19 @@ const ResetPasswordModal = ({
                 stiffness: 200,
                 damping: 15,
               }}
-              className="flex items-center justify-center w-16 h-16 mx-auto mb-4 bg-green-100 rounded-full"
+              className="flex items-center justify-center w-16 h-16 mx-auto mb-4 bg-tan/20 rounded-full"
             >
-              <motion.svg
-                initial={{ pathLength: 0, opacity: 0 }}
-                animate={{ pathLength: 1, opacity: 1 }}
-                transition={{
-                  delay: 0.3,
-                  duration: 0.5,
-                  ease: "easeInOut",
-                }}
-                className="w-10 h-10 text-green-600"
-                viewBox="0 0 52 52"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <motion.path
-                  d="M14.1 27.2l7.1 7.2 16.7-16.8"
-                  stroke="currentColor"
-                  strokeWidth="7"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  initial={{ pathLength: 0 }}
-                  animate={{ pathLength: 1 }}
-                  transition={{
-                    delay: 0.5,
-                    duration: 0.4,
-                    ease: "easeInOut",
-                  }}
-                />
-              </motion.svg>
+              <SuccessCheckmarkSvg className="w-10 h-10" />
             </motion.div>
-            <h2 className="mb-1 text-2xl font-bold text-center ">
-              Check Your Email
-            </h2>
-            <p className="mb-4 text-sm text-center ">
-              We've sent a password reset link to your email <b>{emailValue}</b>{" "}
-              address. Please check your inbox and click the link to reset your
-              password.
-            </p>
+            <ModelsHeading
+              heading="Check Your Email"
+              subHeading={`We've sent a password reset link to your email address. Please check your inbox and click the link to reset your password.`}
+            />
+            <div className="text-center -mt-6 mb-8">
+              <span className="px-4 py-1 bg-tan/10 rounded-full text-xs font-semibold text-tan/80 border border-tan/10">
+                {forgotPasswordEmail || email || emailValue}
+              </span>
+            </div>
 
             <AnimatePresence>
               {emailResent && (
@@ -204,11 +182,11 @@ const ResetPasswordModal = ({
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0 }}
                   transition={{ duration: 0.5, ease: "easeOut" }}
-                  className="p-3 mb-4 border border-green-200 rounded-lg bg-green-50"
+                  className="p-4 mb-6 border border-tan/20 rounded-2xl bg-tan/5"
                 >
-                  <p className="text-sm text-green-700">
-                    Reset link has been resent successfully! Please check your
-                    email.
+                  <p className="text-sm text-tan/80 italic text-center">
+                    "Reset link has been resent successfully! Please check your
+                    email."
                   </p>
                 </motion.div>
               )}
@@ -236,9 +214,9 @@ const ResetPasswordModal = ({
               />
             )}
             <Button
-              variant="outline"
               onClick={handleClose}
-              className="w-full hover:bg-red-800 hover:text-tan"
+              variant="outline"
+              className="w-full !bg-red-error/15 hover:!bg-red-error/20"
             >
               Cancel
             </Button>
@@ -251,27 +229,31 @@ const ResetPasswordModal = ({
   if (isAuthenticated && afterExitingUserResettingPasswordPopup) {
     return (
       <Modal isOpen={showReset} onClose={handleClose}>
-        <h2 className="text-xl text-center font-bold  mb-1">
-          Account Confirmation
-        </h2>
-        <p className="mb-7 text-sm text-center ">
-          Please confirm your account before resetting your password.
-        </p>
+        <ModelsHeading
+          heading="Account Confirmation"
+          subHeading="Please confirm your account details before resetting your password."
+        />
 
-        <div className="space-y-3 ">
-          <p>You are currently logged in as:</p>
+        <div className="space-y-4 mb-8">
+          <div className="bg-tan/10 p-4 rounded-2xl border border-tan/5">
+            <p className="text-xs uppercase tracking-wider text-tan/40 font-bold mb-1">
+              Currently Logged In
+            </p>
+            <p className="font-semibold text-tan">
+              {userData?.email}
+            </p>
+          </div>
 
-          <p className="font-semibold  bg-gray-100 px-3 py-2 rounded-md">
-            {userData?.email}
-          </p>
+          <div className="bg-tan/10 p-4 rounded-2xl border border-tan/5">
+            <p className="text-xs uppercase tracking-wider text-tan/40 font-bold mb-1">
+              Resetting For Account
+            </p>
+            <p className="font-semibold text-tan">
+              {forgotPasswordEmail}
+            </p>
+          </div>
 
-          <p>You are resetting password for:</p>
-
-          <p className="font-semibold  bg-gray-100 px-3 py-2 rounded-md">
-            {forgotPasswordEmail}
-          </p>
-
-          <p className="mt-2 text-sm ">
+          <p className="text-sm text-tan/60 leading-relaxed italic text-center px-4">
             If you continue, the password for the second account will be
             updated. You will remain logged in to your current account.
           </p>
@@ -288,12 +270,12 @@ const ResetPasswordModal = ({
           </Button>
 
           <Button
-            variant="outline"
-            className="hover:bg-red-800 hover:text-tan"
             onClick={() => {
               navigate("/nextChapter");
               confirmClose();
             }}
+            variant="outline"
+            className="w-full !bg-red-error/15 hover:!bg-red-error/20"
           >
             Cancel
           </Button>
@@ -306,12 +288,10 @@ const ResetPasswordModal = ({
   return (
     <Modal isOpen={showReset} onClose={handleClose}>
       <div className="w-full">
-        <h2 className="mb-1 text-2xl font-bold text-center ">
-          Reset Password
-        </h2>
-        <p className="mb-4 text-sm text-center ">
-          Enter your new password and confirm it.
-        </p>
+        <ModelsHeading
+          heading="Reset Password"
+          subHeading="Enter your new password and confirm it to regain access."
+        />
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <Input
@@ -390,8 +370,8 @@ const ResetPasswordModal = ({
             )}
             <Button
               variant="outline"
-              className="hover:bg-red-800 hover:text-tan"
               onClick={handleClose}
+              className="w-full !bg-red-error/15 hover:!bg-red-error/20"
             >
               Cancel
             </Button>
@@ -403,33 +383,5 @@ const ResetPasswordModal = ({
 };
 
 export default ResetPasswordModal;
-
-const CancelModalWarning = ({ confirmClose, setWarningMsg }) => {
-  return (
-    <div className="absolute top-[-10rem] left-0 flex items-center justify-center w-full h-full bg-black bg-opacity-40">
-      <div className="w-full max-w-md p-6 bg-tan text-sepia border-t-[5px] border-b-[5px] border-yellow-500 shadow-lg rounded-xl">
-        <h2 className="mb-2 text-xl  font-bold">
-          Leave Password Reset?
-        </h2>
-
-        <p className="leading-relaxed text-gray-600">
-          You're currently in the middle of resetting your password. If you exit
-          now, you can always continue using the reset link sent to your email.
-          Please note that the link will remain valid for 10 minutes.
-        </p>
-
-        <div className="flex items-center justify-end gap-4 mt-6">
-          <Button variant="outline" onClick={() => setWarningMsg(false)}>
-            Stay Here
-          </Button>
-
-          <Button variant="primary" onClick={confirmClose}>
-            Exit Reset
-          </Button>
-        </div>
-      </div>
-    </div>
-  );
-};
 
 

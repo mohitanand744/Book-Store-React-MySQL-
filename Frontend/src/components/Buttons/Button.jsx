@@ -18,7 +18,7 @@ const Button = ({
   const variantClasses = {
     primary: "bg-coffee border-2 border-tan text-tan hover:bg-sepia",
     secondary: "bg-tan text-coffee border-2 border-transparent hover:bg-cream",
-    outline: "border-2 border-tan text-tan bg-transparent hover:bg-tan hover:text-coffee",
+    outline: "border-2 border-tan text-tan bg-transparent hover:bg-sepia",
     "outline-tan": "border-2 border-tan/20 text-tan bg-tan/5 hover:bg-tan/10",
     ghost: "bg-transparent text-coffee hover:bg-sepia hover:text-tan",
   };

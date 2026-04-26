@@ -47,7 +47,7 @@ const Input = (
     type === "password" ? (showPassword ? "text" : "password") : type;
 
   return (
-    <div className={`mb-4 w-full ${containerClassName}`}>
+    <motion.div layout className={`mb-4 w-full ${containerClassName}`}>
       {label && (
         <label className="flex items-center justify-between text-sm font-medium text-brand-label mb-1">
           <span className={`${labelClassName}`}>{label}</span>
@@ -78,7 +78,7 @@ const Input = (
         ) : Component === "textarea" ? (
           <textarea
             ref={ref}
-            className={`w-full bg-tan/10 text-tan/90 truncate px-4 py-2 rounded-lg border ${error
+            className={`w-full block bg-tan/10 text-tan/90 truncate px-4 py-2 rounded-lg border ${error
               ? "border-red-error placeholder:text-red-error focus:ring-red-error focus:border-red-error"
               : "border-sepia placeholder:text-tan/60 focus:ring-coffee focus:border-coffee"
               }  focus:outline-none focus:ring-2 ${className}`}
@@ -92,7 +92,7 @@ const Input = (
           <input
             ref={ref}
             type={inputType}
-            className={`w-full bg-tan/10 text-cream/95 h-[42px] pr-[44px] truncate px-4 py-2 rounded-lg border ${error
+            className={`w-full bg-tan/10 text-cream/95 h-[42px] pr-[44px] truncate px-4 py-2 rounded-lg border  ${error
               ? "border-red-error placeholder:!text-red-error focus:ring-red-error focus:border-red-error"
               : "placeholder:text-cream/70 border-sepia focus:ring-coffee focus:border-coffee"
               } shadow-sm focus:outline-none focus:ring-2 ${className}`}
@@ -112,7 +112,7 @@ const Input = (
         {/* Custom right icon: show/hide or external icon */}
         {!error && icon && (
           <div
-            className={`absolute right-0 top-[0.6px] min-w-[40px] h-[40px] flex items-center justify-center  bg-tan/10 text-cream/95 rounded-r-lg`}
+            className={`absolute right-0 top-[0.6px] min-w-[40px] min-h-full h-[40px] flex items-center justify-center  bg-tan/10 text-cream/95 rounded-r-lg`}
           >
             {type === "password" ? (
               <button
@@ -135,7 +135,7 @@ const Input = (
         )}
         {error && (
           <div
-            className={`absolute right-0 top-0  ${Component === "textarea" ? "border-t border-r rounded-tr-lg" : "border-y border-r rounded-r-lg"} border-red-error h-[42px] flex items-center justify-center px-3 bg-tan/10 text-red-error `}
+            className={`absolute right-0 top-0  ${Component === "textarea" ? "border-t border-r rounded-tr-lg" : "border-y border-r rounded-r-lg"} border-red-error min-h-full h-[42px] flex items-center justify-center px-3 bg-tan/10 text-red-error `}
           >
             {type === "password" ? (
               <button
@@ -158,12 +158,22 @@ const Input = (
           </div>
         )}
       </div>
-      {error && (
-        <p className="mt-1 text-sm text-red-error" id="input-error">
-          {error}
-        </p>
-      )}
-    </div>
+      <AnimatePresence>
+        {error && (
+          <motion.p
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.2 }}
+            className="mt-1 text-sm text-red-error"
+            id="input-error"
+          >
+            {error}
+          </motion.p>
+        )}
+      </AnimatePresence>
+
+    </motion.div>
   );
 };
 

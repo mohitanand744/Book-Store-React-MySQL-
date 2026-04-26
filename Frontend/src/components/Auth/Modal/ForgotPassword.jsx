@@ -47,7 +47,7 @@ const ForgotPasswordModal = ({
 
       toast.error(
         error.response?.data?.message ||
-          "Something went wrong. Please try again later.",
+        "Something went wrong. Please try again later.",
       );
     }
     reset();
@@ -86,8 +86,7 @@ const ForgotPasswordModal = ({
               Send Reset Link
             </Button>
             <Button
-              variant="outline"
-              className="hover:bg-red-800"
+              className="!bg-red-error/15 hover:!bg-red-error/20"
               onClick={() => setShowForgot(false)}
             >
               Cancel

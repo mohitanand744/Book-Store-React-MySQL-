@@ -1,7 +1,9 @@
-import { axiosInstance } from "../../services/api";
+import { axiosInstance, externalAxiosInstance } from "../../services/api";
 
 export const getStatesCites = async (pinCode) => {
-  const response = await axiosInstance.get(
+  console.log("from", pinCode);
+
+  const response = await externalAxiosInstance.get(
     `https://api.postalpincode.in/pincode/${pinCode}`,
   );
   return response.data;

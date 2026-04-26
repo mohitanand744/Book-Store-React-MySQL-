@@ -5,6 +5,8 @@ import Button from "../../Buttons/Button";
 import { login } from "../../../utils/apis/authApis";
 import Login from "./../Pages/Login";
 import ModelsHeading from "../../Headings/ModelsHeading";
+import { SuccessCheckmarkSvg } from "../../SVGs/SVGs";
+import CancelModalWarning from "../../Modal/CancelModalWarning";
 
 const EmailVerificationStatus = ({
   status,
@@ -18,6 +20,7 @@ const EmailVerificationStatus = ({
   const [showModal, setShowModal] = useState(true);
   const [emailResent, setEmailResent] = useState(false);
   const [isResending, setIsResending] = useState(false);
+  const [warningMsg, setWarningMsg] = useState(false);
 
   console.log(email, "email");
 
@@ -54,11 +57,20 @@ const EmailVerificationStatus = ({
   }, [emailResent]);
 
   const handleClose = () => {
+    if (status === "unverified" && !warningMsg) {
+      setWarningMsg(true);
+      return;
+    }
+    confirmClose();
+  };
+
+  const confirmClose = () => {
     setShowModal(false);
     setEmailResent(false);
     setIsResending(false);
     setCountdown(0);
     setStatus("");
+    setWarningMsg(false);
     onClose?.();
   };
 
@@ -83,36 +95,9 @@ const EmailVerificationStatus = ({
               stiffness: 200,
               damping: 15,
             }}
-            className="flex items-center justify-center w-16 h-16 mx-auto mb-4 bg-green-100 rounded-full"
+            className="flex items-center justify-center w-16 h-16 mx-auto mb-4 bg-tan/20 rounded-full"
           >
-            <motion.svg
-              initial={{ pathLength: 0, opacity: 0 }}
-              animate={{ pathLength: 1, opacity: 1 }}
-              transition={{
-                delay: 0.3,
-                duration: 0.5,
-                ease: "easeInOut",
-              }}
-              className="w-10 h-10 text-green-600"
-              viewBox="0 0 52 52"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <motion.path
-                d="M14.1 27.2l7.1 7.2 16.7-16.8"
-                stroke="currentColor"
-                strokeWidth="7"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                initial={{ pathLength: 0 }}
-                animate={{ pathLength: 1 }}
-                transition={{
-                  delay: 0.5,
-                  duration: 0.4,
-                  ease: "easeInOut",
-                }}
-              />
-            </motion.svg>
+            <SuccessCheckmarkSvg className="w-10 h-10" />
           </motion.div>
           <h2 className="mb-3 text-2xl font-bold text-center ">
             Email Verified Successfully!
@@ -151,13 +136,13 @@ const EmailVerificationStatus = ({
               stiffness: 200,
               damping: 15,
             }}
-            className="flex items-center justify-center w-16 h-16 mx-auto mb-4 bg-red-100 rounded-full"
+            className="flex items-center justify-center w-16 h-16 mx-auto mb-4 bg-red-error/20 rounded-full"
           >
             <motion.svg
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ duration: 0.4, ease: "easeInOut" }}
-              className="w-10 h-10 text-red-600"
+              className="w-10 h-10 text-red-error"
               viewBox="0 0 52 52"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
@@ -215,11 +200,11 @@ const EmailVerificationStatus = ({
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0 }}
                 transition={{ duration: 0.5, ease: "easeOut" }}
-                className="p-3 mb-4 border border-green-200 rounded-lg bg-green-50"
+                className="p-4 mb-6 border border-tan/20 rounded-2xl bg-tan/5"
               >
-                <p className="text-sm text-green-700">
-                  Verification email has been sent successfully! Please check
-                  your inbox.
+                <p className="text-sm text-tan/80 text-center italic">
+                  "Verification email has been sent successfully! Please check
+                  your inbox."
                 </p>
               </motion.div>
             )}
@@ -243,8 +228,8 @@ const EmailVerificationStatus = ({
 
           <Button
             variant="outline"
-            className="hover:bg-red-800 hover:text-tan"
             onClick={handleClose}
+            className="!bg-red-error/15 hover:!bg-red-error/20"
           >
             Cancel
           </Button>
@@ -268,13 +253,13 @@ const EmailVerificationStatus = ({
               stiffness: 200,
               damping: 15,
             }}
-            className="flex items-center justify-center w-16 h-16 mx-auto mb-4 bg-yellow-100 rounded-full"
+            className="flex items-center justify-center w-16 h-16 mx-auto mb-4 bg-tan/20 rounded-full"
           >
             <motion.svg
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ duration: 0.4, ease: "easeInOut" }}
-              className="w-12 h-12 text-yellow-500"
+              className="w-12 h-12 text-tan"
               viewBox="0 0 52 52"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
@@ -335,11 +320,11 @@ const EmailVerificationStatus = ({
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0 }}
                 transition={{ duration: 0.5, ease: "easeOut" }}
-                className="p-3 mb-4 border border-green-200 rounded-lg bg-green-50"
+                className="p-4 mb-6 border border-tan/20 rounded-2xl bg-tan/5"
               >
-                <p className="text-sm text-green-700">
-                  Verification email has been resent successfully! Please check
-                  your inbox.
+                <p className="text-sm text-tan/80 text-center italic">
+                  "Verification email has been resent successfully! Please check
+                  your inbox."
                 </p>
               </motion.div>
             )}
@@ -360,13 +345,28 @@ const EmailVerificationStatus = ({
                 ? "Sending..."
                 : "Resend Verification"}
           </Button>
-          <Button
-            variant="outline"
-            className="hover:bg-red-800 hover:text-tan"
-            onClick={handleClose}
-          >
-            Cancel
-          </Button>
+
+          <div className="relative">
+            <Button
+              onClick={handleClose}
+              variant="outline"
+              className="w-full !bg-red-error/15 hover:!bg-red-error/20"
+            >
+              Cancel
+            </Button>
+            <AnimatePresence>
+              {warningMsg && (
+                <CancelModalWarning
+                  setWarningMsg={setWarningMsg}
+                  confirmClose={confirmClose}
+                  title="Exit Verification?"
+                  message="You're currently in the middle of verifying your email address. If you exit now, you can always continue using the verification link sent to your email. Please note that the link will remain valid for 10 minutes"
+                  stayText="Stay & Verify"
+                  exitText="Exit Anyway"
+                />
+              )}
+            </AnimatePresence>
+          </div>
         </div>
       </div>
     </Modal>

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useForm } from "react-hook-form";
 import Button from "./../../Buttons/Button";
-import { CheckCircleIcon } from "@heroicons/react/24/solid";
 import {
   EnvelopeIcon,
   LockClosedIcon,
@@ -10,6 +9,7 @@ import {
 } from "@heroicons/react/24/outline";
 import Input from "./../../Inputs/Input";
 import Checkbox from "../../Inputs/Checkbox";
+import Radio from "../../Inputs/Radio";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { signup } from "../../../utils/apis/authApis";
@@ -29,8 +29,9 @@ const SignUp = () => {
   const {
     register,
     handleSubmit,
-    getValues,
+    setValue,
     reset,
+    getValues,
     trigger,
     watch,
     setError,
@@ -38,13 +39,15 @@ const SignUp = () => {
     formState: { errors, isSubmitting },
   } = useForm({
     mode: "onTouched",
+    defaultValues: {
+      role: "",
+    },
   });
 
   const { handleKeyDown, handleInput } = useInputHandlers(
     setError,
     clearErrors,
   );
-  const [role, setRole] = useState("user");
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
 
@@ -71,7 +74,7 @@ const SignUp = () => {
       email: data.email,
       password: data.password,
       terms_accepted: data.termsAccepted,
-      role: role,
+      role: data.role,
     };
 
     try {
@@ -104,12 +107,13 @@ const SignUp = () => {
           initial={{ scale: 0, y: 20 }}
           animate={{ scale: 1, y: 0 }}
           transition={{ duration: 0.2 }}
-          className="w-full max-w-md"
+          className="w-full max-w-lg"
         >
           <motion.div
+            layout
             whileHover={{ scale: 1.01 }}
             transition={{ duration: 0.2 }}
-            className="overflow-hidden bg-coffee/80 backdrop-blur-2xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] p-4 rounded-[2.5rem] border border-tan/10"
+            className="overflow-hidden bg-coffee/80 backdrop-blur-2xl  shadow-[0_20px_50px_rgba(0,0,0,0.5)] p-4 rounded-3xl border border-tan/10"
           >
             <div className="p-3">
               <div className="mb-8 border bg-black/20 p-3 pt-1 rounded-3xl border-tan/20 text-cream text-center">
@@ -135,7 +139,7 @@ const SignUp = () => {
                   transition={{ delay: 0.3 }}
                   className="text-sm font-medium text-tan/70 italic"
                 >
-                  "Every story begins with a single choice."
+                  `` Every story begins with a single choice. ``
                 </motion.p>
               </div>
 
@@ -148,37 +152,38 @@ const SignUp = () => {
                 >
                   <button
                     type="button"
-                    onClick={() => setRole("user")}
-                    className={`relative overflow-hidden group p-5 rounded-2xl border-2 transition-all duration-500 ${role === "user"
+                    onClick={() => setValue("role", "user", { shouldValidate: true })}
+                    className={`relative overflow-hidden group p-5 rounded-2xl border-t-2 border-b-2 transition-all duration-500 ${watch("role") === "user"
                       ? "bg-tan/10 border-tan shadow-[0_0_25px_rgba(210,180,140,0.15)]"
                       : "bg-black/20 border-tan/10 hover:border-tan/30"
                       }`}
                   >
-                    <div className="flex flex-col items-center gap-2 relative z-10">
-                      <div className={`relative p-0.5 rounded-2xl border-2 transition-all duration-500 ${role === "user" ? "border-tan scale-110 shadow-lg" : "border-transparent opacity-50"}`}>
+                    <div className="flex flex-col items-center gap-2  z-10">
+                      <div className={` p-0.5 rounded-2xl border-t-2 border-b-2 transition-all duration-500 ${watch("role") === "user" ? "border-tan scale-110 shadow-lg" : "border-transparent opacity-50"}`}>
                         <img
                           src="/images/patron-avatar.png"
                           alt="Patron"
                           className="w-28 h-28 rounded-2xl object-cover bg-tan/10"
                         />
-                        {role === "user" && (
-                          <motion.div
-                            initial={{ scale: 0 }}
-                            animate={{ scale: 1 }}
-                            className="absolute top-1 right-1 bg-sepia rounded-full p-0.5 z-20 shadow-lg"
-                          >
-                            <CheckCircleIcon className="w-5 h-5 text-tan" />
-                          </motion.div>
-                        )}
                       </div>
-                      <span className={`font-bold text-sm uppercase tracking-[0.2em] transition-colors duration-500 ${role === "user" ? "text-tan" : "text-tan/50"}`}>
+
+                      <div className="absolute top-2 -right-1">
+                        <Radio
+                          {...register("role", { required: "Role is required please select your role" })}
+                          value="user"
+                          checked={watch("role") === "user"}
+                          onChange={() => setValue("role", "user", { shouldValidate: true })}
+                          label=""
+                          className="scale-110"
+                        /></div>
+                      <span className={`font-bold text-sm uppercase tracking-[0.2em] transition-colors duration-500 ${watch("role") === "user" ? "text-tan" : "text-tan/50"}`}>
                         Patron
                       </span>
-                      <p className={`text-[13px] text-center mt-[-8px] transition-opacity duration-500 ${role === "user" ? "text-cream/60" : "text-cream/30"}`}>
+                      <p className={`text-[14px] text-center -mt-2 transition-opacity duration-500 ${watch("role") === "user" ? "text-cream/60" : "text-cream/30"}`}>
                         Read, Engage & Support
                       </p>
                     </div>
-                    {role === "user" && (
+                    {watch("role") === "user" && (
                       <motion.div
                         layoutId="role-glow"
                         className="absolute inset-0 bg-gradient-to-br from-tan/10 to-transparent pointer-events-none"
@@ -188,37 +193,38 @@ const SignUp = () => {
 
                   <button
                     type="button"
-                    onClick={() => setRole("author")}
-                    className={`relative overflow-hidden group p-5 rounded-2xl border-2 transition-all duration-500 ${role === "author"
+                    onClick={() => setValue("role", "author", { shouldValidate: true })}
+                    className={`relative overflow-hidden group p-5 rounded-2xl border-t-2 border-b-2 transition-all duration-500 ${watch("role") === "author"
                       ? "bg-tan/10 border-tan shadow-[0_0_25px_rgba(210,180,140,0.15)]"
                       : "bg-black/20 border-tan/10 hover:border-tan/30"
                       }`}
                   >
-                    <div className="flex flex-col items-center gap-2 relative z-10">
-                      <div className={`relative p-0.5 rounded-2xl border-2 transition-all duration-500 ${role === "author" ? "border-tan scale-110 shadow-lg" : "border-transparent opacity-50"}`}>
+                    <div className="flex flex-col items-center gap-2  z-10">
+                      <div className={` p-0.5 rounded-2xl border-t-2  border-b-2 transition-all duration-500 ${watch("role") === "author" ? "border-tan scale-110 shadow-lg" : "border-transparent opacity-50"}`}>
                         <img
                           src="/images/author-avatar.jpeg"
                           alt="Author"
-                          className="w-28 h-28 rounded-2xl object-cover bg-tan/10"
+                          className="w-28  h-28 rounded-2xl object-cover bg-tan/10"
                         />
-                        {role === "author" && (
-                          <motion.div
-                            initial={{ scale: 0 }}
-                            animate={{ scale: 1 }}
-                            className="absolute top-1 right-1 bg-sepia rounded-full p-0.5 z-20 shadow-lg"
-                          >
-                            <CheckCircleIcon className="w-5 h-5 text-tan" />
-                          </motion.div>
-                        )}
                       </div>
-                      <span className={`font-bold text-sm uppercase tracking-[0.2em] transition-colors duration-500 ${role === "author" ? "text-tan" : "text-tan/50"}`}>
+
+                      <div className="absolute top-2 -right-1">
+                        <Radio
+                          {...register("role", { required: "Role is required please select your role" })}
+                          value="author"
+                          checked={watch("role") === "author"}
+                          onChange={() => setValue("role", "author", { shouldValidate: true })}
+                          label=""
+                          className="scale-110 "
+                        /></div>
+                      <span className={`font-bold text-sm uppercase mt-1 tracking-[0.2em] transition-colors duration-500 ${watch("role") === "author" ? "text-tan" : "text-tan/50"}`}>
                         Author
                       </span>
-                      <p className={`text-[13px] text-center mt-[-8px] transition-opacity duration-500 ${role === "author" ? "text-cream/60" : "text-cream/30"}`}>
+                      <p className={`text-[14px] text-center transition-opacity duration-500 -mt-2 ${watch("role") === "author" ? "text-cream/60" : "text-cream/30"}`}>
                         Write, Sell & Share
                       </p>
                     </div>
-                    {role === "author" && (
+                    {watch("role") === "author" && (
                       <motion.div
                         layoutId="role-glow"
                         className="absolute inset-0 bg-gradient-to-br from-tan/10 to-transparent pointer-events-none"
@@ -226,6 +232,11 @@ const SignUp = () => {
                     )}
                   </button>
                 </motion.div>
+                {errors.role && (
+                  <p className="text-red-500 text-xs mt-[-1rem] mb-4 text-center">
+                    {errors.role.message}
+                  </p>
+                )}
                 <div className="grid grid-cols-2 gap-4 mb-4">
                   <motion.div
                     initial={{ scale: 0 }}
@@ -548,9 +559,9 @@ const SignUp = () => {
                         initial={{ scale: 0 }}
                         animate={{ scale: 1 }}
                         transition={{ delay: 0.9 }}
-                        src="/images/linkedin.webp"
+                        src="/images/linkedin.jpg"
                         alt="LinkedIn"
-                        className="w-5 h-5 rounded-md"
+                        className="w-5 h-5 rounded-full"
                       />{" "}
                       <span className="ms-1 text-xs">LinkedIn</span>
                     </Button>

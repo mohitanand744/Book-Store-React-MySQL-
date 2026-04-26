@@ -368,7 +368,7 @@ const AddressModal = ({
           subHeading={"Choose where you want your order delivered"}
         />
 
-        <div className="flex mb-6 border-b border-coffee/40">
+        <div className="flex mb-6 border-b border-sepia">
           {["select", "add"].map((tab) => (
             <button
               key={tab}
@@ -494,8 +494,7 @@ const AddressModal = ({
               {/* Actions */}
               <div className="flex gap-3 pt-4">
                 <Button
-                  variant="outline"
-                  className="flex-1 text-sm"
+                  className="flex-1 text-sm !bg-red-error/15 hover:!bg-red-error/20"
                   onClick={() => {
                     setShowAddress(false);
                     if (showAddress === "add" || showAddress?.id) {
@@ -753,8 +752,7 @@ const AddressModal = ({
                   CONFIRM
                 </Button>
                 <Button
-                  variant="outline"
-                  className="flex-1"
+                  className="flex-1 !bg-red-error/15 hover:!bg-red-error/20"
                   onClick={() => setConfirmationData(null)}
                 >
                   CANCEL
@@ -799,8 +797,7 @@ const AddressModal = ({
                   Delete
                 </Button>
                 <Button
-                  variant="outline"
-                  className="flex-1"
+                  className="flex-1 !bg-red-error/15 hover:!bg-red-error/20"
                   onClick={() => setAddressToDelete(null)}
                 >
                   Cancel

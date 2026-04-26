@@ -26,8 +26,10 @@ const Modal = ({ isOpen, onClose, loading, children }) => {
                 layout: { duration: 0.35, ease: "easeInOut" },
               }}
               onClick={(e) => e.stopPropagation()}
-              className="w-full overflow-y-auto max-h-[93vh]  max-w-md relative border-2 border-tan bg-coffee text-tan p-6 rounded-xl shadow-xl"
+              className="w-full h-auto overflow-y-auto scrollbar-hide max-h-[93vh]  max-w-md relative border-2 border-tan bg-coffee text-tan p-6 rounded-3xl shadow-xl"
             >
+
+
               <AnimatePresence>
                 {loading && (
                   <motion.div
@@ -38,13 +40,15 @@ const Modal = ({ isOpen, onClose, loading, children }) => {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    className="absolute inset-0 z-50 flex items-center justify-center bg-black/20 "
+                    className="absolute inset-0 z-50 flex items-center justify-center bg-coffee/60 backdrop-blur-[2px] rounded-[2rem]"
                   >
-                    <BooksLoader height="0rem" imgHeight="14" imgWidth="14" />
+                    <BooksLoader height="0rem" imgHeight="16" imgWidth="16" />
                   </motion.div>
                 )}
               </AnimatePresence>
-              {children}
+              <div className="z-10">
+                {children}
+              </div>
             </motion.div>
           </motion.div>
         </>

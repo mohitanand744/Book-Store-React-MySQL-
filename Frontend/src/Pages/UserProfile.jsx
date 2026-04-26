@@ -666,7 +666,7 @@ const UserProfile = () => {
             </Button>
             <Button
               onClick={handleConfirmLogout}
-              className="flex-1 px-4 py-2 bg-red-error/15 hover:bg-red-error/20 rounded-lg font-medium  transition-colors shadow-md"
+              className="flex-1 px-4 py-2 bg-red-error/15 hover:!bg-red-error/20 rounded-lg font-medium  transition-colors shadow-md"
               type="button"
             >
               Logout

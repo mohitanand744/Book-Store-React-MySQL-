@@ -30,6 +30,10 @@ const axiosInstanceFormData = axios.create({
   },
 });
 
+const externalAxiosInstance = axios.create({
+  // No baseURL or custom headers here to avoid CORS issues
+});
+
 export const useAxiosLoader = () => {
   const { showLoader, hideLoader, updateProgress } = useLoader();
   const { logoutStatusSuccess } = useAuth();
@@ -49,16 +53,26 @@ export const useAxiosLoader = () => {
       logoutStatusSuccess,
     });
 
+    const externalInterceptors = attachInterceptors(externalAxiosInstance, {
+      showLoader,
+      hideLoader,
+      updateProgress,
+      logoutStatusSuccess,
+    });
+
     return () => {
       axiosInstance.interceptors.request.eject(defaultInterceptors.reqInterceptor);
       axiosInstance.interceptors.response.eject(defaultInterceptors.resInterceptor);
 
       axiosInstanceFormData.interceptors.request.eject(formDataInterceptors.reqInterceptor);
       axiosInstanceFormData.interceptors.response.eject(formDataInterceptors.resInterceptor);
+
+      externalAxiosInstance.interceptors.request.eject(externalInterceptors.reqInterceptor);
+      externalAxiosInstance.interceptors.response.eject(externalInterceptors.resInterceptor);
     };
   }, []);
 };
 
-export { axiosInstance, axiosInstanceFormData };
+export { axiosInstance, axiosInstanceFormData, externalAxiosInstance };
 
 

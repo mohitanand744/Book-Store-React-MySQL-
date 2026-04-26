@@ -362,7 +362,7 @@ const Login = () => {
                     <div className="w-full border-t border-tan/30 "></div>
                   </div>
                   <div className="relative flex justify-center text-sm">
-                    <span className="px-3 py-1 bg-coffee/50 backdrop-blur-md text-cream/60 rounded-full border border-tan/10 font-semibold">
+                    <span className="px-3 py-1 bg-coffee/50 backdrop-blur-md text-tan/70 rounded-full border border-tan/10 font-semibold">
                       Or continue with
                     </span>
                   </div>

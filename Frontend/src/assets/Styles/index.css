@@ -2,6 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer utilities {
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -252,4 +262,6 @@ input:-webkit-autofill:active {
   -webkit-text-fill-color: #ffe6c1 !important; /* cream color */
   transition: background-color 5000s ease-in-out 0s;
   box-shadow: inset 0 0 20px 20px rgba(92, 76, 73, 0.464) !important; /* coffee/20 tint */
+  border-width: 1px !important;
+  border-color: theme('colors.sepia') !important;
 }

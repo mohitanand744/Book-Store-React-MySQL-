@@ -36,26 +36,25 @@ function DualRangeSlider({ setOpenCategory, PriceFilter, filters, setFilters }) 
         }}
         className="flex items-center justify-between p-5 cursor-pointer group hover:bg-tan/5 transition-colors"
       >
-        <div className="flex flex-col text-tan">
-          <span className="text-sm font-serif text-tan/90 text-start">Investment Range</span>
+        <div className="flex flex-col text-cream">
+          <span className="text-sm font-serif text-cream/90 text-start">Investment Range</span>
           <h1 className="text-lg font-medium leading-none mt-1">Price Filter</h1>
         </div>
         <motion.div
           animate={{ rotate: PriceFilter ? 180 : 0 }}
           transition={{ type: "spring", stiffness: 200, damping: 20 }}
-          className="w-8 h-8 flex items-center justify-center rounded-full bg-tan/10 group-hover:bg-tan/20 transition-colors text-tan"
+          className="w-8 h-8 flex items-center justify-center rounded-full bg-tan/10 group-hover:bg-tan/20 transition-colors text-cream"
         >
           <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M2.5 4.5L6 8L9.5 4.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            <path d="M2.5 4.5L6 8L9.5 4.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </motion.div>
       </div>
 
       <div
         onClick={(e) => e.stopPropagation()}
-        className={`${
-          PriceFilter ? "h-[7rem]" : "h-[0rem]"
-        } overflow-hidden flex justify-center items-center flex-col transition-all duration-300 ease-in-out w-full  rounded-lg `}
+        className={`${PriceFilter ? "h-[7rem]" : "h-[0rem]"
+          } overflow-hidden flex justify-center items-center flex-col transition-all duration-300 ease-in-out w-full  rounded-lg `}
       >
         <div className="w-full p-8 pt-0">
           {/* Display Min and Max Prices */}

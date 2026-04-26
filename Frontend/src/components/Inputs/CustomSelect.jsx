@@ -45,7 +45,7 @@ const CustomSelect = (
         ref={ref}
         type="button"
         className={`w-full h-[42px] px-4 py-3 relative rounded-lg border bg-tan text-sepia flex items-center justify-between ${error
-          ? "border-error focus:ring-error"
+          ? "border-red-error focus:ring-error"
           : "border-tan focus:ring-coffee focus:border-coffee"
           } shadow-sm focus:outline-none focus:ring-2 ${className}`}
         onClick={() => setIsOpen(!isOpen)}

@@ -34,13 +34,13 @@ const BookListingFilter = ({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       onClick={(e) => e.stopPropagation()}
-      className={`hideScroll overflow-y-scroll border border-tan/30 bg-coffee/90 backdrop-blur-2xl text-tan z-[9999] sm:w-[22rem] overflow-hidden duration-300 mt-20 ease-in-out shadow-[0_20px_50px_rgba(0,0,0,0.3)] rounded-[2.5rem]`}
+      className={`hideScroll overflow-y-scroll border border-tan/30 bg-coffee/90 backdrop-blur-2xl text-cream z-[9999] sm:w-[22rem] overflow-hidden duration-300 mt-20 ease-in-out shadow-[0_20px_50px_rgba(0,0,0,0.3)] rounded-[2.5rem]`}
     >
       {/* Panel Header */}
       <div className="px-6 pt-8 pb-4 flex items-center justify-between border-b border-tan/10">
         <div>
-          <h2 className="text-2xl font-serif tracking-wide text-tan">Refine Search</h2>
-          <p className="text-[10px] uppercase tracking-[0.2em] text-tan mt-1">Filters & Preferences</p>
+          <h2 className="text-2xl font-serif tracking-wide text-cream">Refine Search</h2>
+          <p className="text-[10px] uppercase tracking-[0.2em] text-cream mt-1">Filters & Preferences</p>
         </div>
         <button
           onClick={resetFilters}
@@ -76,7 +76,7 @@ const BookListingFilter = ({
             className="flex items-center justify-between p-5 cursor-pointer group hover:bg-tan/5 transition-colors"
           >
             <div className="flex flex-col">
-              <span className="text-sm font-serif text-tan">Offers & Savings</span>
+              <span className="text-sm font-serif text-cream">Offers & Savings</span>
               <h1 className="text-lg font-medium leading-none mt-1">Discount Range</h1>
             </div>
             <motion.div
@@ -133,7 +133,7 @@ const BookListingFilter = ({
             className="flex items-center justify-between p-5 cursor-pointer group hover:bg-tan/5 transition-colors"
           >
             <div className="flex flex-col">
-              <span className="text-sm font-serif text-tan/90">Edition & Dialect</span>
+              <span className="text-sm font-serif text-cream/90">Edition & Dialect</span>
               <h1 className="text-lg font-medium leading-none mt-1">Book Language</h1>
             </div>
             <motion.div

@@ -1,4 +1,5 @@
 import React from "react";
+import { motion } from "framer-motion";
 
 export const CopyIcon = () => {
   return (
@@ -270,3 +271,44 @@ export const BookSvg = () => {
 
 
 
+export const SuccessCheckmarkSvg = ({ className = "w-10 h-10" }) => {
+  return (
+    <motion.svg
+      initial={{ pathLength: 0, opacity: 0 }}
+      animate={{ pathLength: 1, opacity: 1 }}
+      transition={{
+        duration: 0.5,
+        ease: "easeInOut",
+      }}
+      className={`${className} text-success`}
+      viewBox="0 0 52 52"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <motion.circle
+        cx="26"
+        cy="26"
+        r="25"
+        stroke="currentColor"
+        strokeWidth="2"
+        initial={{ pathLength: 0 }}
+        animate={{ pathLength: 1 }}
+        transition={{ duration: 0.5, ease: "easeInOut" }}
+      />
+      <motion.path
+        d="M14.1 27.2l7.1 7.2 16.7-16.8"
+        stroke="currentColor"
+        strokeWidth="5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        initial={{ pathLength: 0 }}
+        animate={{ pathLength: 1 }}
+        transition={{
+          delay: 0.4,
+          duration: 0.4,
+          ease: "easeInOut",
+        }}
+      />
+    </motion.svg>
+  );
+};
