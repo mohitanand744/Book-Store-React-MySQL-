@@ -265,3 +265,13 @@ input:-webkit-autofill:active {
   border-width: 1px !important;
   border-color: theme('colors.sepia') !important;
 }
+
+
+.genre-swiper .swiper-wrapper {
+                          transition-timing-function: linear !important;
+                        }
+                        .genre-swiper .swiper-slide.swiper-slide-visible.swiper-slide-fully-visible.swiper-slide-active,
+                        .genre-swiper .swiper-slide {
+                          transform: none !important;
+                          transition: none !important;
+                        }

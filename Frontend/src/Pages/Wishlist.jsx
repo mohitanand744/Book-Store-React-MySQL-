@@ -10,6 +10,7 @@ import { getAllWishlists } from "../store/Redux/Slices/wishlistSlice";
 import NoData from "./../components/EmptyData/noData";
 import AnimatedItemCount from "../components/UI/AnimatedItemCount";
 import { GiBookPile } from "react-icons/gi";
+import Breadcrumb from "../components/Common/Breadcrumb";
 
 const Wishlist = () => {
   const dispatch = useDispatch();
@@ -45,9 +46,14 @@ const Wishlist = () => {
         titleFirst={"My Reading"}
         titleSecond={"List"}
         description={"Your saved books for later"}
+        items={[
+          { label: "Home", path: "/nextChapter" },
+          { label: "Profile", path: "/nextChapter/user/profile" },
+          { label: "Wishlist", path: null }
+        ]}
       />
 
-      <div className="container px-4 py-12 mx-auto sm:px-6 lg:px-8">
+      <div className="container px-4 pt-12 mx-auto sm:px-6 lg:px-8">
         <div className="flex flex-wrap items-center justify-center gap-1 sm:gap-8 md:justify-between">
           {/* Search Bar */}
           <motion.div
@@ -59,7 +65,7 @@ const Wishlist = () => {
             <BackButton label="Back to Profile" />
 
             <Search
-              styling="flex-1 md:w-[20rem] bg-sepia rounded-full"
+              styling="flex-1 md:w-[25rem] bg-sepia rounded-full"
               onChange={(val) => setSearchTerm(val)}
               onSearch={(val) => setSearchTerm(val)}
             />

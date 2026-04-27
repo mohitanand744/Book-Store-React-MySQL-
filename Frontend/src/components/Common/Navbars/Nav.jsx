@@ -159,7 +159,7 @@ const Navbar = ({ isCartOpen, setIsCartOpen }) => {
           </motion.ul>
 
           <div className="flex items-center gap-4">
-            <Search />
+            <Search styling="hidden lg:block w-[20rem] bg-sepia rounded-full" />
 
             <div
               onClick={() => setIsCartOpen(!isCartOpen)}

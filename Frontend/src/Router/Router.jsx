@@ -22,6 +22,7 @@ const SingleBooks = lazy(() => import("../Pages/SingleBooks"));
 const AboutUs = lazy(() => import("../Pages/AboutUs"));
 const ContactUs = lazy(() => import("../Pages/ContactUs"));
 const AuthorDetails = lazy(() => import("../Pages/AuthorDetails"));
+const AllAuthors = lazy(() => import("../Pages/AllAuthors"));
 
 const Router = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -82,6 +83,7 @@ const Router = () => {
             <Route path="aboutUs" element={<AboutUs />} />
             <Route path="contact" element={<ContactUs />} />
             <Route path="books" element={<AllBooks />} />
+            <Route path="authors" element={<AllAuthors />} />
             <Route path="book/:id" element={<SingleBooks />} />
             <Route path="author/:authorId" element={<AuthorDetails />} />
 

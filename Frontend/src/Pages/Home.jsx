@@ -50,8 +50,8 @@ const Home = () => {
     <div className="">
       <div className="search">
         <Search
-          styling="w-full block md:hidden"
-          inputStylrs="rounded-[0px] py-4"
+          styling="w-full block md:hidden bg-sepia rounded-full mb-6"
+          inputStylrs="rounded-full py-4"
           iconStyles="top-3 right-3"
         />
       </div>

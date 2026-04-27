@@ -40,6 +40,7 @@ import FollowersModal from "../components/Modal/FollowersModal";
 import SubscribePromptModal from "../components/Modal/SubscribePromptModal";
 import MobileSubscribeModal from "../components/Modal/MobileSubscribeModal";
 import { UserGroupIcon } from "@heroicons/react/24/outline";
+import { useImagePreview } from "../store/Context/ImagePreviewContext";
 
 const initialPosts = [
   {
@@ -223,6 +224,7 @@ const AuthorDetails = () => {
   const id = parseInt(authorId);
   const authorBooks = allBooks.filter((b) => b?.author?.author_id === id);
   const author = authorBooks.length > 0 ? authorBooks[0]?.author : null;
+  const { openPreview } = useImagePreview();
 
   if (loading) {
     return (
@@ -337,7 +339,8 @@ const AuthorDetails = () => {
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ type: "spring", stiffness: 200, damping: 18 }}
-              className="absolute left-0 right-0 z-10 mx-auto overflow-hidden border-4 border-tan shadow-2xl -top-14 md:-top-20 w-28 md:w-40 h-28 md:h-40 rounded-3xl"
+              className="absolute left-0 right-0 z-10 mx-auto overflow-hidden border-4 border-tan shadow-2xl -top-14 md:-top-20 w-28 md:w-40 h-28 md:h-40 rounded-3xl cursor-zoom-in"
+              onClick={() => openPreview(author?.author_image || "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png", author?.author_name)}
             >
               <img
                 src={

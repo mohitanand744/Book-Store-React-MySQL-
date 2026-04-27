@@ -1,8 +1,8 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { GiBookPile } from "react-icons/gi";
-
-const Banners = ({ titleFirst, titleSecond, description }) => {
+import Breadcrumb from "../Common/Breadcrumb";
+const Banners = ({ titleFirst, titleSecond, description, items }) => {
   return (
     <motion.section
       initial={{ opacity: 0, y: 20 }}
@@ -11,6 +11,13 @@ const Banners = ({ titleFirst, titleSecond, description }) => {
       className="relative px-4 py-24 overflow-hidden text-center sm:px-6 lg:px-8"
     >
       <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1507842217343-583bb7270b66?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80')] bg-cover bg-center opacity-20"></div>
+
+      {items && (
+        <div className="absolute top-8 left-8 z-20">
+          <Breadcrumb items={items} />
+        </div>
+      )}
+
       <div className="relative max-w-4xl mx-auto">
         <motion.h1
           initial={{ opacity: 0 }}

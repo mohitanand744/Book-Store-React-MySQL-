@@ -8,6 +8,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import BookListingFilter from "../components/BookListingFilter";
 import CategorySlider from "../components/ScrollingContainer/CategorySlider";
 import NoData from "../components/EmptyData/noData";
+import Breadcrumb from "../components/Common/Breadcrumb";
 
 import { useLocation, useNavigate } from "react-router-dom";
 import useDebounce from "../Hooks/useDebounce";
@@ -21,6 +22,8 @@ export const defaultFilters = {
   discount: "",
   language: "",
   search: "",
+  rating: 0,
+  binding: "",
 };
 import { useMemo } from "react";
 import { TrashIcon, XCircleIcon } from "@heroicons/react/24/outline";
@@ -48,6 +51,8 @@ const AllBooks = () => {
     discount: "",
     language: "",
     search: initialSearch,
+    rating: 0,
+    binding: "",
   });
 
   const [openCategory, setOpenCategory] = useState({
@@ -55,6 +60,8 @@ const AllBooks = () => {
     CategoryFilter: false,
     LanguageFilter: false,
     DiscountFilter: false,
+    RatingFilter: false,
+    BindingFilter: false,
   });
 
   useEffect(() => {
@@ -62,10 +69,10 @@ const AllBooks = () => {
     setFilters((prev) => ({ ...prev, search: urlSearch, cursor: "" }));
   }, [location.search]);
 
-  const { category, minPrice, maxPrice, discount, language, search } = filters;
+  const { category, minPrice, maxPrice, discount, language, search, rating, binding } = filters;
   useEffect(() => {
     setFilters((prev) => ({ ...prev, cursor: "" }));
-  }, [category, minPrice, maxPrice, discount, language, search]);
+  }, [category, minPrice, maxPrice, discount, language, search, rating, binding]);
 
   const debouncedSearch = useDebounce(filters.search, 500);
   const debouncedMinPrice = useDebounce(filters.minPrice, 500);
@@ -88,6 +95,8 @@ const AllBooks = () => {
     filters.category,
     filters.discount,
     filters.language,
+    filters.rating,
+    filters.binding,
     filters.limit,
     filters.cursor,
   ]);
@@ -127,7 +136,8 @@ const AllBooks = () => {
         setShowFilters(false);
       }}
     >
-      <div className="bg-sepia/50 backdrop-blur-md py-4 px-6">
+      <div className="bg-sepia/50 backdrop-blur-md py-6 px-6 relative">
+
         <div className="container flex items-center justify-between gap-5 md:px-4">
           <h1 className="text-xl font-semibold text-start sm:text-center text-coffee md:text-2xl uppercase">
             We have various types of books
@@ -196,6 +206,15 @@ const AllBooks = () => {
             </motion.button>
           </div>
         </div>
+      </div>
+
+      <div className="container mx-auto p-4 pb-1">
+        <Breadcrumb
+          items={[
+            { label: "Home", path: "/nextChapter" },
+            { label: "Curations", path: null }
+          ]}
+        />
       </div>
 
       <CategorySlider filters={filters} setFilters={setFilters} />

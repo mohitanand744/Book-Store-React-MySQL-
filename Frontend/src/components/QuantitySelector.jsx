@@ -56,9 +56,9 @@ const QuantitySelector = ({ initialQuantity = 1, onChange }) => {
       initial={{ y: 10, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ delay: 0.7 }}
-      className=""
+      className="mx-auto"
     >
-      <div className="flex gap-1 items-center w-40">
+      <div className="flex gap-1 justify-center items-center w-40">
         <button
           onClick={decrementQuantity}
           className="px-2 h-8 w-10 pb-0.5 sm:pb-1 flex justify-center items-center text-3xl bg-tan text-sepia  transition rounded-l-full"

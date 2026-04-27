@@ -3,12 +3,39 @@ import { useParams } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAllBooks } from "../store/Redux/Slices/BooksSlice";
-import BookCard from "../components/Cards/BookCard";
 import ScrollBooks from "./../components/ScrollingContainer/ScrollBooks";
 import QuantitySelector from "../components/QuantitySelector";
-import Input from "../components/Inputs/Input";
 import Button from "../components/Buttons/Button";
 import SectionHeading from "../components/Headings/SectionHeading";
+import Breadcrumb from "../components/Common/Breadcrumb";
+import Ratings from "../components/RatingsReviews/Ratings";
+import Input from "../components/Inputs/Input";
+import TestimonialCard from "../components/Cards/TestimonialCard";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Autoplay } from "swiper/modules";
+import SwiperNavButtons from "../components/Buttons/SwiperNavButtons";
+
+// Import Swiper styles
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+
+// Mock book data for static display
+const mockBook = {
+  book_id: 1,
+  title: "The Whispering Shadows",
+  book_price: 1499.00,
+  category: "Classic Gothic",
+  description: "A masterfully crafted gothic tale that delves into the hidden corridors of an ancestral estate. As the winter fog settles over the valley, young Clara discovers that the house she call home has been keeping secrets far older than its foundations. A haunting exploration of legacy, mystery, and the power of the past.",
+  book_description: "A masterfully crafted gothic tale that delves into the hidden corridors of an ancestral estate. As the winter fog settles over the valley, young Clara discovers that the house she call home has been keeping secrets far older than its foundations. A haunting exploration of legacy, mystery, and the power of the past.",
+  author: {
+    author_id: 101,
+    author_name: "Isabella Thorne",
+    author_rating: 4.9,
+    author_image_url: "https://randomuser.me/api/portraits/women/68.jpg"
+  },
+  images: ["https://m.media-amazon.com/images/I/81Y4Pte2a-L._SY425_.jpg"]
+};
 
 // Mock reviews data
 const mockReviews = [
@@ -22,7 +49,7 @@ const mockReviews = [
     date: "2023-10-15",
     title: "Absolutely loved it!",
     comment:
-      "This book exceeded all my expectations. The storytelling is captivating and the characters are well-developed. Couldn't put it down!",
+      "This book exceeded all my expectations. The storytelling is captivating and the characters are well-developed.",
   },
   {
     id: 2,
@@ -48,721 +75,492 @@ const mockReviews = [
     comment:
       "One of the best books I've read this year. The author's writing style is impeccable and the themes are thought-provoking.",
   },
-  {
-    id: 4,
-    user: {
-      name: "Emma Wilson",
-      avatar: "https://randomuser.me/api/portraits/women/28.jpg",
-    },
-    rating: 3,
-    date: "2023-07-22",
-    title: "Good but not great",
-    comment:
-      "It was an enjoyable read but I found some parts predictable. Still worth reading though.",
-  },
 ];
 
-// Static additional product images
 const additionalProductImages = [
   "https://images.unsplash.com/photo-1544947950-fa07a98d237f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
   "https://images.unsplash.com/photo-1589998059171-988d887df646?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
   "https://images.unsplash.com/photo-1519682337058-a94d519337bc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
-  "https://images.unsplash.com/photo-1541963463532-d68292c34b19?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
 ];
 
 const SingleBooks = () => {
   const { id } = useParams();
+  const reviewsSwiperRef = useRef(null);
+
+  const [book] = useState(mockBook);
+  const [mainImage, setMainImage] = useState(mockBook.images[0]);
+  const [quantity, setQuantity] = useState(1);
+  const [allImages] = useState([
+    ...mockBook.images,
+    ...additionalProductImages
+  ]);
+  const [activeTab, setActiveTab] = useState("description");
+  const [reviews] = useState(mockReviews);
+
   const dispatch = useDispatch();
   const { books } = useSelector((state) => state.books);
 
-  const [book, setBook] = useState(null);
-  const [mainImage, setMainImage] = useState("");
-  const [quantity, setQuantity] = useState(1);
-  const [allImages, setAllImages] = useState([]);
-  const [activeTab, setActiveTab] = useState("description");
-  const [reviews, setReviews] = useState(mockReviews);
+  useEffect(() => {
+    dispatch(fetchAllBooks());
+  }, [dispatch]);
+
   const [newReview, setNewReview] = useState({
     rating: 5,
     title: "",
     comment: "",
   });
 
-  useEffect(() => {
-    if (books?.length === 0) {
-      dispatch(fetchAllBooks());
-    }
-  }, [dispatch, books]);
-
-  useEffect(() => {
-    if (books?.length > 0) {
-      const foundBook = books.find((book) => book.book_id === parseInt(id));
-      if (foundBook) {
-        setBook(foundBook);
-        const combinedImages = [
-          foundBook.images?.[0] || foundBook.image,
-          ...additionalProductImages
-        ];
-        setAllImages(combinedImages);
-        setMainImage(combinedImages[0]);
-      }
-    }
-  }, [id, books]);
+  const handleReviewSubmit = (e) => {
+    e.preventDefault();
+    console.log("Review submitted:", newReview);
+  };
 
   if (!book) {
     return (
-      <div className="flex items-center justify-center h-screen">
-        <div className="animate-pulse text-2xl text-coffee">Loading...</div>
+      <div className="flex items-center justify-center h-screen bg-tan">
+        <motion.div
+          animate={{ rotate: 360 }}
+          transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+          className="w-12 h-12 border-4 border-coffee border-t-transparent rounded-full"
+        />
       </div>
     );
   }
 
-  const handleImageChange = (img) => {
-    setMainImage(img);
-  };
-
-  // Calculate average rating
-  const averageRating =
-    reviews.length > 0
-      ? reviews.reduce((acc, review) => acc + review.rating, 0) / reviews.length
-      : 0;
-
-  // Handle review submission
-  const handleReviewSubmit = (e) => {
-    e.preventDefault();
-    const review = {
-      id: reviews.length + 1,
-      user: {
-        name: "You",
-        avatar: "https://randomuser.me/api/portraits/lego/1.jpg",
-      },
-      rating: newReview.rating,
-      date: new Date().toISOString().split("T")[0],
-      title: newReview.title,
-      comment: newReview.comment,
-    };
-    setReviews([...reviews, review]);
-    setNewReview({ rating: 5, title: "", comment: "" });
-  };
-
-  // Render star rating
-  const renderStars = (rating) => {
-    return [...Array(5)].map((_, i) => {
-      const starValue = i + 1;
-      const isFull = starValue <= rating;
-      const isHalf = starValue - 0.5 <= rating && !isFull;
-
-      return (
-        <div key={i} className="relative">
-          <svg
-            className={`w-5 h-5 ${isFull ? "text-yellow-400" : "text-tan/20"}`}
-            fill="currentColor"
-            viewBox="0 0 20 20"
-          >
-            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-          </svg>
-          {isHalf && (
-            <div className="absolute inset-0 overflow-hidden w-1/2">
-              <svg
-                className="w-5 h-5 text-yellow-400"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-              >
-                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-              </svg>
-            </div>
-          )}
-        </div>
-      );
-    });
-  };
-
-  const relatedBooks = books || [];
 
   const tabs = [
-    { id: "description", label: "Description" },
+    { id: "description", label: "Overview" },
+    { id: "details", label: "Specification" },
     { id: "reviews", label: `Reviews (${reviews.length})` },
   ];
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
-      className="container px-4 py-12 mx-auto max-w-7xl"
-    >
-      {/* Breadcrumb Navigation */}
-      <motion.div
-        initial={{ x: -20, opacity: 0 }}
-        animate={{ x: 0, opacity: 1 }}
-        transition={{ delay: 0.2 }}
-        className="flex items-center mb-8 text-xs uppercase tracking-[0.2em] text-cream/90 font-medium"
-      >
-        <span className="hover:text-coffee transition-colors cursor-pointer">Home</span>
-        <span className="mx-3 opacity-30">/</span>
-        <span className="hover:text-coffee transition-colors cursor-pointer">Books</span>
-        <span className="mx-3 opacity-30">/</span>
-        <span className="hover:text-coffee transition-colors cursor-pointer">
-          {book?.category}
-        </span>
-        <span className="mx-3 opacity-30">/</span>
-        <span className="text-coffee tracking-normal font-serif lowercase italic">{book?.title}</span>
-      </motion.div>
+    <div className="min-h-screen bg-tan text-coffee selection:bg-coffee selection:text-tan">
+      <div className="container mx-auto px-4 pt-10 max-w-7xl">
+        <Breadcrumb
+          items={[
+            { label: "Home", path: "/nextChapter" },
+            { label: "Books", path: "/nextChapter/books" },
+            { label: book.category, path: null }
+          ]}
+        />
+      </div>
 
-      <div className="flex flex-col gap-8 lg:flex-row">
-        {/* Book Images */}
-        <div className="lg:w-1/2">
-          <motion.div
-            initial={{ scale: 0.95, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ delay: 0.3 }}
-            whileHover={{ scale: 1.01 }}
-            className="bg-coffee/95 text-cream rounded-[2.5rem] overflow-hidden mb-4 border border-tan/20 shadow-2xl backdrop-blur-xl"
-          >
-            <img
-              src={mainImage}
-              alt={book?.title}
-              className="w-full h-[600px] object-contain rounded-3xl p-8"
-            />
-          </motion.div>
+      <div className="container mx-auto px-4 py-12 lg:py-10 max-w-7xl">
+        <div className="flex flex-col lg:flex-row gap-16 xl:gap-28 items-start">
 
-          <motion.div
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.4 }}
-            className="flex gap-3 px-1 py-2 overflow-x-auto hideScroll"
-          >
-            {allImages.map((img, index) => (
+          {/* Left Column: Elegant Image Display */}
+          <div className="w-full lg:w-1/2 lg:sticky lg:top-28">
+            <div className="relative">
+              {/* Decorative Background Element */}
+              <div className="absolute -inset-10 bg-coffee/5 blur-3xl rounded-full pointer-events-none" />
+
               <motion.div
-                key={index}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => handleImageChange(img)}
-                className={`flex-shrink-0 cursor-pointer rounded-lg overflow-hidden border-2 ${mainImage === img ? "border-coffee" : "border-transparent"
-                  }`}
+                layoutId={`book-image-${book.book_id}`}
+                className="relative z-10 aspect-[4/5] rounded-[2rem] overflow-hidden bg-white/40 backdrop-blur-sm border border-coffee/10 shadow-[0_50px_100px_-20px_rgba(92,76,73,0.3)] flex items-center justify-center p-12 lg:p-16"
               >
-                <img
-                  src={img}
-                  alt={`Preview ${index + 1}`}
-                  className="object-cover w-24 h-24"
-                />
+                <AnimatePresence mode="wait">
+                  <motion.img
+                    key={mainImage}
+                    initial={{ opacity: 0, scale: 0.95, filter: "blur(10px)" }}
+                    animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+                    exit={{ opacity: 0, scale: 1.05, filter: "blur(10px)" }}
+                    transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                    src={mainImage}
+                    alt={book.title}
+                    className="w-full h-full object-contain drop-shadow-[0_30px_60px_rgba(0,0,0,0.3)]"
+                  />
+                </AnimatePresence>
               </motion.div>
-            ))}
-          </motion.div>
-        </div>
 
-        {/* Book Details */}
-        <div className="lg:w-1/2">
-          <motion.div
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.2 }}
-            className="bg-coffee/95 text-cream rounded-[2.5rem] p-8 shadow-2xl border border-tan/20 backdrop-blur-xl"
-          >
-            <div className="flex items-start justify-between mb-4">
+              {/* Minimalist Thumbnails */}
+              <div className="mt-12 flex justify-center gap-5">
+                {allImages.map((img, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => setMainImage(img)}
+                    className={`relative w-20 aspect-square rounded-xl overflow-hidden transition-all duration-500 ${mainImage === img
+                      ? "ring-2 ring-coffee ring-offset-4 ring-offset-tan scale-110"
+                      : "opacity-40 grayscale hover:opacity-100 hover:grayscale-0 hover:scale-105"
+                      }`}
+                  >
+                    <img src={img} className="w-full h-full object-cover" alt="" />
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Right Column: Content & Commerce */}
+          <div className="w-full lg:w-1/2 flex flex-col pt-2">
+
+            <div className="mb-12">
               <motion.div
-                initial={{ x: -10, opacity: 0 }}
-                animate={{ x: 0, opacity: 1 }}
-                transition={{ delay: 0.3 }}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="inline-flex items-center space-x-2 px-3 py-1 bg-coffee/10 border border-coffee/20 rounded-full mb-8"
               >
-                <span className="bg-tan/10 text-tan text-xs px-3 py-1 rounded-full border border-tan/20">
-                  {book?.category}
-                </span>
-                <h1 className="text-3xl font-serif tracking-tight text-cream mt-3 mb-1">
-                  {book?.title}
-                </h1>
-                <p className="text-cream/90 mt-2 font-serif italic text-lg">
-                  Explore more titles from similar categories and authors
-                </p>
-                <span className="text-cream font-bold not-italic hover:underline cursor-pointer">
-                  {book?.author?.author_name}
+                <span className="w-1.5 h-1.5 bg-coffee rounded-full animate-pulse" />
+                <span className="text-[14px] uppercase tracking-[0.2em] text-coffee font-bold">
+                  {book.category} Edition
                 </span>
               </motion.div>
-              <motion.div
-                initial={{ scale: 0.9, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ delay: 0.4 }}
-                className="flex items-center  px-3 py-1 rounded-full"
+
+              <motion.h1
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 }}
+                className="text-5xl lg:text-7xl  leading-[1.1] text-coffee mb-8"
               >
-                <svg
-                  className="w-5 h-5 mr-1 text-yellow-400"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                </svg>
-                <span className="text-cream font-medium">
-                  {book?.author?.author_rating}
-                </span>
+                {book.title}
+              </motion.h1>
+
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.2 }}
+                className="flex items-center space-x-6 pb-10 border-b border-coffee/10"
+              >
+                <div className="flex items-center space-x-4">
+                  <div className="w-14 h-14 rounded-full border-2 border-coffee/20 p-0.5 overflow-hidden">
+                    <img src={book.author?.author_image_url || 'https://img.freepik.com/premium-vector/human-icon_970584-3.jpg?semt=ais_hybrid&w=740&q=80'} className="w-full h-full object-cover rounded-full" alt="" />
+                  </div>
+                  <div>
+                    <p className="text-[14px] uppercase tracking-widest text-coffee/60 mb-0.5">Author</p>
+                    <p className="text-xl  italic text-coffee">{book.author?.author_name}</p>
+                  </div>
+                </div>
+                <div className="h-10 w-px bg-coffee/10" />
+                <div>
+                  <div className="mb-1 flex items-center gap-2">
+                    <Ratings textColor="text-coffee" ratings={book.author?.author_rating || 5} /> <span>({book.author?.author_rating})</span>
+                  </div>
+                  <p className="text-[14px] uppercase tracking-widest text-coffee/60">Reader's Choice</p>
+                </div>
               </motion.div>
             </div>
 
-            <motion.div
-              initial={{ y: 10, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.4 }}
-              className="my-6"
-            >
-              <div className="flex items-center mb-3">
-                <p className="font-medium text-cream/90 line-through mr-3">
-                  ₹ {Number(book?.book_price) * 2}
-                </p>
-                <span className="text-4xl font-serif text-cream mr-3">
-                  ₹{Number(book?.book_price || 0).toFixed(2)}
-                </span>
-                <span className="px-2 py-1 text-sm text-green-600 bg-green-100 rounded">
-                  In Stock
+            {/* Pricing Section */}
+            <div className="mb-16">
+              <div className="flex items-baseline space-x-5 mb-10">
+                <span className="text-5xl  text-coffee">₹{Number(book.book_price).toFixed(2)}</span>
+                <span className="text-xl text-coffee/70 line-through">₹{(Number(book.book_price) * 1.5).toFixed(0)}</span>
+                <div className="flex-1" />
+                <span className="text-[14px] uppercase tracking-widest text-coffee/60 text-right">
+                  Free Premium <br /> Express Delivery
                 </span>
               </div>
-              <p className="text-sm text-cream/90">
-                Inclusive of all taxes | Free delivery
-              </p>
-            </motion.div>
 
-            {/* Tabs */}
-            <div className="relative mb-6">
-              <div className="flex relative border-b border-tan/10">
+              <div className="flex flex-col xl:flex-row gap-4">
+                <div className="bg-coffee rounded-full  flex justify-center w-[10rem] xl:w-auto p-1 xl:p-0 items-center flex-shrink-0">
+                  <QuantitySelector
+                    initialQuantity={quantity}
+                    onChange={setQuantity}
+                    className="h-16 xl:h-20 w-full !bg-white/40 !border-coffee/20 !rounded-2xl"
+                  />
+                </div>
+                <div className="flex flex-1 gap-4">
+                  <Button
+                    variant="primary"
+                    className="flex-1  flex items-center justify-center gap-2"
+                  >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                    </svg>
+                    <span className="whitespace-nowrap">Add to Cart</span>
+                  </Button>
+                  <Button
+                    variant="outline"
+                    className="flex-1 flex items-center justify-center gap-2 hover:bg-sepia !bg-coffee"
+                  >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                    </svg>
+                    <span className="whitespace-nowrap">Buy Now</span>
+                  </Button>
+                </div>
+              </div>
+            </div>
+
+            {/* Content Tabs */}
+            <div className="mb-16">
+              <div className="flex space-x-10 border-b-2 border-coffee/30 mb-10">
                 {tabs.map((tab) => (
                   <button
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id)}
-                    className={`relative px-4 py-2 font-medium text-sm sm:text-base ${activeTab === tab.id
-                      ? "text-cream"
-                      : "text-cream/90 hover:text-cream"
-                      } transition-colors duration-200`}
+                    className={`pb-5 text-[14px] uppercase tracking-[0.3em] transition-all relative ${activeTab === tab.id ? "text-coffee font-bold" : "text-coffee/70 hover:scale-110"
+                      }`}
                   >
                     {tab.label}
                     {activeTab === tab.id && (
                       <motion.div
-                        className="absolute bottom-0 left-0 right-0 rounded-full h-1 bg-tan"
-                        layoutId="activeTab"
-                        transition={{
-                          type: "spring",
-                          bounce: 0.5,
-                          duration: 0.6,
-                        }}
+                        layoutId="tab-indicator"
+                        className="absolute bottom-0 left-0 right-0 h-0.5 bg-coffee"
                       />
                     )}
                   </button>
                 ))}
               </div>
-            </div>
 
-            {/* Tab Content */}
-            <motion.div
-              key={activeTab}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.3 }}
-            >
-              {activeTab === "description" ? (
-                <>
-                  <div className="prose prose-invert max-w-none">
-                    <p className="text-cream leading-relaxed text-lg">
-                      {book?.book_description || book?.description}
-                    </p>
-                  </div>
-
-                  {/* Author Card */}
-                  <motion.div
-                    initial={{ scale: 0.98, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    transition={{ delay: 0.3 }}
-                    className=" rounded-lg p-4 mb-6"
-                  >
-                    <div className="flex items-center">
-                      <div className="w-14 h-14 rounded-full overflow-hidden mr-4 border-2 border-tan">
-                        <img
-                          src={book?.author?.author_image_url}
-                          alt={book?.author?.author_name}
-                          className="object-cover w-full h-full"
-                        />
-                      </div>
-                      <div>
-                        <h4 className="font-serif text-xl text-cream">
-                          {book?.author?.author_name}
-                        </h4>
-                        <p className="text-sm text-cream/90 uppercase tracking-widest mt-1">
-                          {book?.author?.author_books_count} books published
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={activeTab}
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20 }}
+                  transition={{ duration: 0.4 }}
+                  className="min-h-[250px]"
+                >
+                  {activeTab === "description" && (
+                    <div className="space-y-8">
+                      <p className="text-2xl text-coffee/90 leading-relaxed first-letter:text-5xl first-letter:float-left first-letter:mr-3 first-letter:mt-2 first-letter:font-bold first-letter:text-coffee">
+                        {book.book_description || book.description}
+                      </p>
+                      <div className="p-8 bg-coffee/5 rounded-[2rem] border border-coffee/10 relative overflow-hidden group">
+                        <div className="absolute -top-10 -right-10 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                          <svg className="w-24 h-24 text-coffee" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M7.127 22.562l-7.127 1.438 1.438-7.128 5.689 5.69zm1.414-1.414l12.586-12.586-5.657-5.657-12.586 12.586 5.657 5.657zm14.594-13.177l-4.242-4.242c-.781-.781-2.047-.781-2.828 0l-1.414 1.414 7.071 7.071 1.414-1.414c.781-.781.781-2.047 0-2.829z" />
+                          </svg>
+                        </div>
+                        <h4 className="text-[14px] uppercase tracking-[0.4em] text-coffee/60 mb-4 font-black">Collector's Insight</h4>
+                        <p className="text-[15px] text-coffee/80 leading-relaxed">
+                          "An unparalleled journey into the human psyche. This edition captures the very essence of literary craftsmanship that our house stands for."
                         </p>
                       </div>
                     </div>
-                    <p className="mt-4 text-cream/90 leading-relaxed italic">
-                      {book?.author?.author_description}
-                    </p>
-                  </motion.div>
-                </>
-              ) : (
-                <div className="space-y-6">
-                  {/* Review Summary */}
-                  <motion.div
-                    initial={{ y: 10, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    transition={{ delay: 0.3 }}
-                    className=" rounded-lg p-4 mb-6"
-                  >
-                    <div className="flex items-center">
-                      <div className="mr-4">
-                        <div className="text-4xl text-center font-serif text-cream">
-                          {Number(averageRating || 0).toFixed(1)}
-                        </div>
-                        <div className="flex mt-1">
-                          {renderStars(Math.round(averageRating))}
-                        </div>
+                  )}
+
+                  {activeTab === "details" && (
+                    <div className="bg-coffee rounded-[2.5rem] border border-tan/10 overflow-hidden shadow-2xl">
+                      <div className="grid grid-cols-1 md:grid-cols-2">
+                        {[
+                          { label: "Publishing House", value: "Vintage International", icon: "M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5s3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" },
+                          { label: "Binding Style", value: "Premium Hardcover", icon: "M5 19a2 2 0 01-2-2V7a2 2 0 012-2h4l2 2h4a2 2 0 012 2v1m-6 10a2 2 0 002 2h4a2 2 0 002-2v-4a2 2 0 00-2-2h-4a2 2 0 00-2 2v4z" },
+                          { label: "Leaf Count", value: "352 Cream Wove", icon: "M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" },
+                          { label: "Edition", value: "First Print, 2024", icon: "M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.921-.755 1.688-1.54 1.118l-3.976-2.888a1 1 0 00-1.175 0l-3.976 2.888c-.784.57-1.838-.197-1.539-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.783-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" },
+                          { label: "Standard ID", value: "978-0-307-27767-1", icon: "M7 7h.01M7 11h.01M7 15h.01M11 7h.01M11 11h.01M11 15h.01M15 7h.01M15 11h.01M15 15h.01M19 7h.01M19 11h.01M19 15h.01M7 3h10a2 2 0 012 2v14a2 2 0 01-2 2H7a2 2 0 01-2-2V5a2 2 0 012-2z" },
+                          { label: "Dimensions", value: "162 x 241 x 32 mm", icon: "M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" }
+                        ].map((item, i) => (
+                          <div key={i} className={`p-10 flex items-start gap-6 group hover:bg-white/[0.03] transition-all duration-500 ${i % 2 === 0 ? "border-r border-tan/10" : ""} ${i < 4 ? "border-b border-tan/10" : ""}`}>
+                            <div className="w-12 h-12 rounded-2xl bg-tan/10 flex items-center justify-center text-tan shrink-0 group-hover:scale-110 group-hover:bg-tan/20 transition-all duration-500">
+                              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d={item.icon} />
+                              </svg>
+                            </div>
+                            <div>
+                              <p className="text-[14px] uppercase tracking-[0.2em] text-tan/70 mb-1.5 font-bold">{item.label}</p>
+                              <p className="text-xl  text-cream leading-tight">{item.value}</p>
+                            </div>
+                          </div>
+                        ))}
                       </div>
-                      <div className="flex-1">
-                        {[5, 4, 3, 2, 1].map((star) => {
-                          const count = reviews.filter(
-                            (r) => r.rating === star,
-                          ).length;
-                          const percentage = (count / reviews.length) * 100;
-                          return (
-                            <div key={star} className="flex items-center mb-1">
-                              <p className="text-sm w-9 text-cream/90 text-nowrap">
-                                {star} star{parseInt(star) > 1 ? "s" : ""}
-                              </p>
-                              <div className="flex-1 h-2 mx-2 bg-tan/10 rounded-full">
+                    </div>
+                  )}
+
+                  {activeTab === "reviews" && (
+                    <div className="space-y-16">
+                      {/* Reviews Summary Dashboard */}
+                      <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 p-10 bg-coffee rounded-[3rem] border border-tan/10 shadow-2xl">
+                        <div className="flex flex-col items-center justify-center lg:border-r border-tan/10 py-4">
+                          <h3 className="text-7xl  text-tan mb-4">4.9</h3>
+                          <div className="mb-3">
+                            <Ratings ratings={4.9} textColor="text-tan" />
+                          </div>
+                          <p className="text-[12px] uppercase tracking-widest text-cream/70 font-bold">Based on 128 reviews</p>
+                        </div>
+
+                        <div className="lg:col-span-2 flex flex-col justify-center space-y-4">
+                          {[
+                            { stars: 5, percent: 88 },
+                            { stars: 4, percent: 9 },
+                            { stars: 3, percent: 2 },
+                            { stars: 2, percent: 1 },
+                            { stars: 1, percent: 0 }
+                          ].map((row, i) => (
+                            <div key={i} className="flex items-center gap-4">
+                              <span className="text-[12px] font-bold text-cream/60 w-12">{row.stars} Stars</span>
+                              <div className="flex-1 h-1.5 bg-white/5 rounded-full overflow-hidden">
                                 <motion.div
                                   initial={{ width: 0 }}
-                                  animate={{ width: `${percentage}%` }}
-                                  transition={{ delay: 0.4 + (5 - star) * 0.1 }}
-                                  className="h-full bg-yellow-400 rounded-full"
+                                  animate={{ width: `${row.percent}%` }}
+                                  transition={{ duration: 1, delay: i * 0.1 }}
+                                  className="h-full bg-tan rounded-full"
                                 />
                               </div>
-                              <span className="w-8 text-sm text-cream/90">
-                                {count}
-                              </span>
+                              <span className="text-[12px] font-bold text-cream/70 w-10 text-right">{row.percent}%</span>
                             </div>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  </motion.div>
-
-                  {/* Reviews List */}
-                  <div className="space-y-6">
-                    {reviews.map((review, index) => (
-                      <motion.div
-                        key={review.id}
-                        initial={{ x: 20, opacity: 0 }}
-                        animate={{ x: 0, opacity: 1 }}
-                        transition={{ delay: 0.5 + index * 0.1 }}
-                        className="bg-coffee/40 text-cream border border-tan/10 backdrop-blur-sm rounded-2xl p-6"
-                      >
-                        <div className="flex items-center mb-3">
-                          <img
-                            src={review.user.avatar}
-                            alt={review.user.name}
-                            className="w-10 h-10 mr-3 rounded-full"
-                          />
-                          <div>
-                            <h4 className="font-serif text-lg text-cream">
-                              {review.user.name}
-                            </h4>
-                            <div className="flex items-center">
-                              <div className="flex mr-2">
-                                {renderStars(review.rating)}
-                              </div>
-                              <span className="text-sm text-tan/40 tracking-wider font-serif">
-                                {review.date}
-                              </span>
-                            </div>
-                          </div>
+                          ))}
                         </div>
-                        <h5 className="mb-2 text-lg font-serif italic text-cream/90">
-                          {review.title}
-                        </h5>
-                        <p className="text-cream/90 leading-relaxed font-serif">{review.comment}</p>
-                      </motion.div>
-                    ))}
-                  </div>
-
-                  {/* Review Form */}
-                  <motion.div
-                    initial={{ y: 20, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    transition={{
-                      type: "spring",
-                      stiffness: 100,
-                      damping: 10,
-                      delay: 0.3,
-                    }}
-                    className="bg-coffee/95 text-cream border border-tan/20 rounded-[2.5rem] p-8 mb-6 shadow-2xl backdrop-blur-xl"
-                  >
-                    <div className="flex items-center mb-6">
-                      <svg
-                        className="w-6 h-6  mr-2"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"
-                        />
-                      </svg>
-                      <h3 className="text-2xl font-serif tracking-wide text-cream">
-                        Share Your Experience
-                      </h3>
-                    </div>
-
-                    <form onSubmit={handleReviewSubmit}>
-                      <div className="flex flex-col sm:flex-row gap-6 mb-6">
-                        <div className="sm:w-48">
-                          <Input
-                            label="Rating (0.5 - 5)"
-                            labelClassName="font-serif text-lg text-cream/90"
-                            type="number"
-                            min="0.5"
-                            max="5"
-                            step="0.5"
-                            placeholder="e.g. 4.5"
-                            value={newReview.rating}
-                            onChange={(e) =>
-                              setNewReview({
-                                ...newReview,
-                                rating: parseFloat(e.target.value) || 0,
-                              })
-                            }
-                            className="!bg-tan/5 !border-tan/10 !text-cream !rounded-2xl !px-6 !py-4 focus:!ring-tan/30 h-auto w-full"
-                            required
-                          />
-                          <div className="flex gap-1 mt-2 px-1">
-                            {renderStars(newReview.rating)}
-                          </div>
-                        </div>
-
-                        <Input
-                          label="Review Title"
-                          labelClassName="font-serif text-lg text-cream/90"
-                          placeholder="Summarize your experience"
-                          value={newReview.title}
-                          onChange={(e) =>
-                            setNewReview({
-                              ...newReview,
-                              title: e.target.value,
-                            })
-                          }
-                          className="!bg-tan/5 !border-tan/10 !text-cream !rounded-2xl !px-6 !py-4 focus:!ring-tan/30 h-auto flex-1"
-                          required
-                        />
                       </div>
 
-                      <Input
-                        as="textarea"
-                        label="Your Review"
-                        labelClassName="font-serif text-lg text-cream/90"
-                        placeholder="Share details about your experience with this product..."
-                        value={newReview.comment}
-                        onChange={(e) =>
-                          setNewReview({
-                            ...newReview,
-                            comment: e.target.value,
-                          })
-                        }
-                        rows={5}
-                        className="!bg-tan/5 !border-tan/10 !text-cream !rounded-2xl !px-6 !py-4 focus:!ring-tan/30 h-auto"
-                        required
-                      />
+                      {/* Review List Slider */}
+                      <div className="relative">
+                        <SwiperNavButtons
+                          swiperRef={reviewsSwiperRef}
+                          position={{ top: "45%" }}
+                          prevButtonclassName="-left-4 lg:-left-12"
+                          nextButtonclassName="-right-4 lg:-right-12"
+                        />
+                        <Swiper
+                          modules={[Navigation, Autoplay]}
+                          onSwiper={(swiper) => {
+                            reviewsSwiperRef.current = swiper;
+                          }}
+                          autoplay={{
+                            delay: 4000,
+                            disableOnInteraction: false,
+                          }}
+                          spaceBetween={30}
+                          breakpoints={{
+                            320: { slidesPerView: 1, spaceBetween: 20 },
+                            768: { slidesPerView: 2, spaceBetween: 25 },
+                            1280: { slidesPerView: 2, spaceBetween: 30 },
+                          }}
+                          className="!pb-12"
+                        >
+                          {reviews.map((review, i) => (
+                            <SwiperSlide key={i} className="h-auto">
+                              <TestimonialCard
+                                data={{
+                                  ...review,
+                                  name: review.user.name,
+                                  avatar: review.user.avatar
+                                }}
+                              />
+                            </SwiperSlide>
+                          ))}
+                        </Swiper>
+                      </div>
 
-                      <Button
-                        type="submit"
-                        variant="outline"
-                        isSerif
-                        className="w-full !rounded-2xl !py-4 !text-lg tracking-wide"
-                      >
-                        Submit Review
-                      </Button>
-                    </form>
-                  </motion.div>
-                </div>
-              )}
-            </motion.div>
+                      {/* Add Review Form */}
+                      <div className="p-12 bg-coffee rounded-[3.5rem] border border-tan/10 relative overflow-hidden group shadow-2xl">
+                        {/* Decorative Background Icon */}
+                        <div className="absolute -top-10 -right-10 opacity-10 group-hover:opacity-20 transition-opacity pointer-events-none">
+                          <svg className="w-64 h-64 text-tan" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M7.127 22.562l-7.127 1.438 1.438-7.128 5.689 5.69zm1.414-1.414l12.586-12.586-5.657-5.657-12.586 12.586 5.657 5.657zm14.594-13.177l-4.242-4.242c-.781-.781-2.047-.781-2.828 0l-1.414 1.414 7.071 7.071 1.414-1.414c.781-.781.781-2.047 0-2.829z" />
+                          </svg>
+                        </div>
 
-            <div className="my-3">
-              <QuantitySelector
-                initialQuantity={quantity}
-                onChange={setQuantity}
-              />
+                        <div className="relative z-10">
+                          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+                            <div>
+                              <h4 className="text-4xl  text-tan mb-3">Leave a Legacy</h4>
+                              <p className="text-tan/50 max-w-md">Your thoughts shape the journey of future readers. Share your experience with this curation.</p>
+                            </div>
+                            <div className="flex gap-1 items-center pb-2">
+                              {[1, 2, 3, 4, 5].map((star) => (
+                                <button
+                                  key={star}
+                                  onClick={() => setNewReview({ ...newReview, rating: star })}
+                                  className={`text-2xl transition-all hover:scale-125 ${newReview.rating >= star ? "text-tan" : "text-tan/10"}`}
+                                >
+                                  ★
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+
+                          <form onSubmit={handleReviewSubmit} className="space-y-8">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+                              <Input
+                                label="Review Title"
+                                labelClassName="text-tan/70"
+                                placeholder="E.g., A journey beyond words..."
+                                value={newReview.title}
+                                onChange={(e) => setNewReview({ ...newReview, title: e.target.value })}
+                                className="!bg-white/5 !border-tan/20 !text-cream !rounded-[2rem] h-16 focus:!border-tan"
+                              />
+                              <Input
+                                label="Numerical Grade"
+                                labelClassName="text-tan/70"
+                                type="number"
+                                min="1"
+                                max="5"
+                                step="0.5"
+                                value={newReview.rating}
+                                onChange={(e) => {
+                                  const val = parseFloat(e.target.value);
+                                  setNewReview({ ...newReview, rating: isNaN(val) ? "" : val });
+                                }}
+                                className="!bg-white/5 !border-tan/20 !text-cream !rounded-[2rem] h-16 focus:!border-tan"
+                              />
+                            </div>
+                            <Input
+                              label="Your Literary Critique"
+                              labelClassName="text-tan/70"
+                              as="textarea"
+                              rows={5}
+                              placeholder="Describe your emotional voyage through these pages..."
+                              value={newReview.comment}
+                              onChange={(e) => setNewReview({ ...newReview, comment: e.target.value })}
+                              className="!bg-white/5 !border-tan/20 !text-cream !rounded-[2.5rem] p-8 resize-none focus:!border-tan"
+                            />
+                            <Button
+                              type="submit"
+                              variant="outline"
+                              className="w-full h-20 !rounded-[2rem] !text-xl !uppercase !tracking-[0.4em] shadow-2xl shadow-tan/10"
+                            >
+                              Publish Your Review
+                            </Button>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </motion.div>
+              </AnimatePresence>
             </div>
 
-            {/* Action Buttons */}
-            <motion.div
-              initial={{ y: 10, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.8 }}
-              className="flex flex-col mt-5 gap-4 sm:flex-row"
-            >
-              <Button
-                variant="primary"
-                isSerif
-                className="flex-1 !rounded-2xl !py-4 !text-lg flex items-center justify-center"
-              >
-                <svg
-                  className="w-5 h-5 mr-3"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
-                  />
-                </svg>
-                Add to Cart
-              </Button>
-              <Button
-                variant="outline"
-                isSerif
-                className="flex-1 !rounded-2xl !py-4 !text-lg flex items-center justify-center"
-              >
-                <svg
-                  className="w-5 h-5 mr-3"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
-                  />
-                </svg>
-                Buy Now
-              </Button>
-            </motion.div>
-
-            {/* Delivery Info */}
-            <motion.div
-              initial={{ y: 10, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.9 }}
-              className="mt-6 border-t border-tan/10 pt-6"
-            >
-              <div className="flex items-start">
-                <svg
-                  className="w-6 h-6 text-cream mr-3 mt-1"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                  />
-                </svg>
+            {/* Quality Seals */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 border-t border-coffee/10 pt-12">
+              <div className="flex items-start space-x-5">
+                <div className="w-12 h-12 flex-shrink-0 bg-coffee/5 rounded-2xl border border-coffee/10 flex items-center justify-center">
+                  <svg className="w-6 h-6 text-coffee" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5s3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                  </svg>
+                </div>
                 <div>
-                  <h4 className="font-serif text-lg text-cream">
-                    Delivery Information
-                  </h4>
-                  <p className="mt-2 text-sm text-cream/90 font-serif leading-relaxed">
-                    Free standard delivery on orders over ₹500. Expected
-                    delivery in 3-5 business days.
-                  </p>
+                  <h5 className="text-[14px] font-black text-coffee uppercase tracking-[0.2em] mb-2">Heritage Binding</h5>
+                  <p className="text-md text-coffee/70 leading-relaxed">Crafted with archival-grade materials for timeless endurance across generations.</p>
                 </div>
               </div>
-            </motion.div>
-          </motion.div>
-        </div>
-      </div>
-
-      {/* More Details Section */}
-      <motion.div
-        initial={{ y: 20, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ delay: 1 }}
-        className="mt-12 bg-coffee/95 text-cream rounded-[2.5rem] p-10 shadow-2xl border border-tan/20 backdrop-blur-xl"
-      >
-        <h2 className="text-3xl font-serif tracking-wide text-cream mb-8">
-          Product Details
-        </h2>
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
-          <div>
-            <h3 className="text-xl font-serif text-tan/90 mb-4 border-b border-tan/10 pb-2">
-              Specifications
-            </h3>
-            <ul className="space-y-2">
-              <li className="flex">
-                <p className="text-tan/50 w-44 font-serif">Publisher</p>
-                <p className="w-44 text-cream">Penguin Random House</p>
-              </li>
-              <li className="flex">
-                <p className="text-tan/50 w-44 font-serif">Language</p>
-                <p className="w-44 text-cream">English</p>
-              </li>
-              <li className="flex">
-                <p className="text-tan/50 w-44 font-serif">Paperback</p>
-                <p className="w-44 text-cream">320 pages</p>
-              </li>
-              <li className="flex">
-                <p className="text-tan/50 w-44 font-serif">ISBN-10</p>
-                <p className="w-44 text-cream">1234567890</p>
-              </li>
-              <li className="flex">
-                <p className="text-tan/50 w-44 font-serif">Dimensions</p>
-                <p className="w-44 text-cream">13.97 x 1.85 x 21.59 cm</p>
-              </li>
-            </ul>
-          </div>
-          <div>
-            <h3 className="text-xl font-serif text-tan/90 mb-4 border-b border-tan/10 pb-2">
-              About the Book
-            </h3>
-            <p className="mb-6 text-tan/70 leading-relaxed font-serif italic">
-              {book?.description} This special edition includes bonus content and
-              a foreword by the author.
-            </p>
-            <div className=" p-3 rounded-lg">
-              <h4 className="font-serif text-lg text-cream/90 mb-2">
-                Why you'll love it:
-              </h4>
-              <ul className="space-y-2 text-sm text-cream/90 list-disc list-inside font-serif">
-                <li>Beautifully designed cover</li>
-                <li>Premium quality paper</li>
-                <li>Perfect gift for book lovers</li>
-                <li>Collector's edition</li>
-              </ul>
+              <div className="flex items-start space-x-5">
+                <div className="w-12 h-12 flex-shrink-0 bg-coffee/5 rounded-2xl border border-coffee/10 flex items-center justify-center">
+                  <svg className="w-6 h-6 text-coffee" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                  </svg>
+                </div>
+                <div>
+                  <h5 className="text-[14px] font-black text-coffee uppercase tracking-[0.2em] mb-2">Authentic Seal</h5>
+                  <p className="text-md text-coffee/70 leading-relaxed">Each copy is verified by our master curators for impeccable production quality.</p>
+                </div>
+              </div>
             </div>
+
           </div>
         </div>
-      </motion.div>
 
-      {/* Related Books Section */}
-      <motion.div
-        initial={{ y: 20, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ delay: 1.1 }}
-        className="mt-20 border-t border-tan/10 pt-16"
-      >
-        <div className="mb-2">
-          <SectionHeading
-            align="left"
-            subtitle={`Discover more from ${book?.author?.author_name}`}
-          >
-            More by this Author
-          </SectionHeading>
+        {/* Similar Curations Section */}
+        <div className="mt-40 pt-24 border-t border-coffee/10">
+          <div className="flex items-end justify-between mb-16">
+            <SectionHeading
+              align="left"
+              subtitle="Further Exploration"
+            >
+              Similar Curations
+            </SectionHeading>
+
+          </div>
+          <div className="relative group/curations">
+            <div className="absolute -inset-10 bg-coffee/5 blur-3xl opacity-0 group-hover/curations:opacity-100 transition-opacity pointer-events-none" />
+            <ScrollBooks autoScroll={false} books={books} />
+          </div>
         </div>
 
-        <div className="">
-          <ScrollBooks autoScroll={false} books={relatedBooks} />
-        </div>
-      </motion.div>
-    </motion.div>
+      </div>
+    </div>
   );
 };
 
 export default SingleBooks;
-/* 
-  useEffect(() => {
-    getSingleBook(id);
-  }, []);
-
-*/
-
-

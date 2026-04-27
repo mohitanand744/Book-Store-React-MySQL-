@@ -8,6 +8,7 @@ export const NAV_LINKS = [
     key: "nextChapterbooks",
     hasTag: true,
   },
+  { name: "Authors", path: "/nextChapter/authors", key: "nextChapterauthors" },
   { name: "Contact", path: "/nextChapter/contact", key: "nextChaptercontact" },
 ];
 

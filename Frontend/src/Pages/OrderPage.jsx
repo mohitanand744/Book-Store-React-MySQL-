@@ -26,6 +26,7 @@ import { useLoader } from "../Hooks/useLoader";
 import BooksLoader from "../components/Loaders/BooksLoader";
 import BackButton from "../components/Buttons/BackButton";
 import NoData from "../components/EmptyData/noData";
+import Breadcrumb from "../components/Common/Breadcrumb";
 
 const statusConfig = {
   PLACED: {
@@ -169,6 +170,11 @@ const OrdersPage = () => {
         titleFirst={"Your"}
         titleSecond={"Orders"}
         description={"Checkout your orders"}
+        items={[
+          { label: "Home", path: "/nextChapter" },
+          { label: "Profile", path: "/nextChapter/user/profile" },
+          { label: "Orders", path: null }
+        ]}
       />
       <div className="min-h-screen  py-8 px-4 sm:px-6 lg:px-8">
         <div className="container px-4">
