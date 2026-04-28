@@ -2,7 +2,7 @@ import React, { useMemo, useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { FaStar, FaBookOpen, FaSearch, FaFilter } from "react-icons/fa";
+import { FaStar, FaBookOpen, FaSearch, FaFilter, FaTrophy, FaChevronRight } from "react-icons/fa";
 import { GiFeather } from "react-icons/gi";
 import Banners from "../components/Banners/Banners";
 import Breadcrumb from "../components/Common/Breadcrumb";
@@ -106,6 +106,48 @@ const AllAuthors = () => {
     return { authorsList: list, allGenres: Array.from(genresSet) };
   }, [books, searchTerm, sortBy, selectedGenre, minRating, categoriesList]);
 
+  const authorOfTheMonth = useMemo(() => {
+    if (books.length === 0) return null;
+    const authorsMap = new Map();
+    books.forEach((book) => {
+      const author = book.author;
+      if (author && author.author_id) {
+        if (!authorsMap.has(author.author_id)) {
+          authorsMap.set(author.author_id, {
+            ...author,
+            bookCount: 1,
+            genres: new Set([book.category]),
+          });
+        } else {
+          const existing = authorsMap.get(author.author_id);
+          existing.bookCount += 1;
+        }
+      }
+    });
+    const list = Array.from(authorsMap.values());
+    if (list.length === 0) return null;
+
+    // Sort by highest rating then by book count
+    list.sort((a, b) => {
+      const ratingDiff = (b.author_rating || 0) - (a.author_rating || 0);
+      if (ratingDiff !== 0) return ratingDiff;
+      return b.bookCount - a.bookCount;
+    });
+
+    return list[0];
+  }, [books]);
+
+  const authorOfTheMonthBooks = useMemo(() => {
+    if (!authorOfTheMonth) return [];
+    return books
+      .filter(b => b.author?.author_id === authorOfTheMonth.author_id)
+      .slice(0, 3);
+  }, [books, authorOfTheMonth]);
+
+
+  console.log("author", authorOfTheMonth);
+
+
   return (
     <div className="min-h-screen bg-tan">
       <Banners
@@ -119,6 +161,107 @@ const AllAuthors = () => {
       />
 
       <div className="container mx-auto px-4 py-8">
+        {/* Author of the Month Section */}
+        {authorOfTheMonth && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+            className="mb-20 relative overflow-hidden rounded-[2.5rem] sm:rounded-[3rem] bg-gradient-to-br from-[#2D241E] to-[#1A1511] p-8 sm:p-12 border border-sepia/20 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.5)] flex flex-col xl:flex-row items-center gap-12 group"
+          >
+            <div className="absolute inset-0 bg-[url('/images/bgDesign.jpg')] bg-cover bg-center opacity-20 pointer-events-none" />
+            <div className="absolute -top-32 -right-32 w-[30rem] h-[30rem] bg-sepia/10 rounded-full blur-[100px] pointer-events-none group-hover:bg-sepia/20 transition-all duration-1000" />
+
+            <div className="absolute top-0 right-0 p-8 opacity-5 hidden xl:block pointer-events-none transform group-hover:scale-110 group-hover:rotate-12 transition-all animate-pulse duration-700 ease-out">
+              <FaTrophy className="text-[16rem] text-cream/50" />
+            </div>
+
+            {/* Avatar Area */}
+            <div className="relative z-10 shrink-0 mt-4 xl:mt-0">
+              <div className="absolute inset-0 rounded-full border-2 border-sepia/40 animate-[spin_15s_linear_infinite] scale-[1.15]" />
+              <div className="absolute inset-0 rounded-full border-2 border-tan/30 border-dashed animate-[spin_20s_linear_infinite_reverse] scale-[1.3]" />
+              <div className="w-56 h-56 sm:w-72 sm:h-72 rounded-full p-2 bg-gradient-to-br from-sepia via-tan to-coffee shadow-[0_0_50px_rgba(180,140,90,0.15)] group-hover:shadow-[0_0_70px_rgba(180,140,90,0.25)] transition-shadow duration-700">
+                <div className="w-full h-full overflow-hidden rounded-full border-4 border-[#1A1511] bg-coffee">
+                  <img
+                    src={authorOfTheMonth.author_image || "https://cdn.vectorstock.com/i/500p/40/53/accurate-silhouette-of-a-man-for-profile-picture-vector-14714053.jpg"}
+                    alt={authorOfTheMonth.author_name}
+                    className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Content Area */}
+            <div className="relative z-10 flex-1 flex flex-col items-center xl:items-start text-center xl:text-left w-full mt-6 xl:mt-0">
+              <div className="inline-flex items-center gap-3 px-5 py-2.5 rounded-full bg-gradient-to-r from-sepia/20 to-transparent border border-sepia/30 text-tan/60 mb-6 shadow-inner backdrop-blur-sm">
+                <FaTrophy className="text-base sm:text-lg animate-pulse" />
+                <span className="text-xs sm:text-lg font-black tracking-[0.2em] uppercase">Author of the Month</span>
+              </div>
+
+              <h2 className="text-4xl sm:text-5xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-tan via-cream to-sepia mb-6 drop-shadow-sm">
+                {authorOfTheMonth.author_name}
+              </h2>
+
+              <p className="text-tan/70 text-base sm:text-lg leading-relaxed mb-8 max-w-3xl line-clamp-3 font-medium">
+                {authorOfTheMonth.author_description || "A brilliant visionary whose captivating stories transport readers to incredible new worlds. Their masterful storytelling and profound character development have captured the hearts of readers worldwide, making them a cornerstone of our literary community."}
+              </p>
+
+              <div className="flex flex-wrap items-center justify-center xl:justify-start gap-4 mb-8 w-full">
+                <div className="flex items-center gap-4 bg-black/20 backdrop-blur-md px-6 py-3.5 rounded-2xl border border-tan/10 shadow-inner hover:border-sepia/40 transition-colors duration-300">
+                  <FaBookOpen className="text-sepia text-2xl" />
+                  <div className="flex flex-col items-start">
+                    <span className="text-tan/50 text-[14px] uppercase font-bold tracking-widest">Published</span>
+                    <span className="text-tan font-black text-xl leading-none mt-1">{authorOfTheMonth.bookCount} Books</span>
+                  </div>
+                </div>
+                <div className="flex items-center gap-4 bg-black/20 backdrop-blur-md px-6 py-3.5 rounded-2xl border border-tan/10 shadow-inner hover:border-sepia/40 transition-colors duration-300">
+                  <FaStar className="text-sepia text-2xl" />
+                  <div className="flex flex-col items-start">
+                    <span className="text-tan/50 text-[14px] uppercase font-bold tracking-widest">Rating</span>
+                    <span className="text-tan font-black text-xl leading-none mt-1">{authorOfTheMonth.author_rating || 5} / 5</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Top Books Showcase */}
+              {authorOfTheMonthBooks && authorOfTheMonthBooks.length > 0 ? (
+                <div className="w-full pt-8 border-t border-tan/10 flex flex-col sm:flex-row items-center justify-between gap-8 mt-2">
+                  <div className="flex flex-col sm:flex-row items-center gap-4">
+                    <span className="text-tan/50 text-[16px] font-bold uppercase tracking-widest whitespace-nowrap">Featured Works:</span>
+                    <div className="flex space-x-4">
+                      {authorOfTheMonthBooks.map((book, idx) => (
+                        <div key={book.book_id} className="w-20 h-28  rounded-md overflow-hidden border-2 border-[#1A1511] shadow-[0_10px_20px_rgba(0,0,0,0.5)] hover:-translate-y-3 hover:scale-110 transition-all duration-300 z-10 hover:z-20 cursor-pointer" onClick={() => navigate(`/nextChapter/book/${book.book_id}`)}>
+                          <img src={book?.images[0]} alt={book.title} className="w-full h-full object-cover" />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <Button
+                    onClick={() => navigate(`/nextChapter/author/${authorOfTheMonth.author_id}`)}
+                    variant="primary"
+                    className="flex items-center gap-3 !bg-sepia hover:!bg-tan hover:!text-coffee !text-cream !rounded-xl !px-8 !py-4 shadow-[0_0_20px_rgba(180,140,90,0.2)] hover:shadow-[0_0_30px_rgba(180,140,90,0.4)] transition-all duration-300 shrink-0 group/btn"
+                  >
+                    <span className="font-bold tracking-wider text-sm">Explore Collection</span>
+                    <FaChevronRight className="text-sm group-hover/btn:translate-x-1 transition-transform" />
+                  </Button>
+                </div>
+              ) : (
+                <div className="w-full pt-8 border-t border-tan/10 flex justify-center xl:justify-start">
+                  <Button
+                    onClick={() => navigate(`/nextChapter/author/${authorOfTheMonth.author_id}`)}
+                    variant="primary"
+                    className="flex items-center gap-3 !bg-sepia hover:!bg-tan hover:!text-coffee !text-cream !rounded-xl !px-8 !py-4 shadow-[0_0_20px_rgba(180,140,90,0.2)] hover:shadow-[0_0_30px_rgba(180,140,90,0.4)] transition-all duration-300 group/btn"
+                  >
+                    <span className="font-bold tracking-wider text-sm">View Full Profile</span>
+                    <FaChevronRight className="text-sm group-hover/btn:translate-x-1 transition-transform" />
+                  </Button>
+                </div>
+              )}
+            </div>
+          </motion.div>
+        )}
+
         {/* Featured Section - Always Visible */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
