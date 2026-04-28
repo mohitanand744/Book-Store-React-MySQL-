@@ -22,7 +22,7 @@ const AnimatedItemCount = ({ count = 0, label = "item", suffix = "saved", delay 
 
         {/* Count with gradient text */}
         <div className="relative font-bold">
-          <span className="text-transparent bg-clip-text bg-gradient-to-r  to-coffee  text-lg">
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-coffee to-sepia  text-lg mr-2">
             {count}
           </span>
           <span className="text-coffee/80 ">

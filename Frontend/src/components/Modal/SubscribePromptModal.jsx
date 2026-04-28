@@ -27,16 +27,16 @@ const SubscribePromptModal = ({ isOpen, onClose, onFollow, author, followersCoun
           </div>
           <div>
             <h4 className=" font-extrabold text-xl">{author?.author_name || "Author"}</h4>
-            <p className="text-xs font-semibold text-coffee/70 flex items-center justify-center gap-1.5 mt-1">
+            <p className="text-md font-semibold text-cream/70 flex items-center justify-center gap-1.5 mt-1">
               <FaUsers className="text-tan" /> {followersCount || "12.4K"} Followers
             </p>
           </div>
         </div>
 
-        <h3 className="text-lg font-bold text-coffee mb-2">
+        <h3 className="text-lg font-bold text-cream mb-2">
           You're subscribed! Now follow {author?.author_name}
         </h3>
-        <p className="text-coffee/80 text-sm mb-6 leading-relaxed">
+        <p className="text-cream/80 text-md mb-6 leading-relaxed">
           To be the first to know when she drops a new post, book, or update — straight to the top of your feed.
         </p>
 
@@ -44,7 +44,7 @@ const SubscribePromptModal = ({ isOpen, onClose, onFollow, author, followersCoun
           <Button
             variant="outline"
             onClick={onClose}
-            className="flex-1 !bg-red-error/15 hover:!bg-red-error/20 !text-coffee "
+            className="flex-1 !bg-red-error/15 hover:!bg-red-error/20 !text-cream "
           >
             Cancel
           </Button>

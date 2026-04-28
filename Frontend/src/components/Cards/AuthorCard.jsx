@@ -17,6 +17,9 @@ const AuthorCard = ({ author }) => {
 
   return (
     <div className="relative w-full h-[280px] mx-auto overflow-hidden bg-coffee backdrop-blur-xl rounded-[2rem] shadow-[0_15px_40px_-15px_rgba(0,0,0,0.3)] hover:shadow-2xl transition-all duration-300 border border-tan/20 group">
+      <div 
+        className="absolute inset-0 bg-[url('/images/bgDesign.jpg')] bg-cover bg-center opacity-10 pointer-events-none" 
+      />
       {/* Decorative Top Banner */}
       <div className="absolute top-0 left-0 w-full z-0 transition-transform duration-700 ease-in-out group-hover:scale-[1.10] origin-top">
         <DecorativeHeader />

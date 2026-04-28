@@ -3,9 +3,11 @@ import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
-    <footer className="relative rounded-t-[3rem] py-8 text-tan bg-coffee">
-
-      <div className="container px-4 mx-auto">
+    <footer className="relative rounded-t-[3rem] py-8 text-tan bg-coffee overflow-hidden">
+      <div 
+        className="absolute inset-0 bg-[url('/images/bgDesign.jpg')] bg-cover bg-center opacity-10 pointer-events-none" 
+      />
+      <div className="relative z-10 container px-4 mx-auto">
         {/* Top Section */}
         <div className="grid grid-cols-12 gap-2">
           {/* About Section */}

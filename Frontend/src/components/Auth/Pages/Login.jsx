@@ -206,7 +206,10 @@ const Login = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen gap-3 p-4 bg-[url('/images/authBG.png')] bg-center bg-no-repeat bg-cover">
+    <div className="relative flex items-center justify-center min-h-screen gap-3 p-4 bg-[url('/images/authBG.png')] bg-center bg-no-repeat bg-cover overflow-hidden">
+      <div 
+        className="absolute inset-0 bg-[url('/images/bgDesign.jpg')] bg-cover bg-center opacity-10 pointer-events-none" 
+      />
       <div className="flex gap-4">
         <motion.div
           initial={{ scale: 0, y: 20 }}
@@ -217,9 +220,12 @@ const Login = () => {
           <motion.div
             whileHover={{ scale: 1.01 }}
             transition={{ duration: 0.2 }}
-            className="overflow-hidden bg-coffee/65 backdrop-blur-xl shadow-2xl rounded-3xl p-3 border border-tan/20"
+            className="overflow-hidden bg-coffee/65 backdrop-blur-xl shadow-2xl rounded-3xl p-3 border border-tan/20 relative"
           >
-            <div className="p-3">
+            <div 
+              className="absolute inset-0 bg-[url('/images/bgDesign.jpg')] bg-cover bg-center opacity-10 pointer-events-none" 
+            />
+            <div className="relative z-10 p-3">
               <div className="mb-8 border bg-black/20 p-3 pt-1 rounded-3xl border-tan/20 text-cream text-center">
                 <motion.img
                   initial={{ scale: 0 }}
@@ -463,7 +469,7 @@ const Login = () => {
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               transition={{ delay: 1.1 }}
-              className="px-2 py-4 bg-black/20 backdrop-blur-sm text-center text-tan rounded-xl"
+              className="px-2 py-4 bg-black/20 backdrop-blur-sm text-center text-tan rounded-xl relative z-10"
             >
               <p className="text-[11px] ">
                 By creating an account, you agree to our{" "}

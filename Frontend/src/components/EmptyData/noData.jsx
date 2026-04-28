@@ -138,8 +138,12 @@ const NoData = ({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, ease: "easeOut" }}
-      className={`flex flex-col bg-sepia mx-auto border border-tan/20 shadow-xl items-center justify-center max-w-md p-5 rounded-xl ${className}`}
+      className={`flex flex-col bg-sepia mx-auto border border-tan/20 shadow-xl items-center justify-center max-w-md p-5 rounded-xl ${className} relative overflow-hidden`}
     >
+      <div 
+        className="absolute inset-0 bg-[url('/images/bgDesign.jpg')] bg-cover bg-center opacity-10 pointer-events-none" 
+      />
+      <div className="relative z-10 flex flex-col items-center">
       <motion.div
         className="flex items-center mb-3 justify-center w-16 h-16 border-2 border-tan rounded-full bg-tan/10"
         animate={
@@ -192,6 +196,7 @@ const NoData = ({
           {renderActionButton()}
         </motion.div>
       )}
+      </div>
     </motion.div>
   );
 };

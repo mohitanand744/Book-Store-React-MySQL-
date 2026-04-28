@@ -228,12 +228,17 @@ const UserProfile = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.2 }}
-            className="w-full lg:w-1/3 bg-coffee text-tan rounded-2xl shadow-xl overflow-hidden h-fit border border-tan/20"
+            className="w-full lg:w-1/3 bg-coffee text-tan rounded-2xl shadow-xl overflow-hidden h-fit border border-tan/20 relative"
           >
+            <div 
+              className="absolute inset-0 bg-[url('/images/bgDesign.jpg')] bg-cover bg-center opacity-10 pointer-events-none" 
+            />
             {/* Profile Header with Decorative Elements */}
-            <DecorativeHeader />
+            <div className="relative z-10">
+              <DecorativeHeader />
+            </div>
 
-            <div className="flex relative justify-center mt-[-4.8rem] ">
+            <div className="flex relative z-10 justify-center mt-[-4.8rem] ">
               <motion.div
                 initial={{ scale: 0.95 }}
                 animate={{ scale: 1 }}
@@ -274,7 +279,7 @@ const UserProfile = () => {
               </motion.div>
             </div>
             {/* Profile Content */}
-            <div className="px-6 pt-2 pb-6">
+            <div className="px-6 pt-2 pb-6 relative z-10">
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -451,7 +456,11 @@ const UserProfile = () => {
             </div>
 
             {/* Mobile Bottom Navigation */}
-            <div className="bg-coffee text-tan rounded-3xl border border-tan/20 md:hidden flex justify-around py-2 z-50">
+            <div className="bg-coffee text-tan rounded-3xl border border-tan/20 md:hidden flex justify-around py-2 z-50 relative overflow-hidden">
+              <div 
+                className="absolute inset-0 bg-[url('/images/bgDesign.jpg')] bg-cover bg-center opacity-10 pointer-events-none" 
+              />
+              <div className="flex relative z-10 justify-around w-full">
               <motion.button
                 onClick={() => setActiveTab("activity")}
                 className={`flex flex-col items-center p-2 w-full relative ${activeTab === "activity"
@@ -505,6 +514,7 @@ const UserProfile = () => {
                   />
                 )}
               </motion.button>
+              </div>
             </div>
 
             {/* Tab Content */}
@@ -512,8 +522,12 @@ const UserProfile = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.3 }}
-              className="p-6 bg-coffee text-tan h-full rounded-2xl border border-tan/10"
+              className="p-6 bg-coffee text-tan h-full rounded-2xl border border-tan/10 relative overflow-hidden"
             >
+              <div 
+                className="absolute inset-0 bg-[url('/images/bgDesign.jpg')] bg-cover bg-center opacity-10 pointer-events-none" 
+              />
+              <div className="relative z-10 h-full">
               {activeTab === "activity" && (
                 <>
                   {user?.recentActivity?.length > 0 ? (
@@ -602,7 +616,8 @@ const UserProfile = () => {
                   )}
                 </>
               )}
-            </motion.div>
+            </div>
+          </motion.div>
           </div>
         </div>
       </motion.div>
@@ -684,9 +699,12 @@ const StatCard = ({ title, value, color, delay, icon, text, onClick }) => (
     animate={{ opacity: 1, y: 0 }}
     transition={{ delay }}
     onClick={onClick}
-    className={`${color} text-tan rounded-xl shadow-md p-6 cursor-pointer transition-all duration-200 hover:shadow-lg`}
+    className={`${color} text-tan rounded-xl shadow-md p-6 cursor-pointer transition-all duration-200 hover:shadow-lg relative overflow-hidden`}
   >
-    <div className="flex items-start justify-between">
+    <div 
+      className="absolute inset-0 bg-[url('/images/bgDesign.jpg')] bg-cover bg-center opacity-10 pointer-events-none" 
+    />
+    <div className="relative z-10 flex items-start justify-between">
       <div>
         <p className="text-lg font-medium">{title}</p>
         <p className="text-3xl font-bold">{value}</p>
@@ -711,9 +729,12 @@ const ActivityItem = ({
     animate={{ opacity: 1, y: 0 }}
     transition={{ delay, type: "spring", stiffness: 300 }}
     whileHover={{ y: -3, boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1)" }}
-    className="bg-coffee text-tan rounded-xl shadow-md overflow-hidden border border-tan/20 transition-all duration-200 hover:shadow-lg"
+    className="bg-coffee text-tan rounded-xl shadow-md overflow-hidden border border-tan/20 transition-all duration-200 hover:shadow-lg relative"
   >
-    <div className="flex flex-col sm:flex-row">
+    <div 
+      className="absolute inset-0 bg-[url('/images/bgDesign.jpg')] bg-cover bg-center opacity-10 pointer-events-none" 
+    />
+    <div className="flex flex-col sm:flex-row relative z-10">
       {/* Product Image */}
       <div className="relative flex items-center justify-center h-40 border-r rounded-r-2xl sm:w-1/4 sm:h-auto">
         <img
@@ -887,5 +908,3 @@ const ModernProfileDetail = ({
     </motion.div>
   );
 };
-
-

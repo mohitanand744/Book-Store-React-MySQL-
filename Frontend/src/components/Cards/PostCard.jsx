@@ -167,8 +167,12 @@ const PostCard = ({ post, index, author }) => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.08 }}
-      className="group bg-coffee border border-tan/10 rounded-2xl transition-all duration-300 flex flex-col shadow-xl"
+      className="group bg-coffee border border-tan/10 rounded-2xl transition-all duration-300 flex flex-col shadow-xl relative overflow-hidden"
     >
+      <div 
+        className="absolute inset-0 bg-[url('/images/bgDesign.jpg')] bg-cover bg-center opacity-10 pointer-events-none" 
+      />
+      <div className="relative z-10">
       {/* LinkedIn Style Header */}
       <div className="flex items-center gap-3 p-4">
         <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-tan/30 flex-shrink-0">
@@ -521,6 +525,7 @@ const PostCard = ({ post, index, author }) => {
             </motion.div>
           )}
         </AnimatePresence>
+      </div>
       </div>
     </motion.article>
   );

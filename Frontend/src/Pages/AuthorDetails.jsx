@@ -322,123 +322,130 @@ const AuthorDetails = () => {
             transition={{ delay: 0.15 }}
             className="relative px-5 pt-16 pb-12 bg-coffee border border-tan/10 shadow-2xl rounded-3xl md:pt-6"
           >
-            {/* Social links */}
-            <div className="absolute z-10 flex gap-3 top-4 right-5">
-              {[FaTwitter, FaInstagram, FaLinkedin].map((Icon, i) => (
-                <Button
-                  variant="ghost"
-                  key={i}
-                  className="flex bg-tan/30 backdrop-blur-sm items-center justify-center text-tan transition-all duration-200 rounded-full !w-9 !h-9 !p-0 hover:bg-tan/25 hover:scale-110"
-                >
-                  <Icon size={15} />
-                </Button>
-              ))}
-            </div>
+            <div
+              className="absolute inset-0 bg-[url('/images/bgDesign.jpg')] bg-cover bg-center opacity-10 pointer-events-none"
+            />
+            <div className="relative z-10">
 
-            <motion.div
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ type: "spring", stiffness: 200, damping: 18 }}
-              className="absolute left-0 right-0 z-10 mx-auto overflow-hidden border-4 border-tan shadow-2xl -top-14 md:-top-20 w-28 md:w-40 h-28 md:h-40 rounded-3xl cursor-zoom-in"
-              onClick={() => openPreview(author?.author_image || "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png", author?.author_name)}
-            >
-              <img
-                src={
-                  author?.author_image ||
-                  "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
-                }
-                alt={author?.author_name}
-                className="object-cover object-top w-full h-full"
-              />
-            </motion.div>
+
+              <motion.div
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ type: "spring", stiffness: 200, damping: 18 }}
+                className="absolute left-0 right-0 z-10 mx-auto overflow-hidden border-4 border-tan shadow-2xl -top-28 md:-top-30 w-28 md:w-40 h-28 md:h-40 rounded-3xl cursor-zoom-in"
+                onClick={() => openPreview(author?.author_image || "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png", author?.author_name)}
+              >
+                <img
+                  src={
+                    author?.author_image ||
+                    "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+                  }
+                  alt={author?.author_name}
+                  className="object-cover object-top w-full h-full"
+                />
+              </motion.div>
 
 
 
-            <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-              <div className="text-center sm:text-left">
-                <h1 className="text-2xl md:text-3xl font-bold text-tan">
-                  {author?.author_name}
-                </h1>
-                <p className="text-sm text-tan/60 mt-0.5 font-medium">
-                  Professional Author &amp; Storyteller
-                </p>
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                <div className="text-center sm:text-left">
+                  <h1 className="text-2xl md:text-3xl font-bold text-tan">
+                    {author?.author_name}
+                  </h1>
+                  <p className="text-sm text-tan/60 mt-0.5 font-medium">
+                    Professional Author &amp; Storyteller
+                  </p>
 
-                <div className="flex flex-wrap justify-center mt-2 sm:justify-start gap-x-4 gap-y-1">
-                  <span className="flex items-center gap-1 text-xs text-tan">
-                    <FaMapMarkerAlt className="text-tan" /> {location}
-                  </span>
-                  <span className="flex items-center gap-1 text-xs text-tan">
-                    <FaGlobe className="text-tan" /> {website}
-                  </span>
-                  <span className="flex items-center gap-1 text-xs text-tan">
-                    <FaRegCalendarAlt className="text-tan" /> Member since{" "}
-                    {memberSince}
-                  </span>
+                  <div className="flex flex-wrap justify-center mt-2 sm:justify-start gap-x-4 gap-y-1">
+                    <span className="flex items-center gap-1 text-xs text-tan">
+                      <FaMapMarkerAlt className="text-tan" /> {location}
+                    </span>
+                    <span className="flex items-center gap-1 text-xs text-tan">
+                      <FaGlobe className="text-tan" /> {website}
+                    </span>
+                    <span className="flex items-center gap-1 text-xs text-tan">
+                      <FaRegCalendarAlt className="text-tan" /> Member since{" "}
+                      {memberSince}
+                    </span>
+                  </div>
+
+                  <div className="flex flex-wrap justify-center sm:justify-start gap-1.5 mt-3">
+                    {genres.map((g) => (
+                      <span
+                        key={g}
+                        className="text-[11px] px-2.5 py-0.5 rounded-full bg-tan/20 text-tan font-medium border border-tan/20"
+                      >
+                        {g}
+                      </span>
+                    ))}
+                  </div>
                 </div>
 
-                <div className="flex flex-wrap justify-center sm:justify-start gap-1.5 mt-3">
-                  {genres.map((g) => (
-                    <span
-                      key={g}
-                      className="text-[11px] px-2.5 py-0.5 rounded-full bg-tan/20 text-tan font-medium border border-tan/20"
+                {/* Social links */}
+                <div className=" md:py-0 sm:absolute flex justify-center z-10 flex gap-3 -top-3 -right-3">
+                  {[FaTwitter, FaInstagram, FaLinkedin].map((Icon, i) => (
+                    <Button
+                      variant="ghost"
+                      key={i}
+                      className="flex bg-tan/30 backdrop-blur-sm items-center justify-center text-tan transition-all duration-200 rounded-full !w-9 !h-9 !p-0 hover:bg-tan/25 hover:scale-110"
                     >
-                      {g}
-                    </span>
+                      <Icon size={15} />
+                    </Button>
                   ))}
                 </div>
+
+                <Button
+                  onClick={handleFollowToggle}
+                  variant={isFollowing ? "outline" : "primary"}
+                  className={`self-center mt-5 sm:mt-10 sm:self-start tanspace-nowrap`}
+                >
+                  {isFollowing ? "Following" : "Follow"}
+                </Button>
               </div>
 
-              <Button
-                onClick={handleFollowToggle}
-                variant={isFollowing ? "outline" : "primary"}
-                className={`self-center mt-10 sm:self-start tanspace-nowrap`}
-              >
-                {isFollowing ? "Following" : "Follow"}
-              </Button>
-            </div>
+              <p className="mt-4 text-tan text-sm leading-relaxed border-t-[3px] border-divider border-tan/50 pt-3 text-center  sm:text-left">
+                {author?.author_description ||
+                  "A passionate writer who breathes life into words and creates unforgettable stories that transcend time and culture."}{" "}
+                With over a decade of experience, this author has captivated
+                millions of readers worldwide and continues to push the boundaries
+                of storytelling.
+              </p>
 
-            <p className="mt-4 text-tan text-sm leading-relaxed border-t-[3px] border-divider border-tan/50 pt-3 text-center  sm:text-left">
-              {author?.author_description ||
-                "A passionate writer who breathes life into words and creates unforgettable stories that transcend time and culture."}{" "}
-              With over a decade of experience, this author has captivated
-              millions of readers worldwide and continues to push the boundaries
-              of storytelling.
-            </p>
-
-            <div className="mt-5 pt-4 border-t border-tan/10">
-              <div className="grid grid-cols-2 sm:grid-cols-4 divide-x divide-y sm:divide-y-0 divide-tan/10 rounded-2xl overflow-hidden border border-tan/10 bg-tan/5 shadow-inner">
-                {stats.map((stat, i) => (
-                  <motion.div
-                    key={i}
-                    onClick={stat.isClickable ? () => setShowFollowersPopup(true) : undefined}
-                    whileHover={{
-                      scale: 1.03,
-                      backgroundColor: "rgba(255,255,255,0.05)",
-                    }}
-                    transition={{
-                      type: "spring",
-                      stiffness: 400,
-                      damping: 100,
-                    }}
-                    className={`flex flex-col items-center justify-center gap-1.5 py-5 px-3 group ${stat.isClickable ? "cursor-pointer" : "cursor-default"}`}
-                  >
-                    <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-coffee  flex items-center justify-center text-tan text-base shadow-md group-hover:shadow-lg group-hover:scale-110 transition-all duration-300">
-                      {stat.icon}
-                    </div>
-                    <span className="text-2xl font-black leading-none tracking-tight text-tan">
-                      {stat.value}
-                    </span>
-                    <span className="text-[10px] font-semibold uppercase tracking-widest text-center leading-tight text-tan/50">
-                      {stat.label}
-                    </span>
+              <div className="mt-5 pt-4 border-t border-tan/10">
+                <div className="grid grid-cols-2 sm:grid-cols-4 divide-x divide-y sm:divide-y-0 divide-tan/10 rounded-2xl overflow-hidden border border-tan/10 bg-tan/5 shadow-inner">
+                  {stats.map((stat, i) => (
                     <motion.div
-                      initial={{ width: 0 }}
-                      whileInView={{ width: "2rem" }}
-                      transition={{ delay: i * 0.1 + 0.3, duration: 0.5 }}
-                      className="h-0.5 rounded-full bg-gradient-to-r from-tan to-coffee"
-                    />
-                  </motion.div>
-                ))}
+                      key={i}
+                      onClick={stat.isClickable ? () => setShowFollowersPopup(true) : undefined}
+                      whileHover={{
+                        scale: 1.03,
+                        backgroundColor: "rgba(255,255,255,0.05)",
+                      }}
+                      transition={{
+                        type: "spring",
+                        stiffness: 400,
+                        damping: 100,
+                      }}
+                      className={`flex flex-col items-center justify-center gap-1.5 py-5 px-3 group ${stat.isClickable ? "cursor-pointer" : "cursor-default"}`}
+                    >
+                      <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-coffee  flex items-center justify-center text-tan text-base shadow-md group-hover:shadow-lg group-hover:scale-110 transition-all duration-300">
+                        {stat.icon}
+                      </div>
+                      <span className="text-2xl font-black leading-none tracking-tight text-tan">
+                        {stat.value}
+                      </span>
+                      <span className="text-[10px] font-semibold uppercase tracking-widest text-center leading-tight text-tan/50">
+                        {stat.label}
+                      </span>
+                      <motion.div
+                        initial={{ width: 0 }}
+                        whileInView={{ width: "2rem" }}
+                        transition={{ delay: i * 0.1 + 0.3, duration: 0.5 }}
+                        className="h-0.5 rounded-full bg-gradient-to-r from-tan to-coffee"
+                      />
+                    </motion.div>
+                  ))}
+                </div>
               </div>
             </div>
           </motion.div>
@@ -555,81 +562,95 @@ const AuthorDetails = () => {
                   </Button>
 
                   {/* Search Box */}
-                  <div className="bg-gradient-to-br from-coffee to-sepia/100  p-5 rounded-2xl shadow-lg">
-                    <h3 className="text-tan font-bold mb-3 flex items-center gap-2">
-                      <FaSearch className="text-tan" /> Search Articles
-                    </h3>
-                    <Search
-                      styling="w-full"
-
-                      placeholder="Search articles..."
-                      onChange={(val) => setPostSearchTerm(val)}
-                      onSearch={(val) => setPostSearchTerm(val)}
+                  <div className="bg-gradient-to-br from-coffee to-sepia/100 p-5 rounded-2xl shadow-lg relative overflow-hidden border border-tan/10">
+                    <div
+                      className="absolute inset-0 bg-[url('/images/bgDesign.jpg')] bg-cover bg-center opacity-10 pointer-events-none"
                     />
+                    <div className="relative z-10">
+                      <h3 className="text-tan font-bold mb-3 flex items-center gap-2">
+                        <FaSearch className="text-tan" /> Search Articles
+                      </h3>
+                      <Search
+                        styling="w-full"
+                        placeholder="Search articles..."
+                        onChange={(val) => setPostSearchTerm(val)}
+                        onSearch={(val) => setPostSearchTerm(val)}
+                      />
+                    </div>
                   </div>
 
                   {/* Categories */}
-                  <div className="bg-gradient-to-br from-coffee to-sepia/100 p-5 rounded-2xl  shadow-sm">
-                    <h3 className="text-tan font-bold mb-4 flex items-center gap-2">
-                      <FaTag className="text-tan" /> Search by Categories
-                    </h3>
-                    <div className="flex flex-wrap gap-2">
-                      {["Writing Tips", "Storytelling", "Author Life", "Process"].map(
-                        (tag) => {
-                          const isSelected = selectedCategories.includes(tag);
-                          return (
-                            <span
-                              key={tag}
-                              onClick={() => {
-                                setSelectedCategories((prev) =>
-                                  prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
-                                );
-                              }}
-                              className={`px-3 py-1.5 text-xs font-semibold rounded-lg border border-tan/50 cursor-pointer transition-colors flex items-center gap-1.5 ${isSelected
-                                ? "bg-coffee text-tan font-semibold border-coffee"
-                                : "bg-cream-light text-tan border-divider hover:border-coffee hover:bg-coffee hover:text-tan"
-                                }`}
-                            >
-                              {tag}
-                              {isSelected && <span className="text-[15px] leading-none">&times;</span>}
-                            </span>
-                          );
-                        }
-                      )}
+                  <div className="bg-gradient-to-br from-coffee to-sepia/100 p-5 rounded-2xl shadow-sm relative overflow-hidden border border-tan/10">
+                    <div
+                      className="absolute inset-0 bg-[url('/images/bgDesign.jpg')] bg-cover bg-center opacity-10 pointer-events-none"
+                    />
+                    <div className="relative z-10">
+                      <h3 className="text-tan font-bold mb-4 flex items-center gap-2">
+                        <FaTag className="text-tan" /> Search by Categories
+                      </h3>
+                      <div className="flex flex-wrap gap-2">
+                        {["Writing Tips", "Storytelling", "Author Life", "Process"].map(
+                          (tag) => {
+                            const isSelected = selectedCategories.includes(tag);
+                            return (
+                              <span
+                                key={tag}
+                                onClick={() => {
+                                  setSelectedCategories((prev) =>
+                                    prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
+                                  );
+                                }}
+                                className={`px-3 py-1.5 text-xs font-semibold rounded-lg border border-tan/50 cursor-pointer transition-colors flex items-center gap-1.5 ${isSelected
+                                  ? "bg-coffee text-tan font-semibold border-coffee"
+                                  : "bg-cream-light text-tan border-divider hover:border-coffee hover:bg-coffee hover:text-tan"
+                                  }`}
+                              >
+                                {tag}
+                                {isSelected && <span className="text-[15px] leading-none">&times;</span>}
+                              </span>
+                            );
+                          }
+                        )}
+                      </div>
                     </div>
                   </div>
 
                   {/* Newsletter */}
-                  <div className="hidden lg:block bg-gradient-to-br from-coffee to-sepia/100 p-6 rounded-2xl shadow-md text-tan text-center">
-                    <FaPaperPlane
-                      className="mx-auto mb-3 text-tan/80"
-                      size={24}
+                  <div className="hidden lg:block bg-gradient-to-br from-coffee to-sepia/100 p-6 rounded-2xl shadow-md text-tan text-center relative overflow-hidden border border-tan/10">
+                    <div
+                      className="absolute inset-0 bg-[url('/images/bgDesign.jpg')] bg-cover bg-center opacity-10 pointer-events-none"
                     />
-                    <h3 className="font-bold text-lg mb-2">Subscribe to Blog</h3>
-                    <p className="text-xs text-tan/70 mb-5 leading-relaxed">
-                      Get notified from <b>{author?.author_name}</b>  when new articles are published!
-                    </p>
-                    <Input
-                      type="email"
-                      required
-                      label="Email"
-                      labelClassName="text-tan"
-                      placeholder="Your email address"
-                      value={subscribeEmail}
-                      onChange={(e) => setSubscribeEmail(e.target.value)}
-                      className="!rounded-full"
-
-                    />
-                    <Button
-                      onClick={handleSubscribe}
-                      variant="ghost"
-                      className="w-full bg-coffee border-2 border-tan text-tan !font-bold !text-sm !py-2.5 !rounded-full flex gap-3 justify-center items-center  hover:!bg-cream-light transition-colors shadow-sm"
-                    >
-                      Subscribe <FaPaperPlane
-                        className="text-tan/80"
-                        size={16}
+                    <div className="relative z-10">
+                      <FaPaperPlane
+                        className="mx-auto mb-3 text-tan/80"
+                        size={24}
                       />
-                    </Button>
+                      <h3 className="font-bold text-lg mb-2">Subscribe to Blog</h3>
+                      <p className="text-xs text-tan/70 mb-5 leading-relaxed">
+                        Get notified from <b>{author?.author_name}</b>  when new articles are published!
+                      </p>
+                      <Input
+                        type="email"
+                        required
+                        label="Email"
+                        labelClassName="text-tan"
+                        placeholder="Your email address"
+                        value={subscribeEmail}
+                        onChange={(e) => setSubscribeEmail(e.target.value)}
+                        className="!rounded-full"
+
+                      />
+                      <Button
+                        onClick={handleSubscribe}
+                        variant="ghost"
+                        className="w-full bg-coffee border-2 border-tan text-tan !font-bold !text-sm !py-2.5 !rounded-full flex gap-3 justify-center items-center  hover:!bg-cream-light transition-colors shadow-sm"
+                      >
+                        Subscribe <FaPaperPlane
+                          className="text-tan/80"
+                          size={16}
+                        />
+                      </Button>
+                    </div>
                   </div>
                 </div>
 
@@ -671,62 +692,67 @@ const AuthorDetails = () => {
 
                 {/* Right Sidebar: More profiles */}
                 <div className="hidden xl:flex flex-1 flex-shrink-0 flex-col gap-6 sticky top-24">
-                  <div className="bg-coffee border border-tan/10 p-6 rounded-3xl shadow-xl">
-                    <h3 className="text-tan font-bold mb-5 flex items-center gap-2 text-lg">
-                      <FaUsers className="text-sepia text-3xl" /> Profiles for you
-                    </h3>
-                    <div className="flex flex-col gap-5">
-                      {uniqueAuthors.slice(0, 3).map((uAuthor, idx) => (
-                        <div
-                          key={idx}
-                          className="flex flex-col gap-3 p-4 rounded-2xl bg-tan/5 border border-tan/10 hover:bg-tan/10 transition-all duration-300 group cursor-pointer"
-                          onClick={() => navigate(`/nextChapter/author/${uAuthor.author_id}`)}
-                        >
-                          <div className="flex items-center gap-3">
-                            <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-tan/30 flex-shrink-0">
-                              <img
-                                src={uAuthor.author_image}
-                                alt={uAuthor.author_name}
-                                className="w-full h-full object-cover"
-                              />
-                            </div>
-                            <div className="flex-1 min-w-0">
-                              <h4 className="text-tan font-bold text-sm truncate group-hover:text-cream transition-colors">
-                                {uAuthor.author_name}
-                              </h4>
-                              <div className="flex items-center gap-1 text-tan/80 text-[10px]">
-                                <FaStar className="text-tan" /> {uAuthor.author_rating}
+                  <div className="bg-coffee border border-tan/10 p-6 rounded-3xl shadow-xl relative overflow-hidden">
+                    <div
+                      className="absolute inset-0 bg-[url('/images/bgDesign.jpg')] bg-cover bg-center opacity-10 pointer-events-none"
+                    />
+                    <div className="relative z-10">
+                      <h3 className="text-tan font-bold mb-5 flex items-center gap-2 text-lg">
+                        <FaUsers className="text-sepia text-3xl" /> Profiles for you
+                      </h3>
+                      <div className="flex flex-col gap-5">
+                        {uniqueAuthors.slice(0, 3).map((uAuthor, idx) => (
+                          <div
+                            key={idx}
+                            className="flex flex-col gap-3 p-4 rounded-2xl bg-tan/5 border border-tan/10 hover:bg-tan/10 transition-all duration-300 group cursor-pointer"
+                            onClick={() => navigate(`/nextChapter/author/${uAuthor.author_id}`)}
+                          >
+                            <div className="flex items-center gap-3">
+                              <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-tan/30 flex-shrink-0">
+                                <img
+                                  src={uAuthor.author_image}
+                                  alt={uAuthor.author_name}
+                                  className="w-full h-full object-cover"
+                                />
+                              </div>
+                              <div className="flex-1 min-w-0">
+                                <h4 className="text-tan font-bold text-sm truncate group-hover:text-cream transition-colors">
+                                  {uAuthor.author_name}
+                                </h4>
+                                <div className="flex items-center gap-1 text-tan/80 text-[10px]">
+                                  <FaStar className="text-tan" /> {uAuthor.author_rating}
+                                </div>
                               </div>
                             </div>
+                            <p className="text-[11px] text-tan/90 line-clamp-2 leading-relaxed">
+                              {uAuthor.author_description ||
+                                "A talented writer exploring new horizons in contemporary literature."}
+                            </p>
+                            <div className="flex gap-4 items-center">
+                              <Button
+                                variant="primary"
+                                className="!py-1.5 !text-[10px] !rounded-lg flex-1 !bg-tan/10 !border-tan/20 hover:!bg-sepia hover:!text-tan transition-all"
+                              >
+                                Follow
+                              </Button>
+                              <Button
+                                variant="primary"
+                                className="!py-1 !px-2 !text-[10px] !rounded-lg flex-1 hover:!bg-sepia/90 transition-all"
+                              >
+                                View Profile
+                              </Button>
+                            </div>
                           </div>
-                          <p className="text-[11px] text-tan/90 line-clamp-2 leading-relaxed">
-                            {uAuthor.author_description ||
-                              "A talented writer exploring new horizons in contemporary literature."}
-                          </p>
-                          <div className="flex gap-4 items-center">
-                            <Button
-                              variant="primary"
-                              className="!py-1.5 !text-[10px] !rounded-lg flex-1 !bg-tan/10 !border-tan/20 hover:!bg-sepia hover:!text-tan transition-all"
-                            >
-                              Follow
-                            </Button>
-                            <Button
-                              variant="primary"
-                              className="!py-1 !px-2 !text-[10px] !rounded-lg flex-1 hover:!bg-sepia/90 transition-all"
-                            >
-                              View Profile
-                            </Button>
-                          </div>
-                        </div>
-                      ))}
+                        ))}
+                      </div>
+                      <Button
+                        variant="ghost"
+                        className="w-full mt-4 !text-tan/60 hover:!text-tan text-xs"
+                        onClick={() => navigate("/nextChapter/authors")}
+                      >
+                        Show more authors
+                      </Button>
                     </div>
-                    <Button
-                      variant="ghost"
-                      className="w-full mt-4 !text-tan/60 hover:!text-tan text-xs"
-                      onClick={() => navigate("/nextChapter/authors")}
-                    >
-                      Show more authors
-                    </Button>
                   </div>
                 </div>
               </div>
@@ -760,7 +786,7 @@ const AuthorDetails = () => {
         setSubscribeEmail={setSubscribeEmail}
         handleSubscribe={handleSubscribe}
       />
-    </motion.div>
+    </motion.div >
   );
 };
 

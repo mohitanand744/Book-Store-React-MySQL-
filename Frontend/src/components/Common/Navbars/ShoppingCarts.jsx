@@ -98,9 +98,12 @@ const ShoppingCart = ({ isCartOpen, setIsCartOpen }) => {
                 className="relative h-full w-screen max-w-md"
                 onClick={(e) => e.stopPropagation()}
               >
-                <div className="flex flex-col rounded-l-[4rem] h-full bg-coffee text-tan border-l border-tan shadow-xl">
+                <div className="flex flex-col rounded-l-[4rem] h-full bg-coffee text-tan border-l border-tan shadow-xl relative overflow-hidden">
+                  <div
+                    className="absolute inset-0 bg-[url('/images/bgDesign.jpg')] bg-cover bg-center opacity-5 pointer-events-none"
+                  />
                   {/* Header + Items */}
-                  <div className="flex-1 pt-6 pb-2 pl-4 pr-2 overflow-y-auto sm:px-6">
+                  <div className="relative z-10 flex-1 pt-6 pb-2 pl-4 pr-2 overflow-y-auto sm:px-6">
                     {/* Header */}
                     <div className="flex h-[2.5rem] bg-sepia  border-r-2 border-tan px-3 rounded-3xl items-center justify-between">
                       <h2 className="text-lg font-medium text-tan">
@@ -161,7 +164,7 @@ const ShoppingCart = ({ isCartOpen, setIsCartOpen }) => {
                     <motion.div
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
-                      className="px-4 py-6 border-t  rounded-t-3xl  border-cream sm:px-6"
+                      className="relative z-10 px-4 py-6 border-t  rounded-t-3xl  border-cream sm:px-6"
                     >
                       <div className="flex justify-between text-base font-medium text-cream">
                         <p>Subtotal</p>

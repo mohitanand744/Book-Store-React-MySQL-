@@ -48,9 +48,12 @@ export default function MobileMenu({ isOpen, setIsOpen }) {
           initial="hidden"
           animate="visible"
           exit="hidden"
-          className="lg:hidden overflow-hidden bg-coffee/95 backdrop-blur-xl border-t border-tan/20 shadow-2xl origin-top"
+          className="lg:hidden relative overflow-hidden bg-coffee/95 backdrop-blur-xl border-t border-tan/20 shadow-2xl origin-top"
         >
-          <ul className="px-5 pt-6 pb-8 space-y-4">
+          <div 
+            className="absolute inset-0 bg-[url('/images/bgDesign.jpg')] bg-cover bg-center opacity-10 pointer-events-none" 
+          />
+          <ul className="relative z-10 px-5 pt-6 pb-8 space-y-4">
             {NAV_LINKS.map((link) => {
               if (link.type === "dropdown") {
                 return (

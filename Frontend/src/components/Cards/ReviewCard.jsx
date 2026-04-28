@@ -8,6 +8,9 @@ const TestimonialCard = ({ data, index }) => {
     <div
       className="relative flex flex-col w-full max-w-sm mx-auto overflow-hidden transition-all duration-500 bg-coffee border border-tan/20 shadow-[0_8px_30px_rgb(0,0,0,0.3)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.4)] hover:-translate-y-2 group rounded-[2rem]"
     >
+      <div 
+        className="absolute inset-0 bg-[url('/images/bgDesign.jpg')] bg-cover bg-center opacity-10 pointer-events-none" 
+      />
       <div className="flex justify-between px-6 pt-6 pb-4 items-center border-b border-tan/10 bg-gradient-to-br from-tan/5 to-transparent flex-shrink-0">
         <div className="flex items-center gap-4 z-10 w-full relative">
           <motion.img

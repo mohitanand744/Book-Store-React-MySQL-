@@ -15,21 +15,21 @@ const MobileSubscribeModal = ({ isOpen, onClose, subscribeEmail, setSubscribeEma
         className="relative w-full mx-auto"
       >
         <div className="flex items-center justify-between pb-4 mb-4 border-b border-coffee/20">
-          <h3 className="text-xl font-bold text-coffee flex items-center gap-2">
+          <h3 className="text-xl font-bold text-cream flex items-center gap-2">
             <FaPaperPlane /> Subscribe
           </h3>
           <Button
             variant="ghost"
             onClick={onClose}
-            className="!px-2 !py-2 text-coffee hover:bg-coffee/10 rounded-full transition-colors"
+            className="!px-2 !py-2 text-cream hover:bg-coffee/10 rounded-full transition-colors"
           >
             <FaTimes />
           </Button>
         </div>
-        <div className="text-center text-coffee">
+        <div className="text-center text-cream">
           <FaPaperPlane className="mx-auto mb-3 opacity-80" size={24} />
-          <h3 className="font-bold text-lg mb-2">Subscribe to Blog</h3>
-          <p className="text-xs opacity-80 mb-5 leading-relaxed">
+          <h3 className="font-bold text-2xl mb-2">Subscribe to Blog</h3>
+          <p className="text-lg opacity-80 mb-5 leading-relaxed">
             Get notified when new articles are published!
           </p>
           <div className="flex flex-col gap-3 text-left">
@@ -40,7 +40,7 @@ const MobileSubscribeModal = ({ isOpen, onClose, subscribeEmail, setSubscribeEma
               labelClassName="text-tan"
               value={subscribeEmail}
               onChange={(e) => setSubscribeEmail(e.target.value)}
-              className="!rounded-full !text-coffee bg-tan/60 focus:bg-tan text-sepia border-coffee/30"
+              className=""
             />
             <Button
               onClick={() => {

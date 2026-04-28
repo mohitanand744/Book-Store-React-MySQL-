@@ -1,8 +1,28 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { GiBookPile } from "react-icons/gi";
+import { FaUsers, FaHeart, FaBoxOpen, FaEnvelope, FaInfoCircle } from "react-icons/fa";
+import { useLocation } from "react-router-dom";
 import Breadcrumb from "../Common/Breadcrumb";
+
 const Banners = ({ titleFirst, titleSecond, description, items }) => {
+  const location = useLocation();
+  const path = location.pathname.toLowerCase();
+
+  let Icon = GiBookPile; // default icon
+
+  if (path.includes("authors")) {
+    Icon = FaUsers;
+  } else if (path.includes("wishlist")) {
+    Icon = FaHeart;
+  } else if (path.includes("orders")) {
+    Icon = FaBoxOpen;
+  } else if (path.includes("contact")) {
+    Icon = FaEnvelope;
+  } else if (path.includes("about")) {
+    Icon = GiBookPile;
+  }
+
   return (
     <motion.section
       initial={{ opacity: 0, y: 20 }}
@@ -48,7 +68,7 @@ const Banners = ({ titleFirst, titleSecond, description, items }) => {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.6, duration: 0.8 }}
         >
-          <GiBookPile className="mx-auto text-coffee text-7xl " />
+          <Icon className="mx-auto text-coffee text-7xl " />
         </motion.div>
       </div>
     </motion.section>

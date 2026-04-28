@@ -19,6 +19,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { FreeMode, Autoplay } from "swiper/modules";
 import CustomSelect from "../components/Inputs/CustomSelect";
 import Button from "../components/Buttons/Button";
+import AnimatedItemCount from "../components/UI/AnimatedItemCount";
 
 import "swiper/css";
 import "swiper/css/free-mode";
@@ -124,19 +125,23 @@ const AllAuthors = () => {
           animate={{ opacity: 1, y: 0 }}
           className="mb-20"
         >
-          <SectionHeading subtitle="Curated Spotlight">Featured Storytellers</SectionHeading>
+          <SectionHeading subtitle="Curated Spotlight">Featured Authors</SectionHeading>
           <AuthorSlider books={books} />
         </motion.div>
 
         {/* Search and Filters Section */}
         <div className="relative z-10 -mt-16 mb-12">
-          <div className="bg-coffee p-5 sm:p-8 rounded-[2rem] sm:rounded-[3rem] shadow-2xl border border-tan/20">
-            <div className="flex flex-col lg:flex-row gap-6 sm:gap-8 items-center justify-between">
+          <div className="bg-coffee p-5 sm:p-8 rounded-[2rem] sm:rounded-[3rem] shadow-2xl border border-tan/20 relative overflow-hidden">
+            <div
+              className="absolute inset-0 bg-[url('/images/bgDesign.jpg')] bg-cover bg-center opacity-10 pointer-events-none"
+            />
+            <div className="relative z-10 flex flex-col lg:flex-row gap-6 sm:gap-8 items-center justify-between">
               {/* Search and Reset */}
               <div className="w-full lg:w-1/3 flex items-center gap-4">
                 <Search
                   placeholder="Search authors..."
                   onChange={(val) => setSearchTerm(val)}
+                  onSearch={(val) => setSearchTerm(val)}
                   styling="flex-1 bg-sepia rounded-full shadow-inner"
                 />
                 {(searchTerm || selectedGenre !== "All" || minRating > 0 || sortBy !== "name") && (
@@ -217,7 +222,7 @@ const AllAuthors = () => {
                     speed={1500}
                     autoplay={{
                       delay: 0,
-                      disableOnInteraction: false,
+                      pauseOnMouseEnter: true,
                     }}
 
                     freeMode={true}
@@ -249,10 +254,13 @@ const AllAuthors = () => {
         </div>
 
         {/* Results Count Section */}
-        <div className="mb-10 flex items-center justify-between px-6">
-          <h2 className="text-2xl font-serif text-coffee">
-            {authorsList.length} <span className="text-sepia italic">Storytellers Found</span>
-          </h2>
+        <div className="mb-10 w-fit px-6">
+          <AnimatedItemCount
+            count={authorsList.length}
+            label="Author"
+            suffix="Found"
+            Icon={GiFeather}
+          />
         </div>
 
         {loading ? (

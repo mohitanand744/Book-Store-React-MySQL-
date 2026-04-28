@@ -26,6 +26,9 @@ const TestimonialCard = ({ data }) => {
       viewport={{ once: true }}
       className="relative flex flex-col w-full overflow-hidden transition-all duration-500 bg-coffee border border-tan/20 shadow-[0_8px_30px_rgb(0,0,0,0.3)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.4)] hover:-translate-y-2 group rounded-[2.5rem]"
     >
+      <div 
+        className="absolute inset-0 bg-[url('/images/bgDesign.jpg')] bg-cover bg-center opacity-10 pointer-events-none" 
+      />
       <div className="flex justify-between px-8 pt-8 pb-6 items-center border-b border-tan/10 bg-gradient-to-br from-tan/5 to-transparent shrink-0">
         <div className="flex items-center gap-4 z-10 w-full relative">
           <div className="relative">

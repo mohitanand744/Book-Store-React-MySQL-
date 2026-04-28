@@ -9,6 +9,7 @@ import BookListingFilter from "../components/BookListingFilter";
 import CategorySlider from "../components/ScrollingContainer/CategorySlider";
 import NoData from "../components/EmptyData/noData";
 import Breadcrumb from "../components/Common/Breadcrumb";
+import Banners from "../components/Banners/Banners";
 
 import { useLocation, useNavigate } from "react-router-dom";
 import useDebounce from "../Hooks/useDebounce";
@@ -136,10 +137,19 @@ const AllBooks = () => {
         setShowFilters(false);
       }}
     >
-      <div className="bg-sepia/50 backdrop-blur-md py-6 px-6 relative">
+      <Banners
+        titleFirst="Explore"
+        titleSecond="Our Books"
+        description="Find your next favorite read among our extensive collection."
+        items={[
+          { label: "Home", path: "/nextChapter" },
+          { label: "Books", path: null }
+        ]}
+      />
+      <div className="bg-sepia/80 backdrop-blur-xl py-4 sm:py-6 px-6 sticky top-[4.5rem] z-[9999] shadow-md border-b border-tan/10">
 
         <div className="container flex items-center justify-between gap-5 md:px-4">
-          <h1 className="text-xl font-semibold text-start sm:text-center text-coffee md:text-2xl uppercase">
+          <h1 className="text-xl font-semibold text-start sm:text-center text-cream md:text-2xl uppercase">
             We have various types of books
           </h1>
 
@@ -166,7 +176,7 @@ const AllBooks = () => {
                 setShowFilters(!showFilters);
               }}
               whileTap={{ scale: 0.9 }}
-              className="w-11 h-11 flex items-center justify-center rounded-2xl bg-tan/10 border border-tan/20 text-coffee shadow-sm hover:bg-tan/20 transition-all duration-300"
+              className="w-11 h-11 flex items-center justify-center rounded-2xl bg-tan/10 border border-tan/20 text-cream shadow-sm hover:bg-tan/20 transition-all duration-300"
             >
               <svg
                 width="24"
@@ -208,14 +218,6 @@ const AllBooks = () => {
         </div>
       </div>
 
-      <div className="container mx-auto p-4 pb-1">
-        <Breadcrumb
-          items={[
-            { label: "Home", path: "/nextChapter" },
-            { label: "Curations", path: null }
-          ]}
-        />
-      </div>
 
       <CategorySlider filters={filters} setFilters={setFilters} />
 

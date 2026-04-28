@@ -82,8 +82,11 @@ const BookCard = ({ book }) => {
   return (
     <div
       className="relative flex flex-col bg-coffee border border-tan/10 justify-between shadow-2xl
-     md:h-[29rem] h-[26rem] z-10 hover:z-[99] transition-all duration-300 card rounded-3xl "
+     md:h-[29rem] h-[26rem] z-10 hover:z-[99] transition-all duration-300 card rounded-3xl"
     >
+      <div
+        className="absolute inset-0 bg-[url('/images/bgDesign.jpg')] bg-cover bg-center opacity-10 pointer-events-none"
+      />
       <div className="absolute top-0 right-0 px-3 py-1 bg-tan/20 text-tan text-xs font-medium backdrop-blur-md rounded-bl-2xl border-l border-b rounded-tr-3xl border-tan/10">
         <p>{book?.category}</p>
       </div>

@@ -27,7 +27,7 @@ const SectionHeading = ({ children, className = "", subtitle, align = "center" }
 
         {/* Heading Text */}
         <div className={`${isLeft ? "pr-10" : "px-4 md:px-10"} shrink-0`}>
-          <h2 className={`relative text-2xl md:text-4xl lg:text-5xl font-serif font-bold text-transparent bg-clip-text bg-gradient-to-br from-coffee via-sepia to-coffee tracking-tight ${isLeft ? "text-left" : "text-center"} leading-tight`}>
+          <h2 className={`relative text-2xl md:text-4xl lg:text-5xl  font-bold text-transparent bg-clip-text bg-gradient-to-br from-coffee via-sepia to-coffee tracking-tight ${isLeft ? "text-left" : "text-center"} leading-tight`}>
             {children}
             {/* Subtle floating dot for a classic touch */}
             <span className={`absolute -top-1 ${isLeft ? "-right-4" : "-right-2 md:-right-4"} w-1.5 h-1.5 bg-tan rounded-full animate-pulse shadow-[0_0_8px_rgba(211,189,157,0.8)]`}></span>

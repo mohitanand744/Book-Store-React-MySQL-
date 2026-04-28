@@ -26,8 +26,11 @@ const Modal = ({ isOpen, onClose, loading, children }) => {
                 layout: { duration: 0.35, ease: "easeInOut" },
               }}
               onClick={(e) => e.stopPropagation()}
-              className="w-full h-auto overflow-y-auto scrollbar-hide max-h-[93vh]  max-w-md relative border-2 border-tan bg-coffee text-tan p-6 rounded-3xl shadow-xl"
+              className="w-full h-auto overflow-y-auto overflow-x-hidden scrollbar-hide max-h-[93vh]  max-w-md relative border-2 border-tan bg-coffee text-tan p-6 rounded-3xl shadow-xl"
             >
+              <div 
+                className="absolute inset-0 bg-[url('/images/bgDesign.jpg')] bg-cover bg-center opacity-10 pointer-events-none" 
+              />
 
 
               <AnimatePresence>
@@ -46,7 +49,7 @@ const Modal = ({ isOpen, onClose, loading, children }) => {
                   </motion.div>
                 )}
               </AnimatePresence>
-              <div className="z-10">
+              <div className="relative z-10">
                 {children}
               </div>
             </motion.div>

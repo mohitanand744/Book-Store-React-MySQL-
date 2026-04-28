@@ -14,13 +14,13 @@ const FollowersModal = ({ isOpen, onClose, followers }) => {
         className="relative w-full mx-auto"
       >
         <div className="flex items-center justify-between pb-4 mb-4 border-b border-coffee/20">
-          <h3 className="text-xl font-bold text-coffee flex items-center gap-2">
+          <h3 className="text-xl font-bold text-cream flex items-center gap-2">
             <FaUsers /> Followers
           </h3>
           <Button
             variant="ghost"
             onClick={onClose}
-            className="!px-2 !py-2 text-coffee hover:bg-coffee/10 rounded-full transition-colors"
+            className="!px-2 !py-2 text-cream hover:bg-coffee/10 rounded-full transition-colors"
           >
             <FaTimes />
           </Button>
@@ -29,7 +29,7 @@ const FollowersModal = ({ isOpen, onClose, followers }) => {
           {followers.map((follower) => (
             <div key={follower.id} className="flex items-center gap-3 p-3 hover:bg-coffee/10 rounded-2xl transition-colors cursor-pointer">
               <img src={follower.avatar} alt={follower.name} className="w-10 h-10 rounded-full object-cover border border-coffee/20" />
-              <span className="font-semibold text-coffee text-sm">{follower.name}</span>
+              <span className="font-semibold text-cream text-sm">{follower.name}</span>
             </div>
           ))}
         </div>

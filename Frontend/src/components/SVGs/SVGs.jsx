@@ -132,7 +132,7 @@ export const DecorativeHeader = ({ height = "h-28" }) => {
 
       {/* Wavy SVG Divider */}
       <svg
-        className="absolute bottom-0 w-full"
+        className="absolute bottom-1 w-full"
         viewBox="0 0 1200 120"
         preserveAspectRatio="none"
       >

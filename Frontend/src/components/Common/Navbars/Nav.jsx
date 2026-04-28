@@ -83,7 +83,10 @@ const Navbar = ({ isCartOpen, setIsCartOpen }) => {
         : "relative bg-coffee shadow-lg"
         }`}
     >
-      <div className="container px-4 py-1 mx-auto">
+      <div 
+        className="absolute inset-0 bg-[url('/images/bgDesign.jpg')] bg-cover bg-center opacity-10 pointer-events-none" 
+      />
+      <div className="relative z-10 container px-4 py-1 mx-auto">
         <div className="flex items-center justify-between">
           {/* Logo */}
           <div className="flex-shrink-0 w-28">
