@@ -12,6 +12,7 @@ const BASE_URL = `${API_BASE}/${API_VERSION}`;
 
 const axiosInstance = axios.create({
   baseURL: BASE_URL,
+  withCredentials: true,
   headers: {
     "Content-Type": "application/json",
     "Cache-Control": "no-cache, no-store, must-revalidate",
@@ -22,6 +23,7 @@ const axiosInstance = axios.create({
 
 const axiosInstanceFormData = axios.create({
   baseURL: BASE_URL,
+  withCredentials: true,
   headers: {
     "Content-Type": "multipart/form-data",
     "Cache-Control": "no-cache, no-store, must-revalidate",

@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { getAllBooks } from "../../../utils/apis/booksApis";
+import { booksApis } from "../../../utils/apis/booksApis";
 
 const initialState = {
   books: [],
@@ -13,7 +13,7 @@ export const fetchAllBooks = createAsyncThunk(
   "fetchAllBooks",
   async (filters, thunkAPI) => {
     try {
-      const response = await getAllBooks(filters);
+      const response = await booksApis.getAllBooks(filters);
 
       return response.data;
     } catch (error) {

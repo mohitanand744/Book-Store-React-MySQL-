@@ -46,7 +46,7 @@ const CustomSelect = (
         type="button"
         className={`w-full h-[42px] px-4 py-3 relative rounded-lg border bg-tan text-sepia flex items-center justify-between ${error
           ? "border-red-error focus:ring-error"
-          : "border-tan focus:ring-coffee focus:border-coffee"
+          : "border-sepia focus:ring-coffee focus:border-coffee"
           } shadow-sm focus:outline-none focus:ring-2 ${className}`}
         onClick={() => setIsOpen(!isOpen)}
         whileTap={{ scale: 0.98 }}
@@ -54,12 +54,12 @@ const CustomSelect = (
         aria-expanded={isOpen}
       >
         <span
-          className={`block truncate ${error ? "text-red-error" : selectedOption ? "text-tan" : "text-tan/80"}`}
+          className={`block truncate text-[13px] ${error ? "text-red-error" : selectedOption ? "text-cream" : "text-cream/80"}`}
         >
           {multiple
             ? `${selectedOption?.length} selected`
             : selectedOption?.label || (
-              <span className="text-[14px]">{placeholder}</span>
+              <span className="">{placeholder}</span>
             )}
         </span>
 
@@ -67,7 +67,7 @@ const CustomSelect = (
           <motion.div
             animate={{ rotate: isOpen ? 180 : 0 }}
             transition={{ duration: 0.3 }}
-            className=""
+            className="text-cream mt-1"
           >
             <svg
               width="16"
@@ -96,7 +96,7 @@ const CustomSelect = (
             role="listbox"
           >
             {options.length > 8 && (
-              <div className="pb-2 mb-2 border-b ">
+              <div className="pb-2 mb-2 border-b border-b-tan/30 rounded-b-xl">
                 <Search
                   styling="w-full !block"
                   iconStyles="top-1 right-1"
@@ -113,7 +113,7 @@ const CustomSelect = (
 
               if (filteredOptions.length === 0) {
                 return (
-                  <div className="p-4">
+                  <div className="p-2 pt-1">
                     <NoData
                       title="No results found"
                       icon="search"
@@ -122,16 +122,19 @@ const CustomSelect = (
                       className=""
                       titleClassName="text-sm"
                       messageClassName="text-xs"
-                      iconClassName="!w-8 !h-8"
                     />
                   </div>
                 );
               }
 
-              return filteredOptions.map((option) => (
+              return filteredOptions.map((option, idx) => (
                 <motion.li
                   key={option.value}
-                  className={`px-4 py-2 border-b-2 hover:!scale-[1.02] transition-all duration-500 rounded-2xl relative cursor-pointer shadow-lg ${multiple
+                  initial={{ opacity: 0, scale: 0.8, y: -10 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  transition={{ duration: 0.1, delay: 0.1 * idx }}
+                  //whileHover={{ scale: 1.03}}
+                  className={`px-4 py-1 border-b-2 hover:!scale-[1.03]  transition-all duration-500 rounded-2xl relative cursor-pointer shadow-lg ${multiple
                     ? value?.includes(option.value)
                       ? "border-b-[3px] border-tan/50 bg-tan/10"
                       : "hover:bg-tan/5 border-tan/30"
@@ -157,12 +160,12 @@ const CustomSelect = (
                   role="option"
                   aria-selected={value === option.value}
                 >
-                  <span className="text-nowrap">{option.label}</span>
+                  <span className="text-nowrap text-[13px]">{option.label}</span>
 
                   {(multiple
                     ? value?.includes(option.value)
                     : value === option.value) && (
-                      <span className="w-4 text-[12.4px] text-tan h-4 absolute top-4 right-1 bg-coffee/80 flex justify-center items-center rounded-full">
+                      <span className="w-4 text-[12.4px] text-tan h-4 absolute top-2.5 right-1 bg-coffee/80 flex justify-center items-center rounded-full">
                         ✓
                       </span>
                     )}

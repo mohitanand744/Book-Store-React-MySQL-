@@ -37,7 +37,7 @@ const MobileSubscribeModal = ({ isOpen, onClose, subscribeEmail, setSubscribeEma
               type="email"
               placeholder="Your email address"
               label="Email"
-              labelClassName="text-tan"
+              labelclassname="text-tan"
               value={subscribeEmail}
               onChange={(e) => setSubscribeEmail(e.target.value)}
               className=""

@@ -18,14 +18,7 @@ import Modal from "./ModalContainer";
 import Checkbox from "../Inputs/Checkbox";
 import { toast } from "sonner";
 import NoData from "../EmptyData/noData";
-import {
-  getStatesCites,
-  getStatesFromDB,
-  getUserAddresses,
-  addAddress,
-  updateAddress,
-  deleteAddress,
-} from "../../utils/apis/addressApis";
+import { addressApis } from "../../utils/apis/addressApis";
 import { useLoader } from "../../Hooks/useLoader";
 import BooksLoader from "../Loaders/BooksLoader";
 import ModelsHeading from "../Headings/ModelsHeading";
@@ -61,9 +54,7 @@ const AddressModal = ({
   } = useForm({
     shouldFocusError: true,
   });
-
   const UserPinCode = watch("pinCode");
-
   const { handleKeyDown, handleInput } = useInputHandlers(
     setError,
     clearErrors,
@@ -71,7 +62,7 @@ const AddressModal = ({
 
   const fetchData = async () => {
     try {
-      const addrRes = await getUserAddresses();
+      const addrRes = await addressApis.getUserAddresses();
       if (addrRes?.success) setAddresses(addrRes.data || []);
     } catch (error) {
       if (error.response?.status !== 401) {
@@ -82,7 +73,7 @@ const AddressModal = ({
 
   const fetchStates = async () => {
     try {
-      const statesRes = await getStatesFromDB();
+      const statesRes = await addressApis.getStatesFromDB();
       if (statesRes?.success) setDbStates(statesRes.data || []);
     } catch (error) {
       toast.error("Failed to load states data");
@@ -167,7 +158,7 @@ const AddressModal = ({
   const confirmDelete = async () => {
     if (!addressToDelete) return;
     try {
-      const res = await deleteAddress(addressToDelete);
+      const res = await addressApis.deleteAddress(addressToDelete);
       if (res.success) {
         toast.success("Address deleted successfully!");
         if (selectedAddress === addressToDelete) {
@@ -188,7 +179,7 @@ const AddressModal = ({
 
   const getCitiesStatesWithPin = async (pinCode) => {
     try {
-      const res = await getStatesCites(pinCode);
+      const res = await addressApis.getStatesCites(pinCode);
       const data = res[0];
 
       if (data?.Status === "Success") {
@@ -221,7 +212,7 @@ const AddressModal = ({
   const submitAddressData = async (dataToSubmit) => {
     try {
       if (editAddressData) {
-        const res = await updateAddress(editAddressData.id, dataToSubmit);
+        const res = await addressApis.updateAddress(editAddressData.id, dataToSubmit);
         if (res.success) {
           toast.success("Address updated successfully!");
 
@@ -231,7 +222,7 @@ const AddressModal = ({
           }
         }
       } else {
-        const res = await addAddress(dataToSubmit);
+        const res = await addressApis.addAddress(dataToSubmit);
         if (res.success) {
           toast.success("Address added successfully!");
 
@@ -314,7 +305,7 @@ const AddressModal = ({
     try {
       const updatedData = { ...selected, isDefault: true };
 
-      const res = await updateAddress(selected.id, updatedData);
+      const res = await addressApis.updateAddress(selected.id, updatedData);
 
       if (res.success) {
         toast.success("Default address updated successfully!");
@@ -494,7 +485,8 @@ const AddressModal = ({
               {/* Actions */}
               <div className="flex gap-3 pt-4">
                 <Button
-                  className="flex-1 text-sm !bg-red-error/15 hover:!bg-red-error/20"
+                  variant="outline"
+                  className="flex-1 text-sm"
                   onClick={() => {
                     setShowAddress(false);
                     if (showAddress === "add" || showAddress?.id) {
@@ -504,7 +496,7 @@ const AddressModal = ({
                     handleBackToSelection();
                   }}
                 >
-                  Cancel
+                  Back
                 </Button>
                 <Button
                   variant="outline"
@@ -752,10 +744,11 @@ const AddressModal = ({
                   CONFIRM
                 </Button>
                 <Button
-                  className="flex-1 !bg-red-error/15 hover:!bg-red-error/20"
+                  variant="outline"
+                  className="flex-1"
                   onClick={() => setConfirmationData(null)}
                 >
-                  CANCEL
+                  BACK
                 </Button>
               </div>
             </motion.div>
@@ -797,10 +790,11 @@ const AddressModal = ({
                   Delete
                 </Button>
                 <Button
-                  className="flex-1 !bg-red-error/15 hover:!bg-red-error/20"
+                  variant="outline"
+                  className="flex-1"
                   onClick={() => setAddressToDelete(null)}
                 >
-                  Cancel
+                  Back
                 </Button>
               </div>
             </motion.div>

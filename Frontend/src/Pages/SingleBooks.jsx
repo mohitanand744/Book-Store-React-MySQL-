@@ -465,7 +465,7 @@ const SingleBooks = () => {
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
                               <Input
                                 label="Review Title"
-                                labelClassName="text-tan/70"
+                                labelclassname="text-tan/70"
                                 placeholder="E.g., A journey beyond words..."
                                 value={newReview.title}
                                 onChange={(e) => setNewReview({ ...newReview, title: e.target.value })}
@@ -473,7 +473,7 @@ const SingleBooks = () => {
                               />
                               <Input
                                 label="Numerical Grade"
-                                labelClassName="text-tan/70"
+                                labelclassname="text-tan/70"
                                 type="number"
                                 min="1"
                                 max="5"
@@ -488,7 +488,7 @@ const SingleBooks = () => {
                             </div>
                             <Input
                               label="Your Literary Critique"
-                              labelClassName="text-tan/70"
+                              labelclassname="text-tan/70"
                               as="textarea"
                               rows={5}
                               placeholder="Describe your emotional voyage through these pages..."

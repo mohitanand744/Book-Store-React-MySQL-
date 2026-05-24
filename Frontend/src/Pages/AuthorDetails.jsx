@@ -510,7 +510,7 @@ const AuthorDetails = () => {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: i * 0.07 }}
                       >
-                        <BookCard book={book} />
+                        <BookCard book={book} index={i} />
                       </motion.div>
                     ))}
                   </div>
@@ -633,7 +633,7 @@ const AuthorDetails = () => {
                         type="email"
                         required
                         label="Email"
-                        labelClassName="text-tan"
+                        labelclassname="text-tan"
                         placeholder="Your email address"
                         value={subscribeEmail}
                         onChange={(e) => setSubscribeEmail(e.target.value)}

@@ -164,10 +164,16 @@ const PostCard = ({ post, index, author }) => {
 
   return (
     <motion.article
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: index * 0.08 }}
-      className="group bg-coffee border border-tan/10 rounded-2xl transition-all duration-300 flex flex-col shadow-xl relative overflow-hidden"
+      initial={{ y: 20, opacity: 0, scale: 0.67 }}
+      animate={{ y: 0, opacity: 1, scale: 1 }}
+      transition={{ duration: 0.25, ease: "easeOut" }}
+      whileHover={{
+        scale: 1.01,
+        transition: { duration: 0.15 },
+        boxShadow: "0 15px 40px rgba(0,0,0,0.3)",
+        y: -5,
+      }}
+      className="group bg-coffee border border-tan/10 rounded-2xl flex flex-col relative overflow-hidden"
     >
       <div 
         className="absolute inset-0 bg-[url('/images/bgDesign.jpg')] bg-cover bg-center opacity-10 pointer-events-none" 

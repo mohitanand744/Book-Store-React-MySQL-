@@ -28,7 +28,7 @@ import {
 import useAuth from "../Hooks/useAuth";
 import NoData from "../components/EmptyData/noData";
 import AddressModal from "../components/Modal/AddressModal";
-import { uploadProfilePic as uploadProfilePicApi } from "../utils/apis/userApis";
+import { userApis } from "../utils/apis/userApis";
 import { useUser } from "../store/Context/UserContext";
 import BooksLoader from "../components/Loaders/BooksLoader";
 import { useImagePreview } from "../store/Context/ImagePreviewContext";
@@ -91,7 +91,7 @@ const UserProfile = () => {
     const formData = new FormData();
     formData.append("profilePic", file);
     try {
-      const response = await uploadProfilePicApi(formData);
+      const response = await userApis.uploadProfilePic(formData);
       if (response.success) {
         toast.success(response.message || "Profile picture uploaded");
         setUser((prev) => ({ ...prev, profilePic: response.profilePic }));
@@ -230,8 +230,8 @@ const UserProfile = () => {
             transition={{ duration: 0.2 }}
             className="w-full lg:w-1/3 bg-coffee text-tan rounded-2xl shadow-xl overflow-hidden h-fit border border-tan/20 relative"
           >
-            <div 
-              className="absolute inset-0 bg-[url('/images/bgDesign.jpg')] bg-cover bg-center opacity-10 pointer-events-none" 
+            <div
+              className="absolute inset-0 bg-[url('/images/bgDesign.jpg')] bg-cover bg-center opacity-10 pointer-events-none"
             />
             {/* Profile Header with Decorative Elements */}
             <div className="relative z-10">
@@ -349,7 +349,7 @@ const UserProfile = () => {
                       ? "Update Profile"
                       : "Complete Your Profile"}
                     {!user?.isComplete && (
-                      <span className="absolute top-[-10px] left-[-10px] w-8 h-8 bg-coffee border-2 border-orange-500 rounded-full flex items-center justify-center text-xs">
+                      <span className="absolute top-[-10px] left-[-10px] w-8 h-8 bg-coffee border-2 border-tan rounded-full flex items-center justify-center text-xs">
                         {user?.percentage}%
                       </span>
                     )}
@@ -405,7 +405,7 @@ const UserProfile = () => {
             </motion.div>
 
             {/* Desktop Tabs Navigation */}
-            <div className="hidden md:flex border-b border-tan">
+            <div className="hidden md:flex border-b-[3px] border-sepia/20">
               <motion.button
                 onClick={() => setActiveTab("activity")}
                 className={`px-4 py-2 text-nowrap text-[16px] relative ${activeTab === "activity"
@@ -416,7 +416,7 @@ const UserProfile = () => {
                 Recent Activity
                 {activeTab === "activity" && (
                   <motion.div
-                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-coffee"
+                    className="absolute bottom-0 left-0 right-0 h-1 rounded-t-full bg-coffee"
                     layoutId="underline"
                   />
                 )}
@@ -432,7 +432,7 @@ const UserProfile = () => {
                 Recent Orders
                 {activeTab === "orders" && (
                   <motion.div
-                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-coffee"
+                    className="absolute bottom-0 left-0 right-0 h-1 rounded-t-full bg-coffee"
                     layoutId="underline"
                   />
                 )}
@@ -448,7 +448,7 @@ const UserProfile = () => {
                 Wishlist Preview
                 {activeTab === "wishlist" && (
                   <motion.div
-                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-coffee"
+                    className="absolute bottom-0 left-0 right-0 h-1 rounded-t-full bg-coffee"
                     layoutId="underline"
                   />
                 )}
@@ -457,63 +457,63 @@ const UserProfile = () => {
 
             {/* Mobile Bottom Navigation */}
             <div className="bg-coffee text-tan rounded-3xl border border-tan/20 md:hidden flex justify-around py-2 z-50 relative overflow-hidden">
-              <div 
-                className="absolute inset-0 bg-[url('/images/bgDesign.jpg')] bg-cover bg-center opacity-10 pointer-events-none" 
+              <div
+                className="absolute inset-0 bg-[url('/images/bgDesign.jpg')] bg-cover bg-center opacity-10 pointer-events-none"
               />
               <div className="flex relative z-10 justify-around w-full">
-              <motion.button
-                onClick={() => setActiveTab("activity")}
-                className={`flex flex-col items-center p-2 w-full relative ${activeTab === "activity"
-                  ? "text-tan"
-                  : "text-tan opacity-70"
-                  }`}
-                whileTap={{ scale: 0.95 }}
-              >
-                <FaHistory className="w-5 h-5" />
-                <span className="mt-1 text-xs">Activity</span>
-                {activeTab === "activity" && (
-                  <motion.div
-                    className="absolute top-0 left-6 right-6 h-0.5 bg-tan"
-                    layoutId="mobileUnderline"
-                  />
-                )}
-              </motion.button>
+                <motion.button
+                  onClick={() => setActiveTab("activity")}
+                  className={`flex flex-col items-center p-2 w-full relative ${activeTab === "activity"
+                    ? "text-tan"
+                    : "text-tan opacity-70"
+                    }`}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <FaHistory className="w-5 h-5" />
+                  <span className="mt-1 text-xs">Activity</span>
+                  {activeTab === "activity" && (
+                    <motion.div
+                      className="absolute top-0 left-6 right-6 h-0.5 bg-tan"
+                      layoutId="mobileUnderline"
+                    />
+                  )}
+                </motion.button>
 
-              <motion.button
-                onClick={() => setActiveTab("orders")}
-                className={`flex flex-col items-center p-2 w-full relative ${activeTab === "orders"
-                  ? "text-tan"
-                  : "text-tan opacity-70"
-                  }`}
-                whileTap={{ scale: 0.95 }}
-              >
-                <FaShoppingBag className="w-5 h-5" />
-                <span className="mt-1 text-xs">Orders</span>
-                {activeTab === "orders" && (
-                  <motion.div
-                    className="absolute top-0 left-0 right-0 h-0.5 bg-tan"
-                    layoutId="mobileUnderline"
-                  />
-                )}
-              </motion.button>
+                <motion.button
+                  onClick={() => setActiveTab("orders")}
+                  className={`flex flex-col items-center p-2 w-full relative ${activeTab === "orders"
+                    ? "text-tan"
+                    : "text-tan opacity-70"
+                    }`}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <FaShoppingBag className="w-5 h-5" />
+                  <span className="mt-1 text-xs">Orders</span>
+                  {activeTab === "orders" && (
+                    <motion.div
+                      className="absolute top-0 left-0 right-0 h-0.5 bg-tan"
+                      layoutId="mobileUnderline"
+                    />
+                  )}
+                </motion.button>
 
-              <motion.button
-                onClick={() => setActiveTab("wishlist")}
-                className={`flex flex-col items-center p-2 w-full relative ${activeTab === "wishlist"
-                  ? "text-tan"
-                  : "text-tan opacity-70"
-                  }`}
-                whileTap={{ scale: 0.95 }}
-              >
-                <FaHeart className="w-5 h-5" />
-                <span className="mt-1 text-xs">Wishlist</span>
-                {activeTab === "wishlist" && (
-                  <motion.div
-                    className="absolute top-0 left-6 right-6 h-0.5 bg-tan"
-                    layoutId="mobileUnderline"
-                  />
-                )}
-              </motion.button>
+                <motion.button
+                  onClick={() => setActiveTab("wishlist")}
+                  className={`flex flex-col items-center p-2 w-full relative ${activeTab === "wishlist"
+                    ? "text-tan"
+                    : "text-tan opacity-70"
+                    }`}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <FaHeart className="w-5 h-5" />
+                  <span className="mt-1 text-xs">Wishlist</span>
+                  {activeTab === "wishlist" && (
+                    <motion.div
+                      className="absolute top-0 left-6 right-6 h-0.5 bg-tan"
+                      layoutId="mobileUnderline"
+                    />
+                  )}
+                </motion.button>
               </div>
             </div>
 
@@ -524,100 +524,100 @@ const UserProfile = () => {
               transition={{ delay: 0.3 }}
               className="p-6 bg-coffee text-tan h-full rounded-2xl border border-tan/10 relative overflow-hidden"
             >
-              <div 
-                className="absolute inset-0 bg-[url('/images/bgDesign.jpg')] bg-cover bg-center opacity-10 pointer-events-none" 
+              <div
+                className="absolute inset-0 bg-[url('/images/bgDesign.jpg')] bg-cover bg-center opacity-10 pointer-events-none"
               />
               <div className="relative z-10 h-full">
-              {activeTab === "activity" && (
-                <>
-                  {user?.recentActivity?.length > 0 ? (
-                    <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                      {user?.recentActivity?.slice(0, 3).map((item, index) => (
-                        <ActivityItem
-                          key={item.id}
-                          title={item.title}
-                          date={item.date}
-                          description={item.description}
-                          status={item.status}
-                          delay={0.1 * index}
-                          imageUrl={item.imageUrl}
-                        />
-                      ))}
-                    </div>
-                  ) : (
-                    <NoData
-                      title="No Activity"
-                      message="You have not made any recent activity."
-                      icon="search"
-                      showAction={true}
-                      actionText="Browse Books"
-                      actionLink="/nextChapter/books"
-                    />
-                  )}
-                </>
-              )}
-
-              {activeTab === "orders" && (
-                <>
-                  {user?.recentOrders?.length > 0 ? (
-                    <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                      {user?.recentOrders?.map((order, index) => (
-                        <ActivityItem
-                          key={order.id}
-                          title={`Order ${order.status}`}
-                          date={order.date}
-                          description={`${order.title} by ${order.author}`}
-                          status={order.status}
-                          delay={0.1 * index}
-                          imageUrl={order.imageUrl}
-                        />
-                      ))}
-                    </div>
-                  ) : (
-                    <NoData
-                      title="No Orders Found"
-                      message="You have not placed any orders yet."
-                      icon="cart"
-                      showAction={true}
-                      actionText="Explore More"
-                      actionLink="/nextChapter/books"
-                    />
-                  )}
-                </>
-              )}
-
-              {activeTab === "wishlist" && (
-                <>
-                  {user?.wishlistItems?.length > 0 ? (
-                    <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                      {user?.wishlistItems?.map((item, index) => (
-                        <ActivityItem
-                          key={item.id}
-                          title={item.title}
-                          date={""}
-                          description={`${item.title} by ${item.author}`}
-                          status={""}
-                          delay={0.1 * index}
-                          imageUrl={item.image}
-                        />
-                      ))}
-                    </div>
-                  ) : (
-                    <div className="flex items-center justify-center">
+                {activeTab === "activity" && (
+                  <>
+                    {user?.recentActivity?.length > 0 ? (
+                      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                        {user?.recentActivity?.slice(0, 3).map((item, index) => (
+                          <ActivityItem
+                            key={item.id}
+                            title={item.title}
+                            date={item.date}
+                            description={item.description}
+                            status={item.status}
+                            delay={0.1 * index}
+                            imageUrl={item.imageUrl}
+                          />
+                        ))}
+                      </div>
+                    ) : (
                       <NoData
-                        title="No favorites yet"
-                        message="Start adding books to your favorites collection"
-                        icon="heart"
+                        title="No Activity"
+                        message="You have not made any recent activity."
+                        icon="search"
                         showAction={true}
                         actionText="Browse Books"
                         actionLink="/nextChapter/books"
                       />
-                    </div>
-                  )}
-                </>
-              )}
-            </div>
-          </motion.div>
+                    )}
+                  </>
+                )}
+
+                {activeTab === "orders" && (
+                  <>
+                    {user?.recentOrders?.length > 0 ? (
+                      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                        {user?.recentOrders?.map((order, index) => (
+                          <ActivityItem
+                            key={order.id}
+                            title={`Order ${order.status}`}
+                            date={order.date}
+                            description={`${order.title} by ${order.author}`}
+                            status={order.status}
+                            delay={0.1 * index}
+                            imageUrl={order.imageUrl}
+                          />
+                        ))}
+                      </div>
+                    ) : (
+                      <NoData
+                        title="No Orders Found"
+                        message="You have not placed any orders yet."
+                        icon="cart"
+                        showAction={true}
+                        actionText="Explore More"
+                        actionLink="/nextChapter/books"
+                      />
+                    )}
+                  </>
+                )}
+
+                {activeTab === "wishlist" && (
+                  <>
+                    {user?.wishlistItems?.length > 0 ? (
+                      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                        {user?.wishlistItems?.map((item, index) => (
+                          <ActivityItem
+                            key={item.id}
+                            title={item.title}
+                            date={""}
+                            description={`${item.title} by ${item.author}`}
+                            status={""}
+                            delay={0.1 * index}
+                            imageUrl={item.image}
+                          />
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="flex items-center justify-center">
+                        <NoData
+                          title="No favorites yet"
+                          message="Start adding books to your favorites collection"
+                          icon="heart"
+                          showAction={true}
+                          actionText="Browse Books"
+                          actionLink="/nextChapter/books"
+                        />
+                      </div>
+                    )}
+                  </>
+                )}
+              </div>
+            </motion.div>
           </div>
         </div>
       </motion.div>
@@ -674,10 +674,11 @@ const UserProfile = () => {
           <div className="flex gap-4">
             <Button
               onClick={() => setShowLogoutModal(false)}
-              className="flex-1 px-4 py-2 border-2 border-tan text-tan rounded-lg font-medium hover:bg-tan/5 transition-colors"
+              variant="outline"
+              className="flex-1"
               type="button"
             >
-              Cancel
+              Back
             </Button>
             <Button
               onClick={handleConfirmLogout}
@@ -701,8 +702,8 @@ const StatCard = ({ title, value, color, delay, icon, text, onClick }) => (
     onClick={onClick}
     className={`${color} text-tan rounded-xl shadow-md p-6 cursor-pointer transition-all duration-200 hover:shadow-lg relative overflow-hidden`}
   >
-    <div 
-      className="absolute inset-0 bg-[url('/images/bgDesign.jpg')] bg-cover bg-center opacity-10 pointer-events-none" 
+    <div
+      className="absolute inset-0 bg-[url('/images/bgDesign.jpg')] bg-cover bg-center opacity-10 pointer-events-none"
     />
     <div className="relative z-10 flex items-start justify-between">
       <div>
@@ -731,8 +732,8 @@ const ActivityItem = ({
     whileHover={{ y: -3, boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1)" }}
     className="bg-coffee text-tan rounded-xl shadow-md overflow-hidden border border-tan/20 transition-all duration-200 hover:shadow-lg relative"
   >
-    <div 
-      className="absolute inset-0 bg-[url('/images/bgDesign.jpg')] bg-cover bg-center opacity-10 pointer-events-none" 
+    <div
+      className="absolute inset-0 bg-[url('/images/bgDesign.jpg')] bg-cover bg-center opacity-10 pointer-events-none"
     />
     <div className="flex flex-col sm:flex-row relative z-10">
       {/* Product Image */}

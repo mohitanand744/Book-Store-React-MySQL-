@@ -83,7 +83,7 @@ const Wishlist = () => {
         {/* Book List */}
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
           <AnimatePresence>
-            {filteredBooks.map((book) => (
+            {filteredBooks.map((book, i) => (
               <motion.div
                 key={book.book_id}
                 layout
@@ -93,7 +93,7 @@ const Wishlist = () => {
                 transition={{ duration: 0.3 }}
                 whileHover={{ y: -10 }}
               >
-                <BookCard book={book} />
+                <BookCard book={book} index={i} />
               </motion.div>
             ))}
           </AnimatePresence>

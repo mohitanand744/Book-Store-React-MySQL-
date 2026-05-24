@@ -4,7 +4,7 @@ import { EnvelopeIcon } from "@heroicons/react/24/outline";
 import Modal from "../../Modal/ModalContainer";
 import Button from "../../Buttons/Button";
 import { useEffect, useState } from "react";
-import { forgotPassword } from "../../../utils/apis/authApis";
+import { authApis } from "../../../utils/apis/authApis";
 import { toast } from "sonner";
 import ModelsHeading from "../../Headings/ModelsHeading";
 
@@ -33,7 +33,7 @@ const ForgotPasswordModal = ({
 
   const onSubmit = async (data) => {
     try {
-      const response = await forgotPassword(data.email);
+      const response = await authApis.forgotPassword(data.email);
       localStorage.setItem("forgotPasswordEmail", data.email);
 
       if (response?.success) {
@@ -86,10 +86,10 @@ const ForgotPasswordModal = ({
               Send Reset Link
             </Button>
             <Button
-              className="!bg-red-error/15 hover:!bg-red-error/20"
+              variant="outline"
               onClick={() => setShowForgot(false)}
             >
-              Cancel
+              Back
             </Button>
           </div>
         </form>

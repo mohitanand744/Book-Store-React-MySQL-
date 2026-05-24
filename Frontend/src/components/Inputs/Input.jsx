@@ -11,7 +11,7 @@ import { toast } from "sonner";
 const Input = (
   {
     label,
-    labelClassName = "text-brand-label",
+    labelclassname = "text-brand-label",
     type = "text",
     placeholder,
     error,
@@ -50,7 +50,7 @@ const Input = (
     <motion.div layout className={`mb-4 w-full ${containerClassName}`}>
       {label && (
         <label className="flex items-center justify-between text-sm font-medium text-brand-label mb-1">
-          <span className={`${labelClassName}`}>{label}</span>
+          <span className={`${labelclassname}`}>{label}</span>
           {showCounter && maxCount && (
             <span
               className={`text-[13px] ${(value?.length || 0) > maxCount

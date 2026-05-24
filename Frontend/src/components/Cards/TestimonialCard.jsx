@@ -21,10 +21,16 @@ const TestimonialCard = ({ data }) => {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      className="relative flex flex-col w-full overflow-hidden transition-all duration-500 bg-coffee border border-tan/20 shadow-[0_8px_30px_rgb(0,0,0,0.3)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.4)] hover:-translate-y-2 group rounded-[2.5rem]"
+      initial={{ y: 20, opacity: 0, scale: 0.67 }}
+      animate={{ y: 0, opacity: 1, scale: 1 }}
+      transition={{ duration: 0.25, ease: "easeOut" }}
+      whileHover={{
+        scale: 1.01,
+        transition: { duration: 0.15 },
+        boxShadow: "0 15px 40px rgba(0,0,0,0.3)",
+        y: -5,
+      }}
+      className="relative flex flex-col w-full overflow-hidden bg-coffee border border-tan/20 group rounded-[2.5rem]"
     >
       <div 
         className="absolute inset-0 bg-[url('/images/bgDesign.jpg')] bg-cover bg-center opacity-10 pointer-events-none" 

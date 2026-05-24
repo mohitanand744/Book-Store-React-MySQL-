@@ -5,6 +5,7 @@ import Button from "../Buttons/Button";
 import { DecorativeHeader } from "../SVGs/SVGs";
 import { motion } from "framer-motion";
 import { useImagePreview } from "../../store/Context/ImagePreviewContext";
+import { PremiumVerifiedBadge } from "../SVGs/SVGs";
 
 const AuthorCard = ({ author }) => {
   const navigate = useNavigate();
@@ -16,7 +17,18 @@ const AuthorCard = ({ author }) => {
   const authorName = author?.author_name || author?.author?.author_name || "Author";
 
   return (
-    <div className="relative w-full h-[280px] mx-auto overflow-hidden bg-coffee backdrop-blur-xl rounded-[2rem] shadow-[0_15px_40px_-15px_rgba(0,0,0,0.3)] hover:shadow-2xl transition-all duration-300 border border-tan/20 group">
+    <motion.div
+      initial={{ y: 20, opacity: 0, scale: 0.67 }}
+      animate={{ y: 0, opacity: 1, scale: 1 }}
+      transition={{ duration: 0.25, ease: "easeOut" }}
+      whileHover={{
+        scale: 1.01,
+        transition: { duration: 0.15 },
+        boxShadow: "0 15px 40px rgba(0,0,0,0.3)",
+        y: -5,
+      }}
+      className="relative w-full h-[280px] mx-auto overflow-hidden bg-coffee backdrop-blur-xl rounded-[2rem] border border-tan/20 group"
+    >
       <div 
         className="absolute inset-0 bg-[url('/images/bgDesign.jpg')] bg-cover bg-center opacity-10 pointer-events-none" 
       />
@@ -32,7 +44,7 @@ const AuthorCard = ({ author }) => {
             e.stopPropagation();
             openPreview(authorImage, authorName);
           }}
-          className="w-16 h-16 md:w-20 md:h-20 p-1 mb-2 md:mb-4 bg-tan/20 rounded-full shadow-lg z-10 transition-transform duration-500 ease-out group-hover:-translate-y-2 border border-tan/30 cursor-zoom-in"
+          className="relative w-16 h-16 md:w-20 md:h-20 p-1 mb-2 md:mb-4 bg-tan/20 rounded-full shadow-lg z-10 transition-transform duration-500 ease-out group-hover:-translate-y-2 border border-tan/30 cursor-zoom-in"
         >
           <div className="w-full h-full overflow-hidden rounded-full">
             <img
@@ -41,10 +53,14 @@ const AuthorCard = ({ author }) => {
               alt={authorName}
             />
           </div>
+          {/* Verified Badge */}
+          <div className="absolute -bottom-1 -right-1 z-20">
+            <PremiumVerifiedBadge className="w-5 h-5 md:w-6 md:h-6 drop-shadow-[0_0_8px_rgba(160,120,85,0.5)] bg-coffee rounded-full" title="Verified Author" />
+          </div>
         </div>
 
         {/* Author Info Area */}
-        <h3 className="mb-1 text-lg md:text-xl font-bold text-center text-tan line-clamp-1">
+        <h3 className="mb-1 text-lg md:text-xl font-bold text-center text-tan line-clamp-1 px-2">
           {author?.author_name || author?.author?.author_name || "Unknown Author"}
         </h3>
 
@@ -73,7 +89,7 @@ const AuthorCard = ({ author }) => {
           </Button>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

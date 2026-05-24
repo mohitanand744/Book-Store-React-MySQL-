@@ -44,9 +44,9 @@ const SubscribePromptModal = ({ isOpen, onClose, onFollow, author, followersCoun
           <Button
             variant="outline"
             onClick={onClose}
-            className="flex-1 !bg-red-error/15 hover:!bg-red-error/20 !text-cream "
+            className="flex-1"
           >
-            Cancel
+            Back
           </Button>
           <Button
             variant="primary"

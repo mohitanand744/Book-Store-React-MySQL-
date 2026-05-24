@@ -1,30 +1,23 @@
 import { axiosInstance, axiosInstanceFormData } from "../../services/api";
 
-export const getUserDetails = async () => {
-  console.log("llllllllllllllllllllllllll");
+export const userApis = {
+  getUserDetails: async () => {
+    console.log("llllllllllllllllllllllllll");
 
-  const response = await axiosInstance.get("/user/me", {
-    withCredentials: true,
-  });
-  return response.data;
+    const response = await axiosInstance.get("/user/me");
+    return response.data;
+  },
+
+  uploadProfilePic: async (formData) => {
+    const response = await axiosInstanceFormData.post(
+      "/user/profile-pic",
+      formData
+    );
+    return response.data;
+  },
+
+  updateProfile: async (data) => {
+    const response = await axiosInstance.put("/user/profile-update", data);
+    return response.data;
+  }
 };
-
-export const uploadProfilePic = async (formData) => {
-  const response = await axiosInstanceFormData.post(
-    "/user/profile-pic",
-    formData,
-    {
-      withCredentials: true,
-    },
-  );
-  return response.data;
-};
-
-export const updateProfile = async (data) => {
-  const response = await axiosInstance.put("/user/profile-update", data, {
-    withCredentials: true,
-  });
-  return response.data;
-};
-
-

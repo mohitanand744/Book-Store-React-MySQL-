@@ -13,12 +13,6 @@ const Search = ({
   value,
 }) => {
   const [searchTerm, setSearchTerm] = useState(value || "");
-
-  useEffect(() => {
-    if (value !== undefined) {
-      setSearchTerm(value);
-    }
-  }, [value]);
   const [isBlinking, setIsBlinking] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
@@ -66,6 +60,9 @@ const Search = ({
       onSearch(searchTerm);
       return;
     }
+    if (onChange && !onSearch) {
+      return;
+    }
     if (searchTerm.trim()) {
       navigate(`/nextChapter/books?search=${encodeURIComponent(searchTerm)}`);
     } else {
@@ -98,7 +95,7 @@ const Search = ({
             navigate(`/nextChapter/books`);
           }
         }}
-        className={`${inputStylrs} w-full px-3 text-tan/80 placeholder:text-tan focus:outline-none`}
+        className={`${inputStylrs} w-full px-3 text-tan/80 placeholder:!text-tan/60 focus:outline-none`}
         placeholder={placeholder}
       />
       <motion.div

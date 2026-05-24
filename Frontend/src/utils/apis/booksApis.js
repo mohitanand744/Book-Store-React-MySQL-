@@ -1,25 +1,22 @@
 import { axiosInstance } from "../../services/api";
 
-const getSingleBook = async (id) => {
-  console.log(id);
+export const booksApis = {
+  getSingleBook: async (id) => {
+    console.log(id);
 
-  const response = await axiosInstance.get(`/api/books/${id}`);
+    const response = await axiosInstance.get(`/books/${id}`);
 
-  console.log(response);
+    console.log(response);
 
-  return response.data;
+    return response.data;
+  },
+
+  getAllBooks: async (params) => {
+    const response = await axiosInstance.get(`/books`, {
+      params,
+    });
+
+    console.log(response);
+    return response.data;
+  }
 };
-
-const getAllBooks = async (params) => {
-  const response = await axiosInstance.get(`/books`, {
-    params,
-    withCredentials: true,
-  });
-
-  console.log(response);
-  return response.data;
-};
-
-export { getSingleBook, getAllBooks };
-
-

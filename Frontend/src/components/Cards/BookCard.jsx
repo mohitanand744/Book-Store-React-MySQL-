@@ -17,7 +17,7 @@ import useAuth from "../../Hooks/useAuth";
 import FloatingReaction from "../UI/FloatingReaction";
 import Button from "../Buttons/Button";
 
-const BookCard = ({ book }) => {
+const BookCard = ({ book, index }) => {
   const navigate = useNavigate();
   const path = useLocation().pathname.replaceAll("/", "");
   const dispatch = useDispatch();
@@ -80,9 +80,18 @@ const BookCard = ({ book }) => {
   }, [book?.isLiked]);
 
   return (
-    <div
+    <motion.div
+      initial={{ y: 20, opacity: 0, scale: 0.67 }}
+      animate={{ y: 0, opacity: 1, scale: 1 }}
+      transition={{ duration: 0.25, ease: "easeOut" }}
+      whileHover={{
+        scale: 1.01,
+        transition: { duration: 0.15 },
+        boxShadow: "0 15px 40px rgba(0,0,0,0.3)",
+        y: -5,
+      }}
       className="relative flex flex-col bg-coffee border border-tan/10 justify-between shadow-2xl
-     md:h-[29rem] h-[26rem] z-10 hover:z-[99] transition-all duration-300 card rounded-3xl"
+  md:h-[29rem] h-[26rem] z-10 hover:z-[99] transition-all duration-300 card rounded-3xl"
     >
       <div
         className="absolute inset-0 bg-[url('/images/bgDesign.jpg')] bg-cover bg-center opacity-10 pointer-events-none"
@@ -238,7 +247,7 @@ const BookCard = ({ book }) => {
           <Ratings ratings={book?.book_rating} />
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

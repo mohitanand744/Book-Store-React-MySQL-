@@ -10,7 +10,7 @@ import Button from "../../Buttons/Button";
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect } from "react";
-import { forgotPassword, resetPassword } from "../../../utils/apis/authApis";
+import { authApis } from "../../../utils/apis/authApis";
 import { toast } from "sonner";
 import useAuth from "../../../Hooks/useAuth";
 import { use } from "react";
@@ -61,7 +61,7 @@ const ResetPasswordModal = ({
 
   const onSubmit = async (data) => {
     try {
-      const response = await resetPassword(
+      const response = await authApis.resetPassword(
         emailValue,
         data.newPassword,
         data.confirmPassword,
@@ -106,7 +106,7 @@ const ResetPasswordModal = ({
 
     try {
       const finalEmail = forgotPasswordEmail || email || emailValue;
-      const response = await forgotPassword(finalEmail);
+      const response = await authApis.forgotPassword(finalEmail);
 
       if (response?.success) {
         setIsResending(false);
@@ -275,9 +275,9 @@ const ResetPasswordModal = ({
               confirmClose();
             }}
             variant="outline"
-            className="w-full !bg-red-error/15 hover:!bg-red-error/20"
+            className="w-full"
           >
-            Cancel
+            Back
           </Button>
         </div>
       </Modal>
@@ -371,9 +371,9 @@ const ResetPasswordModal = ({
             <Button
               variant="outline"
               onClick={handleClose}
-              className="w-full !bg-red-error/15 hover:!bg-red-error/20"
+              className="w-full"
             >
-              Cancel
+              Back
             </Button>
           </div>
         </form>

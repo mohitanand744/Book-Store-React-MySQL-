@@ -40,14 +40,14 @@ textarea::placeholder {
 
 .swiper-button-prev:after,
 .swiper-button-next:after {
-  color: #5C4C49 !important;
+  color: #5c4c49 !important;
   font-size: 1.2rem !important;
   font-weight: bold !important;
 }
 
 .swiper-button-prev,
 .swiper-button-next {
-  background: theme('colors.tan') !important;
+  background: theme("colors.tan") !important;
   height: 2.5rem !important;
   width: 2.5rem !important;
   display: flex !important;
@@ -103,7 +103,7 @@ textarea::placeholder {
 }
 
 .swiper-pagination-bullet-active {
-  background: theme('colors.coffee') !important;
+  background: theme("colors.coffee") !important;
   width: 1.3rem !important;
   border-radius: 1rem !important;
   -webkit-border-radius: 1rem !important;
@@ -142,7 +142,7 @@ textarea::placeholder {
 }
 
 [data-sonner-toast] [data-description] {
-  color: theme('colors.cream') !important;
+  color: theme("colors.cream") !important;
   opacity: 1 !important;
 }
 
@@ -162,7 +162,11 @@ textarea::placeholder {
 
 /* Unique loading toast background */
 [data-sonner-toast][data-type="loading"] {
-  background: linear-gradient(135deg, theme('colors.coffee'), theme('colors.tan')) !important;
+  background: linear-gradient(
+    135deg,
+    theme("colors.coffee"),
+    theme("colors.tan")
+  ) !important;
   border: 2px solid rgba(255, 255, 255, 0.6) !important;
   box-shadow: 0 0 0 rgba(251, 251, 251, 0.4);
   animation: toastGlow 1.5s infinite ease-in-out;
@@ -202,7 +206,7 @@ textarea::placeholder {
 
 .ant-statistic-content-value {
   font-size: 1.3rem !important;
-  color: theme('colors.coffee') !important;
+  color: theme("colors.coffee") !important;
 }
 
 /* width */
@@ -212,14 +216,16 @@ textarea::placeholder {
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background: theme('colors.sepia');
+  background: theme("colors.sepia");
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: theme('colors.tan') !important;
-  border-top: 2px solid theme('colors.coffee');
-  border-bottom: 2px solid theme('colors.coffee');
+  background: theme("colors.sepia") !important;
+  border-top: 2px solid theme("colors.tan") !important;
+  border-right: 2px solid theme("colors.tan") !important;
+  border-bottom: 2px solid theme("colors.tan") !important;
+  border-left: 2px solid theme("colors.cream") !important;
   border-radius: 4rem;
   -webkit-border-radius: 4rem;
   -moz-border-radius: 4rem;
@@ -263,15 +269,15 @@ input:-webkit-autofill:active {
   transition: background-color 5000s ease-in-out 0s;
   box-shadow: inset 0 0 20px 20px rgba(92, 76, 73, 0.464) !important; /* coffee/20 tint */
   border-width: 1px !important;
-  border-color: theme('colors.sepia') !important;
+  border-color: theme("colors.sepia") !important;
 }
 
-
 .genre-swiper .swiper-wrapper {
-                          transition-timing-function: linear !important;
-                        }
-                        .genre-swiper .swiper-slide.swiper-slide-visible.swiper-slide-fully-visible.swiper-slide-active,
-                        .genre-swiper .swiper-slide {
-                          transform: none !important;
-                          transition: none !important;
-                        }
+  transition-timing-function: linear !important;
+}
+.genre-swiper
+  .swiper-slide.swiper-slide-visible.swiper-slide-fully-visible.swiper-slide-active,
+.genre-swiper .swiper-slide {
+  transform: none !important;
+  transition: none !important;
+}

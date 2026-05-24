@@ -76,23 +76,22 @@ const Navbar = ({ isCartOpen, setIsCartOpen }) => {
 
   return (
     <nav
-      className={`transition-all z-[999] duration-300 ${isFixed
-        ? animation
-          ? "sticky top-[-8rem] left-0 w-full opacity-0 shadow-xl"
-          : "sticky top-0 left-0 w-full bg-coffee/85 backdrop-blur-xl shadow-[0_10px_30px_-10px_rgba(0,0,0,0.15)] opacity-100 border-b border-tan/20 animate-slideDown"
-        : "relative bg-coffee shadow-lg"
-        }`}
+      className={`transition-all z-[999] duration-300 ${
+        isFixed
+          ? animation
+            ? "sticky top-[-8rem] left-0 w-full opacity-0 shadow-xl"
+            : "sticky top-0 left-0 w-full bg-coffee/85 backdrop-blur-xl shadow-[0_10px_30px_-10px_rgba(0,0,0,0.15)] opacity-100 border-b border-tan/20 animate-slideDown"
+          : "relative bg-coffee shadow-lg"
+      }`}
     >
-      <div 
-        className="absolute inset-0 bg-[url('/images/bgDesign.jpg')] bg-cover bg-center opacity-10 pointer-events-none" 
-      />
-      <div className="relative z-10 container px-4 py-1 mx-auto">
+      <div className="absolute inset-0 bg-[url('/images/bgDesign.jpg')] bg-cover bg-center opacity-10 pointer-events-none" />
+      <div className="container relative z-10 px-4 py-1 mx-auto">
         <div className="flex items-center justify-between">
           {/* Logo */}
           <div className="flex-shrink-0 w-28">
             <Link to="/nextChapter">
               <img
-                className="object-cover w-full rounded-lg h-full"
+                className="object-cover w-full h-full rounded-lg"
                 src="/images/logo-transperant-light.png"
                 alt=""
               />
@@ -137,21 +136,22 @@ const Navbar = ({ isCartOpen, setIsCartOpen }) => {
                   className="relative"
                 >
                   {link.hasTag && (
-                    <span className="absolute z-10 transition-transform duration-300 pointer-events-none -top-[14px] -right-2 w-11 drop-shadow-md h-5 w-20 group-hover:rotate-12">
+                    <span className="absolute z-10 transition-transform duration-300 pointer-events-none -top-[14px] -right-2 drop-shadow-md h-5 w-20 group-hover:rotate-12">
                       <img
                         src="/images/tag.avif"
                         alt="New"
-                        className=" w-full h-full"
+                        className="w-full h-full "
                       />
                     </span>
                   )}
                   <li className="px-1 py-1">
                     <Link
                       to={link.path}
-                      className={`px-5 py-2 text-[1.02rem] font-bold transition-all duration-300 rounded-2xl ${pathName === link.key
-                        ? "bg-tan/20 text-cream shadow-sm"
-                        : "text-tan bg-transparent shadow-none hover:bg-tan/10 hover:text-cream"
-                        }`}
+                      className={`px-5 py-2 text-[1.02rem] font-bold transition-all duration-300 rounded-2xl ${
+                        pathName === link.key
+                          ? "bg-tan/20 text-cream shadow-sm"
+                          : "text-tan bg-transparent shadow-none hover:bg-tan/10 hover:text-cream"
+                      }`}
                     >
                       {link.name}
                     </Link>
@@ -162,11 +162,11 @@ const Navbar = ({ isCartOpen, setIsCartOpen }) => {
           </motion.ul>
 
           <div className="flex items-center gap-4">
-            <Search styling="hidden lg:block w-[20rem] bg-sepia rounded-full" />
+            <Search styling="hidden lg:block w-[16rem] bg-sepia rounded-full" />
 
             <div
               onClick={() => setIsCartOpen(!isCartOpen)}
-              className="bg-tan/20 hover:bg-tan/30 backdrop-blur-md w-11 h-11 flex items-center justify-center rounded-2xl relative cursor-pointer active:scale-95 transition-all duration-300 shadow-sm border border-tan/20 text-tan"
+              className="relative flex items-center justify-center transition-all duration-300 border shadow-sm cursor-pointer bg-tan/20 hover:bg-tan/30 backdrop-blur-md w-11 h-11 rounded-2xl active:scale-95 border-tan/20 text-tan"
             >
               <div className="absolute flex items-center justify-center w-6 h-6 text-[12px] font-bold text-coffee bg-tan rounded-full -top-1 -right-1 shadow-md border-2 border-coffee">
                 3
@@ -180,7 +180,7 @@ const Navbar = ({ isCartOpen, setIsCartOpen }) => {
                     <img
                       src={preview || "/images/loading.gif"}
                       alt="Profile"
-                      className="object-cover w-full h-full text-sepia rounded-full"
+                      className="object-cover w-full h-full rounded-full text-sepia"
                       onClick={() => {
                         if (pathName === "nextChapteruserprofile") {
                           openPreview(preview, "Profile Image");
@@ -189,7 +189,7 @@ const Navbar = ({ isCartOpen, setIsCartOpen }) => {
                     />
 
                     {isUploading && (
-                      <div className="absolute bg-coffee/70 inset-0 flex items-center justify-center rounded-full ">
+                      <div className="absolute inset-0 flex items-center justify-center rounded-full bg-coffee/70 ">
                         <BooksLoader imgHeight="8" imgWidth="8" marginTop="0" />
                       </div>
                     )}
@@ -198,10 +198,17 @@ const Navbar = ({ isCartOpen, setIsCartOpen }) => {
               </div>
             ) : (
               <div className="flex items-center gap-2">
-                <Button variant="primary" onClick={() => navigate("/")} className="!border-tan border-2">
+                <Button
+                  variant="primary"
+                  onClick={() => navigate("/")}
+                  className="!border-tan border-2"
+                >
                   Login
                 </Button>
-                <Button variant="primary" className="hidden !border-tan border-2 lg:flex">
+                <Button
+                  variant="primary"
+                  className="hidden !border-tan border-2 lg:flex"
+                >
                   Signup
                 </Button>
               </div>
@@ -211,7 +218,7 @@ const Navbar = ({ isCartOpen, setIsCartOpen }) => {
             <div className="lg:hidden">
               <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="bg-tan/20 hover:bg-tan/30 w-11 h-11 flex items-center justify-center rounded-2xl text-tan focus:outline-none transition-all duration-300 shadow-sm border border-tan/20 active:scale-95"
+                className="flex items-center justify-center transition-all duration-300 border shadow-sm bg-tan/20 hover:bg-tan/30 w-11 h-11 rounded-2xl text-tan focus:outline-none border-tan/20 active:scale-95"
               >
                 <svg
                   className="w-6 h-6"

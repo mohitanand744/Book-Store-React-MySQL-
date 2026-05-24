@@ -1,56 +1,47 @@
 import { axiosInstance, axiosInstanceFormData } from "../../services/api";
 
-export const login = async (credentials) => {
-  const response = await axiosInstance.post("/auth/login", credentials, {
-    withCredentials: true,
-  });
-  return response.data;
-};
 
-export const signup = async (userData) => {
-  const response = await axiosInstance.post("/auth/register", userData);
-  return response.data;
-};
+export const authApis = {
 
-export const logout = async () => {
-  const response = await axiosInstance.post(
-    "/auth/logout",
-    {},
-    {
-      withCredentials: true,
-    },
-  );
+  login: async (credentials) => {
+    const response = await axiosInstance.post("/auth/login", credentials);
+    return response.data;
+  },
+  signup: async (userData) => {
+    const response = await axiosInstance.post("/auth/register", userData);
+    return response.data;
+  },
+  logout: async () => {
+    const response = await axiosInstance.post(
+      "/auth/logout"
+    );
 
-  return response.data;
-};
+    return response.data;
+  },
+  forgotPassword: async (email) => {
+    const response = await axiosInstance.post("/auth/forgot-password", { email });
+    return response.data;
+  },
+  verifyResetToken: async (token) => {
+    const response = await axiosInstance.post(`/auth/verify-reset-token`, {
+      token,
+    });
 
-export const forgotPassword = async (email) => {
-  const response = await axiosInstance.post("/auth/forgot-password", { email });
-  return response.data;
-};
-
-export const verifyResetToken = async (token) => {
-  console.log(token, "ggggggggggggggggggggggggggg");
-
-  const response = await axiosInstance.post(`/auth/verify-reset-token`, {
-    token,
-  });
-
-  return response.data;
-};
-export const resetPassword = async (
-  email,
-  newPassword,
-  confirmPassword,
-  resetToken,
-) => {
-  const response = await axiosInstance.post("/auth/reset-password", {
+    return response.data;
+  },
+  resetPassword: async (
     email,
     newPassword,
     confirmPassword,
     resetToken,
-  });
-  return response.data;
-};
+  ) => {
+    const response = await axiosInstance.post("/auth/reset-password", {
+      email,
+      newPassword,
+      confirmPassword,
+      resetToken,
+    });
+    return response.data;
+  },
 
-
+}

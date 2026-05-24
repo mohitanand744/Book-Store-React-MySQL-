@@ -1,11 +1,11 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { addToWishlist, getWishlist } from "../../../utils/apis/ordersApis";
+import { ordersApis } from "../../../utils/apis/ordersApis";
 
 export const toggleWishlist = createAsyncThunk(
   "toggleWishlist",
   async (bookId, { rejectWithValue }) => {
     try {
-      const response = await addToWishlist(bookId);
+      const response = await ordersApis.addToWishlist(bookId);
 
       return response;
     } catch (error) {
@@ -20,7 +20,7 @@ export const getAllWishlists = createAsyncThunk(
   "getAllWishlists",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await getWishlist();
+      const response = await ordersApis.getWishlist();
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response?.data || "Failed to get wishlists");

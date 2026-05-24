@@ -43,7 +43,7 @@ const BookListingFilter = ({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       onClick={(e) => e.stopPropagation()}
-      className={`hideScroll overflow-y-scroll border border-tan/30 bg-coffee/95 backdrop-blur-3xl text-cream z-[9999] sm:w-[24rem] overflow-hidden duration-300 mt-20 ease-in-out shadow-[0_30px_60px_rgba(0,0,0,0.5)] rounded-[3rem]`}
+      className={`hideScroll max-h-[calc(100vh-14rem)] overflow-y-scroll border border-tan/30 bg-coffee/95 backdrop-blur-3xl text-cream z-[9999] sm:w-[24rem] overflow-hidden duration-300 mt-20 ease-in-out shadow-[0_30px_60px_rgba(0,0,0,0.5)] rounded-[3rem]`}
     >
       {/* Panel Header */}
       <div className="px-8 pt-10 pb-6 flex items-center justify-between border-b border-tan/10">
@@ -142,11 +142,11 @@ const BookListingFilter = ({
             <motion.ul
               initial={false}
               animate={{
-                height: openCategory[section.id] ? "auto" : 0,
+                height: openCategory[section.id] ? "10rem" : 0,
                 opacity: openCategory[section.id] ? 1 : 0
               }}
               transition={{ duration: 0.4, ease: [0.04, 0.62, 0.23, 0.98] }}
-              className="px-8 pb-8 space-y-5 overflow-hidden"
+              className={`px-8 overflow-y-auto flex flex-col gap-y-2 overflow-hidden  ${openCategory[section.id] ? "py-4" : ""}`}
             >
               {section.options.map((opt) => (
                 <motion.li key={opt.id} whileHover={{ x: 6 }} className="flex items-center">

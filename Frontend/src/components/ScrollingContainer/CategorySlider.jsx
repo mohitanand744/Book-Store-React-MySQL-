@@ -4,7 +4,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, FreeMode } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/free-mode";
-import { getAllCategories } from "../../utils/apis/categoryApis";
+import { categoryApis } from "../../utils/apis/categoryApis";
 
 const categories = [
   {
@@ -89,7 +89,7 @@ const CategorySlider = ({ filters, setFilters }) => {
 
   const getAllCategoriesLists = async () => {
     try {
-      const response = await getAllCategories();
+      const response = await categoryApis.getAllCategories();
 
       if (response?.success) {
         setCategoriesList(response?.data?.categories);

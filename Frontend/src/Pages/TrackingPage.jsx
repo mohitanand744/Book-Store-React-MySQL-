@@ -9,7 +9,7 @@ import {
   FaClock,
   FaTruck,
 } from "react-icons/fa";
-import { getTrackingItem } from "../utils/apis/ordersApis";
+import { ordersApis } from "../utils/apis/ordersApis";
 import { useEffect } from "react";
 import { useState } from "react";
 import { useLoader } from "../Hooks/useLoader";
@@ -51,7 +51,7 @@ const TrackingPage = () => {
 
   const getTrackingInfo = async (itemId, trackingId) => {
     try {
-      const response = await getTrackingItem(itemId, trackingId);
+      const response = await ordersApis.getTrackingItem(itemId, trackingId);
 
       setItemTrackingData(response.data);
     } catch (error) {

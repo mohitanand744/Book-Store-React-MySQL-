@@ -5,7 +5,7 @@ import ModelsHeading from "../Headings/ModelsHeading";
 import { motion } from "framer-motion";
 import Input from "../Inputs/Input";
 import Button from "../Buttons/Button";
-import { getAllCategories } from "../../utils/apis/categoryApis";
+import { categoryApis } from "../../utils/apis/categoryApis";
 import { useLoader } from "../../Hooks/useLoader";
 import {
   MapPinIcon,
@@ -18,7 +18,7 @@ import {
   BuildingStorefrontIcon,
 } from "@heroicons/react/24/outline";
 import NoData from "../EmptyData/noData";
-import { updateProfile } from "../../utils/apis/userApis";
+import { userApis } from "../../utils/apis/userApis";
 import { toast } from "sonner";
 import {
   firstNameValidationRules,
@@ -27,10 +27,7 @@ import {
 } from "../../utils/validations/rules";
 import { VALIDATION_MESSAGES } from "../../utils/validations/messages";
 import useInputHandlers from "../../Hooks/useInputHandlers";
-import {
-  getUserAddresses,
-  updateAddress,
-} from "./../../utils/apis/addressApis";
+import { addressApis } from "./../../utils/apis/addressApis";
 import Radio from "../Inputs/Radio";
 import useAuth from "../../Hooks/useAuth";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -71,7 +68,7 @@ const ProfileUpdateModal = ({
 
   const getAllCategoriesLists = async () => {
     try {
-      const response = await getAllCategories();
+      const response = await categoryApis.getAllCategories();
 
       if (response?.success) {
         setCategoriesList(response?.data?.categories);
@@ -99,7 +96,7 @@ const ProfileUpdateModal = ({
 
   const getUserAddressesList = async () => {
     try {
-      const response = await getUserAddresses();
+      const response = await addressApis.getUserAddresses();
       console.log(response);
 
       if (response?.success) {
@@ -129,7 +126,7 @@ const ProfileUpdateModal = ({
     try {
       const updatedData = { ...selectedAddr, isDefault: true };
 
-      const res = await updateAddress(selectedId.id, updatedData);
+      const res = await addressApis.updateAddress(selectedId.id, updatedData);
 
       if (res.success) {
         //toast.success("Default address updated successfully!");
@@ -162,7 +159,7 @@ const ProfileUpdateModal = ({
         await handleSetAsDefaultAddress(data.address);
       }
 
-      const result = await updateProfile(payload);
+      const result = await userApis.updateProfile(payload);
 
       if (result?.success) {
         toast.success(result?.message);

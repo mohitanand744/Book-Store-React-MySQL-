@@ -5,8 +5,17 @@ const TestimonialCard = ({ data, index }) => {
   const { name, profile, rating, review } = data;
 
   return (
-    <div
-      className="relative flex flex-col w-full max-w-sm mx-auto overflow-hidden transition-all duration-500 bg-coffee border border-tan/20 shadow-[0_8px_30px_rgb(0,0,0,0.3)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.4)] hover:-translate-y-2 group rounded-[2rem]"
+    <motion.div
+      initial={{ y: 20, opacity: 0, scale: 0.67 }}
+      animate={{ y: 0, opacity: 1, scale: 1 }}
+      transition={{ duration: 0.25, ease: "easeOut" }}
+      whileHover={{
+        scale: 1.01,
+        transition: { duration: 0.15 },
+        boxShadow: "0 15px 40px rgba(0,0,0,0.3)",
+        y: -5,
+      }}
+      className="relative flex flex-col w-full max-w-sm mx-auto overflow-hidden bg-coffee border border-tan/20 group rounded-[2rem]"
     >
       <div 
         className="absolute inset-0 bg-[url('/images/bgDesign.jpg')] bg-cover bg-center opacity-10 pointer-events-none" 
@@ -70,7 +79,7 @@ const TestimonialCard = ({ data, index }) => {
         viewport={{ once: true }}
         style={{ transformOrigin: "left" }}
       />
-    </div>
+    </motion.div>
   );
 };
 

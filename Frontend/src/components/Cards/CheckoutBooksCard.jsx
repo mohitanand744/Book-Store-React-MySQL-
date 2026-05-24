@@ -6,16 +6,16 @@ const CheckoutBooksCard = ({ items, updateQuantity, removeItem }) => {
   return items?.map((item, i) => (
     <motion.li
       key={item?.id}
-      initial={{ y: 10, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{
-        delay: i * 0.3,
-      }}
+      initial={{ y: 20, opacity: 0, scale: 0.67 }}
+      animate={{ y: 0, opacity: 1, scale: 1 }}
+      transition={{ duration: 0.25, ease: "easeOut" }}
       whileHover={{
-        scale: 1.05,
-        transition: { duration: 0.1 },
+        scale: 1.01,
+        transition: { duration: 0.15 },
+        boxShadow: "0 15px 40px rgba(0,0,0,0.3)",
+        y: -5,
       }}
-      className="flex p-3 h-fit transition-all bg-black/10 duration-300  rounded-2xl  border border-sepia"
+      className="flex p-3 h-fit bg-black/10 rounded-2xl border border-sepia"
     >
       <div className="flex-shrink-0 w-24 h-24 p-1 overflow-hidden border border-sepia rounded-2xl">
         <img

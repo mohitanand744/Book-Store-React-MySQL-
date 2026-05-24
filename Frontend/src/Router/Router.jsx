@@ -1,7 +1,7 @@
 import React, { lazy, Suspense, useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Loading from "../components/Loaders/Loading";
-import SignUp from "../components/Auth/Pages/SignUp";
+import SignUp from "../Pages/Auth/SignUp";
 import UserProfile from "../Pages/UserProfile";
 import OrdersPage from "../Pages/OrderPage";
 import { Toaster } from "sonner";
@@ -13,8 +13,7 @@ import { validateToken } from "../store/Redux/Slices/authSlice";
 import { useDispatch } from "react-redux";
 import { FallbackRoute } from "./FallbackRoute";
 
-// Lazy-loaded components
-const Login = lazy(() => import("../components/Auth/Pages/Login"));
+const Login = lazy(() => import("../Pages/Auth/Login"));
 const Layout = lazy(() => import("../Layout"));
 const Home = lazy(() => import("../Pages/Home"));
 const AllBooks = lazy(() => import("../Pages/AllBooks"));
@@ -23,6 +22,7 @@ const AboutUs = lazy(() => import("../Pages/AboutUs"));
 const ContactUs = lazy(() => import("../Pages/ContactUs"));
 const AuthorDetails = lazy(() => import("../Pages/AuthorDetails"));
 const AllAuthors = lazy(() => import("../Pages/AllAuthors"));
+import DevelopmentBanner from "../components/Common/DevelopmentBanner";
 
 const Router = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -46,6 +46,7 @@ const Router = () => {
 
   return (
     <BrowserRouter>
+      <DevelopmentBanner />
       <Toaster
         position="bottom-right"
         expand={true}

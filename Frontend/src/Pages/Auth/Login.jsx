@@ -2,23 +2,24 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
-import Button from "./../../Buttons/Button";
+import Button from "../../components/Buttons/Button";
 import { EnvelopeIcon, LockClosedIcon } from "@heroicons/react/24/outline";
-import Input from "./../../Inputs/Input";
-import Checkbox from "../../Inputs/Checkbox";
+import Input from "../../components/Inputs/Input";
+import Checkbox from "../../components/Inputs/Checkbox";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import ForgotPasswordModal from "../Modal/ForgotPassword";
-import { login, verifyResetToken } from "../../../utils/apis/authApis";
+import ForgotPasswordModal from "../../components/Auth/Modal/ForgotPassword";
+import { authApis } from "../../utils/apis/authApis";
 import { toast } from "sonner";
-import useAuth from "../../../Hooks/useAuth";
-import ResetPasswordModal from "../Modal/resetPassword";
-import EmailVerificationStatus from "../Modal/EmailVerificationStatus";
+import useAuth from "../../Hooks/useAuth";
+import ResetPasswordModal from "../../components/Auth/Modal/resetPassword";
+import EmailVerificationStatus from "../../components/Auth/Modal/EmailVerificationStatus";
 import { useDispatch } from "react-redux";
+import { loginThunk } from "../../store/Redux/Slices/authSlice";
 import {
   emailValidationRules,
   passwordValidationRules,
-} from "../../../utils/validations/rules";
-import useInputHandlers from "../../../Hooks/useInputHandlers";
+} from "../../utils/validations/rules";
+import useInputHandlers from "../../Hooks/useInputHandlers";
 
 const Login = () => {
   const {
@@ -39,8 +40,7 @@ const Login = () => {
     clearErrors,
   );
   const navigate = useNavigate();
-  const { loginStatusSuccess, getUserUpdatedDetails, isAuthenticated } =
-    useAuth();
+  const { isAuthenticated } = useAuth();
 
   const [showForgot, setShowForgot] = useState(false);
   const [showResetModal, setShowResetModal] = useState(false);
@@ -68,7 +68,7 @@ const Login = () => {
 
   const handleResetTokenVerification = async () => {
     try {
-      const response = await verifyResetToken(resetToken);
+      const response = await authApis.verifyResetToken(resetToken);
 
       if (response?.success) {
         setShowResetModal(true);
@@ -150,16 +150,12 @@ const Login = () => {
   const onSubmit = async (data) => {
     try {
       setVerificationEmail(data.email);
-      const response = await login({
+      const response = await dispatch(loginThunk({
         email: data.email,
         password: data.password,
-      });
+      })).unwrap();
 
       if (response?.success) {
-        const { user } = response.data;
-
-        loginStatusSuccess(user);
-        //await getUserUpdatedDetails();
         toast.success("Login successful!");
 
         if (isChecked) {
@@ -207,8 +203,8 @@ const Login = () => {
 
   return (
     <div className="relative flex items-center justify-center min-h-screen gap-3 p-4 bg-[url('/images/authBG.png')] bg-center bg-no-repeat bg-cover overflow-hidden">
-      <div 
-        className="absolute inset-0 bg-[url('/images/bgDesign.jpg')] bg-cover bg-center opacity-10 pointer-events-none" 
+      <div
+        className="absolute inset-0 bg-[url('/images/bgDesign.jpg')] bg-cover bg-center opacity-10 pointer-events-none"
       />
       <div className="flex gap-4">
         <motion.div
@@ -222,8 +218,8 @@ const Login = () => {
             transition={{ duration: 0.2 }}
             className="overflow-hidden bg-coffee/65 backdrop-blur-xl shadow-2xl rounded-3xl p-3 border border-tan/20 relative"
           >
-            <div 
-              className="absolute inset-0 bg-[url('/images/bgDesign.jpg')] bg-cover bg-center opacity-10 pointer-events-none" 
+            <div
+              className="absolute inset-0 bg-[url('/images/bgDesign.jpg')] bg-cover bg-center opacity-10 pointer-events-none"
             />
             <div className="relative z-10 p-3">
               <div className="mb-8 border bg-black/20 p-3 pt-1 rounded-3xl border-tan/20 text-cream text-center">
@@ -261,11 +257,10 @@ const Login = () => {
                 >
                   <Input
                     label="Email Address"
-                    labelClassName="text-cream/90"
+                    labelclassname="text-cream/90"
                     type="email"
                     placeholder="your@email.com"
                     icon={<EnvelopeIcon className="w-5 h-5 text-cream/60" />}
-
                     error={errors.email?.message}
                     {...register("email", emailValidationRules)}
                     maxLength={emailValidationRules.maxLength.value}
@@ -298,7 +293,7 @@ const Login = () => {
                 >
                   <Input
                     label="Password"
-                    labelClassName="text-cream/90"
+                    labelclassname="text-cream/90"
                     type="password"
                     placeholder="••••••••"
                     icon={
@@ -320,7 +315,7 @@ const Login = () => {
                     <Checkbox
                       id="remember-me"
                       label="Remember me"
-                      labelClassName="text-cream/80"
+                      labelclassname="!text-cream/80"
                       checked={isChecked}
                       onChange={(e) => handleCheckboxChange(e)}
                     />

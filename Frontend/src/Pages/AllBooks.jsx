@@ -253,7 +253,7 @@ const AllBooks = () => {
               transition={{ duration: 0.5 }}
               className={`grid container mx-auto grid-cols-12 gap-3 px-6`}
             >
-              {books?.map((book) => (
+              {books?.map((book, i) => (
                 <motion.div
                   key={book.book_id}
                   initial={{ opacity: 0, y: 20 }}
@@ -261,7 +261,7 @@ const AllBooks = () => {
                   transition={{ duration: 0.3 }}
                   className={`col-span-12 sm:col-span-6 lg:col-span-4 xl:col-span-3`}
                 >
-                  <BookCard book={book} />
+                  <BookCard book={book} index={i} />
                 </motion.div>
               ))}
             </motion.div>

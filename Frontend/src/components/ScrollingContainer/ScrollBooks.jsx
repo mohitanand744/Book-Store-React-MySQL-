@@ -71,7 +71,7 @@ const ScrollBooks = ({ autoScroll = true, books }) => {
             key={i}
             className="relative pb-8 hover:scale-[1.02] hover:z-[9999] transition-all duration-300"
           >
-            <BookCard book={book} />
+            <BookCard book={book} index={i} />
           </SwiperSlide>
         ))}
       </Swiper>

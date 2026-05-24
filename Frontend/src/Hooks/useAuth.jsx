@@ -1,7 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
 import {
-  loginSuccess,
-  logoutSuccess,
   logoutThunk,
   updateUserData,
   validateToken,
@@ -14,9 +12,7 @@ const useAuth = () => {
   const auth = useSelector((state) => state.auth);
   const navigate = useNavigate();
 
-  const loginStatusSuccess = (userData) => {
-    dispatch(loginSuccess({ user: userData }));
-  };
+
 
   const logoutStatusSuccess = async (logoutReason) => {
     try {
@@ -54,7 +50,6 @@ const useAuth = () => {
   return {
     userData: auth.userData,
     isAuthenticated: auth.isAuthenticated,
-    loginStatusSuccess,
     logoutStatusSuccess,
     setUpdateUserData,
     getUserUpdatedDetails,

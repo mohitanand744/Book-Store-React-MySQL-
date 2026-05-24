@@ -20,7 +20,7 @@ import { CopyIcon } from "../components/SVGs/SVGs";
 import { toast } from "sonner";
 import Banners from "../components/Banners/Banners";
 import { useNavigate } from "react-router-dom";
-import { getAllOrders } from "../utils/apis/ordersApis";
+import { ordersApis } from "../utils/apis/ordersApis";
 import { useEffect } from "react";
 import { useLoader } from "../Hooks/useLoader";
 import BooksLoader from "../components/Loaders/BooksLoader";
@@ -107,7 +107,7 @@ const OrdersPage = () => {
 
   const getOrdersList = async () => {
     try {
-      const response = await getAllOrders();
+      const response = await ordersApis.getAllOrders();
       console.log("Orders Res: ", response);
 
       setOrders(response.data);

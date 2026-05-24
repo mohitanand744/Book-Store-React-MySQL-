@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { logout } from "../../../utils/apis/authApis";
-import { getUserDetails } from "../../../utils/apis/userApis";
+import { authApis } from "../../../utils/apis/authApis";
+import { userApis } from "../../../utils/apis/userApis";
 
 // ---------------------- VALIDATE TOKEN ---------------------- //
 export const validateToken = createAsyncThunk(
@@ -11,10 +11,27 @@ export const validateToken = createAsyncThunk(
     if (logoutReason === "tokenExpired") return rejectWithValue("No token");
 
     try {
-      const response = await getUserDetails();
+      const response = await userApis.getUserDetails();
       return response.data;
     } catch {
       return rejectWithValue("Token invalid");
+    }
+  },
+);
+
+// ---------------------- LOGIN ---------------------- //
+export const loginThunk = createAsyncThunk(
+  "auth/login",
+  async (credentials, { rejectWithValue }) => {
+    try {
+      const response = await authApis.login(credentials);
+      return response;
+    } catch (error) {
+      return rejectWithValue({
+        response: {
+          data: error.response?.data
+        }
+      });
     }
   },
 );
@@ -24,7 +41,7 @@ export const logoutThunk = createAsyncThunk(
   "auth/logout",
   async (logoutReason, { rejectWithValue }) => {
     try {
-      await logout();
+      await authApis.logout();
       return logoutReason;
     } catch (error) {
       return rejectWithValue(error.response?.data || "Logout failed");
@@ -48,22 +65,6 @@ const authSlice = createSlice({
   name: "auth",
   initialState: getInitialState(),
   reducers: {
-    loginSuccess: (state, action) => {
-      state.userData = action.payload.user;
-      state.isAuthenticated = true;
-      state.loading = false;
-      state.logoutReason = "";
-      state.error = null;
-    },
-
-    logoutSuccess: (state, action) => {
-      state.userData = null;
-      state.isAuthenticated = false;
-      state.loading = false;
-      state.logoutReason = "";
-      state.error = null;
-    },
-
     updateUserData: (state, action) => {
       if (state.userData) {
         state.userData = { ...state.userData, ...action.payload };
@@ -99,6 +100,21 @@ const authSlice = createSlice({
 
         state.error = action.payload;
       })
+      .addCase(loginThunk.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(loginThunk.fulfilled, (state, action) => {
+        state.userData = action.payload?.data?.user;
+        state.isAuthenticated = true;
+        state.loading = false;
+        state.logoutReason = "";
+        state.error = null;
+      })
+      .addCase(loginThunk.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload?.response?.data?.message || "Login failed";
+      })
       .addCase(logoutThunk.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -117,8 +133,6 @@ const authSlice = createSlice({
 });
 
 export const {
-  loginSuccess,
-  logoutSuccess,
   updateUserData,
   clearError,
   setLoading,
