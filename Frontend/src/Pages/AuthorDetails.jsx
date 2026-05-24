@@ -516,12 +516,12 @@ const AuthorDetails = () => {
                   </div>
                 </>
               ) : (
-                <div className="flex flex-col items-center justify-center py-24 text-gray-400">
-                  <FaBookOpen size={48} className="mb-4 opacity-30" />
-                  <p className="text-lg font-medium">No books found</p>
-                  <p className="text-sm">
-                    This author hasn't uploaded any books yet.
-                  </p>
+                <div className="flex justify-center w-full py-16">
+                  <NoData
+                    title="No Books Found"
+                    message="This author hasn't published any books yet."
+                    icon="search"
+                  />
                 </div>
               )}
             </motion.div>

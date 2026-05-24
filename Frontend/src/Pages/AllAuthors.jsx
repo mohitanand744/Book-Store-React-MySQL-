@@ -164,7 +164,7 @@ const AllAuthors = () => {
 
       <div className="container mx-auto px-4 py-8">
         {/* Author of the Month Section */}
-        {authorOfTheMonth && (
+        {authorOfTheMonth ? (
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -289,6 +289,17 @@ const AllAuthors = () => {
               )}
             </div>
           </motion.div>
+        ) : (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mb-20"
+          >
+            <SectionHeading subtitle="Literary Excellence">Author of the Month</SectionHeading>
+            <div className="py-8 flex justify-center">
+               <NoData title="No Author Selected" message="We're currently selecting this month's featured author. Check back soon!" icon="user" />
+            </div>
+          </motion.div>
         )}
 
         {/* Featured Section - Always Visible */}
@@ -298,7 +309,13 @@ const AllAuthors = () => {
           className="mb-20"
         >
           <SectionHeading subtitle="Curated Spotlight">Featured Authors</SectionHeading>
-          <AuthorSlider books={books} />
+          {books.length === 0 ? (
+             <div className="py-8 flex justify-center">
+               <NoData title="No Featured Authors" message="We're currently curating a list of featured authors. Stay tuned!" icon="search" />
+             </div>
+          ) : (
+             <AuthorSlider books={books} />
+          )}
         </motion.div>
 
         {/* Search and Filters Section */}

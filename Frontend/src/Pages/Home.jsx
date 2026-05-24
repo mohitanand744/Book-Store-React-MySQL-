@@ -13,6 +13,7 @@ import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import BooksLoader from "../components/Loaders/BooksLoader";
 import Button from "../components/Buttons/Button";
 import SectionHeading from "../components/Headings/SectionHeading";
+import NoData from "../components/EmptyData/noData";
 
 import { useLoader } from "../Hooks/useLoader";
 import { toast } from "sonner";
@@ -68,31 +69,47 @@ const Home = () => {
                 Deal of the day
               </SectionHeading>
               <CountdownTimer />
-              <ScrollBooks books={books} />
+              {books.length === 0 ? (
+                <div className="py-8 flex justify-center"><NoData title="No Deals Currently" message="Check back soon for amazing deals!" icon="search" /></div>
+              ) : (
+                <ScrollBooks books={books} />
+              )}
             </div>
 
             <div className="mb-14">
               <SectionHeading subtitle="Our Most Loved Books">
                 Top Sellers
               </SectionHeading>
-              <ScrollBooks autoScroll={false} books={books} />
-              <div className="flex justify-center my-5">
-                <Link to={"/nextChapter/books"}>
-                  <Button variant="primary">View All</Button>
-                </Link>
-              </div>
+              {books.length === 0 ? (
+                <div className="py-8 flex justify-center"><NoData title="No Top Sellers Yet" message="Books are flying off the shelves. Be right back!" icon="search" /></div>
+              ) : (
+                <>
+                  <ScrollBooks autoScroll={false} books={books} />
+                  <div className="flex justify-center my-5">
+                    <Link to={"/nextChapter/books"}>
+                      <Button variant="primary">View All</Button>
+                    </Link>
+                  </div>
+                </>
+              )}
             </div>
 
             <div className="mb-14 ">
               <SectionHeading subtitle="Discover Great Minds">
                 Find Your Favorite Author
               </SectionHeading>
-              <AuthorSlider books={books} />
-              <div className="flex justify-center my-5">
-                <Link to={"/nextChapter/authors"}>
-                  <Button variant="primary">View All Authors</Button>
-                </Link>
-              </div>
+              {books.length === 0 ? (
+                <div className="py-8 flex justify-center"><NoData title="No Authors Found" message="We're inviting great minds. Stay tuned." icon="search" /></div>
+              ) : (
+                <>
+                  <AuthorSlider books={books} />
+                  <div className="flex justify-center my-5">
+                    <Link to={"/nextChapter/authors"}>
+                      <Button variant="primary">View All Authors</Button>
+                    </Link>
+                  </div>
+                </>
+              )}
             </div>
 
             <div className="container">
