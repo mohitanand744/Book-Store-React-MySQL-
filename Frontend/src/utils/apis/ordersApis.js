@@ -19,7 +19,7 @@ export const ordersApis = {
 
   addToWishlist: async (bookId) => {
     const response = await axiosInstance.post(
-      "/wishlist/add-to-wishlist",
+      "/wishlist/toggle-wishlist",
       { bookId }
     );
     return response.data;

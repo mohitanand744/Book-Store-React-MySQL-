@@ -3,12 +3,12 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 import QuantitySelector from "../QuantitySelector";
 
 const CheckoutBooksCard = ({ items, updateQuantity, removeItem }) => {
-  return items?.map((item, i) => (
+  return items?.map((item, index) => (
     <motion.li
       key={item?.id}
-      initial={{ y: 20, opacity: 0, scale: 0.67 }}
+      initial={{ y: 15, opacity: 0, scale: 0.27 }}
       animate={{ y: 0, opacity: 1, scale: 1 }}
-      transition={{ duration: 0.25, ease: "easeOut" }}
+      transition={{ duration: 0.65, delay: index * 0.1 }}
       whileHover={{
         scale: 1.01,
         transition: { duration: 0.15 },

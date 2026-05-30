@@ -11,7 +11,6 @@ const Modal = ({ isOpen, onClose, loading, children }) => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            onClick={onClose}
           />
           <motion.div
             className="fixed inset-0 z-[9999] flex items-center justify-center p-4"
@@ -28,10 +27,7 @@ const Modal = ({ isOpen, onClose, loading, children }) => {
               onClick={(e) => e.stopPropagation()}
               className="w-full h-auto overflow-y-auto overflow-x-hidden scrollbar-hide max-h-[93vh]  max-w-md relative border-2 border-tan bg-coffee text-tan p-6 rounded-3xl shadow-xl"
             >
-              <div
-                className="absolute inset-0 bg-[url('/images/bgDesign.jpg')] bg-cover bg-center opacity-10 pointer-events-none"
-              />
-
+              <div className="absolute inset-0 bg-[url('/images/bgDesign.jpg')] bg-cover bg-center opacity-10 pointer-events-none" />
 
               <AnimatePresence>
                 {loading && (
@@ -49,9 +45,7 @@ const Modal = ({ isOpen, onClose, loading, children }) => {
                   </motion.div>
                 )}
               </AnimatePresence>
-              <div className=" z-10">
-                {children}
-              </div>
+              <div className="z-10 ">{children}</div>
             </motion.div>
           </motion.div>
         </>
@@ -61,5 +55,3 @@ const Modal = ({ isOpen, onClose, loading, children }) => {
 };
 
 export default Modal;
-
-

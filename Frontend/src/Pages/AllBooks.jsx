@@ -146,7 +146,7 @@ const AllBooks = () => {
           { label: "Books", path: null }
         ]}
       />
-      <div className="bg-sepia/80 backdrop-blur-xl py-4 sm:py-6 px-6 sticky top-[4.5rem] z-[9999] shadow-md border-b border-tan/10">
+      <div className="bg-sepia/80 backdrop-blur-xl py-4 sm:py-6 px-6 sticky top-[4.5rem] z-[100] shadow-md border-b border-tan/10">
 
         <div className="container flex items-center justify-between gap-5 md:px-4">
           <h1 className="text-xl font-semibold text-start sm:text-center text-cream md:text-2xl uppercase">

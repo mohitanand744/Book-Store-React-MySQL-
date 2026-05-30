@@ -6,7 +6,7 @@ const {
 const verifyToken = require("../Middleware/verifyToken");
 const router = express.Router();
 
-router.get("/lists", getAllCategoriesController);
-router.get("/user/lists", verifyToken, getUserCategoriesController);
+router.get("/categories-lists", getAllCategoriesController);
+router.get("/user/categories-lists", verifyToken, getUserCategoriesController);
 
 module.exports = router;

@@ -40,6 +40,8 @@ const getBookById = (id) => {
   return BookModel.findBookById(id);
 };
 
+const getBooksSuggestionsServices = async (limit, cursor) => {};
+
 const createBookWithImages = async (bookData, images) => {
   const { title, description, author, price, category } = bookData;
 

@@ -7,12 +7,11 @@ import { EnvelopeIcon, LockClosedIcon } from "@heroicons/react/24/outline";
 import Input from "../../components/Inputs/Input";
 import Checkbox from "../../components/Inputs/Checkbox";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import ForgotPasswordModal from "../../components/Auth/Modal/ForgotPassword";
+import ForgotPasswordModal from "../../components/Modal/Auth/ForgotPassword";
 import { authApis } from "../../utils/apis/authApis";
 import { toast } from "sonner";
 import useAuth from "../../Hooks/useAuth";
-import ResetPasswordModal from "../../components/Auth/Modal/resetPassword";
-import EmailVerificationStatus from "../../components/Auth/Modal/EmailVerificationStatus";
+import ResetPasswordModal from "../../components/Modal/Auth/resetPassword";
 import { useDispatch } from "react-redux";
 import { loginThunk } from "../../store/Redux/Slices/authSlice";
 import {
@@ -20,6 +19,8 @@ import {
   passwordValidationRules,
 } from "../../utils/validations/rules";
 import useInputHandlers from "../../Hooks/useInputHandlers";
+import SocialLoginButtons from "../../components/Buttons/Auth/SocialLoginButtons";
+import EmailVerificationStatus from "../../components/Modal/Auth/EmailVerificationStatus";
 
 const Login = () => {
   const {
@@ -150,10 +151,12 @@ const Login = () => {
   const onSubmit = async (data) => {
     try {
       setVerificationEmail(data.email);
-      const response = await dispatch(loginThunk({
-        email: data.email,
-        password: data.password,
-      })).unwrap();
+      const response = await dispatch(
+        loginThunk({
+          email: data.email,
+          password: data.password,
+        }),
+      ).unwrap();
 
       if (response?.success) {
         toast.success("Login successful!");
@@ -195,7 +198,7 @@ const Login = () => {
       } else {
         toast.error(
           error.response?.data?.message ||
-          "Something went wrong. Please try again later.",
+            "Something went wrong. Please try again later.",
         );
       }
     }
@@ -203,9 +206,7 @@ const Login = () => {
 
   return (
     <div className="relative flex items-center justify-center min-h-screen gap-3 p-4 bg-[url('/images/authBG.png')] bg-center bg-no-repeat bg-cover overflow-hidden">
-      <div
-        className="absolute inset-0 bg-[url('/images/bgDesign.jpg')] bg-cover bg-center opacity-10 pointer-events-none"
-      />
+      <div className="absolute inset-0 bg-[url('/images/bgDesign.jpg')] bg-cover bg-center opacity-10 pointer-events-none" />
       <div className="flex gap-4">
         <motion.div
           initial={{ scale: 0, y: 20 }}
@@ -216,18 +217,16 @@ const Login = () => {
           <motion.div
             whileHover={{ scale: 1.01 }}
             transition={{ duration: 0.2 }}
-            className="overflow-hidden bg-coffee/65 backdrop-blur-xl shadow-2xl rounded-3xl p-3 border border-tan/20 relative"
+            className="relative p-3 overflow-hidden border shadow-2xl bg-coffee/65 backdrop-blur-xl rounded-3xl border-tan/20"
           >
-            <div
-              className="absolute inset-0 bg-[url('/images/bgDesign.jpg')] bg-cover bg-center opacity-10 pointer-events-none"
-            />
+            <div className="absolute inset-0 bg-[url('/images/bgDesign.jpg')] bg-cover bg-center opacity-10 pointer-events-none" />
             <div className="relative z-10 p-3">
-              <div className="mb-8 border bg-black/20 p-3 pt-1 rounded-3xl border-tan/20 text-cream text-center">
+              <div className="p-3 pt-1 mb-8 text-center border bg-black/20 rounded-3xl border-tan/20 text-cream">
                 <motion.img
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
                   transition={{ delay: 0.1 }}
-                  className="object-cover w-auto h-32 mx-auto rounded-2xl mb-4"
+                  className="object-cover w-auto h-32 mx-auto mb-4 rounded-2xl"
                   src="/images/logo-transperant-light.png"
                   alt="Logo"
                 />
@@ -296,10 +295,7 @@ const Login = () => {
                     labelclassname="text-cream/90"
                     type="password"
                     placeholder="••••••••"
-                    icon={
-                      <LockClosedIcon className="w-5 h-5 text-cream/60" />
-                    }
-
+                    icon={<LockClosedIcon className="w-5 h-5 text-cream/60" />}
                     error={errors.password?.message}
                     {...register("password", passwordValidationRules)}
                   />
@@ -329,7 +325,7 @@ const Login = () => {
                   >
                     <p
                       onClick={() => setShowForgot(true)}
-                      className="font-medium text-cream/80 hover:text-cream cursor-pointer transition-colors"
+                      className="font-medium transition-colors cursor-pointer text-cream/80 hover:text-cream"
                     >
                       Forgot password?
                     </p>
@@ -363,74 +359,13 @@ const Login = () => {
                     <div className="w-full border-t border-tan/30 "></div>
                   </div>
                   <div className="relative flex justify-center text-sm">
-                    <span className="px-3 py-1 bg-coffee/50 backdrop-blur-md text-tan/70 rounded-full border border-tan/10 font-semibold">
+                    <span className="px-3 py-1 font-semibold border rounded-full bg-coffee/50 backdrop-blur-md text-tan/70 border-tan/10">
                       Or continue with
                     </span>
                   </div>
                 </div>
 
-                <div className="grid grid-cols-3 gap-3 mt-6">
-                  <motion.div
-                    whileHover={{ scale: 1.03 }}
-                    whileTap={{ scale: 0.98 }}
-                  >
-                    <Button
-                      variant="outline"
-                      className="flex items-center justify-center w-full h-[44px]"
-                      onClick={() =>
-                        (window.location.href = `${import.meta.env.VITE_API_BASE_URL}/${import.meta.env.VITE_API_VERSION}/auth/google`)
-                      }
-                    >
-                      <motion.img
-                        initial={{ scale: 0 }}
-                        animate={{ scale: 1 }}
-                        transition={{ delay: 0.9 }}
-                        src="/images/google.png"
-                        alt="Google"
-                        className="w-6 h-6"
-                      />{" "}
-                      <span className="ms-1">Google</span>
-                    </Button>
-                  </motion.div>
-                  <motion.div
-                    whileHover={{ scale: 1.03 }}
-                    whileTap={{ scale: 0.98 }}
-                  >
-                    <Button
-                      variant="outline"
-                      className="flex items-center justify-center w-full h-[44px] px-1"
-                    >
-                      <motion.img
-                        initial={{ scale: 0 }}
-                        animate={{ scale: 1 }}
-                        transition={{ delay: 0.9 }}
-                        src="/images/fb.jpg"
-                        alt="Facebook"
-                        className="w-6 h-6 rounded-full"
-                      />{" "}
-                      <span className="ms-1">Facebook</span>
-                    </Button>
-                  </motion.div>
-                  <motion.div
-                    whileHover={{ scale: 1.03 }}
-                    whileTap={{ scale: 0.98 }}
-                  >
-                    <Button
-                      variant="outline"
-                      className="flex items-center justify-center w-full h-[44px] px-1"
-                    >
-                      <motion.img
-                        initial={{ scale: 0 }}
-                        animate={{ scale: 1 }}
-                        transition={{ delay: 0.9 }}
-                        src="/images/linkedin.jpg"
-                        alt="LinkedIn"
-                        className="w-6 h-6 rounded-full"
-                      />{" "}
-                      <span className="ms-1">LinkedIn</span>
-                    </Button>
-                  </motion.div>
-                </div>
+                <SocialLoginButtons />
               </motion.div>
 
               <motion.div
@@ -443,7 +378,7 @@ const Login = () => {
                   Don't have an account?{" "}
                   <Link
                     to="/signup"
-                    className="flex items-center gap-1 text-nowrap font-medium transition-transform   "
+                    className="flex items-center gap-1 font-medium transition-transform text-nowrap "
                   >
                     Sign up <span className="text-xl">&rarr;</span>
                   </Link>
@@ -451,7 +386,7 @@ const Login = () => {
                 <div className="text-xs  px-3 rounded-[12px] ">
                   <Link
                     to="/nextChapter"
-                    className="flex items-center gap-1 text-nowrap px-3 text-cream/80 py-1 rounded-xl font-medium transition-transform  "
+                    className="flex items-center gap-1 px-3 py-1 font-medium transition-transform text-nowrap text-cream/80 rounded-xl "
                   >
                     Explore without login{" "}
                     <span className="text-xl">&rarr;</span>
@@ -464,7 +399,7 @@ const Login = () => {
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               transition={{ delay: 1.1 }}
-              className="px-2 py-4 bg-black/20 backdrop-blur-sm text-center text-tan rounded-xl relative z-10"
+              className="relative z-10 px-2 py-4 text-center bg-black/20 backdrop-blur-sm text-tan rounded-xl"
             >
               <p className="text-[11px] ">
                 By creating an account, you agree to our{" "}
@@ -492,7 +427,7 @@ const Login = () => {
             transition={{ delay: 1.2 }}
             className="mt-4 text-center"
           >
-            <p className="text-xs bg-coffee/75 px-3 py-1 rounded-full text-tan">
+            <p className="px-3 py-1 text-xs rounded-full bg-coffee/75 text-tan">
               <b>&copy; {new Date().getFullYear()} NextChapter.</b> All rights
               reserved.
             </p>
@@ -544,5 +479,3 @@ const Login = () => {
 };
 
 export default Login;
-
-

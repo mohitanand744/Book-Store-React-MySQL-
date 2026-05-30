@@ -48,14 +48,8 @@ const Home = () => {
   }, [dispatch]);
 
   return (
-    <div className="">
-      <div className="search">
-        <Search
-          styling="w-full block md:hidden bg-sepia rounded-full mb-6"
-          inputStylrs="rounded-full py-4"
-          iconStyles="top-3 right-3"
-        />
-      </div>
+    <>
+
       <HomeBanner />
       <div className="mx-auto w-[97%]">
         {loading ? (
@@ -121,7 +115,7 @@ const Home = () => {
           </>
         )}
       </div>
-    </div>
+    </>
   );
 };
 

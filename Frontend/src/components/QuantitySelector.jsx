@@ -55,7 +55,7 @@ const QuantitySelector = ({ initialQuantity = 1, onChange }) => {
     <motion.div
       initial={{ y: 10, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
-      transition={{ delay: 0.7 }}
+      transition={{ delay: 0.3 }}
       className="mx-auto"
     >
       <div className="flex gap-1 justify-center items-center w-40">

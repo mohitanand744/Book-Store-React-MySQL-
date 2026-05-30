@@ -15,6 +15,7 @@ const BASE_QUERY = `
     A.AUTHOR_RATING,
     BI.IMAGE_URL,
     B.BOOK_RATING,
+    B.cover_image,
 
     CASE 
       WHEN W.id IS NULL THEN false
@@ -123,6 +124,21 @@ const findAllBooks = async ({
     nextCursor,
     hasMore: rows.length === limit,
   };
+};
+
+const getBooksSuggestions = async ({ limit = 8, search }) => {
+  try {
+    const query = `SELECT id, title, cover_image, book_price FROM books WHERE title LIKE ? LIMIT ?`;
+
+    const [rows] = await db.query(query, [`%${search}%`, limit]);
+
+    return rows;
+  } catch (error) {
+    throw {
+      status: 500,
+      message: "Error fetching book suggestions [Database error]",
+    };
+  }
 };
 
 const findBookById = (id, userId = null) => {

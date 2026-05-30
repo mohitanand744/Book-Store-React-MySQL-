@@ -58,7 +58,7 @@ const BookCard = ({ book, index }) => {
 
         if (path === "nextChapterwishlist") {
           dispatch(getAllWishlists());
-        } else {
+        } else if (path === "nextChapteruserprofile") {
           await getUserUpdatedDetails();
         }
       } catch (err) {

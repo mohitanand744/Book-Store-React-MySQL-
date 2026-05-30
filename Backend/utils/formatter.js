@@ -13,7 +13,8 @@ exports.formatBook = (item) => ({
   book_price: item.BOOK_PRICE,
   category: item.category_name,
   images: item.IMAGE_URL,
-  book_rating: item.BOOK_RATING,
+  cover_image: item.cover_image || "https://bookshow.blurb.com/bookshow/cache/P11360640/md/cover_2.jpeg?access_key=675523b769268bce5b0b710b3d0e7841",
+  book_rating: item.BOOK_RATING
 });
 
 const formateName = (name) => {

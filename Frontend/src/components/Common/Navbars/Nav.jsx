@@ -12,17 +12,17 @@ import { useUser } from "../../../store/Context/UserContext";
 import { useImagePreview } from "../../../store/Context/ImagePreviewContext";
 import { NAV_LINKS } from "./NavLinksData";
 import BooksLoader from "../../Loaders/BooksLoader";
+import { useSelector } from "react-redux";
 
 const Navbar = ({ isCartOpen, setIsCartOpen }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isFixed, setIsFixed] = useState(false);
   const pathName = useLocation().pathname.replaceAll("/", "");
   const [animation, setAnimation] = useState(false);
-  // const [isCartOpen, setIsCartOpen] = useState(false); // Removed internal state
   const { isAuthenticated, userData } = useAuth();
   const { preview, isUploading, setPreview } = useUser();
   const { openPreview } = useImagePreview();
-  const [viewImage, setViewImage] = useState(false);
+  const { books } = useSelector((state) => state.books);
   const navigate = useNavigate();
   console.log(isAuthenticated);
 
@@ -76,13 +76,12 @@ const Navbar = ({ isCartOpen, setIsCartOpen }) => {
 
   return (
     <nav
-      className={`transition-all z-[999] duration-300 ${
-        isFixed
-          ? animation
-            ? "sticky top-[-8rem] left-0 w-full opacity-0 shadow-xl"
-            : "sticky top-0 left-0 w-full bg-coffee/85 backdrop-blur-xl shadow-[0_10px_30px_-10px_rgba(0,0,0,0.15)] opacity-100 border-b border-tan/20 animate-slideDown"
-          : "relative bg-coffee shadow-lg"
-      }`}
+      className={`transition-all z-[999] duration-300 ${isFixed
+        ? animation
+          ? "sticky top-[-8rem] left-0 w-full opacity-0 shadow-xl"
+          : "sticky top-0 left-0 w-full bg-coffee backdrop-blur-xl shadow-[0_10px_30px_-10px_rgba(0,0,0,0.15)] opacity-100 border-b border-tan/20 animate-slideDown"
+        : "relative bg-coffee shadow-lg"
+        }`}
     >
       <div className="absolute inset-0 bg-[url('/images/bgDesign.jpg')] bg-cover bg-center opacity-10 pointer-events-none" />
       <div className="container relative z-10 px-4 py-1 mx-auto">
@@ -103,7 +102,7 @@ const Navbar = ({ isCartOpen, setIsCartOpen }) => {
             variants={containerVariants}
             initial="hidden"
             animate="visible"
-            className="items-center hidden space-x-2 lg:flex"
+            className="items-center hidden space-x-2 xl:flex"
           >
             {NAV_LINKS.map((link) => {
               if (link.type === "dropdown") {
@@ -147,22 +146,26 @@ const Navbar = ({ isCartOpen, setIsCartOpen }) => {
                   <li className="px-1 py-1">
                     <Link
                       to={link.path}
-                      className={`px-5 py-2 text-[1.02rem] font-bold transition-all duration-300 rounded-2xl ${
-                        pathName === link.key
-                          ? "bg-tan/20 text-cream shadow-sm"
-                          : "text-tan bg-transparent shadow-none hover:bg-tan/10 hover:text-cream"
-                      }`}
+                      className={`px-5 py-2 text-[1.02rem] font-bold transition-all duration-300 rounded-2xl ${pathName === link.key
+                        ? "bg-tan/20 text-cream shadow-sm"
+                        : "text-tan bg-transparent shadow-none hover:bg-tan/10 hover:text-cream"
+                        }`}
                     >
                       {link.name}
                     </Link>
                   </li>
                 </motion.ul>
+
               );
             })}
           </motion.ul>
 
           <div className="flex items-center gap-4">
-            <Search styling="hidden lg:block w-[16rem] bg-sepia rounded-full" />
+            <Search
+              enableSuggestions={true}
+              suggestions={books}
+              onSelectSuggestion={(s) => navigate(`/nextChapter/books?search=${s?.title}`)}
+              nav={true} styling="hidden md:block w-[16rem] bg-sepia rounded-full" />
 
             <div
               onClick={() => setIsCartOpen(!isCartOpen)}
@@ -215,7 +218,11 @@ const Navbar = ({ isCartOpen, setIsCartOpen }) => {
             )}
 
             {/* Mobile Hamburger */}
-            <div className="lg:hidden">
+            <motion.div
+              variants={itemVariants}
+              initial="hidden"
+              animate="visible"
+              className="xl:hidden">
               <button
                 onClick={() => setIsOpen(!isOpen)}
                 className="flex items-center justify-center transition-all duration-300 border shadow-sm bg-tan/20 hover:bg-tan/30 w-11 h-11 rounded-2xl text-tan focus:outline-none border-tan/20 active:scale-95"
@@ -245,7 +252,7 @@ const Navbar = ({ isCartOpen, setIsCartOpen }) => {
                   )}
                 </svg>
               </button>
-            </div>
+            </motion.div>
           </div>
         </div>
       </div>
